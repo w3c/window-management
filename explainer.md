@@ -25,9 +25,9 @@ The Screen Enumeration API gives developers access to a list of the available sc
 * **Small form-factor applications, e.g. calculator, mini music player**
   * Launch the app with specific (or bounded) dimensions.
 
-## Goals
+## Goals / Non-goals
 
-## Non-Goals
+The initial implementation will address only the slide show use case. All other use cases are left to future iterations of the API, though the initial API should be designed to accommodate them with minimal modifications.
 
 ## Proposal
 

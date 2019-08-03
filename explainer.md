@@ -12,8 +12,41 @@ The Screen Enumeration API gives developers access to a list of the available sc
 
 * **Slide show presentation using multiple screens**
   * Open the presentation, speaker notes, and presenter controls on different screens in fullscreen mode.
+    ```js
+    const screens = window.screens;
+    
+    // Option 1: Blow up multiple elements living in a single window.
+    const presentation = document.querySelector("#presentation");
+    const notes        = document.querySelector("#notes");
+    const controls     = document.querySelector("#controls");
+    
+    presentation.requestFullscreen({ screen: screens[0] });
+    notes.requestFullscreen({ screen: screens[1] });
+    controls.requestFullscreen({ screen: screens[2] });
+    
+    // Option 2: Blow up multiple windows.
+    window.open("/presentation", "presentation", "fullscreen", screens[0]);
+    window.open("/notes", "notes", "fullscreen", screens[1]);
+    window.open("/controls", "controls", "fullscreen", screens[2]);
+    ```
   * Swap the presentation and notes (i.e. change the screen on which each window appears).
-  * Open the speaker notes on a specific screen, not in fullscreen mode.
+    ```js
+    const presentationWindow = window.open("", "presentation");
+    const notesWindow        = window.open("", "notes");
+    presentationWindow.moveTo(notesWindow.screen);
+    notesWindow.moveTo(presentationWindow.screen);
+    
+    // TODO: How would the size of the window be affected after the move?
+    // TODO: Would window.arrange({ window: screen }) be better?
+    ```
+  * Move the speaker notes to a specific screen, not in fullscreen mode.
+    ```js
+    const screen = window.screens[0];
+    const notesWindow = window.open("", "notes");
+    notesWindow.moveTo(screen);
+    
+    // TODO: Find out if notesWindow.moveTo(screen.availLeft, screen.availTop) would suffice.
+    ```
 * **Professional image editing tools with floating palettes**
   * Always keep the palettes on top of the main editor.
   * Synchronously move the palettes when the main editor moves.

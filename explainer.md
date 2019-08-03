@@ -37,7 +37,9 @@ The Screen Enumeration API gives developers access to a list of the available sc
     notesWindow.moveTo(presentationWindow.screen);
     
     // TODO: How would the size of the window be affected after the move?
-    // TODO: Would window.arrange({ window: screen }) be better?
+    // TODO: window.rearrange({ window: screen }) ?
+    // TODO: window.rearrange({ window: window1, screen: screen1, size: "100x200" }, 
+    //                        { window: window2, screen: screen2, size: "fullscreen" }) ?
     ```
   * Move the speaker notes to a specific screen, not in fullscreen mode.
     ```js

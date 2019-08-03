@@ -38,7 +38,7 @@ The Screen Enumeration API gives developers access to a list of the available sc
     
     // TODO: How would the size of the window be affected after the move?
     // TODO: window.rearrange({ window: screen }) ?
-    // TODO: window.rearrange({ window: window1, screen: screen1, size: "100x200" }, 
+    // TODO: window.rearrange({ window: window1, screen: screen1, size: "100x100" }, 
     //                        { window: window2, screen: screen2, size: "fullscreen" }) ?
     ```
   * Move the speaker notes to a specific screen, not in fullscreen mode.
@@ -46,8 +46,7 @@ The Screen Enumeration API gives developers access to a list of the available sc
     const screen = window.screens[0];
     const notesWindow = window.open("", "notes");
     notesWindow.moveTo(screen);
-    
-    // TODO: Find out if notesWindow.moveTo(screen.availLeft, screen.availTop) would suffice.
+    notesWindow.resizeTo(100, 100);
     ```
 * **Professional image editing tools with floating palettes**
   * Always keep the palettes on top of the main editor.

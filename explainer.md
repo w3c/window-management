@@ -50,7 +50,18 @@ The Screen Enumeration API gives developers access to a list of the available sc
     ```
 * **Professional image editing tools with floating palettes**
   * Always keep the palettes on top of the main editor.
+    ```js
+    window.open("/palette", "palette", "alwaysOnTop");
+    ```
   * Synchronously move the palettes when the main editor moves.
+    ```js
+    const palette1 = window.open("/palette1", "palette1", "alwaysOnTop");
+    const palette2 = window.open("/palette2", "palette2", "alwaysOnTop");
+    window.addEventListener("move", event => {
+      palette1.moveBy(event.deltaX, event.deltaY);
+      palette2.moveBy(event.deltaX, event.deltaY);
+    });
+    ```
 * **Finance applications with multiple dashboards**
   * Starting the app opens all the dashboards across multiple screens.
   * Starting the app restores all the dashboards' positions from the previous session.

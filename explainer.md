@@ -14,16 +14,16 @@ The Screen Enumeration API gives developers access to a list of the available sc
   * Open the presentation, speaker notes, and presenter controls on different screens in fullscreen mode.
     ```js
     const screens = window.screens;
-    
+
     // Option 1: Blow up multiple elements living in a single window.
     const presentation = document.querySelector("#presentation");
     const notes        = document.querySelector("#notes");
     const controls     = document.querySelector("#controls");
-    
+
     presentation.requestFullscreen({ screen: screens[0] });
     notes.requestFullscreen({ screen: screens[1] });
     controls.requestFullscreen({ screen: screens[2] });
-    
+
     // Option 2: Blow up multiple windows.
     window.open("/presentation", "presentation", "fullscreen", screens[0]);
     window.open("/notes", "notes", "fullscreen", screens[1]);
@@ -35,10 +35,10 @@ The Screen Enumeration API gives developers access to a list of the available sc
     const notesWindow        = window.open("", "notes");
     presentationWindow.moveTo(notesWindow.screen);
     notesWindow.moveTo(presentationWindow.screen);
-    
+
     // TODO: How would the size of the window be affected after the move?
     // TODO: window.rearrange({ window: screen }) ?
-    // TODO: window.rearrange({ window: window1, screen: screen1, size: "100x100" }, 
+    // TODO: window.rearrange({ window: window1, screen: screen1, size: "100x100" },
     //                        { window: window2, screen: screen2, size: "fullscreen" }) ?
     ```
   * Move the speaker notes to a specific screen, not in fullscreen mode.
@@ -55,8 +55,8 @@ The Screen Enumeration API gives developers access to a list of the available sc
     ```
   * Synchronously move the palettes when the main editor moves.
     ```js
-    const palette1 = window.open("/palette1", "palette1", "alwaysOnTop");
-    const palette2 = window.open("/palette2", "palette2", "alwaysOnTop");
+    const palette1 = window.open("/palette/1", "palette1", "alwaysOnTop");
+    const palette2 = window.open("/palette/2", "palette2", "alwaysOnTop");
     window.addEventListener("move", event => {
       palette1.moveBy(event.deltaX, event.deltaY);
       palette2.moveBy(event.deltaX, event.deltaY);
@@ -69,9 +69,11 @@ The Screen Enumeration API gives developers access to a list of the available sc
     self.addEventListener("launch", event => {
       event.waitUntil(async () => {
         const screens = window.screens;
-        const totalDashboardCount = 5;
-        for (let screen = 1; screen < Math.min(screens.length, totalDashboardCount); ++screen) {
-          window.open("/dashboard" + screen, "dashboard" + screen, "", screens[screen]);
+        const maxDashboardCount = 5;
+        const usedScreenCount = Math.min(screens.length, maxDashboardCount);
+        for (let screen = 1; screen < usedScreenCount; ++screen) {
+          window.open(`/dashboard/${screen}`, `dashboard${screen}`, "",
+              screens[screen]);
         }
       });
     });
@@ -79,31 +81,91 @@ The Screen Enumeration API gives developers access to a list of the available sc
   * Starting the app restores all the dashboards' positions from the previous session.
     ```js
     // Service worker script
-    const db = idb.open("db", 1, upgradeDb => {
-      if (!upgradeDb.objectStoreNames.contains("windowConfigs")) {
-        upgradeDb.createObjectStore("windowConfigs", { keyPath: "name" });
-      }
-    });
-    
+    function buildWindowConfig() {
+      return {
+        name: window.name,
+        url: window.location,
+        options: `left=${window.screenLeft},
+                  top=${window.screenTop},
+                  width=${window.outerWidth},
+                  height=${window.outerHeight}`,
+        screen: window.screen,
+      };
+    }
+
+    function recordWindowConfig() {
+      idb.open("db", 1)
+         .transaction(["windowConfigs"], "readwrite")
+         .objectStore("windowConfigs")
+         .put(buildWindowConfig());
+    }
+
     // Retrieve dashboards' positions when app is launched.
     self.addEventListener("launch", event => {
       event.waitUntil(async () => {
-        // Assuming the user's screen configuration hasn't changed.
-        const objectStore = db.transaction(["windowConfigs"], "readwrite").objectStore("windowConfigs");
-        for (let config : objectStore.getAll()) {
-          const dashboard = window.open(config.location, config.name, config.options, config.screen);
-          
-          // Record dashboards' positions when they are closed.
-          dashboard.addEventListener("close", event => {
-            const objectStore = db.transaction(["windowConfigs"], "readwrite").objectStore("windowConfigs");
-            const request = objectStore.put(event.target);
-          });
+        const db = idb.open("db", 1, upgradeDb => {
+          if (!upgradeDb.objectStoreNames.contains("windowConfigs")) {
+            upgradeDb.createObjectStore("windowConfigs", { keyPath: "name" });
+          }
+        });
+
+        const configs = db.transaction(["windowConfigs"])
+                          .objectStore("windowConfigs");
+
+        let dashboard;
+        for (let config : configs.getAll()) {
+          // Open dashboard, assuming the user's screen setup hasn't changed.
+          dashboard = window.open(config.url, config.name, config.options,
+              config.screen);
+
+          // Record dashboard's position when it is closed.
+          dashboard.addEventListener("beforeunload", recordWindowConfig);
         }
       });
     });
     ```
   * Align dashboards relative to each other, or to the screen.
+    ```js
+    // Horizontally center dashboards 1 and 2, relative to each other.
+    //   ______________           ______________
+    //  | ____         |         |              |
+    //  ||   x|   ____ |         |         ____ |
+    //  ||    |  |   x||         | ____   |   x||
+    //  || 1  |  |    ||         ||   x|  |    ||
+    //  ||____|  |    ||   --->  ||    |  |    ||
+    //  |        |  2 ||         || 1  |  |  2 ||
+    //  |        |    ||         ||____|  |    ||
+    //  |        |____||         |        |____||
+    //  |______________|         |______________|
+    //
+    // NOTE: No new APIs used.
+    function horizontallyCenter(dashboards) {
+      let maxHeight = 0;
+      let newCenter;
+      for (dashboard in dashboards) {
+        if (dashboard.outerHeight > maxHeight) {
+          newCenter = dashboard.screenY + dashboard.outerHeight / 2;
+        }
+      }
+      for (dashboard in dashboards) {
+        const oldCenter = dashboard.screenY + dashboard.outerHeight / 2;
+        dashboard.moveBy(0, oldCenter - newCenter);
+      }
+    }
+    ```
   * Snap dashboards into place when moved, according to a pre-defined configuration of window positions.
+    ```js
+    // Reposition/resize window into the nearest left/right half of the screen when
+    // programatically moved or manually dragged then dropped.
+    window.addEventListener("windowDrop", event => {
+      if (window.screenLeft + window.outerWidth / 2 < window.screen.width / 2) {
+        window.moveTo(0, 0);
+      } else {
+        window.moveTo(window.screen.width / 2, 0);
+      }
+      window.resizeTo(window.screen.width, window.screen.height);
+    });
+    ```
 * **Small form-factor applications, e.g. calculator, mini music player**
   * Launch the app with specific (or bounded) dimensions.
 

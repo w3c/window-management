@@ -89,16 +89,14 @@ The Screen Enumeration API gives developers access to a list of the available sc
     self.addEventListener("launch", event => {
       event.waitUntil(async () => {
         // Assuming the user's screen configuration hasn't changed.
-        // TODO: Read configs from IDB
-        for (let config : windowConfigs) {
-          const dashboard = window.open(config.url, config.name, config.options, config.screen);
+        const objectStore = db.transaction(["windowConfigs"], "readwrite").objectStore("windowConfigs");
+        for (let config : objectStore.getAll()) {
+          const dashboard = window.open(config.location, config.name, config.options, config.screen);
           
           // Record dashboards' positions when they are closed.
-          window.addEventListener("close", event => {
+          dashboard.addEventListener("close", event => {
             const objectStore = db.transaction(["windowConfigs"], "readwrite").objectStore("windowConfigs");
-            const request = objectStore.get(dashboard.name);
-            // TODO: Add/update record.
-            objectStore.add();
+            const request = objectStore.put(event.target);
           });
         }
       });

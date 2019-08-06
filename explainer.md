@@ -64,7 +64,46 @@ The Screen Enumeration API gives developers access to a list of the available sc
     ```
 * **Finance applications with multiple dashboards**
   * Starting the app opens all the dashboards across multiple screens.
+    ```js
+    // Service worker script
+    self.addEventListener("launch", event => {
+      event.waitUntil(async () => {
+        const screens = window.screens;
+        const totalDashboardCount = 5;
+        for (let screen = 1; screen < Math.min(screens.length, totalDashboardCount); ++screen) {
+          window.open("/dashboard" + screen, "dashboard" + screen, "", screens[screen]);
+        }
+      });
+    });
+    ```
   * Starting the app restores all the dashboards' positions from the previous session.
+    ```js
+    // Service worker script
+    const db = idb.open("db", 1, upgradeDb => {
+      if (!upgradeDb.objectStoreNames.contains("windowConfigs")) {
+        upgradeDb.createObjectStore("windowConfigs", { keyPath: "name" });
+      }
+    });
+    
+    // Retrieve dashboards' positions when app is launched.
+    self.addEventListener("launch", event => {
+      event.waitUntil(async () => {
+        // Assuming the user's screen configuration hasn't changed.
+        // TODO: Read configs from IDB
+        for (let config : windowConfigs) {
+          const dashboard = window.open(config.url, config.name, config.options, config.screen);
+          
+          // Record dashboards' positions when they are closed.
+          window.addEventListener("close", event => {
+            const objectStore = db.transaction(["windowConfigs"], "readwrite").objectStore("windowConfigs");
+            const request = objectStore.get(dashboard.name);
+            // TODO: Add/update record.
+            objectStore.add();
+          });
+        }
+      });
+    });
+    ```
   * Align dashboards relative to each other, or to the screen.
   * Snap dashboards into place when moved, according to a pre-defined configuration of window positions.
 * **Small form-factor applications, e.g. calculator, mini music player**

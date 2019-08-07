@@ -204,3 +204,12 @@ The initial implementation will address only the slide show use case. All other 
 * Create `"launch"` Service Worker event
 
 ## Privacy & Security
+
+### Screen enumeration
+
+Exposing the details of a user's multi-screen setup presents a fingerprinting concern.
+In order to mitigate the amount of personally identifying information exposed, while maintaining the usefulness of the API, we can implement the following best practices:
+* order the screens by `width` to shield OS-identifying information potentially revealed in the order in which the OS enumerates displays
+* limit the screen properties exposed to:
+  * width
+  * height

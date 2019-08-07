@@ -73,7 +73,7 @@ The Screen Enumeration API gives developers access to a list of the available sc
         const usedScreenCount = Math.min(screens.length, maxDashboardCount);
         for (let screen = 1; screen < usedScreenCount; ++screen) {
           window.open(`/dashboard/${screen}`, `dashboard${screen}`, "",
-              screens[screen]);
+                      screens[screen]);
         }
       });
     });
@@ -100,22 +100,22 @@ The Screen Enumeration API gives developers access to a list of the available sc
          .put(buildWindowConfig());
     }
 
-    // Retrieve dashboards' positions when app is launched.
     self.addEventListener("launch", event => {
       event.waitUntil(async () => {
+        // Initialize IndexedDB database.
         const db = idb.open("db", 1, upgradeDb => {
           if (!upgradeDb.objectStoreNames.contains("windowConfigs")) {
             upgradeDb.createObjectStore("windowConfigs", { keyPath: "name" });
           }
         });
 
+        // Retrieve dashboards' positions when app is launched.
         const configs = db.transaction(["windowConfigs"])
-                          .objectStore("windowConfigs");
-
-        let dashboard;
-        for (let config : configs.getAll()) {
-          // Open dashboard, assuming the user's screen setup hasn't changed.
-          dashboard = window.open(config.url, config.name, config.options,
+                          .objectStore("windowConfigs")
+                          .getAll();
+        for (let config : configs) {
+          // Open each dashboard, assuming the user's screen setup hasn't changed.
+          const dashboard = window.open(config.url, config.name, config.options,
               config.screen);
 
           // Record dashboard's position when it is closed.
@@ -144,6 +144,7 @@ The Screen Enumeration API gives developers access to a list of the available sc
       let newCenter;
       for (dashboard in dashboards) {
         if (dashboard.outerHeight > maxHeight) {
+          maxHeight = dashboard.outerHeight;
           newCenter = dashboard.screenY + dashboard.outerHeight / 2;
         }
       }
@@ -187,6 +188,19 @@ The initial implementation will address only the slide show use case. All other 
 
 ## Proposal
 
-### Existing capabilities
+### In scope
+
+* Add `screens` property to `Window` interface
+* Add `screen` to FullscreenOptions parameter of `Element.requestFullscreen()`
+* Add `"fullscreen"` window feature to `Window.open()`
+* Add `Screen` parameter to `Window.open()`
+* Add `Screen` parameter to `Window.moveTo()`
+
+### Future work
+
+* Add `"alwaysOnTop"` window feature to `Window.open()`
+* Create `"move"` Window event
+* Create `"windowDrop"` Window event
+* Create `"launch"` Service Worker event
 
 ## Privacy & Security

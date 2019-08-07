@@ -158,16 +158,28 @@ The Screen Enumeration API gives developers access to a list of the available sc
     // Reposition/resize window into the nearest left/right half of the screen when
     // programatically moved or manually dragged then dropped.
     window.addEventListener("windowDrop", event => {
-      if (window.screenLeft + window.outerWidth / 2 < window.screen.width / 2) {
-        window.moveTo(0, 0);
-      } else {
-        window.moveTo(window.screen.width / 2, 0);
-      }
+      const windowCenter = window.screenLeft + window.outerWidth / 2;
+      const screenCenter = window.screen.availLeft + window.screen.availWidth / 2;
+      const newLeft = (windowCenter < screenCenter) ? 0 : screenCenter;
+      window.moveTo(newLeft, 0);
       window.resizeTo(window.screen.width, window.screen.height);
     });
     ```
 * **Small form-factor applications, e.g. calculator, mini music player**
   * Launch the app with specific (or bounded) dimensions.
+    ```js
+    // Service worker script
+    self.addEventListener("launch", event => {
+      event.waitUntil(async () => {
+        // At most 800px wide.
+        const width = Math.min(window.screen.availWidth * 0.5, 800);
+        // At least 200px tall.
+        const height = Math.max(window.screen.availHeight * 0.3, 200);
+
+        window.resizeTo(width, height);
+      });
+    });
+    ```
 
 ## Goals / Non-goals
 

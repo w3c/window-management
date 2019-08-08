@@ -1,4 +1,4 @@
-# Screen Enumeration / Window Placement
+# Window Placement
 
 ## Abstract
 
@@ -6,7 +6,7 @@ As it becomes more common to use more than one monitor, it becomes more importan
 
 The Window Placement API allows developers to configure the placement of one or more browser windows across one or more screens. Placement encompasses the position (x-, y-, z-coordinates) and size of the window, in addition to more complex behavior around dragging, aligning, and resizing windows.
 
-The Screen Enumeration API gives developers access to a list of the available screens and the display properties of each screen. It provides the foundation for some Window Placement APIs and can be used to enhance others.
+Many parts of the Window Placement API either depend upon, or are enhanced by, access to the end user's screen configuration. Such access may be made available through a [Screen enumeration API](https://github.com/spark008/screen-enumeration), or a screen picker UI built into the browser.
 
 ## Use cases
 
@@ -68,12 +68,11 @@ The Screen Enumeration API gives developers access to a list of the available sc
     // Service worker script
     self.addEventListener("launch", event => {
       event.waitUntil(async () => {
-        const screens = window.screens;
+        const screens = self.screens;
         const maxDashboardCount = 5;
         const usedScreenCount = Math.min(screens.length, maxDashboardCount);
         for (let screen = 1; screen < usedScreenCount; ++screen) {
-          window.open(`/dashboard/${screen}`, `dashboard${screen}`, "",
-                      screens[screen]);
+          await clients.openWindow(`/dashboard/${screen}`, screens[screen]);
         }
       });
     });
@@ -81,24 +80,6 @@ The Screen Enumeration API gives developers access to a list of the available sc
   * Starting the app restores all the dashboards' positions from the previous session.
     ```js
     // Service worker script
-    function buildWindowConfig() {
-      return {
-        name: window.name,
-        url: window.location,
-        options: `left=${window.screenLeft},
-                  top=${window.screenTop},
-                  width=${window.outerWidth},
-                  height=${window.outerHeight}`,
-        screen: window.screen,
-      };
-    }
-
-    function recordWindowConfig() {
-      idb.open("db", 1)
-         .transaction(["windowConfigs"], "readwrite")
-         .objectStore("windowConfigs")
-         .put(buildWindowConfig());
-    }
 
     self.addEventListener("launch", event => {
       event.waitUntil(async () => {
@@ -109,19 +90,51 @@ The Screen Enumeration API gives developers access to a list of the available sc
           }
         });
 
-        // Retrieve dashboards' positions when app is launched.
+        // Retrieve preferred dashboard configurations.
         const configs = db.transaction(["windowConfigs"])
                           .objectStore("windowConfigs")
                           .getAll();
         for (let config : configs) {
           // Open each dashboard, assuming the user's screen setup hasn't changed.
-          const dashboard = window.open(config.url, config.name, config.options,
-              config.screen);
-
-          // Record dashboard's position when it is closed.
-          dashboard.addEventListener("beforeunload", recordWindowConfig);
+          const dashboard = await clients.openWindow(config.url, config.screen);
+          dashboard.postMessage(config.options);
         }
       });
+    });
+
+    // Record the latest configuration relayed by a dashboard that was just closed.
+    self.addEventListener("message", event => {
+      idb.open("db", 1)
+         .transaction(["windowConfigs"], "readwrite")
+         .objectStore("windowConfigs")
+         .put(event.data);
+    });
+    ```
+    ```js
+    // Dashboard script
+
+    window.name = window.location;
+
+    // Configure dashboard according to preferences relayed by the Service Worker.
+    window.addEventListener("message", event => {
+      window.moveTo(event.data.left, event.data.top);
+      window.resizeTo(event.data.width, event.data.height);
+    });
+
+    // Send dashboard's configuration to the Service Worker just before closing.
+    window.addEventListener("beforeunload", event => {
+      const windowConfig = {
+        name: window.name,
+        url: window.location,
+        options: {
+          left: window.screenLeft,
+          top: window.screenTop,
+          width: window.outerWidth,
+          height: window.outerHeight,
+        },
+        screen: window.screen,
+      };
+      navigator.serviceWorker.controller.postMessage(windowConfig);
     });
     ```
   * Align dashboards relative to each other, or to the screen.
@@ -190,7 +203,6 @@ The initial implementation will address only the slide show use case. All other 
 
 ### In scope
 
-* Add `screens` property to `Window` interface
 * Add `screen` to FullscreenOptions parameter of `Element.requestFullscreen()`
 * Add `"fullscreen"` window feature to `Window.open()`
 * Add `Screen` parameter to `Window.open()`
@@ -199,17 +211,9 @@ The initial implementation will address only the slide show use case. All other 
 ### Future work
 
 * Add `"alwaysOnTop"` window feature to `Window.open()`
+* Add `Screen` parameter to `Clients.openWindow()`
 * Create `"move"` Window event
 * Create `"windowDrop"` Window event
 * Create `"launch"` Service Worker event
 
 ## Privacy & Security
-
-### Screen enumeration
-
-Exposing the details of a user's multi-screen setup presents a fingerprinting concern.
-In order to mitigate the amount of personally identifying information exposed, while maintaining the usefulness of the API, we can implement the following best practices:
-* order the screens by `width` to shield OS-identifying information potentially revealed in the order in which the OS enumerates displays
-* limit the screen properties exposed to:
-  * width
-  * height

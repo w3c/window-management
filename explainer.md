@@ -12,23 +12,41 @@ Many parts of the Window Placement API either depend upon, or are enhanced by, a
 
 * **Slide show presentation using multiple screens**
   * Open the presentation, speaker notes, and presenter controls on different screens in fullscreen mode.
-    ```js
-    const screens = window.screens;
+    * Scenario A: No service worker
+      ```js
+      const screens = window.screens;
 
-    // Option 1: Blow up multiple elements living in a single window.
-    const presentation = document.querySelector("#presentation");
-    const notes        = document.querySelector("#notes");
-    const controls     = document.querySelector("#controls");
+      // Option 1: Blow up multiple elements living in a single window.
+      const presentation = document.querySelector("#presentation");
+      const notes        = document.querySelector("#notes");
+      const controls     = document.querySelector("#controls");
 
-    presentation.requestFullscreen({ screen: screens[0] });
-    notes.requestFullscreen({ screen: screens[1] });
-    controls.requestFullscreen({ screen: screens[2] });
+      presentation.requestFullscreen({ screen: screens[0] });
+      notes.requestFullscreen({ screen: screens[1] });
+      controls.requestFullscreen({ screen: screens[2] });
 
-    // Option 2: Blow up multiple windows.
-    window.open("/presentation", "presentation", "fullscreen", screens[0]);
-    window.open("/notes", "notes", "fullscreen", screens[1]);
-    window.open("/controls", "controls", "fullscreen", screens[2]);
-    ```
+      // Option 2: Blow up multiple windows.
+      window.open("/presentation", "presentation", "fullscreen", screens[0]);
+      window.open("/notes", "notes", "fullscreen", screens[1]);
+      window.open("/controls", "controls", "fullscreen", screens[2]);
+      ```
+    * Scenario 2: Using service worker
+      ```js
+      // Service worker script
+      const screens = self.screens;
+
+      async function launchPresentation() {
+        await clients.openWindow("/presentation", {
+          screen: screens[0], size: "fullscreen",
+        });
+        await clients.openWindow("/notes", {
+          screen: screens[1], size: "1000x300",
+        });
+        await clients.openWindow("/controls", {
+          screen: screens[2], size: "500x500",
+        });
+      }
+      ```
   * Swap the presentation and notes (i.e. change the screen on which each window appears).
     ```js
     const presentationWindow = window.open("", "presentation");
@@ -42,12 +60,23 @@ Many parts of the Window Placement API either depend upon, or are enhanced by, a
     //                        { window: window2, screen: screen2, size: "fullscreen" }) ?
     ```
   * Move the speaker notes to a specific screen, not in fullscreen mode.
-    ```js
-    const screen = window.screens[0];
-    const notesWindow = window.open("", "notes");
-    notesWindow.moveTo(screen);
-    notesWindow.resizeTo(100, 100);
-    ```
+    * Scenario 1: No service worker
+      ```js
+      const screen = window.screens[0];
+      const notesWindow = window.open("", "notes");
+      notesWindow.moveTo(10, 10, screen);
+      notesWindow.resizeTo(100, 100);
+      ```
+    * Scenario 2: Using service worker
+      ```js
+      // Service worker script
+      async () => {
+        const screen = self.screens[0];
+        const notesWindowClient = await clients.get(1);
+        await notesWindowClient.moveTo(10, 10, screen);
+        await notesWindowClient.resizeTo(100, 100);
+      }
+      ```
 * **Professional image editing tools with floating palettes**
   * Always keep the palettes on top of the main editor.
     ```js

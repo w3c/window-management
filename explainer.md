@@ -4,7 +4,7 @@
 
 As it becomes more common to use more than one monitor, it becomes more important to give Web developers the tools to make their applications perform well across multiple displays.
 
-The Window Placement API allows developers to configure the placement of one or more browser windows across one or more screens. Placement encompasses the position (x-, y-, z-coordinates) and size of the window, in addition to more complex behavior around dragging, aligning, and resizing windows.
+This proposal allows developers to configure the placement of one or more browser windows across one or more screens. Placement encompasses the position (x-, y-, z-coordinates) and size of the window, in addition to more complex behavior around dragging, aligning, and resizing windows.
 
 Many parts of the Window Placement API either depend upon, or are enhanced by, access to the end user's screen configuration. Such access may be made available through a [Screen enumeration API](https://github.com/spark008/screen-enumeration), or a screen picker UI built into the browser.
 

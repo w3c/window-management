@@ -13,9 +13,9 @@ complex behavior around dragging, aligning, and resizing windows.
 
 Many parts of the Window Placement API either depend upon, or are enhanced
 by, access to the end user's screen configuration. Such access may be made
-available through a [Screen enumeration
-API](https://github.com/spark008/screen-enumeration), or a screen picker UI
-built into the browser.
+available through a [Screen Enumeration
+API](https://github.com/spark008/screen-enumeration), which may use a screen
+picker UI built into the browser.
 
 ## Use cases
 

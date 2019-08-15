@@ -2,19 +2,29 @@
 
 ## Abstract
 
-As it becomes more common to use more than one monitor, it becomes more important to give Web developers the tools to make their applications perform well across multiple displays.
+As it becomes more common to use more than one monitor, it becomes more
+important to give Web developers the tools to make their applications perform
+well across multiple displays.
 
-This proposal allows developers to configure the placement of one or more browser windows across one or more screens. Placement encompasses the position (x-, y-, z-coordinates) and size of the window, in addition to more complex behavior around dragging, aligning, and resizing windows.
+This proposal allows developers to configure the placement of one or more
+browser windows across one or more screens. Placement encompasses the
+position (x-, y-, z-coordinates) and size of the window, in addition to more
+complex behavior around dragging, aligning, and resizing windows.
 
-Many parts of the Window Placement API either depend upon, or are enhanced by, access to the end user's screen configuration. Such access may be made available through a [Screen enumeration API](https://github.com/spark008/screen-enumeration), or a screen picker UI built into the browser.
+Many parts of the Window Placement API either depend upon, or are enhanced
+by, access to the end user's screen configuration. Such access may be made
+available through a [Screen enumeration
+API](https://github.com/spark008/screen-enumeration), or a screen picker UI
+built into the browser.
 
 ## Use cases
 
 * **Slide show presentation using multiple screens**
-  * Open the presentation, speaker notes, and presenter controls on different screens in fullscreen mode.
+  * Open the presentation, speaker notes, and presenter controls on different
+    screens in fullscreen mode.
     * Scenario A: No service worker
       ```js
-      const screens = window.screens;
+      const screens = await ScreenEnumerationAPI.screens();
 
       // Option 1: Blow up multiple elements living in a single window.
       const presentation = document.querySelector("#presentation");
@@ -47,7 +57,8 @@ Many parts of the Window Placement API either depend upon, or are enhanced by, a
         });
       }
       ```
-  * Swap the presentation and notes (i.e. change the screen on which each window appears).
+  * Swap the presentation and notes (i.e. change the screen on which each window
+    appears).
     ```js
     const presentationWindow = window.open("", "presentation");
     const notesWindow        = window.open("", "notes");
@@ -106,7 +117,8 @@ Many parts of the Window Placement API either depend upon, or are enhanced by, a
       });
     });
     ```
-  * Starting the app restores all the dashboards' positions from the previous session.
+  * Starting the app restores all the dashboards' positions from the previous
+    session.
     ```js
     // Service worker script
 
@@ -196,7 +208,8 @@ Many parts of the Window Placement API either depend upon, or are enhanced by, a
       }
     }
     ```
-  * Snap dashboards into place when moved, according to a pre-defined configuration of window positions.
+  * Snap dashboards into place when moved, according to a pre-defined
+    configuration of window positions.
     ```js
     // Reposition/resize window into the nearest left/right half of the screen when
     // programatically moved or manually dragged then dropped.
@@ -226,7 +239,9 @@ Many parts of the Window Placement API either depend upon, or are enhanced by, a
 
 ## Goals / Non-goals
 
-The initial implementation will address only the slide show use case. All other use cases are left to future iterations of the API, though the initial API should be designed to accommodate them with minimal modifications.
+The initial implementation will address only the slide show use case. All other
+use cases are left to future iterations of the API, though the initial API
+should be designed to accommodate them with minimal modifications.
 
 ## Proposal
 

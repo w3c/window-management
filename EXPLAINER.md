@@ -24,9 +24,17 @@ picker UI built into the browser.
     screens in fullscreen mode.
     * Scenario A: No service worker
       ```js
-      const screens = await ScreenEnumerationAPI.screens();
+      const screens = (async () => {
+        try {
+          return await ScreenEnumerationAPI.screens();
+        } catch (e) {
+          return "oh noes";
+        }
+      })();
 
       // Option 1: Blow up multiple elements living in a single window.
+      //
+      // NEW: Add `screen` parameter on `requestFullscreen()`.
       const presentation = document.querySelector("#presentation");
       const notes        = document.querySelector("#notes");
       const controls     = document.querySelector("#controls");
@@ -36,24 +44,49 @@ picker UI built into the browser.
       controls.requestFullscreen({ screen: screens[2] });
 
       // Option 2: Blow up multiple windows.
-      window.open("/presentation", "presentation", "fullscreen", screens[0]);
-      window.open("/notes", "notes", "fullscreen", screens[1]);
-      window.open("/controls", "controls", "fullscreen", screens[2]);
+      //
+      // NEW: `left` and `top` window feature parameters take absolute screen
+      //      coordinates, rather than display-relative coordinates.
+      window.open(
+        "/presentation",
+        "presentation",
+        `fullscreen,left=${screens[0].availLeft},top=${screens[0].availTop}`
+      );
+      window.open(
+        "/notes",
+        "notes",
+        `fullscreen,left=${screens[1].availLeft},top=${screens[1].availTop}`
+      );
+      window.open(
+        "/controls",
+        "controls",
+        `fullscreen,left=${screens[2].availLeft},top=${screens[2].availTop}`
+      );
       ```
     * Scenario 2: Using service worker
       ```js
       // Service worker script
-      const screens = self.screens;
+      const screens = await ScreenEnumerationAPI.screens();
 
+      // NEW: Add a `windowOptions` object parameter to `openWindow()` that
+      //      accepts `x`, `y`, `width`, `height`, and `state`.
       async function launchPresentation() {
         await clients.openWindow("/presentation", {
-          screen: screens[0], size: "fullscreen",
+          x: screens[0].availLeft,
+          y: screens[0].availTop,
+          state: "fullscreen",
         });
         await clients.openWindow("/notes", {
-          screen: screens[1], size: "1000x300",
+          x: screens[1].availLeft,
+          y: screens[1].availTop,
+          width: 1000,
+          height: 300,
         });
         await clients.openWindow("/controls", {
-          screen: screens[2], size: "500x500",
+          x: screens[2].availLeft,
+          y: screens[2].availTop,
+          width: 500,
+          height: 500,
         });
       }
       ```
@@ -62,21 +95,26 @@ picker UI built into the browser.
     ```js
     const presentationWindow = window.open("", "presentation");
     const notesWindow        = window.open("", "notes");
-    presentationWindow.moveTo(notesWindow.screen);
-    notesWindow.moveTo(presentationWindow.screen);
 
-    // TODO: How would the size of the window be affected after the move?
-    // TODO: window.rearrange({ window: screen }) ?
-    // TODO: window.rearrange({ window: window1, screen: screen1, size: "100x100" },
-    //                        { window: window2, screen: screen2, size: "fullscreen" }) ?
+    // NEW: `x` and `y` parameters of `moveTo()` take absolute screen
+    //      coordinates, rather than display-relative coordinates.
+    presentationWindow.moveTo(notesWindow.screen.availLeft,
+                              notesWindow.screen.availTop);
+    notesWindow.moveTo(presentationWindow.screen.availLeft,
+                       presentationWindow.screen.availTop);
     ```
   * Move the speaker notes to a specific screen, not in fullscreen mode.
     * Scenario 1: No service worker
       ```js
       const screen = window.screens[0];
       const notesWindow = window.open("", "notes");
-      notesWindow.moveTo(10, 10, screen);
+
+      // Option 1: Move and resize in 2 steps
+      notesWindow.moveTo(notesWindow.screen.availLeft + 10,
+                         notesWindow.screen.availTop + 10);
       notesWindow.resizeTo(100, 100);
+
+      // Option 2: Move and resize in a single step
       ```
     * Scenario 2: Using service worker
       ```js
@@ -84,8 +122,13 @@ picker UI built into the browser.
       async () => {
         const screen = self.screens[0];
         const notesWindowClient = await clients.get(1);
-        await notesWindowClient.moveTo(10, 10, screen);
+
+        // Option 1: Move and resize in 2 steps
+        await notesWindow.moveTo(notesWindowClient.screen.availLeft + 10,
+                                 notesWindowClient.screen.availTop + 10);
         await notesWindowClient.resizeTo(100, 100);
+
+        // Option 2: Move and resize in a single step
       }
       ```
 * **Professional image editing tools with floating palettes**

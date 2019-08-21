@@ -301,6 +301,6 @@ should be designed to accommodate them with minimal modifications.
 * Add `Screen` parameter to `Clients.openWindow()`
 * Create `"move"` Window event
 * Create `"windowDrop"` Window event
-* Create `"launch"` Service Worker event
+* Create `"launch"` Service Worker event ([API explainer](https://github.com/WICG/sw-launch))
 
 ## Privacy & Security

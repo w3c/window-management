@@ -166,14 +166,20 @@ designed to accommodate them with minimal modifications.
 
 ### In scope
 
+Option A (async approach, **preferred**):
+* Add `windowOptions` parameter to `Client.openWindow()` that accepts `x`, `y`,
+`width`, `height`, and `state`
+* Add async `setBounds()` on `Window` and `WindowClient` that accepts `x`, `y`,
+`width`, `height`, and `state`
+
+Option B (sync approach):
 * Remove restrictions on `x` and `y` parameters of `Window.open()` and
 `Window.moveTo()`
-* Add `display` to FullscreenOptions parameter of `Element.requestFullscreen()`
 * Add `"fullscreen"` window feature to `Window.open()`
 
 ### Future work
 
-* Add async `setBounds()` on `Window` and `WindowClient`
+* Add `display` to FullscreenOptions parameter of `Element.requestFullscreen()`
 * Add `"alwaysOnTop"` window feature to `Window.open()`
 * Add `Display` parameter to `Clients.openWindow()`
 * Create `"move"` Window event

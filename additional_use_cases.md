@@ -17,6 +17,10 @@ implemented in future iterations.
       palette2.moveBy(event.deltaX, event.deltaY);
     });
     ```
+  * Open dependent/child windows that the OS moves with a parent window.
+    ```js
+    const palette1 = window.open("/palette/1", "palette1", "dependent=true");
+    ```
 * **Finance applications with multiple dashboards**
   * Starting the app opens all the dashboards across multiple screens.
     ```js

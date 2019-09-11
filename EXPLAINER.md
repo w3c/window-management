@@ -199,7 +199,7 @@ Option A (async approach, **preferred**):
       * **`maximized`**: The window content occupys the full screen space.
     * **`type`**: The type of the window, with support for these values:
       * **`normal`**: A normal tabbed browser window.
-      * **`fullscreen`**: A popup window with minimal frame elements.
+      * **`popup`**: A popup window with minimal frame elements.
 
 * Add async `setBounds()` on `Window` and `WindowClient` that accepts `x`, `y`,
 `width`, `height`, and `state`

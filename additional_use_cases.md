@@ -1,13 +1,19 @@
 # Additional Use Cases
 
-The following use cases play a role in shaping the API design, but will be
-implemented in future iterations.
+The following use cases may play a role in shaping the initial API design, or
+may inform the current design but be implemented in future iterations.
 
-* **Professional image editing tools with floating palettes**
-  * Always keep the palettes on top of the main editor.
+* **Slide show presentation and speaker notes using multiple displays**
+  * Requesting fullscreen of multiple `Elements` living in the same `Document`
+    and `Window` on specific `Screens`
     ```js
-    window.open("/palette", "palette", "alwaysOnTop");
+    // NEW: Add `screen` parameter on `requestFullscreen()`.
+    const slides = document.querySelector("#slides");
+    const notes = document.querySelector("#notes");
+    slides.requestFullscreen({ screen: screens[1] });
+    notes.requestFullscreen({ screen: screens[0] });
     ```
+* **Professional image editing tools with floating palettes**
   * Synchronously move the palettes when the main editor moves.
     ```js
     const palette1 = window.open("/palette/1", "palette1", "alwaysOnTop");

@@ -37,7 +37,7 @@ document.
   * Launch a dashboard that opens a set of windows across multiple displays
   * User interacts with dashboard controls to move windows between displays
 * **Media and medical applications target specialized display hardware**
-  * Precise content is shown on displays with high resolutions or color depths.
+  * Precise content is shown on displays with high resolutions or color depths
 
 **Slide show presentation and speaker notes using multiple displays**
 * Open the slides and notes on separate displays in fullscreen mode.
@@ -91,22 +91,26 @@ designed to accommodate them with minimal modifications.
 
 ### Current goals
 
-* Support creation of windows across the set of connected displays
-* Support movement of windows between the set of connected displays
+* Open application windows on any connected display
+* Move application windows to any connected display
 
 ### Future goals
 
-* Support better window state controls (e.g. maximize, restore, fullscreen)
-* Support observation of changes in window bounds and state
-* Support the creation and management of dependent or 'child' window types
-* Support additional controls over the window frame appearance
+* Extend window state control APIs (e.g. maximize, restore, fullscreen)
+* Surface events when a window's bounds or state changes
+* Extend window creation and management for dependent or 'child' window types
+* Offer window frame appearance controls
 
 ### Non-goals
 
-* Support windows opening or moving out of view from the user's screens
-* Support declarative window arrangements managed by the browser
+* Open or move windows out of view from the user's screens
+* Open or move windows across virtual workspaces/desktops
+* Offer declarative window arrangements managed by the browser
 * Support explicit z-ordering, such as an `"alwaysOnTop"` window state
-* Support movement between virtual workspaces/desktops
+* Open or move windows on remote displays connected to other devices
+  * See the
+  [Presentation](https://www.w3.org/TR/presentation-api/)
+  and [Remote Playback](https://www.w3.org/TR/remote-playback/) APIs
 
 ## Proposal
 

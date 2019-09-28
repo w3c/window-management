@@ -81,6 +81,9 @@ document.
   await notesWindow.setBounds(notesBounds);
   ```
 
+TODO: Show how these APIs might evolve with some possible future work, to ensure
+that intermediate proposals make sense in an evolving landscape.
+
 ## Goals / Non-goals
 
 The goal of this proposal is to provide the basic tools for developers to
@@ -97,6 +100,7 @@ designed to accommodate them with minimal modifications.
 ### Future goals
 
 * Extend window state control APIs (e.g. maximize, restore, fullscreen)
+* Refine API shapes (e.g. add optional `windowOptions` to window.open())
 * Surface events when a window's bounds or state changes
 * Extend window creation and management for dependent or 'child' window types
 * Offer window frame appearance controls

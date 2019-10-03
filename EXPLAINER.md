@@ -100,7 +100,6 @@ designed to accommodate them with minimal modifications.
 ### Future goals
 
 * Extend window state control APIs (e.g. maximize, restore, fullscreen)
-* Refine API shapes (e.g. add optional `windowOptions` to window.open())
 * Surface events when a window's bounds or state changes
 * Extend window creation and management for dependent or 'child' window types
 * Offer window frame appearance controls
@@ -112,49 +111,103 @@ designed to accommodate them with minimal modifications.
 * Offer declarative window arrangements managed by the browser
 * Support explicit z-ordering, such as an `"alwaysOnTop"` window state
 * Open or move windows on remote displays connected to other devices
-  * See the
-  [Presentation](https://www.w3.org/TR/presentation-api/)
-  and [Remote Playback](https://www.w3.org/TR/remote-playback/) APIs
+  * See the [Presentation](https://www.w3.org/TR/presentation-api/) and
+    [Remote Playback](https://www.w3.org/TR/remote-playback/) APIs
 
-## Proposal
+## Proposals
 
-### Leading Proposal
+### Improve existing API specifications and implementations
 
-The current leading proposal is to accept coordinates located on any `Screen` in
-the [`Window.open()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open)
-and [`Window.moveTo()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/moveTo)
-methods.
+Existing [`Window`][2] methods have complex histories and awkward shapes, but
+generally already offer a sufficient surface for cross-screen window placement:
+[`open()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open) accepts
+`left` and `top` in the features argument string, and
+[`moveTo()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/moveTo)
+accepts similar `x` and `y` parameters.
 
-The [`Window`][2] and [`Screen`][1] interfaces generally already use coordinates
-in the overall screen space, relative to the primary display (see the
-[Screen Enumeration API][3] for more details). Additionally, some implementers
-already support placement on, and movement to, screens other than the one
-hosting the `Window` executing the script. However, API behavior is unspecified
-and implementations are inconsistent. Some implementations clamp the requested
-window bounds to be within the same `Screen` as the host `Window`*. It may be
-appropriate to standardize the API behavior or simply provide non-normative
-notes encouraging more consistent support for increased interoperability.
+That said, the existing specifications do not provide a reliable multi-screen
+placement platform surface.  Notably,
+[`moveTo()`](https://www.w3.org/TR/cssom-view-1/#dom-window-moveto)
+describes coordinates (x, y) as "relative to the top left corner of the output
+device", which does not account for multiple possible output devices. Similarly,
+[`open()`](https://drafts.csswg.org/cssom-view/#the-features-argument-to-the-open()-method)
+describes optional user-agent-defined clamping and coordinates relative to the
+"Web-exposed \[available\] screen area", which also describes areas in terms of
+a single output device. See
+[CSSOM View Module 2.3. Web-exposed screen information](https://drafts.csswg.org/cssom-view/#web-exposed-screen-information).
+This has yielded an unreliable API with inconsistent implementation behaviors.
+Some implementations clamp the requested window bounds to be within the
+same `Screen` as the host `Window`, while others do not.
 
-\* TODO: Provide a more complete description of behaviors and discrepancies.
+TODO: Provide a comprehensive description of current inconsistent behaviors.
 
-### Alternative or Supplemental Proposal
+Proposed ways to improve the existing surface area are:
+* Refine existing specification language for screen information, coordinate
+  systems, clamping behavior, etc.
+  * Define screen information in the context of multi-screen environments
+  * Specify `Window` coordinates as relative to the primary screen
+  * Constrain the allowed user-agent-defined clamping for `Window` methods
+* Encourage implementers to use reasonable and compatible cross-screen behavior
+  * Foster broader adoption of interoperable cross-screen behaviors without
+    making spec changes
+  * Possibly add non-normative language to specs regarding cross-screen support
 
-An alternative or supplemental proposal is to extend the asynchronous
-`Client.openWindow()` method with a `windowOptions` parameter with these
-properties:
-* **`left`**: The x-coordinate of the window to open in screen space
+### Extend new API surfaces with clearer specifications
+
+Another aspect of this proposal is to extend the asynchronous
+[`Client.openWindow()`](https://www.w3.org/TR/service-workers-1/#dom-clients-openwindow)
+method with a `windowOptions` dictionary parameter with these properties,
+defined with explicit language to support multi-screen environments:
+* **`left`**: The x-coordinate of the window to open
+  * This could be specified relative to the primary screen or the target screen
 * **`top`**: The y-coordinate of the window to open in screen space
+  * This could be specified relative to the primary screen or the target screen
 * **`width`**: The width of the window to open
 * **`height`**: The height of the window to open
+* **`screen`**: The target screen where the window should be opened
+  * This could be used for feature detection of cross-screen placement support
+  * This is redundant if `left` and `top` are relative to the primary screen
+  * This is potentially awkward for windows spanning two or more screens
 
-The asynchronous pattern affords implementers the opportunity to check for or
-request permission before acting, without stopping script execution.
+The asynchronous pattern affords implementers the opportunity to check for, or
+request permission before acting, without stopping script execution. Providing
+a dictionary parameter allows web developers to perform feature detection.
 Additionally, offering a new API surface would have no impact on existing users.
 
 It may then make sense to offer an asynchronous `setBounds()` method on the
-`Window` and `WindowClient` interfaces that accepts `x`, `y`, `width`, `height`;
-similarly restricting usage to new callers and allowing for permission checks
-or requests.
+`Window` and `WindowClient` interfaces that accepts `x`, `y`, `width`, `height`,
+and maybe `screen`. This would offer corresponding movement functionality while
+similarly restricting usage to new callers and allowing for permission checks or
+requests.
+
+### Future Work
+
+* Restore `"fullscreen"` feature functionality for `Window.open()`, currently
+  [deprecated](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Window_functionality_features)
+  * Adding this (and window features like `"maximized"`) to `Window.open()` may
+    solve existing use cases around desired window state and types, but such
+    changes should be considered with some cautionary context. This API shape is
+    unfortunate with a loosely defined string format and a set of unstandardized
+    features with a mixed history of abuse and deprecation. It is also a
+    potentially more abusable synchronous API, making permission checks and
+    requests more difficult.
+* Extend the `windowOptions` parameter to `openWindow()` with these properties:
+  * **`state`**: The window state, with support for these values:
+    * **`normal`**: Normal window state (not maximized nor fullscreen)
+    * **`fullscreen`**: Window content fills the display without a frame
+    * **`maximized`**: Window content occupies the full screen space
+  * **`type`**: The window type, with support for these values:
+    * **`normal`**: A normal tabbed browser window
+    * **`popup`**: A popup window with minimal frame elements
+* Add `screen` parameter to `Element.requestFullscreen()`
+* Add `"onmove"`, `"onwindowdrag"`, and `"onwindowdrop"` Window events
+* Add `"onwindowstate"` Window event for state changes
+* Add `"snapLeft"`, `"snapRight"`, and other OS/WM **`state`** enum values
+* Add `"app"` or other possible **`type`** enum values
+* Add `"launch"` Service Worker event ([API explainer](https://github.com/WICG/sw-launch))
+* Add `client.Enumerate()` to list existing windows
+
+## Additional Thoughts
 
 ### Limitations
 
@@ -176,7 +229,7 @@ of `Screen` bounds. For example, implementer may still wish to clamp requested
 window placement bounds within the union of `Screen` bounds, preventing the
 placement of windows outside the visible screen space.
 
-### Respecting Intents Around Deprecated Implementer-Specific Behavior
+### Respecting intents around user-agent-defined behaviors
 
 Reasonable caution should be exercised when changing implementation-specific
 behavior of existing Web Platform APIs, to avoid breaking existing users. That
@@ -188,34 +241,6 @@ expect their implementer to clamp window placement within the current `Screen`
 by using excessive bounds outside of any reasonable overall `Screen` space,
 (e.g. "left=99999999"), then it may be reasonable to clamp window placement
 within the current `Screen`, rather than the `Screen` nearest those coordinates.
-
-### Future Work
-
-* Restore `"fullscreen"` feature functionality for `Window.open()`, currently
-  [deprecated](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Window_functionality_features)
-  * Adding this (and window features like `"maximized"`) to `Window.open()` may
-    solve existing use cases around desired window state and types, but such
-    changes should be considered with some cautionary context. This API shape is
-    unfortunate with a loosely defined string format and a set of unstandardized
-    features with a mixed history of abuse and deprecation. It is also a
-    potentially more abusable synchronous API, making permission checks and
-    requests more difficult.
-* Extend the `windowOptions` parameter to `openWindow()` with these properties:
-  * **`state`**: The window state, with support for these values:
-    * **`normal`**: Normal window state (not maximized nor fullscreen)
-    * **`fullscreen`**: Window content fills the display without a frame
-    * **`maximized`**: Window content occupies the full screen space
-  * **`type`**: The window type, with support for these values:
-    * **`normal`**: A normal tabbed browser window
-    * **`popup`**: A popup window with minimal frame elements
-  * **`screen`**: The desired host screen (redundant with screen-space x,y?)
-* Add `screen` parameter to `Element.requestFullscreen()`
-* Add `"onmove"`, `"onwindowdrag"`, and `"onwindowdrop"` Window events
-* Add `"onwindowstate"` Window event for state changes
-* Add `"snapLeft"`, `"snapRight"`, and other OS/WM **`state`** enum values
-* Add `"app"` or other possible **`type`** enum values
-* Add `"launch"` Service Worker event ([API explainer](https://github.com/WICG/sw-launch))
-* Add `client.Enumerate()` to list existing windows
 
 ### Open Questions
 

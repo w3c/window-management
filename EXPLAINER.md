@@ -25,64 +25,74 @@ information and tools to manage their content in modern windowing environments.
 
 Given information about connected screens from the [Screen Enumeration API][3]:
 ```js
-const screens = await navigator.screen.getScreens();
+const screens = await getScreens();
 ```
 Consider use cases like those described below and in the
 [additional use cases](https://github.com/spark008/window-placement/blob/master/additional_use_cases.md)
 document.
 
-* **Slide show presentation with a laptop screen and a projector**
+* Slide show presentation with a laptop screen and a projector
   * Present slides on the projector, open speaker notes/controls on the laptop
-* **Finance applications with multiple windows spread over multiple displays**
+* Finance applications with multiple windows spread over multiple displays
   * Launch a dashboard that opens a set of windows across multiple displays
   * User interacts with dashboard controls to move windows between displays
-* **Media and medical applications target specialized display hardware**
+* Media and medical applications target specialized display hardware
   * Precise content is shown on displays with high resolutions or color depths
 
-**Slide show presentation and speaker notes using multiple displays**
-* Open the slides and notes on separate displays in fullscreen mode.
-  * Scenario 1: No service worker
+### Slide show presentation and speaker notes using multiple displays
+* Open the slides and notes on separate displays.
+  * Scenario 1: No service worker, using existing APIs.
     ```js
     // NEW: `left` and `top` may be outside the window's current display.
-    const slides = window.open("/slides", "slides", `left=${screens[1].left},top=${screens[1].top}`);
-    const notes = window.open("/notes", "notes", `left=${screens[0].left},top=${screens[0].top}`);
+    const slides = window.open(`./slides`, `slides`, `left=${screens[1].left},top=${screens[1].top}`);
     slides.document.body.requestFullscreen();
-    notes.document.body.requestFullscreen();
+    // NEW: `fullscreen=yes` feature re-enabled, instead of requestFullscreen.
+    const notes = window.open(`./notes`, `notes`, `left=${screens[0].left},top=${screens[0].top},fullscreen=true`);
      ```
-  * Scenario 2: Using service worker
+  * Scenario 2: No service worker, using new APIs.
     ```js
-    // NEW: Add a `windowOptions` object parameter to `openWindow()` that
-    //      accepts `left`, `top`, `width`, `height`.
-    await clients.openWindow("/slides", {
-      left: screens[1].left,
-      top: screens[1].top,
-    }).then(requestDocumentBodyFullscreen(WindowClient));
-    await clients.openWindow("/notes", {
-      left: screens[0].left,
-      top: screens[0].top,
-    }).then(requestDocumentBodyFullscreen(WindowClient));
+    // NEW: Add `Window.openWindow()` with options parameter dictionary object.
+    await Window.openWindow(`./slides`, { screen: screens[1], state: `fullscreen` });
+    // NEW: `requestFullscreen()` accepts an optional screen parameter.
+    document.getElementById(`notes`).requestFullscreen(screens[0]);
+     ```
+  * Scenario 3: Using service worker, using extended APIs.
+    ```js
+    // NEW: Add options parameter dictionary object to `Clients.openWindow()`.
+    await clients.openWindow("./slides", { screen: screens[1], state: `fullscreen` });
+    // NEW: Similar to above, but with alternate dictionary parameters.
+    const notes = await clients.openWindow("./notes", { left: screens[0].left, top: screens[0].top });
+    notes.document.body.requestFullscreen();
     ```
 * Swap the slides and notes windows between displays.
   ```js
-  // Option 1 (sync):
+  // Scenario 1: Existing API - unintended flickering with intermediate states.
+  slidesWindow.document.exitFullscreen();
+  notesWindow.document.exitFullscreen();
   // NEW: `x` and `y` may be outside the window's current screen.
   slidesWindow.moveTo(screens[0].left, screens[0].top);
   notesWindow.moveTo(screens[1].left, screens[1].top);
   slidesWindow.document.body.requestFullscreen();
   notesWindow.document.body.requestFullscreen();
 
-  // Option 2 (async):
+  // Scenario 2: New API with fewer intermediate states and less flickering.
+  // NEW: `requestFullscreen()` accepts an optional screen parameter.
+  slidesWindow.document.body.requestFullscreen(screens[0]);
+  notesWindow.document.body.requestFullscreen(screens[1]);
+
+  // Scenario 3: Swapping positions of non-fullscreen windows.
   const slidesBounds = { x: screens[0].left, y: screens[0].top,
                          width: screens[0].width, height: screens[0].height };
   const notesBounds = { x: screens[1].left, y: screens[1].top,
                         width: screens[1].width, height: 500 };
-  // NEW: async `Window.setBounds()` accepts location and size
+  // NEW: async `Window.setBounds()` accepts location and size simultaneously.
   await slidesWindow.setBounds(slidesBounds);
   await notesWindow.setBounds(notesBounds);
   ```
 
-TODO: Show how these APIs might evolve with some possible future work, to ensure
-that intermediate proposals make sense in an evolving landscape.
+TODO: Refine and add uses cases. Show how these APIs might evolve with some
+possible future work, to ensure that intermediate proposals make sense in an
+evolving landscape.
 
 ## Goals / Non-goals
 
@@ -96,6 +106,7 @@ designed to accommodate them with minimal modifications.
 
 * Open application windows on any connected display
 * Move application windows to any connected display
+* Extend Element.requestFullscreen() to offer an optional Screen parameter
 
 ### Future goals
 
@@ -152,19 +163,19 @@ Proposed ways to improve the existing surface area are:
     making spec changes
   * Possibly add non-normative language to specs regarding cross-screen support
 
-### Extend new API surfaces with clearer specifications
+### Extend existing API surfaces with new parameters
 
 Another aspect of this proposal is to extend the asynchronous
-[`Client.openWindow()`](https://www.w3.org/TR/service-workers-1/#dom-clients-openwindow)
+[`Clients.openWindow()`](https://www.w3.org/TR/service-workers-1/#dom-clients-openwindow)
 method with a `windowOptions` dictionary parameter with these properties,
 defined with explicit language to support multi-screen environments:
-* **`left`**: The x-coordinate of the window to open
+* `left`: The x-coordinate of the window to open
   * This could be specified relative to the primary screen or the target screen
-* **`top`**: The y-coordinate of the window to open in screen space
+* `top`: The y-coordinate of the window to open in screen space
   * This could be specified relative to the primary screen or the target screen
-* **`width`**: The width of the window to open
-* **`height`**: The height of the window to open
-* **`screen`**: The target screen where the window should be opened
+* `width`: The width of the window to open
+* `height`: The height of the window to open
+* `screen`: The target screen where the window should be opened
   * This could be used for feature detection of cross-screen placement support
   * This is redundant if `left` and `top` are relative to the primary screen
   * This is potentially awkward for windows spanning two or more screens
@@ -174,14 +185,23 @@ request permission before acting, without stopping script execution. Providing
 a dictionary parameter allows web developers to perform feature detection.
 Additionally, offering a new API surface would have no impact on existing users.
 
-It may then make sense to offer an asynchronous `setBounds()` method on the
-`Window` and `WindowClient` interfaces that accepts `x`, `y`, `width`, `height`,
-and maybe `screen`. This would offer corresponding movement functionality while
-similarly restricting usage to new callers and allowing for permission checks or
-requests.
+It may be reasonable to instead (or also) add a similar function on the Window
+interface, alongside `Window.open()`, to offer a more ergonomic, functional, and
+asynchronous interface without requiring access through a service worker.
 
-### Future Work
+Similarly, it may then make sense to offer an asynchronous `setBounds()` method
+on the `Window` and `WindowClient` interfaces that accepts `x`, `y`, `width`,
+`height`, and maybe `screen`. This would offer corresponding movement
+functionality while similarly restricting usage to new callers and allowing for
+permission checks or requests.
 
+### Additional Window State Controls
+
+This proposal also aims to facilitate multi-screen aware fullscreen controls.
+
+* Add an optional `screen` parameter to `Element.requestFullscreen()`
+  * It may not be technically feasible to support multiple elements in the same
+    document appearing as fullscreen windows on separate screens simultaneously.
 * Restore `"fullscreen"` feature functionality for `Window.open()`, currently
   [deprecated](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Window_functionality_features)
   * Adding this (and window features like `"maximized"`) to `Window.open()` may
@@ -192,18 +212,22 @@ requests.
     potentially more abusable synchronous API, making permission checks and
     requests more difficult.
 * Extend the `windowOptions` parameter to `openWindow()` with these properties:
-  * **`state`**: The window state, with support for these values:
-    * **`normal`**: Normal window state (not maximized nor fullscreen)
-    * **`fullscreen`**: Window content fills the display without a frame
-    * **`maximized`**: Window content occupies the full screen space
-  * **`type`**: The window type, with support for these values:
-    * **`normal`**: A normal tabbed browser window
-    * **`popup`**: A popup window with minimal frame elements
-* Add `screen` parameter to `Element.requestFullscreen()`
+  * `state`: The window state, with support for these values:
+    * `normal`: Normal window state (not maximized nor fullscreen)
+    * `fullscreen`: Window content fills the display without a frame
+    * `maximized`: Window content occupies the full screen space
+  * `type`: The window type, with support for these values:
+    * `normal`: A tabbed browser window (or a tab in an existing window)
+    * `popup`: A popup window with minimal frame elements
+
+### Future Work
+
+Some possible avenues of future work may include:
+
 * Add `"onmove"`, `"onwindowdrag"`, and `"onwindowdrop"` Window events
 * Add `"onwindowstate"` Window event for state changes
-* Add `"snapLeft"`, `"snapRight"`, and other OS/WM **`state`** enum values
-* Add `"app"` or other possible **`type`** enum values
+* Add `"snapLeft"`, `"snapRight"`, and other OS/WM `state` enum values
+* Add `"app"` or other possible `type` enum values
 * Add `"launch"` Service Worker event ([API explainer](https://github.com/WICG/sw-launch))
 * Add `client.Enumerate()` to list existing windows
 

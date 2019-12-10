@@ -28,7 +28,7 @@ Given information about connected screens from the [Screen Enumeration API][3]:
 const screens = await getScreens();
 ```
 Consider use cases like those described below and in the
-[additional use cases](https://github.com/spark008/window-placement/blob/master/additional_use_cases.md)
+[additional use cases](https://github.com/webscreens/window-placement/blob/master/additional_use_cases.md)
 document.
 
 * Slide show presentation with a laptop screen and a projector
@@ -98,7 +98,7 @@ evolving landscape.
 
 The goal of this proposal is to provide the basic tools for developers to
 place and move content across a device's set of available connected displays.
-[Other use cases](https://github.com/spark008/window-placement/blob/master/additional_use_cases.md)
+[Other use cases](https://github.com/webscreens/window-placement/blob/master/additional_use_cases.md)
 may depend on future iterations of the API, though the initial API should be
 designed to accommodate them with minimal modifications.
 
@@ -280,8 +280,8 @@ within the current `Screen`, rather than the `Screen` nearest those coordinates.
 * TODO: Investigate concerns about moving windows between displays.
 * Should permission for screen enumeration and window placement be combined?
 * Any privacy concerns beyond those considered for the
-  [Screen Enumeration API](https://github.com/spark008/screen-enumeration/blob/master/security_and_privacy.md)?
+  [Screen Enumeration API](https://github.com/webscreens/screen-enumeration/blob/master/security_and_privacy.md)?
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/API/Screen
 [2]: https://developer.mozilla.org/en-US/docs/Web/API/Window
-[3]: https://github.com/spark008/screen-enumeration
+[3]: https://github.com/webscreens/screen-enumeration

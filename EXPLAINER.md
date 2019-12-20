@@ -53,8 +53,9 @@ document.
     ```js
     // NEW: Add `Window.openWindow()` with options parameter dictionary object.
     await Window.openWindow(`./slides`, { screen: screens[1], state: `fullscreen` });
-    // NEW: `requestFullscreen()` accepts an optional screen parameter.
-    document.getElementById(`notes`).requestFullscreen(screens[0]);
+    // NEW: `requestFullscreen()` supports an optional screen parameter.
+    let fullscreenOptions = { screen: (await getScreens())[0] };
+    document.getElementById(`notes`).requestFullscreen(fullscreenOptions);
      ```
   * Scenario 3: Using service worker, using extended APIs.
     ```js
@@ -66,7 +67,13 @@ document.
     ```
 * Swap the slides and notes windows between displays.
   ```js
-  // Scenario 1: Existing API - unintended flickering with intermediate states.
+  // Scenario 1: New API with fewer intermediate states and less flickering.
+  // NEW: `requestFullscreen()` supports an optional screen parameter.
+  let screens = await getScreens();
+  slidesWindow.document.body.requestFullscreen({ screen: screens[0] });
+  notesWindow.document.body.requestFullscreen({ screen: screens[1] });
+
+  // Scenario 2: Existing API - unintended flickering with intermediate states.
   slidesWindow.document.exitFullscreen();
   notesWindow.document.exitFullscreen();
   // NEW: `x` and `y` may be outside the window's current screen.
@@ -74,11 +81,6 @@ document.
   notesWindow.moveTo(screens[1].left, screens[1].top);
   slidesWindow.document.body.requestFullscreen();
   notesWindow.document.body.requestFullscreen();
-
-  // Scenario 2: New API with fewer intermediate states and less flickering.
-  // NEW: `requestFullscreen()` accepts an optional screen parameter.
-  slidesWindow.document.body.requestFullscreen(screens[0]);
-  notesWindow.document.body.requestFullscreen(screens[1]);
 
   // Scenario 3: Swapping positions of non-fullscreen windows.
   const slidesBounds = { x: screens[0].left, y: screens[0].top,
@@ -106,7 +108,7 @@ designed to accommodate them with minimal modifications.
 
 * Open application windows on any connected display
 * Move application windows to any connected display
-* Extend Element.requestFullscreen() to offer an optional Screen parameter
+* Extend Element.requestFullscreen() to support an optional Screen parameter
 
 ### Future goals
 
@@ -199,7 +201,7 @@ permission checks or requests.
 
 This proposal also aims to facilitate multi-screen aware fullscreen controls.
 
-* Add an optional `screen` parameter to `Element.requestFullscreen()`
+* Support an optional `screen` parameter in `Element.requestFullscreen()`
   * It may not be technically feasible to support multiple elements in the same
     document appearing as fullscreen windows on separate screens simultaneously.
 * Restore `"fullscreen"` feature functionality for `Window.open()`, currently

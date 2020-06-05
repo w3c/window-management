@@ -199,9 +199,11 @@ within the current `Screen`, rather than the `Screen` nearest those coordinates.
 
 ## Privacy & Security
 
-* TODO: Investigate concerns/mitigations for cross-screen placement/fullscreen.
-* TODO: Explore privacy concerns beyond those considered for the
-  [Screen Enumeration API](https://github.com/webscreens/screen-enumeration/blob/master/security_and_privacy.md)?
+For an in-depth discussion on specific privacy and security concerns, see the
+[responses to the W3C Security and Privacy Self-Review Questionnaire](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md),
+and the [corresponding Screen Enumeration document](https://github.com/webscreens/screen-enumeration/blob/master/security_and_privacy.md)
+
+TODO: Investigate concerns/mitigations for cross-screen placement/fullscreen.
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/API/Screen
 [2]: https://developer.mozilla.org/en-US/docs/Web/API/Window

@@ -122,6 +122,15 @@ const touchScreen = (await getScreens()).find((s)=>{return s.touchSupport;});
 window.open(url, ``, `left=${touchScreen.availLeft},top=${touchScreen.availTop}`);
 ```
 
+```js
+// NEW: `getScreens()` provides requisite info; see the Screen Enumeration API.
+const otherScreen = (await getScreens()).find((s)=>{return s != window.screen;});
+// Move the window to another screen (eg. user clicked "swap screens").
+// NEW: `x` and `y` may be outside the window's current screen.
+window.moveTo(otherScreen.availLeft + window.screenLeft,
+              otherScreen.availTop + window.screenTop);
+```
+
 ### Improve existing API specifications and implementations
 
 As eluded to above, the existing `Window` specifications do not provide reliable

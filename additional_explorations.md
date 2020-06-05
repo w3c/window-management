@@ -193,31 +193,6 @@ new multi-screen aware Window Placement APIs are developed.
 This may be useful as web applications support URL handling or launch events.
 * Add `client.Enumerate()` to list existing windows from a Service Worker
 
-### Swap fullscreen windows between displays
-
-The proposal suggests that subsequent requestFullscreen calls targetting a new
-screen should move the existing fullscreen window to the new target screen. This
-is useful for slide show presentations, if users wish to change the screens used
-for slides, notes, and controls after initially entering fullscreen.
-
-```js
-// Step 1: Slideshow starts with multi-window and multi-screen fullscreen.
-// NEW: `requestFullscreen()` supports an optional screen parameter.
-let screens = await getScreens();
-slidesWindow.document.body.requestFullscreen({ screen: screens[0] });
-notesWindow.document.body.requestFullscreen({ screen: screens[1] });
-
-// Step 2: User selects a slideshow control setting to swap the screens.
-// NEW: `requestFullscreen()` supports subsequent calls with different screens.
-slidesWindow.document.body.requestFullscreen({ screen: screens[1] });
-notesWindow.document.body.requestFullscreen({ screen: screens[0] });
-```
-
-Other prospective techniques (like exiting fullscreen, moving the window across
-displays, and re-requesting fullscreen) would fail due to the consumption of
-transient user activation and/or suffer from flickering of intermediate states,
-not to mention the poor developer ergonomics of this process.
-
 ### Creation and management of dependent or 'child' window types
 
 Dependent or child windows are useful in certain native application contexts:

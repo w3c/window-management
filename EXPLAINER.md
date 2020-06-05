@@ -42,8 +42,8 @@ Various applications wish to use multiple screens to show windows:
 The current goals are relatively limited in scope. They aim to provide basic
 affordances for web applications to show content across the set of connected
 displays, by using existing API surfaces and paradigms.
-* Show an element fullscreen on any connected display
-* Open windows on and move windows to any connected display
+* Allow elements to be shown fullscreen on any connected display
+* Allow window placements on any connected display
 
 ### Possible future goals
 
@@ -69,9 +69,7 @@ applications to manage windows. See explorations of tentative future goals in
   * See [Service Worker Launch Event](https://github.com/WICG/sw-launch)
   * See [PWAs as URL Handlers](https://github.com/WICG/pwa-url-handler/blob/master/explainer.md)
 
-## Proposals
-
-### Show an element fullscreen on any connected display
+## Proposal: Allow elements to be shown fullscreen on any connected display
 
 This aspect of the proposal would add an optional Screen member to the optional
 [`fullscreenOptions`](https://developer.mozilla.org/en-US/docs/Web/API/FullscreenOptions)
@@ -95,13 +93,52 @@ const screens = await getScreens();
 myElement.requestFullscreen({ screen: screens.find((s)=>{return !s.internal;});
 ```
 
-It may be reasonable for subsequent requestFullscreen calls targetting a new
-screen to move the existing fullscreen window to the new target screen.
+### Handling subsequent calls to `Element.requestFullscreen()`
+
+Subsequent calls targetting a different screen could move the fullscreen window
+to another screen. This allows web applications to offer users a simple way
+to swap screens used for fullscreen. For example:
+
+```js
+// Step 1: Slideshow starts fullscreen on the current screen (nothing new).
+document.body.requestFullscreen();
+...
+// Step 2: User invokes a slideshow control setting to use another screen.
+// NEW: `requestFullscreen()` supports subsequent calls with different screens.
+document.body.requestFullscreen({ screen: selectedScreen });
+```
+
+Other prospective solutions (like exiting fullscreen, moving the window across
+displays, and re-requesting fullscreen) may fail due to the consumption of
+transient user activation or suffer from undesirable flickering of intermediate
+states, not to mention the poor developer ergonomics of that process.
 
 Note: It may not be feasible or straightforward for multiple elements in the
 same document to show as fullscreen windows on separate screens simultaneously.
+This topic is discussed futher in [additional_explorations.md](https://github.com/webscreens/window-placement/blob/master/additional_explorations.md).
 
-### Open windows on and move windows to any connected display
+### Window placement affordances around `screenschange` events
+
+This proposal aims to allow some window placement actions on screen change
+events. For example, it may be reasonable for a site to move a fullscreen window
+onto a newly connected display:
+
+```js
+self.addEventListener('screenschange', function(event) {
+  // Ensure the best screen is used for fullscreen on screen change events.
+  // NEW: screenschange event handlers may call `requestFullscreen()`.
+  if (document.fullscreenElement)
+    document.body.requestFullscreen({ screen: getBestScreen() });
+});
+```
+
+Since user-generated screen change events are not user activations of the site,
+we suggest specifically allowing Element.requestFullscreen() when the algorithm
+is triggered by a user-generated screen change. This parallels the existing
+[spec](https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen)
+allowance when triggered by a "user generated orientation change".
+
+## Proposal: Allow window placements on any connected display
 
 Existing [`Window`][2] methods have complex histories and awkward shapes, but
 generally already offer a sufficient surface for cross-screen window placement:
@@ -131,7 +168,7 @@ window.moveTo(otherScreen.availLeft + window.screenLeft,
               otherScreen.availTop + window.screenTop);
 ```
 
-### Improve existing API specifications and implementations
+### Improving existing API specifications and implementations
 
 As eluded to above, the existing `Window` specifications do not provide reliable
 mechanisms for multi-screen placement. Notably,
@@ -153,57 +190,71 @@ Proposed ways to improve the existing surface area are:
 * Refine existing specification language for screen information, coordinate
   systems, clamping behavior, etc.
   * Define screen information in the context of multi-screen environments
-  * Specify `Window` coordinates as relative to the primary screen
+  * Specify `Window` coordinates as relative to the primary (or current) screen
   * Constrain the allowed user-agent-defined clamping for `Window` methods
 * Encourage implementers to use reasonable and compatible cross-screen behavior
   * Foster broader adoption of interoperable cross-screen behaviors without
     making spec changes
-  * Possibly add non-normative language to specs regarding cross-screen support
+  * Possibly add non-normative language to specs regarding multi-screen support
+
+### Alternative new APIs
+
+An alternative approach may be to introduce entirely new Window Placement APIs.
+These could be built to solve frequent requests of modern web applications;
+offering better ergonomics, asynchronous behavior, user permission affordances,
+and more functionality. Thes could also be designed with multi-screen
+environments, new window display modes, and related functionality in mind.
+
+This could enable further deprecation of existing window placement APIs, which
+have been prone to abuse and inconsistencies over time. There are several active
+and forthcoming proposals to limit or deprecate existing window placement APIs.
+
+Of course, aspects of new window placement APIs could prove undesirable in the
+long term, similar to the existing APIs, and it may not be feasible to truly
+deprecate old APIs, so this approach deserves caution. See some explorations of
+possible new window placement API shapes in
+[additional_explorations.md](https://github.com/webscreens/window-placement/blob/master/additional_explorations.md).
 
 ## Additional Thoughts
 
-### Limitations
+### Window placement limitations
 
-Changes allowing the more permissive placement of windows may still be subject
-to limitations that could be left to the discretion of implementers.
+Changes allowing cross-screen window placements should still be subject to
+reasonable limitations, and some may be left to the discretion of implementers.
 
-For example, some implementations may reasonably restrict window movement to
-certain types of windows, (e.g. only application 'popup' windows and not tabbed
-browser windows) and only afford additional functionality under certain
-circumstances (e.g. only in secure contexts, only after some user interaction,
-limiting the number of interactions, etc.).
+Implementers generally restrict window movement to certain windows types, (e.g.
+standalone web app windows and popup windows, not tabbed browser windows) and
+only under certain circumstances (e.g. secure contexts, with transient user
+activation, maybe limiting the number or frequency of interactions, etc.).
 
-Limitations could also reasonably be imposed at the implementation level
-regarding the placement of windows extending outside the bounds of a single
-screen. While there may be valid use cases for placing a window such that it
-occupies the full bounds of two or more screens, there's less apparent reason
-and greatly more risk for allowing placement of windows partly outside the union
-of `Screen` bounds. For example, implementer may still wish to clamp requested
-window placement bounds within the union of `Screen` bounds, preventing the
-placement of windows outside the visible screen space.
+Window placements could be clamped to the available bounds of a single target
+screen, or perhaps allowed to span multiple screens. It seems reasonable for
+implementers to restrict window placements that would make some portion of
+the window appear outsides the aggregate available screen bounds.
+
+It may be valuable to provide clearly specifided behaviors for some cases, or to
+offer non-normative guidance for how such cases could be handled.
 
 ### Respecting intents around user-agent-defined behaviors
 
 Reasonable caution should be exercised when changing implementation-specific
-behavior of existing Web Platform APIs, to avoid breaking existing users. That
-said, the leading proposal aims to align behavior around the existing behavior
-of some implementers, and aims to better respect the user and developer intent.
-It may still be reasonable for implementers to retain vestiges of old behavior
-when the intent seems to rely on that behavior. For example, if developers
-expect their implementer to clamp window placement within the current `Screen`
-by using excessive bounds outside of any reasonable overall `Screen` space,
-(e.g. "left=99999999"), then it may be reasonable to clamp window placement
-within the current `Screen`, rather than the `Screen` nearest those coordinates.
+behavior of existing Web Platform APIs, to avoid breaking existing users. The
+leading proposal aims to align behavior around the existing behavior of some
+implementers, and honor perceived intent.
 
-### Open Questions
+Still, it may be prudent for implementers to retain elements of old behavior
+that sites might rely upon. For example, if developers expect window placements
+to be clamped within the current `Screen` and supply bounds outside the overall
+`Screen` space (e.g. "left=99999999"), then it may be reasonable to clamp
+window placements within the current `Screen`, rather than within the `Screen`
+nearest those coordinates.
+
+### Open questions
 
 * Would changes to the existing synchronous methods break critical assumptions?
-  * Do any sites want moveTo(0, 0) to always mean the current display's origin?
   * Do any sites expect open/move coordinates to be local to the current screen?
-* How to handle requests for window bounds extending beyond a single display?
-  * Is there value in supporting windows placements spanning multiple screens?
-  * Suggest normative behavior for choosing the target display and clamping?
-* Discuss window placement affordances around screenschange events?
+* Is there value in supporting windows placements spanning multiple screens?
+  * Suggest normative behavior for choosing a target display and clamping?
 
 ## Privacy & Security
 

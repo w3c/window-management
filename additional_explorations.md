@@ -72,6 +72,8 @@ Some possible ways that window state information and controls might be exposed:
   * Support [window.minimize()](https://developer.mozilla.org/en-US/docs/Web/API/Window/minimize)
     and add similar methods to get/set individual window states
   * Add new methods to support getting or setting the window state value
+  * Support explicit z-ordering, such as an `"alwaysOnTop"` window state
+    * This is sensitive, and may require additional permissions/controls
 * Observe window state changes with a `onwindowstate` event (see goal below too)
 
 Window [display](https://developer.mozilla.org/en-US/docs/Web/Manifest/display)
@@ -92,6 +94,7 @@ Here are some possible use cases for the extended window state and display APIs:
 * Minimize associated windows when the users minimizes a 'main' window; eg:
   * Doctor minimizes patient case window, app minimizes associated image windows
 * Web application offers settings to show or hide minimal-ui native controls
+* Video conferencing window wishes to be [always-on-top](https://github.com/webscreens/window-placement/issues/10)
 
 There are open questions around the value and uses cases here:
 * Need additional attestation of compelling use cases from developers

@@ -62,7 +62,6 @@ applications to manage windows. See explorations of tentative future goals in
 * Open or move windows out of view from the user's screens
 * Open or move windows across virtual workspaces/desktops
 * Offer declarative window arrangements managed by the browser
-* Support explicit z-ordering, such as an `"alwaysOnTop"` window state
 * Open or move windows on remote displays connected to other devices
   * See the [Presentation](https://www.w3.org/TR/presentation-api/) and
     [Remote Playback](https://www.w3.org/TR/remote-playback/) APIs

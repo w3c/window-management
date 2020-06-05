@@ -51,11 +51,13 @@ Future goals may provide additional capabilities and more ergonomic APIs for web
 applications to manage windows. See explorations of tentative future goals in
 [additional_explorations.md](https://github.com/webscreens/window-placement/blob/master/additional_explorations.md).
 * Offer more ergonomic APIs
-* Extend window state and display APIs
-* Surface events on window bounds or state changes
+* Extend window state and display mode APIs
+* Surface events on window bounds, state, or display mode changes
 * Support multiple fullscreen elements from a single document
-* Extend user activation affordances
-* Allow window placements that span two or more screens
+* Extend placement affordances on transient user activation
+* Allow placements that span two or more screens
+* Support dependent or 'child' window types
+* Allow sites to enumerate their windows
 
 ### Non-goals
 
@@ -66,8 +68,8 @@ applications to manage windows. See explorations of tentative future goals in
   * See the [Presentation](https://www.w3.org/TR/presentation-api/) and
     [Remote Playback](https://www.w3.org/TR/remote-playback/) APIs
 * Capturing links in specific existing/new windows, etc.
-  * See [Service Worker Launch Event](https://github.com/WICG/sw-launch)
-  * See [PWAs as URL Handlers](https://github.com/WICG/pwa-url-handler/blob/master/explainer.md)
+  * See [Service Worker Launch Event](https://github.com/WICG/sw-launch) and
+    [PWAs as URL Handlers](https://github.com/WICG/pwa-url-handler/blob/master/explainer.md)
 
 ## Proposal: Allow elements to be shown fullscreen on any connected display
 

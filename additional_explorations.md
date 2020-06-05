@@ -11,11 +11,13 @@ explorations have helped to shape the initial Window Placement API design.
 Future goals may provide additional capabilities and more ergonomic APIs for web
 applications to manage windows. See explorations of these tentative goals below.
 * Offer more ergonomic APIs
-* Extend window state and display APIs
-* Surface events on window bounds or state changes
+* Extend window state and display mode APIs
+* Surface events on window bounds, state, or display mode changes
 * Support multiple fullscreen elements from a single document
-* Extend user activation affordances
-* Allow window placements that span two or more screens
+* Extend placement affordances on transient user activation
+* Allow placements that span two or more screens
+* Support dependent or 'child' window types
+* Allow sites to enumerate their windows
 
 ## Offer more ergonomic APIs
 
@@ -33,25 +35,28 @@ There are several possible options to address these deficiencies:
   * window.open(url, name, {screen: bestScreen, innerWidth: w, innerHeight: h});
   * Dictionary parameter allows developers to perform feature detection
   * Unclear if we could return a promise for this overload to make it async
-* Overload `window.moveTo()` to accept a screen argument, treating the specified
-  `x` and `y` coordinates as local to the target screen:
-  * window.moveTo(x, y, {screen: targetScreens});
+* Overload `window.moveTo()` to accept an optional screen argument, treating the
+  specified `x` and `y` coordinates as local to the target screen:
+  * window.moveTo(x, y, {screen: targetScreen});
 * Add a new async API to open windows, maybe extend (and expose on Window)
   [`Clients.openWindow()`](https://www.w3.org/TR/service-workers-1/#dom-clients-openwindow)
-  method via a `windowOptions` dictionary parameter with multi-screen support:
+  via a `windowOptions` dictionary parameter with multi-screen support:
   * window.openWindow(url, {left: x, top: y, width: w, height: h, screen: s});
     * Coordinates specified relative to the target screen OR:
     * Nix `screen` and specify coordinates relative to the primary screen
-  * Consider offering support for window features, eg. maximized/fullscreen?
+  * Support requests for window states, eg. maximized/fullscreen?
+  * Support requests for window display modes, eg. standalone, minimal-ui?
   * Should `width` and `height` be inner* or outer* values, or accept either?
   * Support existing `window.open()` features, and/or new features?
   * Async allows permission requests; dictionary allows feature detection
 * Add a new async API to get/set `Window` bounds:
   * window.setBounds({left: x, top: y, width: w, height: h, screen: s});
+  * window.getBounds() returns a Promise for corresponding information
   * Parallels proposed dictionaries for window opening above
+  * Support states, display modes, etc. here or with parallel APIs, like below?
   * Async allows permission requests; dictionary allows feature detection
 
-## Extend window state and display APIs
+## Extend window state and display mode APIs
 
 For reference, the space of windows states considered includes:
 * `normal`: Normal 'restored' state (a framed window not in another state)
@@ -120,19 +125,21 @@ window.openWindow(imageUrl, { state: 'maximized', screen: targetScreen });
 
 TODO: Add additional use cases and examples of how they would be solved.
 
-## Surface events on window bounds or state changes
+## Surface events on window bounds, state, or display mode changes
 
 Currently, `Window` fires an event when content is resized:
 [onresize](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onresize).
-There may be value in firing events when windows move or when state changes:
+There may be value in firing events when windows move, when the state changes,
+or when the display mode changes:
 * Add `"onmove"`, `"onwindowdrag"`, and `"onwindowdrop"` Window events
 * Add `"onwindowstate"` Window event for state changes
+* Add `"onwindowdisplaymode"` Window event for display mode changes
 
-This allows sites to observe window placement and state changes, useful for
-recognizing, persisting, and restoring user preferences for specific windows.
-This would also be useful in scenarios where the relative placement of windows
-might inform automated placement of accompanying windows (eg. a grid of windows
-or 'child' window behavior).
+This would allow sites to observe window placement, state, and display mode
+changes, useful for recognizing, persisting, and restoring user preferences for
+specific windows. This would also be useful in scenarios where the relative
+placement of windows might inform automated placement of accompanying windows
+(eg. a grid of windows or 'child' window behavior).
 
 ## Support multiple fullscreen elements from a single document
 
@@ -153,16 +160,16 @@ slides.requestFullscreen({ screen: screens[1] });
 notes.requestFullscreen({ screen: screens[0] });
 ```
 
-## Extend user activation affordances
+## Extend placement affordances on transient user activation
 
-Currently, the transient user activation of a button click is consumed by
-opening a window. That complicates or blocks scenarios that might wish to
-also  request fullscreen from the event handler for a single user click.
-Relatedly, most browsers allow sites to open multiple popup windows with a
-single click if they have user permission.
+Currently, the transient user activation of a button click is consumed when
+opening a window. That complicates or blocks scenarios that might wish to also
+request fullscreen from the event handler for a single user click. Relatedly,
+most browsers allow sites to open multiple popup windows with a single click if
+they have user permission.
 
 Allowing new behaviors would solve some valuable use cases, for example:
-* Requesting fullscreen and opening a new window (in either order)
+* Requesting fullscreen and opening a separate new window:
   ```js
   // Open notes on the internal screen and slides on the external screen.
   // NEW: `left` and `top` may be outside the window's current screen.
@@ -179,21 +186,14 @@ Allowing new behaviors would solve some valuable use cases, for example:
   slides.document.body.requestFullscreen({ screen: externalScreen });
   ```
 
-## Allow window placements that span two or more screens
+## Allow placements that span two or more screens
 
 With the introduction of new foldable devices, and with some affordances of
 having a single content window in multi-screen environments, it may become more
 common for windows to span multiple displays. This may be worth considering as
 new multi-screen aware Window Placement APIs are developed.
 
-## Other explorations
-
-### Allow sites to enumerate windows of the same origin or those they've opened
-
-This may be useful as web applications support URL handling or launch events.
-* Add `client.Enumerate()` to list existing windows from a Service Worker
-
-### Creation and management of dependent or 'child' window types
+## Support dependent or 'child' window types
 
 Dependent or child windows are useful in certain native application contexts:
 * Creative apps (image/audio/video) with floating palettes, previews, etc.
@@ -213,6 +213,13 @@ window.addEventListener("move", event => {
 // Open dependent/child windows that the OS/browser moves with a parent window.
 const palette1 = window.open("/palette/1", "palette1", "dependent=true");
 ```
+
+## Allow sites to enumerate their windows
+
+This may be useful as web applications support URL handling or launch events.
+* Add `client.Enumerate()` to list existing windows from a Service Worker
+
+## Other miscellaneous explorations
 
 ### Finance applications with multiple dashboards
 

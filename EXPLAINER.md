@@ -199,9 +199,8 @@ within the current `Screen`, rather than the `Screen` nearest those coordinates.
 
 ## Privacy & Security
 
-* TODO: Investigate concerns/mitigations about click-jacking via moving windows.
-* TODO: Investigate concerns/mitigations about moving windows between displays.
-* Any privacy concerns beyond those considered for the
+* TODO: Investigate concerns/mitigations for cross-screen placement/fullscreen.
+* TODO: Explore privacy concerns beyond those considered for the
   [Screen Enumeration API](https://github.com/webscreens/screen-enumeration/blob/master/security_and_privacy.md)?
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/API/Screen

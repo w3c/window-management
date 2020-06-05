@@ -3,12 +3,17 @@
 The following considerations are taken from the [W3C Security and Privacy
 Self-Review Questionnaire](https://www.w3.org/TR/security-privacy-questionnaire).
 
+Please also refer to the
+[Screen Enumeration questionnaire](https://github.com/webscreens/screen-enumeration/blob/master/security_and_privacy.md),
+as this API depends on information exposed there.
+
 ## 2.1 What information might this feature expose to Web sites or other parties, and for what purposes is that exposure necessary?
 
-This API primarily concerns standardizing some parts of the existing
-[`Window`](https://developer.mozilla.org/en-US/docs/Web/API/Window) interface.
-Alternative/supplemental parts of this proposal suggest new ways to set the
-values of existing window properties.
+This API primarily concerns handling of cross-screen coordinates passed to
+existing [`Window`](https://developer.mozilla.org/en-US/docs/Web/API/Window)
+interface functions, and extending
+[`Element.requestFullscreen()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullScreen)
+to accept a target screen.
 
 Future work may include exposing new window information, controls, and events,
 like state (e.g. maximized), and movement (e.g. onmove) etc. This information
@@ -21,11 +26,11 @@ Yes.
 
 ## 2.3 How does this specification deal with personal information or personally-identifiable information or information derived thereof?
 
-This API does not expose such information.
+This API does not currently expose any information.
 
 ## 2.4 How does this specification deal with sensitive information?
 
-This API does not expose such information.
+This API does not currently expose any information.
 
 ## 2.5 Does this specification introduce new state for an origin that persists across browsing sessions?
 
@@ -56,7 +61,7 @@ context via standardized and unstandardized properties of the
 
 Future work around this proposal might expose other window properties e.g.:
 * The window state: (e.g. maximized, normal/restored, minimized, snapped)
-* The window type (e.g. normal/tab, popup)
+* The window type (e.g. normal/tab, popup, application)
 * Events on changes: (e.g. onmove, onwindowdrag, onwindowdrop, onwindowstate)
 * Enumerating the list of existing windows opened for a given worker/origin
 

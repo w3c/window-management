@@ -65,6 +65,9 @@ For reference, the space of windows states considered includes:
 * `minimized`: Window is hidden and can be re-shown through OS controls
 * `snapLeft|Right`: Framed content occupies half of available screen space
 
+Window [focus](https://developer.mozilla.org/en-US/docs/Web/API/Window/focus) is
+a related concept that should be considered in tandem with window state APIs.
+
 Some possible ways that window state information and controls might be exposed:
 * Show a new window with a specific state
   * Restore deprecated 'fullscreen="yes"' window.open() feature (w/permission?)
@@ -76,7 +79,8 @@ Some possible ways that window state information and controls might be exposed:
 * Query or change an existing window's state
   * Support [window.minimize()](https://developer.mozilla.org/en-US/docs/Web/API/Window/minimize)
     and add similar methods to get/set individual window states
-  * Add new methods to support getting or setting the window state value
+  * Add new methods to get or set the self/child/opener window state value
+  * Support additional window.focus() scenarios (self, opener, etc.)
   * Support explicit z-ordering, such as an `"alwaysOnTop"` window state
     * This is sensitive, and may require additional permissions/controls
 * Observe window state changes with a `onwindowstate` event (see goal below too)
@@ -96,8 +100,9 @@ There are also proposals/explorations for new display modes or modifiers:
 
 Here are some possible use cases for the extended window state and display APIs:
 * Open a new fullscreen slideshow window on anoter screen, keep current window
-* Minimize associated windows when the users minimizes a 'main' window; eg:
+* Minimize/restore/focus associated windows per user control of a 'main' window:
   * Doctor minimizes patient case window, app minimizes associated image windows
+  * Doctor selects patient case entry in a list, app restores minimized windows
 * Web application offers settings to show or hide minimal-ui native controls
 * Video conferencing window wishes to be [always-on-top](https://github.com/webscreens/window-placement/issues/10)
 

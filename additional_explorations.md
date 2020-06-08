@@ -199,19 +199,15 @@ Dependent or child windows are useful in certain native application contexts:
 * Creative apps (image/audio/video) with floating palettes, previews, etc.
 * Medical applications with separate windows for case reports and images
 
-```js
-// Synchronously move palettes when the main editor moves.
-const palette1 = window.open("/palette/1", "palette1", "alwaysOnTop");
-const palette2 = window.open("/palette/2", "palette2", "alwaysOnTop");
-window.addEventListener("move", event => {
-  palette1.moveBy(event.deltaX, event.deltaY);
-  palette2.moveBy(event.deltaX, event.deltaY);
-});
-```
+These windows might be grouped with their parent window is some OS entrypoints,
+like taskbars and window switchers, and might move and minimize/restore in
+tandem with the parent window.
 
 ```js
-// Open dependent/child windows that the OS/browser moves with a parent window.
-const palette1 = window.open("/palette/1", "palette1", "dependent=true");
+// Open a dependent/child window that the OS/browser moves with a parent window.
+const palette = window.open("/palette", "palette", "dependent=true");
+// Alternately use a proposed move event to move a companion window in tandem.
+window.addEventListener("move", e => { palette.moveBy(e.deltaX, e.deltaY); });
 ```
 
 ## Allow sites to enumerate their windows

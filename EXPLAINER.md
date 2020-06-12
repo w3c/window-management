@@ -75,7 +75,8 @@ applications to manage windows. See explorations of tentative future goals in
 
 This aspect of the proposal would add an optional Screen member to the optional
 [`fullscreenOptions`](https://developer.mozilla.org/en-US/docs/Web/API/FullscreenOptions)
-parameter of [`Element.requestFullscreen()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullScreen).
+dictionary parameter of
+[`Element.requestFullscreen()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullScreen).
 See the proposed IDL change and a JS usage example below:
 
 ```js
@@ -83,7 +84,7 @@ dictionary FullscreenOptions {
   FullscreenNavigationUI navigationUI = "auto";
 
   // https://github.com/webscreens/window-placement
-  Screen? screen;
+  Screen screen;
 };
 ```
 
@@ -94,6 +95,12 @@ const screens = await getScreens();
 // NEW: `screen` on `fullscreenOptions` for `requestFullscreen()`.
 myElement.requestFullscreen({ screen: screens.find((s)=>{return !s.internal;});
 ```
+
+As the `screen` dictionary member is not `required`, it is implicitly optional.
+Callers can omit the member altogether to use the window's current screen, which
+ensures backwards compatibility with existing usage. Callers can also explicitly
+pass `undefined` for the same result. Passing `null` for this optional member is
+not supported and will yield a TypeError, as is typical of modern web APIs.
 
 ### Handling subsequent calls to `Element.requestFullscreen()`
 
@@ -163,7 +170,9 @@ window.open(url, ``, `left=${touchScreen.availLeft},top=${touchScreen.availTop}`
 
 ```js
 // NEW: `getScreens()` provides requisite info; see the Screen Enumeration API.
-const otherScreen = (await getScreens()).find((s)=>{return s != window.screen;});
+const otherScreen = (await getScreens()).find((s)=>{
+    return s.availLeft != window.screen.availLeft ||
+           s.availTop != window.screen.availTop;});
 // Move the window to another screen (eg. user clicked "swap screens").
 // NEW: `x` and `y` may be outside the window's current screen.
 window.moveTo(otherScreen.availLeft + window.screenLeft,
@@ -172,8 +181,8 @@ window.moveTo(otherScreen.availLeft + window.screenLeft,
 
 ### Improving existing API specifications and implementations
 
-As eluded to above, the existing `Window` specifications do not provide reliable
-mechanisms for multi-screen placement. Notably,
+As alluded to above, the existing `Window` specifications do not provide
+reliable mechanisms for multi-screen placement. Notably,
 [`moveTo()`](https://www.w3.org/TR/cssom-view-1/#dom-window-moveto)
 describes coordinates (x, y) as "relative to the top left corner of the output
 device", which does not account for multiple possible output devices. Similarly,

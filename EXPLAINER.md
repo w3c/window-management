@@ -93,7 +93,7 @@ dictionary FullscreenOptions {
 const screens = await getScreens();
 // Show the element fullscreen on an external display, if one exists.
 // NEW: `screen` on `fullscreenOptions` for `requestFullscreen()`.
-myElement.requestFullscreen({ screen: screens.find((s)=>{return !s.internal;});
+myElement.requestFullscreen({ screen: screens.find(s => !s.internal) });
 ```
 
 As the `screen` dictionary member is not `required`, it is implicitly optional.

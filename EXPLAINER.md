@@ -270,7 +270,9 @@ nearest those coordinates.
 ## Privacy & Security
 
 For an in-depth discussion on specific privacy and security concerns, see the
-[responses to the W3C Security and Privacy Self-Review Questionnaire](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md),
+[responses to the W3C Security and Privacy Self-Review Questionnaire](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md).
+
+
 and the [corresponding Screen Enumeration document](https://github.com/webscreens/screen-enumeration/blob/master/security_and_privacy.md)
 
 TODO: Investigate concerns/mitigations for cross-screen placement/fullscreen.

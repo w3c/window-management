@@ -9,16 +9,54 @@ as this API depends on information exposed there.
 
 ## 2.1 What information might this feature expose to Web sites or other parties, and for what purposes is that exposure necessary?
 
-This API primarily concerns handling of cross-screen coordinates passed to
-existing [`Window`](https://developer.mozilla.org/en-US/docs/Web/API/Window)
-interface functions, and extending
-[`Element.requestFullscreen()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullScreen)
-to accept a target screen.
+This API does not expose any information directly; it generally consumes info
+about the device's display configuration, which would be exposed by the proposed
+[Screen Enumeration API](https://github.com/webscreens/screen-enumeration).
 
-Future work may include exposing new window information, controls, and events,
-like state (e.g. maximized), and movement (e.g. onmove) etc. This information
-would be exposed to offer sites control and introspection for the appearance of
-their web content windows.
+That information is used to extend existing interfaces for multi-screen support:
+* Element.[`requestFullscreen()`](https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen) is extended to support a target `Screen`.
+* Window.[`open()`](https://html.spec.whatwg.org/multipage/window-object.html#dom-open), specifically with feature strings for `left`, `top`, `width`, and `height`
+* Window.[`moveTo()`](https://drafts.csswg.org/cssom-view/#dom-window-moveto) and [`moveBy()`](https://drafts.csswg.org/cssom-view/#dom-window-moveby)
+* And Window.[`resizeTo()`](https://drafts.csswg.org/cssom-view/#dom-window-resizeto) and [`resizeBy()`](https://drafts.csswg.org/cssom-view/#dom-window-resizeby) (to a lesser degree)
+
+I will include this in the Explainer, which is still undergoing active refinement. The comment about abuse and inconsistency, which may motivate explorations of deprecation, is specifically referring to the Window.open() feature string bounds, and window.[move|resize][To|By]\(\).
+Thanks for the question! Hope that helps!
+
+
+* [`Element.requestFullscreen()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullScreen)
+is extended to support a target `Screen`.
+* Window.[`open()`](https://html.spec.whatwg.org/multipage/window-object.html#dom-open),
+[`moveTo()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/moveTo),
+and [`moveBy()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/moveBy)
+are extended to support coordinates that place the window on any connected
+screen, rather than on the current screen of the window or opener, which is a
+limitation of some implementers. This may require spec changes to support
+multi-screen coordinate systems, which are already implemented by some browsers.
+
+Some existing APIs expose information about the window's placement, for example:
+[`Window.screenX`](https://drafts.csswg.org/cssom-view/#dom-window-screenx),
+[`screenY`](https://drafts.csswg.org/cssom-view/#dom-window-screeny),
+[`outerWidth`](https://drafts.csswg.org/cssom-view/#dom-window-outerwidth), and
+[`outerHeight`](https://drafts.csswg.org/cssom-view/#dom-window-outerwidth).
+These should be accurate and consistent across browser implementations, which
+may require updating or refining spec language, and that may possibly change the
+values explosed by some implementers. In particular, `screenX` and `screenY` are
+specified relative to the
+[`web exposed screen area`](https://drafts.csswg.org/cssom-view/#web-exposed-screen-area),
+which refers to a singular output device, and should be updated to clarify the
+behavior in multi-screen environments.
+
+If `Screen`, accessed via `Window.screen` does not expose non-standard
+[`left`](https://developer.mozilla.org/en-US/docs/Web/API/Screen/left) and
+[`top`](https://developer.mozilla.org/en-US/docs/Web/API/Screen/top) values,
+then specifying `screenX` and `screenY` relative to the primary screen (rather
+than the current screen) may expose some additional information about the
+display configuration. In particular, some information about the relative 
+placement of multiple screens could be deduced or inferred if windows were
+placed on secondary screens, since the window coordinates relative to the
+primary screen may exceed the available width of the current screen.
+the availWidth  the concerned by determining the 
+may be deduced when windows are placed on those screens.
 
 ## 2.2 Is this specification exposing the minimum amount of information necessary to power the feature?
 

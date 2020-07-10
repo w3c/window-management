@@ -3,11 +3,40 @@
 The following considerations are taken from the [W3C Security and Privacy
 Self-Review Questionnaire](https://www.w3.org/TR/security-privacy-questionnaire).
 
-Please also refer to the
-[Screen Enumeration questionnaire](https://github.com/webscreens/screen-enumeration/blob/master/security_and_privacy.md),
-as this API depends on information exposed there.
+TODO: Combine the [Screen Enumeration questionnaire](https://github.com/webscreens/screen-enumeration/blob/master/security_and_privacy.md)
+
+TODO: Investigate concerns/mitigations for cross-screen placement/fullscreen.
 
 ## 2.1 What information might this feature expose to Web sites or other parties, and for what purposes is that exposure necessary?
+
+Exposing the details of a user's multi-screen setup presents a fingerprinting
+concern. To minimize the fingerprintable space, it's prudent to limit the set of
+display properties exposed to the minimum needed to support common use cases.
+
+It should be noted that some information is already exposed through existing API
+surfaces. Beyond explicitly providing information about the single display
+currently hosting the content window, the `Screen` interface's `left` and `top`
+values and the `Window` interface's `screenX` and `screenY` values are generally
+given in the overall screen space coordinate system. This means that sites can
+already **possibly** infer whether the current display is primary or not;
+placement of the current secondary display relative to the primary display;
+dimensions of the primary display when content is on a secondary display, and
+perhaps more, given the standard resolutions offered by display devices.
+
+It is also currently possible for some sites to brute-force the detection of
+additional displays on some user agent implementations by moving a popup window
+to coordinates outside the current screen's bounds, and detecting the resulting
+position and `Screen` object available to the window. See more thoughts around
+this in the [Window Placement API proposal][3].
+
+To reduce the chance that the user's screen data gets compromised, implementers
+could limit the API to secure contexts. To ensure that the user is aware of the
+data they are sharing and has control over which displays a site can access,
+implementers could gate the success of enumeration upon the granting of explicit
+permission through a prompt. Calling `getScreens()` for the first time could
+prompt the user to select whether to fully block or allow the request, or even
+which specific `Screens` and other information, to share with the site.
+
 
 This API does not expose any information directly; it generally consumes info
 about the device's display configuration, which would be exposed by the proposed
@@ -34,7 +63,7 @@ limitation of some implementers. This may require spec changes to support
 multi-screen coordinate systems, which are already implemented by some browsers.
 
 Some existing APIs expose information about the window's placement, for example:
-[`Window.screenX`](https://drafts.csswg.org/cssom-view/#dom-window-screenx),
+Window.[`screenX`](https://drafts.csswg.org/cssom-view/#dom-window-screenx),
 [`screenY`](https://drafts.csswg.org/cssom-view/#dom-window-screeny),
 [`outerWidth`](https://drafts.csswg.org/cssom-view/#dom-window-outerwidth), and
 [`outerHeight`](https://drafts.csswg.org/cssom-view/#dom-window-outerwidth).

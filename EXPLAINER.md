@@ -1,68 +1,74 @@
-# Window Placement
+# Multi-Screen Window Placement on the Web
 
-## Abstract
+## Introduction
 
-Operating systems and their window managers almost universally offer the ability
-for users to connect multiple physical displays to a single computing device and
-virtually arrange them in a 2D plane, extending the overall visual workspace.
+Operating systems generally allow users to connect multiple screens to a single
+device and arrange them virtually to extend the overall visual workspace. 
 
-The web platform currently offers some window placement capabilities through the
-[`Window`][2] interface, but it is limited in a number of ways that are
-detrimental to users and developers. Even with information about the overall
-screen space from the proposed [Screen Enumeration API][3], web developers still
-have no reliable path for opening and moving windows across displays.
+A variety of applications use platform tools to place windows in multi-screen
+environments, but web application developers are limited by existing APIs, like
+[`Screen`](https://drafts.csswg.org/cssom-view/#the-screen-interface) and
+[`Window`](https://drafts.csswg.org/cssom-view/#extensions-to-the-window-interface),
+which were generally designed around the use of a single screen.
 
-The ability to open and move windows across the full set of connected displays
-is unstandardized and the current behavior is inconsistent between implementers.
-Further, existing APIs offer no controls for the state (eg. maximized, restored)
-of windowed web applications.
+TODO: Link to specs, or flesh out existing limitations in more detail elsewhere?
+* `Element.requestFullscreen()` only supports fullscreen on the current screen
+* `Window.open()` and `moveTo()/moveBy()` generally clamp to the current screen
+* `Window.screen` only provides information about the Window's current screen
+* The `Web-exposed screen area` does not account for multiple available screens
 
-As multi-display computing and web applications become more common and critical
-parts of user experiences, it becomes more important to give web developers the
-information and tools to manage their content in modern windowing environments.
+So, web application users with multiple screens have no choice but to manually
+drag windows to the appropriate screen, exit and re-enter fullscreen to use the
+intended screen, and work around other limitations of web applications that can
+only make use of an artificially limited visual workspace.
 
-## Use cases
+Also, prospective web application developers may see this as another reason to
+seek [proprietary APIs](https://developer.chrome.com/apps/system_display),
+[platform extensions](https://www.electronjs.org/docs/api/screen), or another
+application development platform altogether.
 
-Given information about connected screens from the [Screen Enumeration API][3]:
-```js
-const screens = await getScreens();
-```
+As multi-screen devices and applications become a more common and critical part
+of user experiences, it becomes more important to give developers information
+and tools to leverage that expanded visual environment. This document describes
+some possible incremental solutions enabling web application developers to make
+use of multi-screen devices, in order to facilitate discussion and seek
+concensus on a path forward.
 
-Various applications wish to use multiple screens to show windows:
-* Present slides on a projector, open speaker notes on the laptop's screen
-* Launch and manage a dashboard of financial windows across multiple monitors
-* Open windows to view medical images (eg. x-rays) on the appropriate screens
-* Creativity apps showing pallete/preview windows on multiple screens
-* Optimize content when a window spans multiple screens with varying properties
+## Use Cases
 
-## Current goals, Possible future goals, and non-goals
+The aim of this project is enable better experiences for web application users
+with multiple screens. Some use cases that inform this proposal are:
+* Slideshow app presents on a projector, shows speaker notes on a laptop screen
+* Financial app opens a dashboard of windows across multiple monitors
+* Medical app open images (e.g. x-rays) on a high-resolution grayscale display
+* Creativity app shows secondary windows (e.g. pallete) on secondary screens
+* Conference room app shows controls on a touch screen device and video on a TV
+* Site optimizes content and layout when a window spans multiple screens
 
-### Current goals
+## Goals
 
-The current goals are relatively limited in scope. They aim to provide basic
-affordances for web applications to show content across the set of connected
-displays, by using existing API surfaces and paradigms.
-* Allow elements to be shown fullscreen on any connected display
-* Allow window placements on any connected display
+The following specific goals and proposed solutions make incremental extensions
+of existing window placement APIs to support expanded multi-screen environments. 
+* Support requests to show element fullscreen on any screen
+  * Extend `Element.requestFullscreen()` for specific screen requests
+* Support requests to place web app windows on any screen
+  * Extend `Window.open()` and `moveTo()/moveBy()` for cross-screen coordinates
+* Provide requisite info about available screens to achieve the goals above
+  * Add `isMultiScreen()` to expose whether a device has multiple screens
+  * Add `getScreens()` to expose information about available screens
+  * Add a `screenschange` event, fired on screen connection or property changes
 
-### Possible future goals
+These allow web applications to make window placement requests optimized for the
+specific use case, characteristics of available screens, and user preferences.
 
-Future goals may provide additional capabilities and more ergonomic APIs for web
-applications to manage windows. See explorations of tentative future goals in
+See explorations of alternative and supplemental proposals in
 [additional_explorations.md](https://github.com/webscreens/window-placement/blob/master/additional_explorations.md).
-* Offer more ergonomic APIs
-* Extend window state and display mode APIs
-* Surface events on window bounds, state, or display mode changes
-* Support multiple fullscreen elements from a single document
-* Extend placement affordances on transient user activation
-* Allow placements that span two or more screens
-* Support dependent or 'child' window types
-* Allow sites to enumerate their windows
 
 ### Non-goals
 
-* Open or move windows out of view from the user's screens
-* Open or move windows across virtual workspaces/desktops
+* Expose extraneous or especially identifying screen information (e.g. EDID)
+* Expose APIs to control the configuration of screen devices
+* Place windows outside a user's view or across virtual workspaces/desktops
 * Offer declarative window arrangements managed by the browser
 * Open or move windows on remote displays connected to other devices
   * See the [Presentation](https://www.w3.org/TR/presentation-api/) and
@@ -71,29 +77,36 @@ applications to manage windows. See explorations of tentative future goals in
   * See [Service Worker Launch Event](https://github.com/WICG/sw-launch) and
     [PWAs as URL Handlers](https://github.com/WICG/pwa-url-handler/blob/master/explainer.md)
 
-## Proposal: Allow elements to be shown fullscreen on any connected display
+## Support requests to show element fullscreen on any screen
 
-This aspect of the proposal would add an optional Screen member to the optional
-[`fullscreenOptions`](https://developer.mozilla.org/en-US/docs/Web/API/FullscreenOptions)
+One of the primary use cases for Window Placement is showing fullscreen content
+on the optimal screen for the given use case. An example of this is presenting a
+slideshow or other media on an external display when the web application window
+controlling the presentation is on the internal display of a laptop.
+
+Our proposed solution is to support requests for a specific screen through the
+[`fullscreenOptions`](https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions)
 dictionary parameter of
-[`Element.requestFullscreen()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullScreen).
-See the proposed IDL change and a JS usage example below:
+[`Element.requestFullscreen()`](https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen).
 
 ```js
 dictionary FullscreenOptions {
   FullscreenNavigationUI navigationUI = "auto";
 
-  // https://github.com/webscreens/window-placement
-  Screen screen;
+  // NEW: An optional way to request a specific screen for element fullscreen.
+  ScreenInfo screen;
 };
 ```
 
+In the slideshow presentation example, the presenter could now click a button to
+"Present on external display", which requests fullscreen on the intended screen,
+instead of first dragging the window to that intended screen and then clicking
+a button that can only request fullscreen on the current display.
+
 ```js
-// NEW: `getScreens()` provides requisite info; see the Screen Enumeration API.
-const screens = await getScreens();
-// Show the element fullscreen on an external display, if one exists.
+// Show the slideshow element fullscreen on the optimal screen.
 // NEW: `screen` on `fullscreenOptions` for `requestFullscreen()`.
-myElement.requestFullscreen({ screen: screens.find(s => !s.internal) });
+slideshowElement.requestFullscreen({ screen: getScreenForSlideshow() });
 ```
 
 As the `screen` dictionary member is not `required`, it is implicitly optional.
@@ -102,66 +115,89 @@ ensures backwards compatibility with existing usage. Callers can also explicitly
 pass `undefined` for the same result. Passing `null` for this optional member is
 not supported and will yield a TypeError, as is typical of modern web APIs.
 
-### Handling subsequent calls to `Element.requestFullscreen()`
+## Support requests to place web app windows on any screen
 
-Subsequent calls targetting a different screen could move the fullscreen window
-to another screen. This allows web applications to offer users a simple way
-to swap screens used for fullscreen. For example:
+Web applications also have compelling use cases for placing non-fullscreen
+content windows on screens other than the current screen. For example, a media
+editing application may wish to place companion windows on a secondary screen,
+when the main editing window is maximized on the primary screen. The app may
+determine an initial multi-screen placement based on available screen info and
+application settings, or it may be restoring a user's saved window arrangement.
+
+Existing [`Window`][2] placement APIs have varied histories and awkward shapes,
+but generally offer a sufficient surface for cross-screen window placement:
+* [`open()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open)
+  accepts `left`, `top`, `width`, and `height` in the
+  [features](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Window_features)
+  argument string
+* [`moveTo(x, y)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/moveTo)
+  and
+  [`resizeTo(width, height)`](https://developer.mozilla.org/en-US/docs/Web/API/Window/resizeTo)
+  take similar values to place existing windows
+* [`screenX`](https://drafts.csswg.org/cssom-view/#dom-window-screenx),
+  [`screenY`](https://drafts.csswg.org/cssom-view/#dom-window-screeny),
+  [`outerWidth`](https://drafts.csswg.org/cssom-view/#dom-window-outerwidth),
+  and
+  [`outerHeight`](https://drafts.csswg.org/cssom-view/#dom-window-outerwidth)
+  provide info about the current window placement
+
+The least invasive way to support multi-screen window placement is to specify
+positional coordinates relative to the origin of the primary screen within the
+existing API surfaces. Coordinates are currently specified as 
+[CSS pixels](https://drafts.csswg.org/css-values-4/#px) relative to the
+[web exposed screen area](https://drafts.csswg.org/cssom-view/#web-exposed-screen-area),
+which refers to a singular output device. Those definitions should be updated to
+clarify the behavior in multi-screen environments.
+
+Most browser implementations already use coordinates relative to the primary
+screen, but may clamp placements to the current screen, rather than allowing
+placement on other screens. Implementation-specific behaviors may be acceptable,
+but specifications should permit placing windows on other screens, in accordance
+with the requested coordinates and any applicable user permissions.
+
+This aspect of the proposal matches the existing behavior of some browsers,
+requires no API shape changes, and seems like the simplest option available, but
+it has some challenges. See alternatives, considerations, and more examples in
+[additional_explorations.md](https://github.com/webscreens/window-placement/blob/master/additional_explorations.md).
+
+In the media editing application example, the user might save and close their
+current project, later selecting an option to open that saved project, which
+restores the multi-screen window placement configuration for that project.
 
 ```js
-// Step 1: Slideshow starts fullscreen on the current screen (nothing new).
-document.body.requestFullscreen();
-...
-// Step 2: User invokes a slideshow control setting to use another screen.
-// NEW: `requestFullscreen()` supports subsequent calls with different screens.
-document.body.requestFullscreen({ screen: selectedScreen });
+// Save the open window with placements when the user saves the project.
+function saveOpenWindows(project, openWindows) {
+  for (w of openWindows) {
+    saveWindowInIndexDB(project,
+                        { url: w.location.href, name: w.name,
+                          left: w.screenX, top: w.screenY,
+                          width: w.outerWidth, height: w.outerHeight });
+  }
+}
+
+// Restore saved windows with placements when the user opens the project.
+function restoreSavedWindows(project, openWindows) {
+  for (w of getSavedWindowsFromIndexDB(project)) {
+    let openWindow = openWindows.find((o)=>{return o.name === w.name;});
+    if (openWindow) {
+      // NEW: `x` and `y` may be outside the window's current screen.
+      openWindow.moveTo(w.left, w.top);
+      openWindow.resizeTo(w.width, w.height);
+    } else {
+      // NEW: `left` and `top` may be outside the opener's current screen.
+      window.open(w.url, w.name, `left=${w.left},top=${w.top}` +
+                                `width=${w.width},height=${w.height}`);
+    }
+  }
+}
 ```
 
-Other prospective solutions (like exiting fullscreen, moving the window across
-displays, and re-requesting fullscreen) may fail due to the consumption of
-transient user activation or suffer from undesirable flickering of intermediate
-states, not to mention the poor developer ergonomics of that process.
+TODO: Financial dashboard app, presentation app examples?
 
-Note: It may not be feasible or straightforward for multiple elements in the
-same document to show as fullscreen windows on separate screens simultaneously.
-This topic is discussed futher in [additional_explorations.md](https://github.com/webscreens/window-placement/blob/master/additional_explorations.md).
-
-### Window placement affordances around `screenschange` events
-
-This proposal aims to allow some window placement actions on screen change
-events. For example, it may be reasonable for a site to move a fullscreen window
-onto a newly connected display:
+TODO: Use example code here that directly employs proposals defined below?
 
 ```js
-self.addEventListener('screenschange', function(event) {
-  // Ensure the best screen is used for fullscreen on screen change events.
-  // NEW: screenschange event handlers may call `requestFullscreen()`.
-  if (document.fullscreenElement)
-    document.body.requestFullscreen({ screen: getBestScreen() });
-});
-```
-
-Since user-generated screen change events are not user activations of the site,
-we suggest specifically allowing Element.requestFullscreen() when the algorithm
-is triggered by a user-generated screen change. This parallels the existing
-[spec](https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen)
-allowance when triggered by a "user generated orientation change".
-
-## Proposal: Allow window placements on any connected display
-
-Existing [`Window`][2] methods have complex histories and awkward shapes, but
-generally already offer a sufficient surface for cross-screen window placement:
-[`open()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open) accepts
-`left` and `top` in the features argument string, and
-[`moveTo()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/moveTo)
-accepts similar `x` and `y` parameters.
-
-This aspect of the proposal aims to support cross-screen window coordinates
-within the existing web-exposed API. No IDL changes are required, and this only
-requires implementer-specific behavior changes to some browsers.
-
-```js
-// NEW: `getScreens()` provides requisite info; see the Screen Enumeration API.
+// NEW: `getScreens()` provides requisite info; see the proposal below.
 const touchScreen = (await getScreens()).find((s)=>{return s.touchSupport;});
 // Open a window on a touch-compatible display, if one exists.
 // NEW: `left` and `top` may be outside the window's current screen.
@@ -169,96 +205,164 @@ window.open(url, ``, `left=${touchScreen.availLeft},top=${touchScreen.availTop}`
 ```
 
 ```js
-// NEW: `getScreens()` provides requisite info; see the Screen Enumeration API.
+// NEW: `getScreens()` provides requisite info; see the proposal below.
 const otherScreen = (await getScreens()).find((s)=>{
     return s.availLeft != window.screen.availLeft ||
            s.availTop != window.screen.availTop;});
-// Move the window to another screen (eg. user clicked "swap screens").
+// Move the window to another screen (e.g. user clicked "swap screens").
 // NEW: `x` and `y` may be outside the window's current screen.
 window.moveTo(otherScreen.availLeft + window.screenLeft,
               otherScreen.availTop + window.screenTop);
 ```
 
-### Improving existing API specifications and implementations
+## Provide requisite info about available screens to achieve the goals above
 
-As alluded to above, the existing `Window` specifications do not provide
-reliable mechanisms for multi-screen placement. Notably,
-[`moveTo()`](https://www.w3.org/TR/cssom-view-1/#dom-window-moveto)
-describes coordinates (x, y) as "relative to the top left corner of the output
-device", which does not account for multiple possible output devices. Similarly,
-[`open()`](https://drafts.csswg.org/cssom-view/#the-features-argument-to-the-open()-method)
-describes optional user-agent-defined clamping and coordinates relative to the
-"Web-exposed \[available\] screen area", which also describes areas in terms of
-a single output device. See
-[CSSOM View Module 2.3. Web-exposed screen information](https://drafts.csswg.org/cssom-view/#web-exposed-screen-information).
-This has yielded an unreliable API with inconsistent implementation behaviors.
-Some implementations clamp the requested window bounds to be within the
-same `Screen` as the host `Window`, while others do not.
+### Add `isMultiScreen()` to expose whether a device has multiple screens
 
-TODO: Provide a comprehensive description of current inconsistent behaviors.
+The most basic question developers may ask to support multi-screen devices is:
+"Does this device have multiple screens that may be used for window placement?"
+The proposed shape for this particularly valuable limited-information query is
+a `Window.isMultiScreen()` method, alongside the existing `screen` attribute.
 
-Proposed ways to improve the existing surface area are:
-* Refine existing specification language for screen information, coordinate
-  systems, clamping behavior, etc.
-  * Define screen information in the context of multi-screen environments
-  * Specify `Window` coordinates as relative to the primary (or current) screen
-  * Constrain the allowed user-agent-defined clamping for `Window` methods
-* Encourage implementers to use reasonable and compatible cross-screen behavior
-  * Foster broader adoption of interoperable cross-screen behaviors without
-    making spec changes
-  * Possibly add non-normative language to specs regarding multi-screen support
+```js
+partial interface Window {
+  // NEW: Returns whether the device has multiple connected screens on success. 
+  Promise<boolean> isMultiScreen();  // UAs may prompt for permission.
+};
+```
 
-### Alternative new APIs
+This method exposes the minimum information needed to engage multi-screen users,
+and to avoid requesting information and capabilities that are not applicable to
+single-screen users. In the slideshow example, the site may offer specific UI
+entrypoints for single-screen and multi-screen users.
 
-An alternative approach may be to introduce entirely new Window Placement APIs.
-These could be built to solve frequent requests of modern web applications;
-offering better ergonomics, asynchronous behavior, user permission affordances,
-and more functionality. Thes could also be designed with multi-screen
-environments, new window display modes, and related functionality in mind.
+```js
+async function updateSlideshowButtons() {
+  // NEW: Returns whether the device has multiple connected screens on success. 
+  const multiScreenUI = await window.isMultiScreen();  // Show multi-screen UI?
+  document.getElementById("multi-screen-slideshow").hidden = !multiScreenUI;
+  document.getElementById("single-screen-slideshow").hidden = multiScreenUI;    
+}
+```
 
-This could enable further deprecation of existing window placement APIs, which
-have been prone to abuse and inconsistencies over time. There are several active
-and forthcoming proposals to limit or deprecate existing window placement APIs.
+### Add `getScreens()` to expose information about available screens
 
-Of course, aspects of new window placement APIs could prove undesirable in the
-long term, similar to the existing APIs, and it may not be feasible to truly
-deprecate old APIs, so this approach deserves caution. See some explorations of
-possible new window placement API shapes in
-[additional_explorations.md](https://github.com/webscreens/window-placement/blob/master/additional_explorations.md).
+Sites require information about the available screens in order to make optimal
+application-specific use of that space, to save and restore the user's window
+placement preferences for specific screens, or to offer users customized UI for
+choosing appropriate window placements. The proposed shape of this query is a
+`Window.getScreens()` method, alongside the existing `screen` attribute.
 
-## Additional Thoughts
+```js
+partial interface Window {
+  // NEW: Returns a snapshot of information about connected screens on success.
+  Promise<sequence<ScreenInfo>> getScreens();  // UAs may prompt for permission.
+};
+```
 
-### Window placement limitations
+The promise resolves to an array of screen information dictionaries on success,
+and rejects otherwise (e.g. if permission is denied). `ScreenInfo` dictionaries
+are static snapshots of screen configuration information, shaped similar to the
+existing [`Screen`](https://drafts.csswg.org/cssom-view/#screen) interface, with
+additional properties that provide requisite information for many window
+placement use cases.
 
-Changes allowing cross-screen window placements should still be subject to
-reasonable limitations, and some may be left to the discretion of implementers.
+```js
+dictionary ScreenInfo {
+  // Shape matches https://drafts.csswg.org/cssom-view/#the-screen-interface
+  long availWidth;           // Width of the available screen area, e.g. 1920
+  long availHeight;          // Height of the available screen area, e.g. 1032
+  long width;                // Width of the screen area, e.g. 1920
+  long height;               // Height of the screen area, e.g. 1080
+  unsigned long colorDepth;  // Bits allocated to colors for a pixel, e.g. 24
+  unsigned long pixelDepth;  // Bits allocated to colors for a pixel, e.g. 24
 
-Implementers generally restrict window movement to certain windows types, (e.g.
-standalone web app windows and popup windows, not tabbed browser windows) and
-only under certain circumstances (e.g. secure contexts, with transient user
-activation, maybe limiting the number or frequency of interactions, etc.).
+  // Shape roughly matches https://w3c.github.io/screen-orientation
+  OrientationType orientationType;  // Orientation type, e.g. "portrait-primary"
+  unsigned short orientationAngle;  // Orientation angle, e.g. 0
 
-Window placements could be clamped to the available bounds of a single target
-screen, or perhaps allowed to span multiple screens. It seems reasonable for
-implementers to restrict window placements that would make some portion of
-the window appear outsides the aggregate available screen bounds.
+  // Shape matches https://developer.mozilla.org/en-US/docs/Web/API/Screen
+  // Useful for understanding the relative screen layout for window placements.
+  // Distances from the origin (top left corner) of the primary screen to the: 
+  long left;       // Left edge of the screen area, e.g. 1920
+  long top;        // Top edge of the screen area, e.g. 0
+  long availLeft;  // Left edge of the available screen area, e.g. 1920
+  long availTop;   // Top edge of the available screen area, e.g. 0
 
-It may be valuable to provide clearly specifided behaviors for some cases, or to
-offer non-normative guidance for how such cases could be handled.
+  // New properties critical for many multi-screen window placement use cases.
+  boolean primary;       // If this screen is the primary screen, e.g. true
+                         // Useful for placing prominent vs peripheral windows.
+  boolean internal;      // If this screen is internal (built-in), e.g. false
+                         // Useful for placing slideshows on external projectors
+                         // and controls/notes on internal laptop screens.
+  float scaleFactor;     // Ratio between physical pixels and device
+                         // independent pixels for this screen, e.g. 2
+                         // Useful for placing windows on screens with optimal
+                         // scaling and appearances for a given application.
+  DOMString id;          // A temporary, generated per-origin unique ID; resets
+                         // when cookies are deleted. Useful for persisting user
+                         // window placements preferences for certain screens.
+  boolean touchSupport;  // If the screen supports touch input, e.g. false
+                         // Useful for placing control windows on touch-screens.
+};
+```
 
-### Respecting intents around user-agent-defined behaviors
+`ScreenInfo` objects retrieved from `getScreens()` are integral for multi-screen
+window placement use cases. The relative bounds establish a coordinate system
+for cross-screen window placement, while the newly exposed properties of the
+display devices allow applications to restore or choose window placements.
 
-Reasonable caution should be exercised when changing implementation-specific
-behavior of existing Web Platform APIs, to avoid breaking existing users. The
-leading proposal aims to align behavior around the existing behavior of some
-implementers, and honor perceived intent.
+In the slideshow example, the site could use multi-screen information to place
+presenter and audience windows optimally with a single click, which is a common
+feature of existing non-web slideshow applications.
 
-Still, it may be prudent for implementers to retain elements of old behavior
-that sites might rely upon. For example, if developers expect window placements
-to be clamped within the current `Screen` and supply bounds outside the overall
-`Screen` space (e.g. "left=99999999"), then it may be reasonable to clamp
-window placements within the current `Screen`, rather than within the `Screen`
-nearest those coordinates.
+```js
+document.getElementById("multi-screen-slideshow").onclick = async function() {
+  // NEW: Returns a snapshot of information about connected screens on success.
+  const screens = await window.getScreens();
+  // Place slides on an external screen, or failing that, any secondary screen.
+  const s1 = screens.find(s => !s.internal) ?? screens.find(s => !s.primary);
+  // Place notes on an internal screen, or failing that, any screen besides s1.
+  const s2 = screens.find(s => s.internal) ?? screens.find(s => s != s1);
+  // TODO: Demonstrate more complex screen selection logic, e.g. favor external
+  // touch-screens if there is no internal screen for notes, favor external
+  // screens with resolution and scaling most suitable for a slideshow, etc.
+  // TODO: Show requestFullscreen or window.open/moveTo usage here?
+  if (s1 && s2 && s1 != s2) {
+    placeSlidesOn(s1);  // TODO: Define this (in another section?)
+    placeNotesOn(s2);   // TODO: Define this (in another section?)
+  } else {
+    singleScreenSlideshow();  // TODO: Define this (in another section?)
+  }
+```
+
+### Add a `screenschange` event, fired on screen connection or property changes
+
+Since `getScreens()` returns a static snapshot, sites need an event, fired when
+the set of screens or their properties change, to avoid polling for changes. The
+proposed shape is a `screenschange` event on `Window`, alongside the existing
+`screen` attribute.
+
+```js 
+partial interface Window {
+  // NEW: An event fired when the connected screens or their properties change.
+  attribute EventHandler onscreenschange;
+};
+```
+
+This is useful for updating multi-screen UI entrypoints when screens are
+connected or disconnected. It may also be useful for optimizing existing window
+placements to accommodate screen property changes.
+
+```js
+window.addEventListener('screenschange', async function() {
+  updateSlideshowButtons();  // Defined in a prior explainer section.
+
+  // TODO: Define this hand-waving example code.
+  if (inSlideShow() && screenShowingSlides() != bestScreenForSlides())
+    moveSlideshowToBestScreen();
+});
+```
 
 ### Open questions
 
@@ -266,17 +370,11 @@ nearest those coordinates.
   * Do any sites expect open/move coordinates to be local to the current screen?
 * Is there value in supporting windows placements spanning multiple screens?
   * Suggest normative behavior for choosing a target display and clamping?
+* Add an id to the Screen interface for comparison with ScreenInfo dictionaries?
 
 ## Privacy & Security
 
-For an in-depth discussion on specific privacy and security concerns, see the
-[responses to the W3C Security and Privacy Self-Review Questionnaire](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md).
-
-
-and the [corresponding Screen Enumeration document](https://github.com/webscreens/screen-enumeration/blob/master/security_and_privacy.md)
-
-TODO: Investigate concerns/mitigations for cross-screen placement/fullscreen.
-
-[1]: https://developer.mozilla.org/en-US/docs/Web/API/Screen
-[2]: https://developer.mozilla.org/en-US/docs/Web/API/Window
-[3]: https://github.com/webscreens/screen-enumeration
+This API exposes new device infomation to the web and adds new web platform
+capabilites that require non-trivial privacy and security considerations. See
+[security_and_privacy.md](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md)
+for detailed explorations of specific privacy and security concerns.

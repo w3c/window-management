@@ -53,10 +53,11 @@ of existing window placement APIs to support expanded multi-screen environments.
   * Extend `Element.requestFullscreen()` for specific screen requests
 * Support requests to place web app windows on any screen
   * Extend `Window.open()` and `moveTo()/moveBy()` for cross-screen coordinates
-* Provide requisite info about available screens to achieve the goals above
+* Provide requisite information to achieve the goals above
   * Add `isMultiScreen()` to expose whether a device has multiple screens
   * Add `getScreens()` to expose information about available screens
   * Add a `screenschange` event, fired on screen connection or property changes
+  * Add Permission API support for a new `window-placement` entry
 
 These allow web applications to make window placement requests optimized for the
 specific use case, characteristics of available screens, and user preferences.
@@ -138,8 +139,26 @@ but generally offer a sufficient surface for cross-screen window placement:
   [`screenY`](https://drafts.csswg.org/cssom-view/#dom-window-screeny),
   [`outerWidth`](https://drafts.csswg.org/cssom-view/#dom-window-outerwidth),
   and
-  [`outerHeight`](https://drafts.csswg.org/cssom-view/#dom-window-outerwidth)
+  [`outerHeight`](https://drafts.csswg.org/cssom-view/#dom-window-outerheight)
   provide info about the current window placement
+
+```js
+partial interface Window {
+  // NEW: `features` support `left` and `top` coordinates on other screens.
+  Window? open(optional USVString url="", optional DOMString target = "_blank",
+               optional [TreatNullAs=EmptyString] DOMString features = "");
+  // NEW: `x` and `y` support coordinates placing windows on other screens.
+  void moveTo(long x, long y);
+  // NEW: `x` and `y` support deltas placing windows on other screens.
+  void moveBy(long x, long y);
+
+  // NEW: Coordinates are defined relative to the primary screen's origin.
+  [Replaceable] readonly attribute long screenX;
+  [Replaceable] readonly attribute long screenLeft;
+  [Replaceable] readonly attribute long screenY;
+  [Replaceable] readonly attribute long screenTop; 
+};
+```
 
 The least invasive way to support multi-screen window placement is to specify
 positional coordinates relative to the origin of the primary screen within the
@@ -215,7 +234,7 @@ window.moveTo(otherScreen.availLeft + window.screenLeft,
               otherScreen.availTop + window.screenTop);
 ```
 
-## Provide requisite info about available screens to achieve the goals above
+## Provide requisite information to achieve the goals above
 
 ### Add `isMultiScreen()` to expose whether a device has multiple screens
 
@@ -282,7 +301,7 @@ dictionary ScreenInfo {
   unsigned short orientationAngle;  // Orientation angle, e.g. 0
 
   // Shape matches https://developer.mozilla.org/en-US/docs/Web/API/Screen
-  // Useful for understanding the relative screen layout for window placements.
+  // Critical for understanding relative screen layouts for window placement.
   // Distances from the origin (top left corner) of the primary screen to the: 
   long left;       // Left edge of the screen area, e.g. 1920
   long top;        // Top edge of the screen area, e.g. 0
@@ -303,7 +322,7 @@ dictionary ScreenInfo {
                          // when cookies are deleted. Useful for persisting user
                          // window placements preferences for certain screens.
   boolean touchSupport;  // If the screen supports touch input, e.g. false
-                         // Useful for placing control windows on touch-screens.
+                         // Useful for placing control panels on touch-screens.
 };
 ```
 
@@ -364,6 +383,36 @@ window.addEventListener('screenschange', async function() {
 });
 ```
 
+### Add Permission API support for a new `window-placement` entry
+
+Sites may wish to know whether users have already granted or denied a requisite
+permission before attempting to access gated information and capabilites. The
+proposed shape is adding a `PermissionName` entry and corresponding support via
+the `query()` method of the [Permission API](https://w3c.github.io/permissions).
+
+```js
+enum PermissionName {
+  ...
+  "window-placement",
+  ...
+}
+```
+
+This allows sites to educate users that haven't been prompted, provide seamless
+cross-screen support for users that have already granted permission, and respect
+users that have already denied the permission.
+
+```js
+navigator.permissions.query({name:'window-placement'}).then(function(status) {
+  if (status.state === "prompt")
+    showMultiScreenEducationalUI();
+  else if (status.state === "granted")
+    showMultiScreenUI();
+  else  // status.state === "denied"
+    showSingleScreenUI();
+});
+```
+
 ### Open questions
 
 * Would changes to the existing synchronous methods break critical assumptions?
@@ -374,7 +423,61 @@ window.addEventListener('screenschange', async function() {
 
 ## Privacy & Security
 
-This API exposes new device infomation to the web and adds new web platform
-capabilites that require non-trivial privacy and security considerations. See
+This proposal exposes new information about the screens connected to a device,
+increasing the [fingerprinting](https://w3c.github.io/fingerprinting-guidance)
+surface of users, especially those with multiple screens consistently connected
+to their devices. As one mitigation of this privacy concern, the exposed screen
+properties are limited to the minimum needed for common placement use cases.
+
+New window placement capabilities themselves may pose additional privacy and
+security considerations; for example, showing sensitive content on unexpected
+screens, hiding unwanted windows on less conspicuous screens, or otherwise using
+cross-screen placements to act in deceptive, abusive, or annoying manners.
+
+To help mitigate these concerns, user permission should be required for sites to
+get multi-screen information and place windows on other screens. Given the API
+shape proposed above, user agents could reasonably prompt users when sites call
+`getScreens()`, fulfilling the promise with requisite information for
+cross-screen placement requests if the user accepts the prompt, and rejecting
+the promise if the user denies access. If the permission is not already granted,
+cross-screen placement requests could fall back to same-screen placements,
+matching pre-existing behavior of some user agents.
+
+The `isMultiScreen()` method could fulfill its promise without a user prompt,
+exposing a minimal single bit of information to support some critical features
+(e.g. show/hide multi-screen entry points like “Show on another screen”), and to
+avoid unnecessarily prompting single-screen users for inapplicable information
+and capabilities. Similarly, `screenschange` events that change the result of
+`isMultiScreen()` queries could be fired without permission gates, to obviate
+the need for sites to poll that method; and that could be limited to sites that
+have previously called `isMultiScreen()`.
+
+User agents can measure and otherwise intervene when sites request the newly
+proposed information or use the newly proposed capabilities.
+
+Alternative API shapes giving less power to sites were considered, but offer
+poor experiences for users and developers (e.g. prompting users to pick a
+screen, requiring declarative screen rankings from developers). Few, if any,
+alternatives exist for non-fullscreen placement of app windows on any connected
+screen. The proposed API shape seems like the most natural extension of existing
+APIs to support a more complete screen environment, and requires a reasonable
+permission. Future work may include ways to query for more limited multi-screen
+information to let sites voluntarily minimize their information exposure.
+
+Some other notes:
+- A user gesture is typically already required for `Element.requestFullscreen()`
+  and `Window.open()`, this just adds permission-gated multi-screen support.
+- Existing subframe capabilities (e.g. element fullscreen with ‘allowfullscreen’
+  feature policy, and window.open) should support cross-screen info and
+  placements with permission.
+- Gating pre-existing information exposure and placement capabilities on the
+  newly proposed permission may be reasonable.
+- Placement on a different screen from the active window is less likely to
+  create additional clickjacking risk for users, since the user's cursor or
+  finger is likely to be co-located with the current screen and window, not on
+  the separate target screen.
+- ScreenInfo IDs generally follow patterns of other device information APIs.
+
+See 
 [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md)
-for detailed explorations of specific privacy and security concerns.
+for additional explorations of privacy and security concerns.

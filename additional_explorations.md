@@ -8,14 +8,6 @@ in separate proposals, but they are **not** part of the current proposal.
 
 ## Alternatives to the current proposal
 
-### TODO: Explore these alternatives:
-
-- multi-screen media query (no clear path for user-facing permission prompt support)
-- Browser-controlled multi-screen placement interstitials
-- Move ScreenInfo orientation* properties into a separate/nested dictionary
-- screen picker, limited apis
-- comparing ScreenInfo objects with window.screen, or exposing the current screen
-
 ### Alternative new methods
 
 One alternative to extending Window `open()` and `moveTo|By()` methods is to
@@ -39,6 +31,7 @@ TODO: Provide an example of new openWindow, setBounds, setState, get*, etc.
 
 ### Alternative names and scopes for proposed methods
 
+Inspiration for the shape of this API comes from the existing `Window.screen`.
 Besides the proposed shape of new methods and events on `Window`, some
 alternative names and locations are demonstrated below.
 
@@ -49,15 +42,23 @@ would be preferable to a non-constructable class or interface.
 
 ```js
 async () => {
-  // 1: Screens namespace on Window[OrWorkerGlobalScope], or [Worker]Navigator,
-  //    like: WindowOrWorkerGlobalScope.caches.keys(),
-  //          WindowOrWorkerGlobalScope.indexedDB.databases(), or
-  //          Navigator.bluetooth.requestDevice()
+  // 1: Screens namespace on Window[OrWorkerGlobalScope]
+  //    like: WindowOrWorkerGlobalScope.caches.keys() or
+  //          WindowOrWorkerGlobalScope.indexedDB.databases()
   // Note: A `screen` namespace may conflict with the existing window.screen.
   const screensV1 = await self.screens.get();
-  const screensV2 = await navigator.screens.get();
+  const isMultiScreenV1 = await self.screens.isMultiScreen();
+  // TODO: Would this require a non-constructable class or similar?
+  self.screens.onscreenschange = () => { ... }
 
-  // 2: Directly on [Worker]Navigator, like: Navigator.getVRDisplays()
+  // 2: Screens namespace on [Worker]Navigator
+  //    like: Navigator.bluetooth.requestDevice() or navigator.languages
+  const screensV2 = await navigator.screens.get();
+  const isMultiScreenV2 = await navigator.screens.isMultiScreen();
+  // TODO: Would this require a non-constructable class or similar?
+  navigator.screens.onscreenschange = () => { ... }
+
+  // 3: Directly on [Worker]Navigator, like: Navigator.getVRDisplays()
   const screensV3 = await navigator.getScreens();
 
   // Alternative names for getScreens():
@@ -72,26 +73,30 @@ async () => {
 The leading proposal is an asynchronous interface. Alternatively, a synchronous
 API would match the existing `window.screen` API, but may require implementers
 to cache system information that may not otherwise be required. It would also
-require script execution to halt while a permission model is queried or the user is prompted.
+require script execution to halt while a permission model is queried or the user
+is prompted.
 
 ```js
 // Window or WindowOrWorkerGlobalScope attribute, like `window.screen`
 const avialableScreens = self.screens;
 ```
 
-### Alternative property access or a new `Display` container class
+### Alternative property access or using the existing `Screen` interface
 
-The existing [`Screen`][1] object seems like a natural and appropriate container
-for conveying information about the connected display devices, but using the
-`Screen` interface to convey **new** properties poses a potential privacy
-concern with regard to fingerprinting, since the properties of the window's
-current display would be exposed synchronously by the `window.screen` API. User
-agents would not be able to gate access to these new properties on an
-asynchronously-queried permission model.
+The existing `Screen` interface seems like a natural and appropriate object for
+conveying information about the connected screens, but exposing new info
+synchronously by the `window.screen` API poses a fingerprinting privacy concern.
+User agents could not prompt users or asynchronously query a permission model,
+and sites would have difficultly using the interface if property availability
+depended on way the interface was obtained and the current permission state.
+Additionally, the `Screen` interface returns a live object, and using the same
+interface for static snapshots yields behavior that is difficult to predict,
+particularly for comparisons of Screen objects.
 
 Alternatively, the new properties could be accessed by new asynchronous methods
-on the `Screen` or `ScreenManager` interfaces, or resolve to undefined if access
-has not been granted:
+on the `Screen` or `ScreenManager` interfaces, or resolve to undefined or
+placeholder values if access has not been granted, but there's no good precedent
+for this approach, and it may not fit typical web platoform design patterns.
 
 ```js
 // 1: Add an asynchronous method on `Screen`:
@@ -106,49 +111,71 @@ navigator.screen.getScreens();    // Requests access, which is granted.
 console.log(screen.newProperty);  // Resolves to the actual value.
 ```
 
-Yet another alternative is introducing a new `Display` interface as a container
-class that supercedes or parallels the `Screen` interface. This would duplicate
-some properties but ensure that new, potentially privacy-sensitive properties
-would only be exposed asynchronously, after potentially checking for permission.
-This may cause some confusion or difficulty correlating the existing `Screen`
-object with a new given `Display` object.
+So, the leading approach is to introduce a new `ScreenInfo` dictionary that
+parallels the `Screen` interface shape. This duplicates some properties but
+provides clear and separate behaviors for the existing `Screen` interface and
+the new `ScreenInfo` dictionaries returned from `getScreens()`. This avoids
+pitfalls of trying to mix the two access patterns, but may cause some difficulty
+correlating the existing `Screen` object with a new given `ScreenInfo` object.
+To that end, future iterations of the proposal may suggest providing an id on
+the `Screen` interface which could be compared to `ScreenInfo.id` values.
 
 ### Alternatively using `Screen` to represent the entire screen space.
 
 Representing the entire combined screen space with the existing `Screen`
 interface is inadvisable, as it would come with many complications, for example:
-* The union of separate physical display bounds may be an irregular shape,
+- The union of separate physical display bounds may be an irregular shape,
   comprised of rectangles with different sizes and un-aligned positions. This
   cannot be adequately represented by the current `Screen` interface.
-* The set of connected physical displays may have different `Screen` properties.
+- The set of connected physical displays may have different `Screen` properties.
+- Access to multi-screen information could not be easily gated by permission.
 
+### TODO: Explore these alternatives:
 
+- Multi-screen media query (no clear permission support?)
+- Browser-controlled multi-screen placement interstitials? (poor experience)
+- Move ScreenInfo orientation* properties into a separate/nested dictionary?
+- comparing ScreenInfo objects with window.screen, or exposing the current screen
 
+## Extensions to the current proposal
 
+### New `Screen` properties to consider as use cases arise
 
-TODO: New `Screen` properties to consider as use cases arise.
 * `Screen.accelerometer`: True if the display has an accelerometer.
   * May be useful for showing immersive controls (e.g. game steering wheel).
+  * Not web-exposed
 * `Screen.dpi`: The display density as the number of pixels per inch.
   * May be useful for presenting content with tailored physical scale factors.
+  * Not standardized, but similar to data already exposed by some browsers via
+    [`Window.devicePixelRatio`](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio)
 * `Screen.subpixelOrder`: The order/orientation of this display's subpixels.
   * May be useful for adapting content presentation for some display technology.
+  * Not web-exposed
 * `Screen.interlaced`: True if the display's mode is interlaced.
   * May be useful for adapting content presentation for some display technology.
+  * Not web-exposed, but available via the Chrome Apps
+    [`system.display` API](https://developer.chrome.com/apps/system_display#method-getInfo)
 * `Screen.refreshRate`: The display's refresh rate in hertz.
   * May be useful for adapting content presentation for some display technology.
+  * Not web-exposed, but available via the Chrome Apps
+    [`system.display` API](https://developer.chrome.com/apps/system_display#method-getInfo)
 * `Screen.overscan`: The display's insets within its screen's bounds.
   * May be useful for adapting content presentation for some display technology.
-* `Screen.hidden`: True if the display is not visible (e.g. closed laptop).
-  * May be useful for recognizing when displays may be active but not visible.
+  * Not web-exposed, but available via the Chrome Apps
+    [`system.display` API](https://developer.chrome.com/apps/system_display#method-getInfo)
 * `Screen.mirrored`: True if the display is mirrored to another display.
   * May be useful for recognizing when a laptop is mirrored to a projector, etc.
+  * Not web-exposed, but available via the Chrome Apps
+    [`system.display` API](https://developer.chrome.com/apps/system_display#method-getInfo)
+* `Screen.hidden`: True if the display is not visible (e.g. closed laptop).
+  * May be useful for recognizing when displays may be active but not visible.
+  * Not web-exposed
 
-TODO: Inspiration for the shape of this API comes from the existing `Window.screen`
-attribute location, with expanded access to worker contexts. Similar APIs exist,
-like `navigator.languages` and `self.addEventListener("onlanguagechange", ...)`.
-
-TODO: See the Alternative Proposals section for some other possible API shapes.
+Future work around this proposal might expose other window properties e.g.:
+* The window state: (e.g. maximized, normal/restored, minimized, snapped)
+* The window type (e.g. normal/tab, popup, application)
+* Events on changes: (e.g. onmove, onwindowdrag, onwindowdrop, onwindowstate)
+* Enumerating the list of existing windows opened for a given worker/origin
 
 ## Additional considerations
 
@@ -242,6 +269,8 @@ properties is useful for selecting the optimal display to present medical and
 creative content.
 
 ### Compatibility with the existing window.screen object
+
+TODO: Update this section... offer similar shape, but not comparison...
 
 This proposal aims to provide a high degree of compatibility between objects
 returned by the getScreens() API and the existing synchronously-accessed
@@ -398,7 +427,7 @@ screen was connected or disconnected). This avoids the need for such sites to
 poll `isMultiScreen()` and obviates the need for a `multiscreenchanged` event.
 
 Sites that have called `getScreens()` may be additonally interested in
-`screenschange` events that would yield updated screen informtion snapshots
+`screenschange` events that would yield updated screen information snapshots
 (e.g. the display properties of a connected screen have changed).
 
 Browser implementations may require permissions for any proposed functionality,

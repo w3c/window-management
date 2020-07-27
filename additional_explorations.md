@@ -39,14 +39,14 @@ There are several possible options for new methods or overloads:
   * Support requests for specific inner* or outer* `width` and `height` values
   * Support existing `window.open()` features, and/or new features
   * Support feature detection via dictionary parameter?
-  * Support async permission prompts or queries and underlying impls
+  * Support async permission prompts or queries and underlying implementations
   * Helps moves usage away from window.open
 * Add a new async API to get/set `Window` bounds and other state:
   * window.setBounds({left: x, top: y, width: w, height: h, screen: s});
   * window.getBounds() returns a Promise for corresponding information
   * Parallels proposed dictionaries for window opening above
   * Support states, display modes, etc. here or with parallel APIs
-  * Support async permission prompts or queries and underlying impls
+  * Support async permission prompts or queries and underlying implementations
   * Support feature detection via dictionary parameter?
   * Helps moves usage away from window.moveTo/By, screenX/Y, outerWidth/Height
 * Overload `window.open()` with a dictionary parameter, modernizing the options
@@ -68,7 +68,7 @@ let windowOptions = { left: 100, top: 100, outerWidth: 300, outerHeight: 500,
                       display: 'standalone', name: 'foo',
                       /* TODO: consider child/modal/etc. */ };
 
-// NEW: Async method supports permissions, async WM/browser impl.
+// NEW: Async method supports permissions, async WM/browser implementations.
 let myWindow1 = await window.openWindow(url, windowOptions);
 // Or perhaps overloading the exisiting synchronous method is sufficient?
 let myWindow2 = window.open(url, windowOptions);
@@ -93,9 +93,10 @@ taken not to overburden this surface. Here are some alternative shapes:
 additions. For now, the new API surface may not warrant encapsulation. Using a
 namespace would be preferable to a non-constructable class or interface.
 
-2. Using the `WindowOrWorkerGlobalScope` mixin would expose proposed API in both
-`Window` and `Worker` execution contexts, extending access to service workers,
-which may aid potential future work, like opening windows from SW launch events.
+2. Using the `WindowOrWorkerGlobalScope` mixin would expose the proposed API in
+both `Window` and `Worker` execution contexts, extending access to service
+workers, which may aid potential future work, like opening windows from service
+worker launch events. This would not reduce any burden on the Window surface.
 
 3. The [`Navigator`](https://developer.mozilla.org/en-US/docs/Web/API/Navigator)
 object could be a good potential location for the proposed API, as connected
@@ -157,7 +158,9 @@ Alternatives considered include returning dynamic collections of live objects
 of each Screen in the collection change with device configuration changes), or
 static collections of live objects (e.g. indivual Screen properties change, but
 the overall collection does not change reflect newly connected screens). There
-are tradeoffs to each approach, but these seem generally less desirable.
+are tradeoffs to each approach, but these seem more difficult for developers to
+reason about, and add significant complexity to the implementation, reducing the
+likelihood of obtaining interoperable implementations across browsers.
 
 The leading proposal is to introduce a new `ScreenInfo` dictionary. While it is
 shaped similar to the existing `Screen` interface, it has clear and separate
@@ -165,20 +168,18 @@ behavior as a static snapshot of comprehensive information for a particular
 screen. Alternatives considered include exposing a `Screen` interface for each
 connected screen (via `getScreens()` or `window.screens`) with:
 
-1. New synchronously accessible `Screen` properties exposing additional device
-   info. Since user agents could not prompt users or make async permission model
-   queries amid property access, these could resolve to `undefined` or
-   placeholders on `window.Screen` if permission is denied, to mitigate privacy
-   concerns. This would likely be confusing and atypical web platform behavior,
-   and could conflict with existing non-standard `Screen` property behaviors.
-   Further, it would be unusual for the sequence of `Screen` objects to contain
-   static snapshots while the existing `window.Screen` was a live object.
+1. New synchronously accessible `Screen` properties exposing additional info.
+   Since user agents could not prompt users or make async permission model
+   queries amid property access, the new properties could resolve to `undefined`
+   or placeholder values if permission is denied, to mitigate privacy concerns.
+   This would likely be confusing and atypical web platform behavior, and could
+   conflict with existing non-standard `Screen` property behaviors.
 
-2. New asynchronous methods on `Screen` exposing additional device info. This
-   would use more typical Promise patterns to support async permission prompts
-   or queries, but provides an inconsistent access to `Screen` information.
+2. New asynchronous methods on `Screen` exposing additional info. This would use
+   more typical Promise patterns to support async permission prompts or queries,
+   but introduces an inconsistency in how Screen information is exposed.
 
-3. New asynchronous methods on another interface for additional device info.
+3. New asynchronous methods on another interface for additional `Screen` info.
    This is similar to (2), but perhaps even less ergonomic.
 
 ```js
@@ -793,16 +794,6 @@ to be clamped within the current `Screen` and supply bounds outside the overall
 `Screen` space (e.g. "left=99999999"), then it may be reasonable to clamp
 window placements within the current `Screen`, rather than within the `Screen`
 nearest those coordinates.
-
-### Changes to `colorDepth` and `pixelDepth`
-
-The [W3C Working Draft](https://www.w3.org/TR/cssom-view/#dom-screen-colordepth)
-states that `Screen.colorDepth` and `Screen.pixelDepth` "must return 24" and
-even says these "attributes are useless", but the latest
-[Editor's Draft](https://drafts.csswg.org/cssom-view/#dom-screen-colordepth)
-provides a more useful specification for these values. Exposing accurate values
-for these properties is useful for placing medical and creative content on the
-optimal screen.
 
 ### TODO: Explore additional topics
 

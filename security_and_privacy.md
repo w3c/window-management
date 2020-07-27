@@ -3,10 +3,6 @@
 The following considerations are taken from the [W3C Security and Privacy
 Self-Review Questionnaire](https://www.w3.org/TR/security-privacy-questionnaire).
 
-TODO: Combine the [Screen Enumeration questionnaire](https://github.com/webscreens/screen-enumeration/blob/master/security_and_privacy.md)
-
-TODO: Investigate concerns/mitigations for cross-screen placement/fullscreen.
-
 ## 2.1 What information might this feature expose to Web sites or other parties, and for what purposes is that exposure necessary?
 
 This feature exposes information about screens connected to the device, which is
@@ -47,7 +43,7 @@ window currently occupies.
 
 ## 2.2 Is this specification exposing the minimum amount of information necessary to power the feature?
 
-Generally, yes. the information exposed is widely useful to a variety of window
+Generally, yes. The information exposed is widely useful to a variety of window
 placement use cases, but not all information will be relevant to every use case.
 Gating access with a permission gives users control over which sites, if any,
 can access this information.

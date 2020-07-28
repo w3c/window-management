@@ -4,7 +4,7 @@
 
 This proposal introduces incremental improvements to existing screen information
 and window placement APIs, allowing web applications to be intentional about the
-experience they offer to users of multi-screen devices.
+experiences they offer to users of multi-screen devices.
 
 ## Background
 

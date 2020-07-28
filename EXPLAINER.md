@@ -47,6 +47,7 @@ with multiple screens. Here are some use cases that inform the goals below:
 * Medical app opens images (e.g. x-rays) on a high-resolution grayscale display
 * Creativity app shows secondary windows (e.g. pallete) on a separate screen
 * Conference room app shows controls on a touch screen device and video on a TV
+* Multi-screen layouts in gaming, signage, artistic, and other types of apps
 * Site optimizes content and layout when a window spans multiple screens
 
 ## Goals
@@ -110,7 +111,7 @@ a button that can only request fullscreen on the current display.
 
 ```js
 // Show the slideshow element fullscreen on the optimal screen.
-// TODO: See the definition of getScreenForSlideshow() later in this document. 
+// See the definition of getScreenForSlideshow() later in this document.
 // NEW: `screen` on `fullscreenOptions` for `requestFullscreen()`.
 slideshowElement.requestFullscreen({ screen: await getScreenForSlideshow() });
 ```
@@ -151,17 +152,17 @@ generally offer a sufficient surface for cross-screen window placement:
 partial interface Window {
   // NEW: `features` support `left` and `top` coordinates on other screens.
   Window? open(optional USVString url="", optional DOMString target = "_blank",
-               optional [TreatNullAs=EmptyString] DOMString features = "");
+               optional DOMString features = "");
   // NEW: `x` and `y` support coordinates placing windows on other screens.
   void moveTo(long x, long y);
   // NEW: `x` and `y` support deltas placing windows on other screens.
   void moveBy(long x, long y);
 
   // NEW: Coordinates are defined relative to the multi-screen origin.
-  [Replaceable] readonly attribute long screenX;
-  [Replaceable] readonly attribute long screenLeft;
-  [Replaceable] readonly attribute long screenY;
-  [Replaceable] readonly attribute long screenTop; 
+  readonly attribute long screenX;
+  readonly attribute long screenLeft;
+  readonly attribute long screenY;
+  readonly attribute long screenTop;
 };
 ```
 
@@ -187,7 +188,8 @@ it has some challenges. See alternatives, considerations, and more examples in
 
 In the media editing application example, the user might save and close their
 current project, later selecting an option to open that saved project, which
-restores the multi-screen window placement configuration for that project.
+restores the multi-screen window placement configuration for that project. A
+similar pattern would be useful to financial dashboards and other appplications.
 
 ```js
 // Save the open windows with placements when the user saves the project.
@@ -214,29 +216,6 @@ function restoreSavedWindows(project, openWindows) {
     }
   }
 }
-```
-
-TODO: Financial dashboard app, presentation app examples?
-
-TODO: Use example code here that directly employs proposals defined below?
-
-```js
-// NEW: `getScreens()` provides requisite info; see the proposal below.
-const touchScreen = (await getScreens()).find(s => s.touchSupport);
-// Open a window on a touch-compatible display, if one exists.
-// NEW: `left` and `top` may be outside the window's current screen.
-window.open(url, ``, `left=${touchScreen.availLeft},top=${touchScreen.availTop}`);
-```
-
-```js
-// NEW: `getScreens()` provides requisite info; see the proposal below.
-const otherScreen = (await getScreens()).find((s)=>{
-    return s.availLeft != window.screen.availLeft ||
-           s.availTop != window.screen.availTop;});
-// Move the window to another screen (e.g. user clicked "swap screens").
-// NEW: `x` and `y` may be outside the window's current screen.
-window.moveTo(otherScreen.availLeft + window.screenLeft,
-              otherScreen.availTop + window.screenTop);
 ```
 
 ## Provide requisite information to achieve the goals above
@@ -338,30 +317,57 @@ window placement use cases. The relative bounds establish a coordinate system
 for cross-screen window placement, while the newly exposed properties of the
 display devices allow applications to restore or choose window placements.
 
-In the slideshow example, the site could use multi-screen information to place
-presenter and audience windows optimally with a single click, which is a common
-feature of existing non-web slideshow applications.
+This API can be used to define `getScreenForSlideshow()`, referenced in an
+earlier example. More advanced slideshow web applications could place slides and
+notes windows on separate preferred screens, like existing non-web counterparts.
 
 ```js
-document.getElementById("multi-screen-slideshow").onclick = async function() {
+// Get the preferred screen for showing a fullscreen slideshow presentation.
+async function getScreenForSlideshow() {
   // NEW: Returns a snapshot of information about connected screens on success.
   let screens = await window.getScreens();
-  // Place slides on an external screen, or failing that, a secondary screen.
-  const s1 = screens.find(s => !s.internal) ?? screens.find(s => !s.primary);
+  // Prefer an external screen, or failing that, a secondary screen.
+  return screens.find(s => !s.internal) ?? screens.find(s => !s.primary);
+}
+
+document.getElementById("multi-screen-slideshow").onclick = async function() {
+  const s1 = getScreenForSlideshow();
   // Place notes on an internal screen, or failing that, any screen besides s1.
-  const screens_without_s1 = screens.filter(s => s != s1);
+  const screens_without_s1 = (await window.getScreens()).filter(s => s != s1);
   const s2 = screens_without_s1.find(s => s.internal) ?? screens_without_s1[0];
   // TODO: Demonstrate more complex screen selection logic, e.g. favor external
   // touch-screens if there is no internal screen for notes, favor external
   // screens with resolution and scaling most suitable for a slideshow, etc.
-  // TODO: Show requestFullscreen or window.open/moveTo usage here?
-  if (s1 && s2 && s1 != s2) {
-    placeSlidesOn(s1);  // TODO: Define this (in another section?)
-    placeNotesOn(s2);   // TODO: Define this (in another section?)
-  } else {
-    singleScreenSlideshow();  // TODO: Define this (in another section?)
-  }
+  // TODO: Define this with requestFullscreen and/or window.open/moveTo?
+  placeSlidesAndNotesOnPreferredScreens(s1, s2);
+}
 ```
+
+Similar screen selection logic is critical for other web applications use cases:
+
+```js
+// Get a touch-screen for a conference room app's touch-based interface.
+let touchScreen = (await window.getScreens()).find(s => s.touchSupport);
+```
+
+```js
+// Get a wide color gamut screen for a creativity app's color balancing window.
+let wideColorGamutScreen = (await window.getScreens()).reduce(
+    (a, b) => a.colorDepth > b.colorDepth ? a : b);
+```
+
+```js
+// Get a high-resolution screen for a medical app's image inspection window.
+let highResolutionScreen = (await window.getScreens()).reduce(
+    (a, b) => a.width*a.height > b.width*b.height ? a : b);
+```
+
+```js
+// Get screens in left-to-right order for a signage app's multi-screen layout.
+let sortedScreens = (await window.getScreens()).sort((a, b) => b.left - a.left);
+```
+
+TODO: Refine and expand upon these examples.
 
 ### Add a `screenschange` event, fired on screen connection or property changes
 

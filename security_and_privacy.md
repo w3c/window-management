@@ -42,12 +42,24 @@ window currently occupies.
 
 Generally, yes. The information exposed is widely useful to a variety of window
 placement use cases, but not all information will be relevant to every use case.
-All newly exposed information could be gated by the proposed `window-placement`
-permission, limited to secure contexts, and perhaps limited to top-level frames,
-but the specific behavior is left to individual implementers.
+Further limiting what overall information could be exposed, may be a valuable
+[general principle](https://w3ctag.github.io/design-principles/#device-enumeration),
+but would either render this API useless or add nontrivial implementer work and
+API complexity for questionable utility and protections.
 
+For example, user agents could show a UI to select the screen used for element
+fullscreen, but this has no real advantage for users over the cumbersome current
+pattern of dragging windows between screens before entering fullscreen, and
+existing APIs like `window.screen` would expose most of the same information
+about that screen anyway. Additionally, user agents lack the context around a
+web application's window placement actions, and declarative arrangements
+specified by a site are unlikely to provide the requisite expresiveness for most
+use cases.
+
+All newly exposed information could be gated by the proposed `window-placement`
+permission, limited to secure contexts, and perhaps limited to top-level frames.
 The amount of information exposed to a given site would be at the discrecion of
-users and their agents; rejecting promises, or providing a single `ScreenInfo`
+users and their agents. Rejecting promises, or providing a single `ScreenInfo`
 from `getScreens()` with values equivalent to the existing `window.screen`
 interface (or `undefined`), exposes no new information. Exposing the full set of
 proposed information enables web applications to offer compelling functionality,
@@ -56,15 +68,10 @@ scenarios.
 
 Supporting queries for limited pieces of information is not directly useful to
 sites conducting window placement use cases, and does not specifically prohibit
-abusive sites from requesting all available information. Limiting the overall
-information that could be exposed with permission would render the API useless.
-
-For example, user agents could show a UI to select the screen used for element
-fullscreen, but this has no real advantage for users over the cumbersome current
-pattern of dragging windows between screens before entering fullscreen.
-Additionally, user agents lack the context around a web application's window
-placement actions, and declarative arrangements specified by a site are unlikely
-to provide the requisite expresiveness for every use case.
+abusive sites from requesting all available information. Broad filters or making
+multiple calls with opposite filters wouldn't constrain the information returned
+(e.g. getScreens({minWidth:10}) or getScreens({internal:true}) +
+getscreens({internal:false})).
 
 ## 2.3 How does this specification deal with personal information or personally-identifiable information or information derived thereof?
 

@@ -13,16 +13,13 @@ occupies is available through its Screen interface and related media queries.
 Information about the Window's placement on the current screen (or in more rich
 cross-screen coordinates) is already available through the Window interface.
 
-This feature exposes information about all connected screens, additional display
-properties of each screen, it surfaces events when the set of screens or their
-properties change, and it exposes window placements as multi-screen coordinates.
-The newly exposed information has been limited to the minimum required for the
-most essential cross-screen window placement features. See the ScreenInfo
-definition for the new screen properties exposed and their respective utility.
-
-All newly exposed information could be gated by the proposed `window-placement`
-permission, limited to secure contexts, and perhaps limited to top-level frames,
-but the specific behavior is left to individual implementers.
+This feature provides a surface to optionally expose information about all
+connected screens, additional display properties of each screen, and events when
+the set of screens or their properties change. It also allows window placements
+to be exposed in multi-screen coordinates. The newly exposed information has
+been tailored to what would typically be required for the most essential
+cross-screen window placement features. See the ScreenInfo definition for full
+set of new screen properties exposed and their respective utility.
 
 It should be noted that exisiting `Window.screenLeft`, and `screenTop`, and
 non-standard `Screen.left` and `top` values are generally given in cross-screen
@@ -45,8 +42,17 @@ window currently occupies.
 
 Generally, yes. The information exposed is widely useful to a variety of window
 placement use cases, but not all information will be relevant to every use case.
-Gating access with a permission gives users control over which sites, if any,
-can access this information.
+All newly exposed information could be gated by the proposed `window-placement`
+permission, limited to secure contexts, and perhaps limited to top-level frames,
+but the specific behavior is left to individual implementers.
+
+The amount of information exposed to a given site would be at the discrecion of
+users and their agents; rejecting promises, or providing a single `ScreenInfo`
+from `getScreens()` with values equivalent to the existing `window.screen`
+interface (or `undefined`), exposes no new information. Exposing the full set of
+proposed information enables web applications to offer compelling functionality,
+and exposing some limited subset of that information may be useful in some
+scenarios.
 
 Supporting queries for limited pieces of information is not directly useful to
 sites conducting window placement use cases, and does not specifically prohibit

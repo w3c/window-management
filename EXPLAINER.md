@@ -17,7 +17,7 @@ environments, but web application developers are limited by existing APIs, like
 [`Window`](https://drafts.csswg.org/cssom-view/#extensions-to-the-window-interface),
 which were generally designed around the use of a single screen:
 * `Element.requestFullscreen()` only supports fullscreen on the current screen
-* `Window.open()` and `moveTo()/moveBy()` generally clamp to the current screen
+* `Window.open()` and `moveTo()/moveBy()` often clamp to the current screen
 * `Window.screen` only provides information about the Window's current screen
 * The `Web-exposed screen area` does not account for multiple available screens
 
@@ -236,8 +236,12 @@ partial interface Window {
 
 This method exposes the minimum information needed to engage multi-screen users,
 and to avoid requesting information and capabilities that are not applicable to
-single-screen users. In the slideshow example, the site may offer specific UI
-entrypoints for single-screen and multi-screen users.
+single-screen users. By returning a promise, user agents can asynchronously
+determine whether sites may access this information, prompt users to decide,
+calculate the resulting value lazily, and reject or resolve accordingly.
+
+In the slideshow example, the site may offer specific UI entrypoints for
+single-screen and multi-screen users.
 
 ```js
 async function updateSlideshowButtons() {
@@ -263,12 +267,11 @@ partial interface Window {
 };
 ```
 
-The promise resolves to an array of screen information dictionaries on success,
-and rejects otherwise (e.g. if permission is denied). `ScreenInfo` dictionaries
-are static snapshots of screen configuration information, shaped similar to the
-existing [`Screen`](https://drafts.csswg.org/cssom-view/#screen) interface, with
-additional properties that provide requisite information for many window
-placement use cases.
+`ScreenInfo` dictionaries are static snapshots of screen configuration
+information, shaped similar to the existing
+[`Screen`](https://drafts.csswg.org/cssom-view/#screen) interface, with
+additional properties that can optionally provide requisite information for many
+window placement use cases.
 
 ```webidl
 dictionary ScreenInfo {
@@ -311,6 +314,12 @@ dictionary ScreenInfo {
                          // Useful for placing control panels on touch-screens.
 };
 ```
+
+This method gives the web platform a surface to optionally expose an appropriate
+amount of multi-screen information to web applications. By returning a promise,
+user agents can asynchronously determine what amount of information sites may
+access, prompt users to decide, calculate the resulting values lazily, and
+reject or resolve accordingly.
 
 `ScreenInfo` objects retrieved from `getScreens()` are integral for multi-screen
 window placement use cases. The relative bounds establish a coordinate system
@@ -455,7 +464,9 @@ shape proposed above, user agents could reasonably prompt users when sites call
 cross-screen placement requests if the user accepts the prompt, and rejecting
 the promise if the user denies access. If the permission is not already granted,
 cross-screen placement requests could fall back to same-screen placements,
-matching pre-existing behavior of some user agents.
+matching pre-existing behavior of some user agents. The amount of information
+exposed to a given site would be at the discrecion of users and their agents,
+which may expose no new information, or subsets for more limited use cases.
 
 The `isMultiScreen()` method could fulfill its promise without a user prompt,
 exposing a minimal single bit of information to support some critical features

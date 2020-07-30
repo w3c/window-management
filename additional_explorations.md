@@ -140,6 +140,17 @@ to cache more system information and may preclude permission prompts or queries.
 const availableScreens = self.screens;
 ```
 
+With potential privacy concerns of exposing new screen and window placement
+information, new APIs should allow user agents to minimize information exposed
+without user permission. Asynchronous APIs are preferable, allowing the user
+agent to prompt users for permission or perform asynchronous permission model
+checks while the script continues processing any logic that does not depend on
+the result of the permission check.
+
+Additionally, system window managers themselves often provide asynchronous APIs,
+and this pattern allows implementers to gather the latest available information
+without blocking other application processing or requiring a cache.
+
 ### Exposing new info with the existing `Screen` interface
 
 The existing `Screen` interface seems like a natural and appropriate object for
@@ -648,19 +659,6 @@ between physical display devices and the overall space composed by their virtual
 arrangement. As the web platform already uses the `Screen` interface to describe
 a single physical unit of rendering space, it seems natural to follow this
 convention and work in terms of a multi-`Screen` display environment.
-
-### Synchronicity
-
-With potential privacy concerns of exposing new screen and window placement
-information, new APIs should allow user agents to minimize information exposed
-without user permission. Asynchronous APIs are preferable, allowing the user
-agent to prompt users for permission or perform asynchronous permission model
-checks while the script continues processing any logic that does not depend on
-the result of the permission check.
-
-Additionally, system window managers themselves often provide asynchronous APIs,
-and this pattern allows implementers to gather the latest available information
-without blocking other application processing or requiring a cache.
 
 ### Changes to `colorDepth` and `pixelDepth`
 

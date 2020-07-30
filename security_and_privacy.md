@@ -57,14 +57,17 @@ specified by a site are unlikely to provide the requisite expresiveness for most
 use cases.
 
 All newly exposed information could be gated by the proposed `window-placement`
-permission, limited to secure contexts, and perhaps limited to top-level frames.
+permission, limited to secure contexts, top-level frames, gated by user gesture,
+active window contexts, and other protections to help mitigate concerns around
+[fingerprinting](https://w3c.github.io/fingerprinting-guidance).
+
 The amount of information exposed to a given site would be at the discrecion of
-users and their agents. Rejecting promises, or providing a single `ScreenInfo`
-from `getScreens()` with values equivalent to the existing `window.screen`
-interface (or `undefined`), exposes no new information. Exposing the full set of
-proposed information enables web applications to offer compelling functionality,
-and exposing some limited subset of that information may be useful in some
-scenarios.
+users and their agents. Rejecting promises, or providing limited information
+(e.g. a single `ScreenInfo` from `getScreens()` with values equivalent to the
+existing `window.screen` interface (or `undefined`)) exposes no new information.
+Exposing the full set of proposed information enables web applications to offer
+compelling functionality, and exposing some limited subset of that new
+information may be useful in some scenarios.
 
 Supporting queries for limited pieces of information is not directly useful to
 sites conducting window placement use cases, and does not specifically prohibit

@@ -317,9 +317,9 @@ dictionary ScreenInfo {
 
 This method gives the web platform a surface to optionally expose an appropriate
 amount of multi-screen information to web applications. By returning a promise,
-user agents can asynchronously determine what amount of information sites may
-access, prompt users to decide, calculate the resulting values lazily, and
-reject or resolve accordingly.
+user agents can asynchronously determine what amount of information to expose,
+prompt users to decide, calculate the resulting values lazily, and reject or
+resolve accordingly.
 
 `ScreenInfo` objects retrieved from `getScreens()` are integral for multi-screen
 window placement use cases. The relative bounds establish a coordinate system

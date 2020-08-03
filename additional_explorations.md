@@ -380,12 +380,17 @@ Some possible ways that window state information and controls might be exposed:
   * Support explicit z-ordering, such as an `"alwaysOnTop"` window state
 * Observe window state changes with a `onwindowstate` event (see goal below too)
 
-Window [display](https://developer.mozilla.org/en-US/docs/Web/Manifest/display)
-modes may warrant similar runtime access patterns:
-* `fullscreen`: Window content fills the display without a frame
-* `standalone`: A standalone application frame
-* `minimal-ui`: Similar to `standalone` with a minimal set of UI elements
-* `browser`: A conventional browser tab
+It may be reasonable to extend control and introspection about an application
+window's types or display mode, (e.g. requesting a specific type or display mode
+on `window.open()`, exposing the type or display mode of an open window, or
+requesting to change the type or display mode change for an open window, etc.):
+* `tab`: A conventional browser tab
+* `popup`: A popup created via window.open()
+* PWA Window [display modes](https://developer.mozilla.org/en-US/docs/Web/Manifest/display)
+  * `fullscreen`: Window content fills the display without a frame
+  * `standalone`: A standalone application frame
+  * `minimal-ui`: Similar to `standalone` with a minimal set of UI elements
+  * `browser`: A conventional browser tab
 
 There are also proposals/explorations for new display modes or modifiers:
 * [Window Controls Overlay](https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/master/TitleBarCustomization/explainer.md)
@@ -393,8 +398,12 @@ There are also proposals/explorations for new display modes or modifiers:
 * [Tabbed Application Mode](https://github.com/w3c/manifest/issues/737)
 * [More precise control over app window features](https://github.com/w3c/manifest/issues/856)
 
+Some related control over the launching of windows may be explored by:
+* [Service Worker Launch Event](https://github.com/WICG/sw-launch)
+* [Declarative Link Capturing](https://github.com/WICG/sw-launch/blob/master/declarative_link_capturing.md)
+
 Here are some possible use cases for the extended window state and display APIs:
-* Open a new fullscreen slideshow window on anoter screen, keep current window
+* Open a new fullscreen slideshow window on another screen, keep current window
 * Minimize/restore/focus associated windows per user control of a 'main' window:
   * Doctor minimizes patient case window, app minimizes associated image windows
   * Doctor selects patient case entry in a list, app restores minimized windows

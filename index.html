@@ -1225,7 +1225,7 @@ Possible extra rowspan handling
   <meta content="Bikeshed version 7c63c139, updated Fri Jul 17 17:12:19 2020 -0700" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="4a3b18e453b6332a95574461c8d2012b54a35237" name="document-revision">
+  <meta content="23c914fa8b8451b7a79e0dcb6a18c45666432f92" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -1509,7 +1509,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <dt>Test Suite:
      <dd><a href="https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration">https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration</a>
      <dt>Issue Tracking:
-     <dd><a href="https://github.com/webscreens/window-placement/issues/">GitHub</a>
+     <dd><a href="https://github.com/inexorabletash/window-placement/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editors:
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:costan@google.com">Victor Costan</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
@@ -1528,7 +1528,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div data-fill-with="status">
    <p> <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
    <p> This document was published by the <a href="https://www.w3.org/2014/secondscreen/">Second Screen Working Group</a> as an Editor’s Draft. This document is intended to become a W3C Recommendation. </p>
-   <p> Feedback and comments on this specification are welcome. Please use <a href="https://github.com/webscreens/window-placement/issues">Github issues</a>. </p>
+   <p> Feedback and comments on this specification are welcome. Please use <a href="https://github.com/inexorabletash/window-placement/issues">Github issues</a>. </p>
    <p> Publication as an Editor’s Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress. </p>
    <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/74168/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential
     Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
@@ -1605,14 +1605,13 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <p>Run these steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel">in parallel</a>:</p>
       <ol>
        <li data-md>
-        <p>a</p>
-       <li data-md>
-        <p><a data-link-type="dfn" href="https://heycam.github.io/webidl/#resolve" id="ref-for-resolve">Resolve</a> <var>promise</var> with ...</p>
+        <p><a data-link-type="dfn" href="https://heycam.github.io/webidl/#resolve" id="ref-for-resolve">Resolve</a> <var>promise</var> with true if multiple displays are available to present content, and false otherwise.</p>
       </ol>
      <li data-md>
       <p>Return <var>promise</var>.</p>
     </ol>
    </div>
+   <p class="issue" id="issue-c601b517"><a class="self-link" href="#issue-c601b517"></a> Permission check for above?</p>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①"><c- g>Window</c-></a> {
   // NEW: Returns a snapshot of information about connected screens on success.
   [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext" id="ref-for-SecureContext①"><c- g>SecureContext</c-></a>]
@@ -1664,9 +1663,28 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="method" data-export id="dom-window-getscreens"><code>getScreens()</code></dfn> method steps are:</p>
     <ol>
      <li data-md>
-      <p>a</p>
+      <p>Let <var>promise</var> be <a data-link-type="dfn" href="https://heycam.github.io/webidl/#a-new-promise" id="ref-for-a-new-promise①">a new promise</a>.</p>
+     <li data-md>
+      <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel①">in parallel</a>:</p>
+      <ol>
+       <li data-md>
+        <p>Let <var>screens</var> be a new <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a>.</p>
+       <li data-md>
+        <p>For each <var>display</var> connected to the device:</p>
+        <ol>
+         <li data-md>
+          <p>Let <var>info</var> be a new <code class="idl"><a data-link-type="idl" href="#dictdef-screeninfo" id="ref-for-dictdef-screeninfo①">ScreenInfo</a></code> dictionary describing <var>display</var>.</p>
+         <li data-md>
+          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> <var>info</var> to <var>screens</var>.</p>
+        </ol>
+       <li data-md>
+        <p><a data-link-type="dfn" href="https://heycam.github.io/webidl/#resolve" id="ref-for-resolve①">Resolve</a> <var>promise</var> with <var>screens</var>.</p>
+      </ol>
+     <li data-md>
+      <p>Return <var>promise</var>.</p>
     </ol>
    </div>
+   <p class="issue" id="issue-af68eec8"><a class="self-link" href="#issue-af68eec8"></a> Add permission check to the above.</p>
    <h3 class="heading settled" data-level="3.1" id="events"><span class="secno">3.1. </span><span class="content">Events</span><a class="self-link" href="#events"></a></h3>
    <p class="issue" id="issue-fe87ef27"><a class="self-link" href="#issue-fe87ef27"></a> Define when screens change.</p>
    <p>When blah blah blah happens, fire an event with type <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="event" data-export id="eventdef-window-screenschange"><code>screenschange</code></dfn> at blah blah.</p>
@@ -1690,7 +1708,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <a class="n" data-link-type="idl-name" href="https://fullscreen.spec.whatwg.org/#enumdef-fullscreennavigationui" id="ref-for-enumdef-fullscreennavigationui"><c- n>FullscreenNavigationUI</c-></a> <dfn class="idl-code" data-default="&quot;auto&quot;" data-dfn-for="FullscreenOptions" data-dfn-type="dict-member" data-export data-type="FullscreenNavigationUI " id="dom-fullscreenoptions-navigationui"><code><c- g>navigationUI</c-></code><a class="self-link" href="#dom-fullscreenoptions-navigationui"></a></dfn> = "auto";
 
   // NEW: An optional way to request a specific screen for element fullscreen.
-  <a class="n" data-link-type="idl-name" href="#dictdef-screeninfo" id="ref-for-dictdef-screeninfo①"><c- n>ScreenInfo</c-></a> <dfn class="idl-code" data-dfn-for="FullscreenOptions" data-dfn-type="dict-member" data-export data-type="ScreenInfo " id="dom-fullscreenoptions-screen"><code><c- g>screen</c-></code><a class="self-link" href="#dom-fullscreenoptions-screen"></a></dfn>;
+  <a class="n" data-link-type="idl-name" href="#dictdef-screeninfo" id="ref-for-dictdef-screeninfo②"><c- n>ScreenInfo</c-></a> <dfn class="idl-code" data-dfn-for="FullscreenOptions" data-dfn-type="dict-member" data-export data-type="ScreenInfo " id="dom-fullscreenoptions-screen"><code><c- g>screen</c-></code><a class="self-link" href="#dom-fullscreenoptions-screen"></a></dfn>;
 };
 </pre>
    <h2 class="heading settled" data-level="4" id="security"><span class="secno">4. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
@@ -1791,7 +1809,19 @@ Thomas Steiner,</p>
   <aside class="dfn-panel" data-for="term-for-in-parallel">
    <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-in-parallel">3. API</a>
+    <li><a href="#ref-for-in-parallel">3. API</a> <a href="#ref-for-in-parallel①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-list-append">
+   <a href="https://infra.spec.whatwg.org/#list-append">https://infra.spec.whatwg.org/#list-append</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-list-append">3. API</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-list">
+   <a href="https://infra.spec.whatwg.org/#list">https://infra.spec.whatwg.org/#list</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-list">3. API</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-orientationtype">
@@ -1816,7 +1846,7 @@ Thomas Steiner,</p>
   <aside class="dfn-panel" data-for="term-for-a-new-promise">
    <a href="https://heycam.github.io/webidl/#a-new-promise">https://heycam.github.io/webidl/#a-new-promise</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-a-new-promise">3. API</a>
+    <li><a href="#ref-for-a-new-promise">3. API</a> <a href="#ref-for-a-new-promise①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-boolean">
@@ -1840,7 +1870,7 @@ Thomas Steiner,</p>
   <aside class="dfn-panel" data-for="term-for-resolve">
    <a href="https://heycam.github.io/webidl/#resolve">https://heycam.github.io/webidl/#resolve</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-resolve">3. API</a>
+    <li><a href="#ref-for-resolve">3. API</a> <a href="#ref-for-resolve①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-unsigned-long">
@@ -1872,6 +1902,12 @@ Thomas Steiner,</p>
      <li><span class="dfn-paneled" id="term-for-in-parallel" style="color:initial">in parallel</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[INFRA]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-list-append" style="color:initial">append</span>
+     <li><span class="dfn-paneled" id="term-for-list" style="color:initial">list</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[screen-orientation]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-dom-orientationtype" style="color:initial">OrientationType</span>
@@ -1897,6 +1933,8 @@ Thomas Steiner,</p>
    <dd>Philip Jägenstedt. <a href="https://fullscreen.spec.whatwg.org/">Fullscreen API Standard</a>. Living Standard. URL: <a href="https://fullscreen.spec.whatwg.org/">https://fullscreen.spec.whatwg.org/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dt id="biblio-infra">[INFRA]
+   <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/">Infra Standard</a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
    <dt id="biblio-screen-orientation">[SCREEN-ORIENTATION]
    <dd>Mounir Lamouri; Marcos Caceres; Johanna Herman. <a href="https://www.w3.org/TR/screen-orientation/">The Screen Orientation API</a>. 17 April 2020. WD. URL: <a href="https://www.w3.org/TR/screen-orientation/">https://www.w3.org/TR/screen-orientation/</a>
    <dt id="biblio-webidl">[WebIDL]
@@ -1981,6 +2019,8 @@ Thomas Steiner,</p>
    <div class="issue"> Write this section.<a href="#issue-089b92ec①"> ↵ </a></div>
    <div class="issue"> Write this section.<a href="#issue-089b92ec②"> ↵ </a></div>
    <div class="issue"> Write this section.<a href="#issue-089b92ec③"> ↵ </a></div>
+   <div class="issue"> Permission check for above?<a href="#issue-c601b517"> ↵ </a></div>
+   <div class="issue"> Add permission check to the above.<a href="#issue-af68eec8"> ↵ </a></div>
    <div class="issue"> Define when screens change.<a href="#issue-fe87ef27"> ↵ </a></div>
    <div class="issue"> File bug against permissions spec, since partial enums aren’t a thing.<a href="#issue-106908a0"> ↵ </a></div>
    <div class="issue"> Push this into other spec?<a href="#issue-a89d1969"> ↵ </a></div>
@@ -1999,8 +2039,8 @@ Thomas Steiner,</p>
   <aside class="dfn-panel" data-for="dictdef-screeninfo">
    <b><a href="#dictdef-screeninfo">#dictdef-screeninfo</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dictdef-screeninfo">3. API</a>
-    <li><a href="#ref-for-dictdef-screeninfo①">3.2. Other Specifications</a>
+    <li><a href="#ref-for-dictdef-screeninfo">3. API</a> <a href="#ref-for-dictdef-screeninfo①">(2)</a>
+    <li><a href="#ref-for-dictdef-screeninfo②">3.2. Other Specifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-window-getscreens">

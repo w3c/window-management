@@ -87,14 +87,15 @@ The <dfn method for=Window>isMultiScreen()</dfn> method steps are:
 
 1. Run these steps [=/in parallel=]:
 
-    1. a
 
-    1. [=/Resolve=] |promise| with ...
+    1. [=/Resolve=] |promise| with true if multiple displays are available to present content, and false otherwise.
 
 
 1. Return |promise|.
 
 </div>
+
+Issue: Permission check for above?
 
 
 <xmp class=idl>
@@ -150,10 +151,26 @@ dictionary ScreenInfo {
 
 The <dfn method for=Window>getScreens()</dfn> method steps are:
 
-1. a
+1. Let |promise| be [=/a new promise=].
 
+1. Run the following steps [=/in parallel=]:
+
+    1. Let |screens| be a new [=/list=].
+
+    1. For each |display| connected to the device:
+
+        1. Let |info| be a new {{ScreenInfo}} dictionary describing |display|.
+
+        1. [=list/Append=] |info| to |screens|.
+
+    1. [=/Resolve=] |promise| with |screens|.
+
+
+1. Return |promise|.
 
 </div>
+
+Issue: Add permission check to the above.
 
 
 <!-- ====================================================================== -->

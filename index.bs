@@ -1,0 +1,262 @@
+<pre class=metadata>
+Title: Multi-Screen Window Placement
+Shortname: multi-screen
+Abstract: This document defines a web platform API that allows script to query the device for information about connected displays, and additional APIs to position windows relative to those displays.
+Status: ED
+ED: https://webscreens.github.io/window-placement
+Level: 1
+Editor: Victor Costan, Google Inc. https://google.com, costan@google.com
+Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com
+Group: secondscreenwg
+Test Suite: https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration
+Favicon: logo.svg
+Complain About: accidental-2119 yes, missing-example-ids yes
+Markup Shorthands: css no, markdown yes
+</pre>
+
+<style>
+.domintro::before {
+    content: 'For web developers (non-normative)';
+    text-transform: initial;
+}
+.domintro dt {
+    font-family: Menlo, Consolas, "DejaVu Sans Mono", Monaco, monospace;
+
+    padding-top: 0.5em;
+    padding-bottom: 1em;
+}
+.domintro dt a {
+    color: inherit; border-bottom-style: none;
+}
+.domintro dt code {
+    font-size: inherit;
+}
+</style>
+
+<!-- ====================================================================== -->
+# Introduction # {#introduction}
+<!-- ====================================================================== -->
+
+*This section is non-normative.*
+
+Issue: Write this section.
+
+<!-- ====================================================================== -->
+## Usage Overview ## {#usage-overview}
+<!-- ====================================================================== -->
+
+Issue: Write this section.
+
+<!-- ====================================================================== -->
+## Motivating Use Cases ## {#motivations}
+<!-- ====================================================================== -->
+
+Issue: Write this section.
+
+<!-- ====================================================================== -->
+# Concepts # {#concepts}
+<!-- ====================================================================== -->
+
+Issue: Write this section.
+
+<!-- ====================================================================== -->
+# API # {#api}
+<!-- ====================================================================== -->
+
+<div class="domintro note">
+
+    : const multi = await {{Window/isMultiScreen()}};
+
+    :: Returns whether the device has multiple connected screens on success. User agents can prompt for permission.
+};
+
+</div>
+
+<xmp class=idl>
+partial interface Window {
+  [SecureContext]
+  Promise<boolean> isMultiScreen();
+};
+</xmp>
+
+<div algorithm>
+
+The <dfn method for=Window>isMultiScreen()</dfn> method steps are:
+
+1. Let |promise| be [=/a new promise=].
+
+1. Run these steps [=/in parallel=]:
+
+    1. a
+
+    1. [=/Resolve=] |promise| with ...
+
+
+1. Return |promise|.
+
+</div>
+
+
+<xmp class=idl>
+partial interface Window {
+  // NEW: Returns a snapshot of information about connected screens on success.
+  [SecureContext]
+  Promise<sequence<ScreenInfo>> getScreens();  // UAs may prompt for permission.
+};
+
+
+dictionary ScreenInfo {
+  // Shape matches https://drafts.csswg.org/cssom-view/#the-screen-interface
+  long availWidth;           // Width of the available screen area, e.g. 1920
+  long availHeight;          // Height of the available screen area, e.g. 1032
+  long width;                // Width of the screen area, e.g. 1920
+  long height;               // Height of the screen area, e.g. 1080
+  unsigned long colorDepth;  // Bits allocated to colors for a pixel, e.g. 24
+  unsigned long pixelDepth;  // Bits allocated to colors for a pixel, e.g. 24
+
+  // Shape roughly matches https://w3c.github.io/screen-orientation
+  OrientationType orientationType;  // Orientation type, e.g. "portrait-primary"
+  unsigned short orientationAngle;  // Orientation angle, e.g. 0
+
+  // Shape matches https://developer.mozilla.org/en-US/docs/Web/API/Screen
+  // Critical for understanding relative screen layouts for window placement.
+  // Distances from a multi-screen origin (e.g. primary screen top left) to the:
+  long left;       // Left edge of the screen area, e.g. 1920
+  long top;        // Top edge of the screen area, e.g. 0
+  long availLeft;  // Left edge of the available screen area, e.g. 1920
+  long availTop;   // Top edge of the available screen area, e.g. 0
+
+  // New properties critical for many multi-screen window placement use cases.
+  boolean primary;       // If this screen is designated as the 'primary' screen
+                         // by the OS (otherwise it is 'secondary'), e.g. true
+                         // Useful for placing prominent vs peripheral windows.
+  boolean internal;      // If this screen is an 'internal' display, built into
+                         // the device, like a laptop screen, e.g. false
+                         // Useful for placing slideshows on external projectors
+                         // and controls/notes on internal laptop screens.
+  float scaleFactor;     // Ratio between physical pixels and device
+                         // independent pixels for this screen, e.g. 2
+                         // Useful for placing windows on screens with optimal
+                         // scaling and appearances for a given application.
+  DOMString id;          // A temporary, generated per-origin unique ID; resets
+                         // when cookies are deleted. Useful for persisting user
+                         // window placements preferences for certain screens.
+  boolean touchSupport;  // If the screen supports touch input, e.g. false
+                         // Useful for placing control panels on touch-screens.
+};
+</xmp>
+
+<div algorithm>
+
+The <dfn method for=Window>getScreens()</dfn> method steps are:
+
+1. a
+
+
+</div>
+
+
+<!-- ====================================================================== -->
+## Events ## {#events}
+<!-- ====================================================================== -->
+
+
+Issue: Define when screens change.
+
+When blah blah blah happens, fire an event with type <dfn event for=Window>`screenschange`</dfn> at blah blah.
+
+
+<xmp class=idl>
+partial interface Window {
+  // NEW: An event fired when the connected screens or their properties change.
+  [SecureContext]
+  attribute EventHandler onscreenschange;
+};
+</xmp>
+
+
+The <dfn attribute for=Window>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event>`screenschange`</a>.
+
+
+<!-- ====================================================================== -->
+## Other Specifications ## {#other-specs}
+<!-- ====================================================================== -->
+
+Issue: File bug against permissions spec, since partial enums aren't a thing.
+<xmp class=idl>
+enum PermissionName {
+  // ...
+  "window-placement",
+  // ...
+};
+</xmp>
+
+Issue: Push this into other spec?
+<xmp class=idl>
+dictionary FullscreenOptions {
+  FullscreenNavigationUI navigationUI = "auto";
+
+  // NEW: An optional way to request a specific screen for element fullscreen.
+  ScreenInfo screen;
+};
+</xmp>
+
+
+
+<!-- ====================================================================== -->
+# Security Considerations # {#security}
+<!-- ====================================================================== -->
+
+Issue: Write this section.
+
+
+<!-- ====================================================================== -->
+# Privacy Considerations # {#privacy}
+<!-- ====================================================================== -->
+
+Issue: Write this section.
+
+
+<!-- ====================================================================== -->
+# Accessibility Considerations # {#a11y}
+<!-- ====================================================================== -->
+
+Issue: Write this section.
+
+
+<!-- ====================================================================== -->
+# Internationalization Considerations # {#i18n}
+<!-- ====================================================================== -->
+
+Issue: Write this section.
+
+
+<!-- ====================================================================== -->
+# Acknowledgements # {#acknowledgements}
+<!-- ====================================================================== -->
+
+Many thanks to
+
+Anssi Kostiainen,
+Chris Terefinko,
+Domenic Denicola,
+Jonathan Garbee,
+Kenneth Rohde Christiansen,
+L. David Baron,
+Lukasz Olejnik,
+Marijn Kruisselbrink,
+Matt Giuca,
+Michael Ketting,
+Michael Wasserman,
+Nadav Sinai,
+Peter Linss,
+Staphany Park,
+Theresa O'Connor,
+Thomas Nattestad,
+Thomas Steiner,
+
+for helping craft this proposal.
+
+Issue: Ensure we didn't forget anyone!
+
+Special thanks to Tab Atkins, Jr. for creating and maintaining [Bikeshed](https://github.com/tabatkins/bikeshed), the specification authoring tool used to create this document, and for his general authoring advice.

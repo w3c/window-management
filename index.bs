@@ -114,17 +114,38 @@ A [=screen area=] has a <dfn>height</dfn>, which is the number of [=screen pixel
 </aside>
 
 <!-- ====================================================================== -->
-## Connected screen ## {#connected-screen-concept}
+## Connected screen ## {#concept-connected-screen}
 <!-- ====================================================================== -->
 
-The computer system hosting the user agent presents information using one or more <dfn for=connected-screen>connected screens</dfn>.
+The computer system hosting the user agent presents information using one or more <dfn>connected screens</dfn>.
 
 A computer system's [=connected screens=] may change while a user agent is running.
 
-A [=connected screen=] has a [=screen area=].
+A [=connected screen=] has a [=screen area=], which is used to present information to the user.
 
 <!-- ====================================================================== -->
-## Internal screen ## {#internal-screen-concept}
+## Available screen area ## {#concept-available-screen-area}
+<!-- ====================================================================== -->
+
+Web applications cannot assume that a [=connected screen=]'s [=screen area=] is entirely available to them.
+The operating system hosting the user agent may reserve some of the [=screen area=] for its own user interface, and the user agent's chrome may be taking some of the [=screen area=].
+
+The <dfn>available screen area</dfn> of a [=connected screen=] is a subset of the [=screen area=] that is entirely available for web applications.
+The rectangle's edges are parallel to the [=screen area=] edges.
+
+The <dfn>available width</dfn> of a [=connected screen=] is the [=width=] of the [=connected screen=]'s [=available screen area=].
+
+The <dfn>available height</dfn> of a [=connected screen=] is the [=height=] of the [=connected screen=]'s [=available screen area=].
+
+<!-- ====================================================================== -->
+## System screen area ## {#concept-system-screen-area}
+<!-- ====================================================================== -->
+
+TODO: Describe the virtual screen area made up of the multiple physical screens.
+
+
+<!-- ====================================================================== -->
+## Internal screen ## {#concept-internal-screen}
 <!-- ====================================================================== -->
 
 Each [=connected screen=] may be designated as <dfn>internal</dfn> or <dfn>external</dfn>.
@@ -147,7 +168,7 @@ However, [=internal=] [=connected screens=] may still appear and disappear while
 </aside>
 
 <!-- ====================================================================== -->
-## Primary screen ## {#primary-screen-concept}
+## Primary screen ## {#concept-primary-screen}
 <!-- ====================================================================== -->
 
 The computer system hosting the user agent has exactly one <dfn>primary</dfn> [=connected screen=]. All the other [=connected screens|connected screen=] are considered <dfn>secondary</dfn>.
@@ -163,15 +184,12 @@ A [=connected screen=]'s [=primary=] / [=secondary=] designation may change whil
 </aside>
 
 <!-- ====================================================================== -->
-## Touch support ## {#touch-support-concept}
+## Touch support ## {#concept-touch-support}
 <!-- ====================================================================== -->
 
 A [=connected screen=] may have <dfn>touch support</dfn>.
 
 [=Touch support=] is usually implemented by layering a touch sensor over the [=screen area=].
-
-
-
 
 <!-- ====================================================================== -->
 # API # {#api}
@@ -220,8 +238,8 @@ partial interface Window {
 
 dictionary ScreenInfo {
   // Shape matches https://drafts.csswg.org/cssom-view/#the-screen-interface
-  long availWidth;           // Width of the available screen area, e.g. 1920
-  long availHeight;          // Height of the available screen area, e.g. 1032
+  long availWidth;
+  long availHeight;
   long width;
   long height;
   unsigned long colorDepth;

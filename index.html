@@ -1222,10 +1222,10 @@ Possible extra rowspan handling
 	}
 </style>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 7c63c139, updated Fri Jul 17 17:12:19 2020 -0700" name="generator">
+  <meta content="Bikeshed version 5f7b0e20, updated Tue Aug 18 15:46:28 2020 -0700" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="23c914fa8b8451b7a79e0dcb6a18c45666432f92" name="document-revision">
+  <meta content="c4b75c00aa3c0ae6f8166e4af0f501e361b2581b" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -1501,7 +1501,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-08-20">20 August 2020</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-08-21">21 August 2020</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1509,7 +1509,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <dt>Test Suite:
      <dd><a href="https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration">https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration</a>
      <dt>Issue Tracking:
-     <dd><a href="https://github.com/inexorabletash/window-placement/issues/">GitHub</a>
+     <dd><a href="https://github.com/webscreens/window-placement/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editors:
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:costan@google.com">Victor Costan</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
@@ -1528,7 +1528,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div data-fill-with="status">
    <p> <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
    <p> This document was published by the <a href="https://www.w3.org/2014/secondscreen/">Second Screen Working Group</a> as an Editor’s Draft. This document is intended to become a W3C Recommendation. </p>
-   <p> Feedback and comments on this specification are welcome. Please use <a href="https://github.com/inexorabletash/window-placement/issues">Github issues</a>. </p>
+   <p> Feedback and comments on this specification are welcome. Please use <a href="https://github.com/webscreens/window-placement/issues">Github issues</a>. </p>
    <p> Publication as an Editor’s Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress. </p>
    <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/74168/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential
     Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
@@ -1545,7 +1545,17 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <li><a href="#usage-overview"><span class="secno">1.1</span> <span class="content">Usage Overview</span></a>
       <li><a href="#motivations"><span class="secno">1.2</span> <span class="content">Motivating Use Cases</span></a>
      </ol>
-    <li><a href="#concepts"><span class="secno">2</span> <span class="content">Concepts</span></a>
+    <li>
+     <a href="#concepts"><span class="secno">2</span> <span class="content">Concepts</span></a>
+     <ol class="toc">
+      <li><a href="#concept-screen-pixel"><span class="secno">2.1</span> <span class="content">Screen pixel</span></a>
+      <li><a href="#concept-color-depth"><span class="secno">2.2</span> <span class="content">Color depth</span></a>
+      <li><a href="#concept-screen-area"><span class="secno">2.3</span> <span class="content">Screen area</span></a>
+      <li><a href="#connected-screen-concept"><span class="secno">2.4</span> <span class="content">Connected screen</span></a>
+      <li><a href="#internal-screen-concept"><span class="secno">2.5</span> <span class="content">Internal screen</span></a>
+      <li><a href="#primary-screen-concept"><span class="secno">2.6</span> <span class="content">Primary screen</span></a>
+      <li><a href="#touch-support-concept"><span class="secno">2.7</span> <span class="content">Touch support</span></a>
+     </ol>
     <li>
      <a href="#api"><span class="secno">3</span> <span class="content">API</span></a>
      <ol class="toc">
@@ -1575,13 +1585,64 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <main>
    <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
    <p><em>This section is non-normative.</em></p>
+   <p>Operating systems generally allow users to connect multiple screens to a single
+device and arrange them virtually to extend the overall visual workspace.</p>
+   <p>As multi-screen devices and applications become a more common and critical part
+of user experiences, it becomes more important to give developers information
+and tools to leverage that expanded visual environment. This document describes
+some possible incremental solutions enabling web application developers to make
+use of multi-screen devices, in order to facilitate discussion and seek
+concensus on a path forward.</p>
    <p class="issue" id="issue-089b92ec"><a class="self-link" href="#issue-089b92ec"></a> Write this section.</p>
    <h3 class="heading settled" data-level="1.1" id="usage-overview"><span class="secno">1.1. </span><span class="content">Usage Overview</span><a class="self-link" href="#usage-overview"></a></h3>
    <p class="issue" id="issue-089b92ec①"><a class="self-link" href="#issue-089b92ec①"></a> Write this section.</p>
    <h3 class="heading settled" data-level="1.2" id="motivations"><span class="secno">1.2. </span><span class="content">Motivating Use Cases</span><a class="self-link" href="#motivations"></a></h3>
    <p class="issue" id="issue-089b92ec②"><a class="self-link" href="#issue-089b92ec②"></a> Write this section.</p>
    <h2 class="heading settled" data-level="2" id="concepts"><span class="secno">2. </span><span class="content">Concepts</span><a class="self-link" href="#concepts"></a></h2>
-   <p class="issue" id="issue-089b92ec③"><a class="self-link" href="#issue-089b92ec③"></a> Write this section.</p>
+   <p class="issue" id="issue-1e9cfe84"><a class="self-link" href="#issue-1e9cfe84"></a> Finish up this section.</p>
+   <h3 class="heading settled" data-level="2.1" id="concept-screen-pixel"><span class="secno">2.1. </span><span class="content">Screen pixel</span><a class="self-link" href="#concept-screen-pixel"></a></h3>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="screen-pixel">screen pixel</dfn> is the smallest component of a screen that can be programmed directly.
+A screen pixel shows one color.</p>
+   <aside class="note"> On a liquid-crystal display (LCD), each screen pixel is made up of three components.
+  Each component is a (red, green, blue) light with variable intensity.
+  Reasoning about pixel components (subpixel rendering) is out of scope for this specification. </aside>
+   <h3 class="heading settled" data-level="2.2" id="concept-color-depth"><span class="secno">2.2. </span><span class="content">Color depth</span><a class="self-link" href="#concept-color-depth"></a></h3>
+   <p>A <a data-link-type="dfn" href="#screen-pixel" id="ref-for-screen-pixel">screen pixel</a>'s <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="color-depth">color depth</dfn> is the number of bits used to represent the color displayed by that pixel.</p>
+   <aside class="note"> Some popular rendering systems model <a data-link-type="dfn" href="#screen-pixel" id="ref-for-screen-pixel①">screen pixels</a> as having a <a data-link-type="dfn" href="#color-depth" id="ref-for-color-depth">color
+  depth</a> of 24. The 24 bits are separated into 3 groups of 8 bits used to
+  represent the intensity of the (red, green, blue) subpixels of an LCD <a data-link-type="dfn" href="#screen-pixel" id="ref-for-screen-pixel②">screen pixel</a>. </aside>
+   <h3 class="heading settled" data-level="2.3" id="concept-screen-area"><span class="secno">2.3. </span><span class="content">Screen area</span><a class="self-link" href="#concept-screen-area"></a></h3>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="screen-area">screen area</dfn> is a rectangular two-dimensional grid of <a data-link-type="dfn" href="#screen-pixel" id="ref-for-screen-pixel③">screen pixels</a> with the same <a data-link-type="dfn" href="#color-depth" id="ref-for-color-depth①">color depth</a>.</p>
+   <p>A <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area">screen area</a> has a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="width">width</dfn>, which is the number of <a data-link-type="dfn" href="#screen-pixel" id="ref-for-screen-pixel④">screen pixels</a> along the main dimension of the <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area①">screen area</a>'s rectangular pixel grid.</p>
+   <p>A <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area②">screen area</a> has a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="height">height</dfn>, which is the number of <a data-link-type="dfn" href="#screen-pixel" id="ref-for-screen-pixel⑤">screen pixels</a> along the secondary dimension of the <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area③">screen area</a>'s rectangular pixel grid.</p>
+   <aside class="note"> The grid size is usually expressed as <a data-link-type="dfn" href="#width" id="ref-for-width">width</a> x <a data-link-type="dfn" href="#height" id="ref-for-height">height</a>.
+  For example, a 1920x1080 screen area has a grid with a <a data-link-type="dfn" href="#width" id="ref-for-width①">width</a> of 1920 pixels and a <a data-link-type="dfn" href="#height" id="ref-for-height①">height</a> of 1080 pixels. </aside>
+   <h3 class="heading settled" data-level="2.4" id="connected-screen-concept"><span class="secno">2.4. </span><span class="content">Connected screen</span><a class="self-link" href="#connected-screen-concept"></a></h3>
+   <p>The computer system hosting the user agent presents information using one or more <dfn class="dfn-paneled" data-dfn-for="connected-screen" data-dfn-type="dfn" data-noexport id="connected-screen-connected-screens">connected screens</dfn>.</p>
+   <p>A computer system’s <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens">connected screens</a> may change while a user agent is running.</p>
+   <p>A <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens①">connected screen</a> has a <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area④">screen area</a>.</p>
+   <h3 class="heading settled" data-level="2.5" id="internal-screen-concept"><span class="secno">2.5. </span><span class="content">Internal screen</span><a class="self-link" href="#internal-screen-concept"></a></h3>
+   <p>Each <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens②">connected screen</a> may be designated as <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="internal">internal</dfn> or <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="external">external</dfn>.</p>
+   <p><a data-link-type="dfn" href="#external" id="ref-for-external">External</a> screens are manufactured separately from the computer systems they are connected to.
+It is not unusual for an <a data-link-type="dfn" href="#external" id="ref-for-external①">external</a> screen to be disconnected from one computer system and connected to a different computer system.</p>
+   <p><a data-link-type="dfn" href="#internal" id="ref-for-internal">Internal</a> screens are usually attached to a computer system at manufacturing time. <a data-link-type="dfn" href="#internal" id="ref-for-internal①">Internal</a> screens and are not intended to be detached by users.
+However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">internal</a> <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens③">connected screens</a> may still appear and disappear while the user agent is running.</p>
+   <aside class="note">
+     A laptop has an <a data-link-type="dfn" href="#internal" id="ref-for-internal③">internal</a> screen and an input device.
+  A laptop might be used while opened, with its <a data-link-type="dfn" href="#internal" id="ref-for-internal④">internal</a> screen powered on.
+  However, a laptop might also be used while closed, where its <a data-link-type="dfn" href="#internal" id="ref-for-internal⑤">internal</a> screen is powered off. 
+    <p>A laptop might be opened and closed while a user agent is running.
+  In this case, the <a data-link-type="dfn" href="#internal" id="ref-for-internal⑥">internal</a> screen appears as a <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens④">connected screen</a> when the laptop is opened.
+  The <a data-link-type="dfn" href="#internal" id="ref-for-internal⑦">internal</a> <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens⑤">connected screen</a> disappears when the laptop is closed.</p>
+   </aside>
+   <h3 class="heading settled" data-level="2.6" id="primary-screen-concept"><span class="secno">2.6. </span><span class="content">Primary screen</span><a class="self-link" href="#primary-screen-concept"></a></h3>
+   <p>The computer system hosting the user agent has exactly one <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="primary">primary</dfn> <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens⑥">connected screen</a>. All the other <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens⑦">connected screen</a> are considered <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="secondary">secondary</dfn>.</p>
+   <aside class="note"> The primary connected screen typically hosts the operating system’s user interface for task management, such as Windows' task bar and macOS' Dock. </aside>
+   <p>A <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens⑧">connected screen</a>'s <a data-link-type="dfn" href="#primary" id="ref-for-primary">primary</a> / <a data-link-type="dfn" href="#secondary" id="ref-for-secondary">secondary</a> designation may change while the user agent is running.</p>
+   <aside class="note"> Most operating systems let the user choose the primary connected screen using a management user interface, such as Windows' Control Panel and macOS' Preferences application. </aside>
+   <h3 class="heading settled" data-level="2.7" id="touch-support-concept"><span class="secno">2.7. </span><span class="content">Touch support</span><a class="self-link" href="#touch-support-concept"></a></h3>
+   <p>A <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens⑨">connected screen</a> may have <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="touch-support">touch support</dfn>.</p>
+   <p><a data-link-type="dfn" href="#touch-support" id="ref-for-touch-support">Touch support</a> is usually implemented by layering a touch sensor over the <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area⑤">screen area</a>.</p>
    <h2 class="heading settled" data-level="3" id="api"><span class="secno">3. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
    <div class="domintro note" role="note">
     <dl>
@@ -1605,7 +1666,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <p>Run these steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel">in parallel</a>:</p>
       <ol>
        <li data-md>
-        <p><a data-link-type="dfn" href="https://heycam.github.io/webidl/#resolve" id="ref-for-resolve">Resolve</a> <var>promise</var> with true if multiple displays are available to present content, and false otherwise.</p>
+        <p><a data-link-type="dfn" href="https://heycam.github.io/webidl/#resolve" id="ref-for-resolve">Resolve</a> <var>promise</var> with true if the computer system has more than one <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens①⓪">connected screen</a>, and false otherwise.</p>
       </ol>
      <li data-md>
       <p>Return <var>promise</var>.</p>
@@ -1623,10 +1684,10 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   // Shape matches https://drafts.csswg.org/cssom-view/#the-screen-interface
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long" id="ref-for-idl-long"><c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="long " id="dom-screeninfo-availwidth"><code><c- g>availWidth</c-></code><a class="self-link" href="#dom-screeninfo-availwidth"></a></dfn>;           // Width of the available screen area, e.g. 1920
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long" id="ref-for-idl-long①"><c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="long " id="dom-screeninfo-availheight"><code><c- g>availHeight</c-></code><a class="self-link" href="#dom-screeninfo-availheight"></a></dfn>;          // Height of the available screen area, e.g. 1032
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long" id="ref-for-idl-long②"><c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="long " id="dom-screeninfo-width"><code><c- g>width</c-></code><a class="self-link" href="#dom-screeninfo-width"></a></dfn>;                // Width of the screen area, e.g. 1920
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long" id="ref-for-idl-long③"><c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="long " id="dom-screeninfo-height"><code><c- g>height</c-></code><a class="self-link" href="#dom-screeninfo-height"></a></dfn>;               // Height of the screen area, e.g. 1080
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long" id="ref-for-idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="unsigned long " id="dom-screeninfo-colordepth"><code><c- g>colorDepth</c-></code><a class="self-link" href="#dom-screeninfo-colordepth"></a></dfn>;  // Bits allocated to colors for a pixel, e.g. 24
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long" id="ref-for-idl-unsigned-long①"><c- b>unsigned</c-> <c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="unsigned long " id="dom-screeninfo-pixeldepth"><code><c- g>pixelDepth</c-></code><a class="self-link" href="#dom-screeninfo-pixeldepth"></a></dfn>;  // Bits allocated to colors for a pixel, e.g. 24
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long" id="ref-for-idl-long②"><c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="long " id="dom-screeninfo-width"><code><c- g>width</c-></code><a class="self-link" href="#dom-screeninfo-width"></a></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long" id="ref-for-idl-long③"><c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="long " id="dom-screeninfo-height"><code><c- g>height</c-></code><a class="self-link" href="#dom-screeninfo-height"></a></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long" id="ref-for-idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="unsigned long " id="dom-screeninfo-colordepth"><code><c- g>colorDepth</c-></code><a class="self-link" href="#dom-screeninfo-colordepth"></a></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long" id="ref-for-idl-unsigned-long①"><c- b>unsigned</c-> <c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="unsigned long " id="dom-screeninfo-pixeldepth"><code><c- g>pixelDepth</c-></code><a class="self-link" href="#dom-screeninfo-pixeldepth"></a></dfn>;
 
   // Shape roughly matches https://w3c.github.io/screen-orientation
   <a class="n" data-link-type="idl-name" href="https://www.w3.org/TR/screen-orientation/#dom-orientationtype" id="ref-for-dom-orientationtype"><c- n>OrientationType</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="OrientationType " id="dom-screeninfo-orientationtype"><code><c- g>orientationType</c-></code><a class="self-link" href="#dom-screeninfo-orientationtype"></a></dfn>;  // Orientation type, e.g. "portrait-primary"
@@ -1641,13 +1702,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long" id="ref-for-idl-long⑦"><c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="long " id="dom-screeninfo-availtop"><code><c- g>availTop</c-></code><a class="self-link" href="#dom-screeninfo-availtop"></a></dfn>;   // Top edge of the available screen area, e.g. 0
 
   // New properties critical for many multi-screen window placement use cases.
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-screeninfo-primary"><code><c- g>primary</c-></code><a class="self-link" href="#dom-screeninfo-primary"></a></dfn>;       // If this screen is designated as the 'primary' screen
-                         // by the OS (otherwise it is 'secondary'), e.g. true
-                         // Useful for placing prominent vs peripheral windows.
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean②"><c- b>boolean</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-screeninfo-internal"><code><c- g>internal</c-></code><a class="self-link" href="#dom-screeninfo-internal"></a></dfn>;      // If this screen is an 'internal' display, built into
-                         // the device, like a laptop screen, e.g. false
-                         // Useful for placing slideshows on external projectors
-                         // and controls/notes on internal laptop screens.
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-screeninfo-primary"><code><c- g>primary</c-></code><a class="self-link" href="#dom-screeninfo-primary"></a></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean②"><c- b>boolean</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-screeninfo-internal"><code><c- g>internal</c-></code><a class="self-link" href="#dom-screeninfo-internal"></a></dfn>;
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-float" id="ref-for-idl-float"><c- b>float</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="float " id="dom-screeninfo-scalefactor"><code><c- g>scaleFactor</c-></code><a class="self-link" href="#dom-screeninfo-scalefactor"></a></dfn>;     // Ratio between physical pixels and device
                          // independent pixels for this screen, e.g. 2
                          // Useful for placing windows on screens with optimal
@@ -1655,8 +1711,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-screeninfo-id"><code><c- g>id</c-></code><a class="self-link" href="#dom-screeninfo-id"></a></dfn>;          // A temporary, generated per-origin unique ID; resets
                          // when cookies are deleted. Useful for persisting user
                          // window placements preferences for certain screens.
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean③"><c- b>boolean</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-screeninfo-touchsupport"><code><c- g>touchSupport</c-></code><a class="self-link" href="#dom-screeninfo-touchsupport"></a></dfn>;  // If the screen supports touch input, e.g. false
-                         // Useful for placing control panels on touch-screens.
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean③"><c- b>boolean</c-></a> <dfn class="idl-code" data-dfn-for="ScreenInfo" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-screeninfo-touchsupport"><code><c- g>touchSupport</c-></code><a class="self-link" href="#dom-screeninfo-touchsupport"></a></dfn>;
 };
 </pre>
    <div class="algorithm" data-algorithm="getScreens()" data-algorithm-for="Window">
@@ -1670,10 +1725,10 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
        <li data-md>
         <p>Let <var>screens</var> be a new <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a>.</p>
        <li data-md>
-        <p>For each <var>display</var> connected to the device:</p>
+        <p>For each <var>screen</var> <a data-link-type="dfn" href="#connected-screen-connected-screens" id="ref-for-connected-screen-connected-screens①①">connected screen</a>.</p>
         <ol>
          <li data-md>
-          <p>Let <var>info</var> be a new <code class="idl"><a data-link-type="idl" href="#dictdef-screeninfo" id="ref-for-dictdef-screeninfo①">ScreenInfo</a></code> dictionary describing <var>display</var>.</p>
+          <p>Let <var>info</var> be a new <code class="idl"><a data-link-type="idl" href="#dictdef-screeninfo" id="ref-for-dictdef-screeninfo①">ScreenInfo</a></code> dictionary describing <var>screen</var>.</p>
          <li data-md>
           <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> <var>info</var> to <var>screens</var>.</p>
         </ol>
@@ -1712,13 +1767,13 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 };
 </pre>
    <h2 class="heading settled" data-level="4" id="security"><span class="secno">4. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
-   <p class="issue" id="issue-089b92ec④"><a class="self-link" href="#issue-089b92ec④"></a> Write this section.</p>
+   <p class="issue" id="issue-089b92ec③"><a class="self-link" href="#issue-089b92ec③"></a> Write this section.</p>
    <h2 class="heading settled" data-level="5" id="privacy"><span class="secno">5. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
-   <p class="issue" id="issue-089b92ec⑤"><a class="self-link" href="#issue-089b92ec⑤"></a> Write this section.</p>
+   <p class="issue" id="issue-089b92ec④"><a class="self-link" href="#issue-089b92ec④"></a> Write this section.</p>
    <h2 class="heading settled" data-level="6" id="a11y"><span class="secno">6. </span><span class="content">Accessibility Considerations</span><a class="self-link" href="#a11y"></a></h2>
-   <p class="issue" id="issue-089b92ec⑥"><a class="self-link" href="#issue-089b92ec⑥"></a> Write this section.</p>
+   <p class="issue" id="issue-089b92ec⑤"><a class="self-link" href="#issue-089b92ec⑤"></a> Write this section.</p>
    <h2 class="heading settled" data-level="7" id="i18n"><span class="secno">7. </span><span class="content">Internationalization Considerations</span><a class="self-link" href="#i18n"></a></h2>
-   <p class="issue" id="issue-089b92ec⑦"><a class="self-link" href="#issue-089b92ec⑦"></a> Write this section.</p>
+   <p class="issue" id="issue-089b92ec⑥"><a class="self-link" href="#issue-089b92ec⑥"></a> Write this section.</p>
    <h2 class="heading settled" data-level="8" id="acknowledgements"><span class="secno">8. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledgements"></a></h2>
    <p>Many thanks to</p>
    <p>Anssi Kostiainen,
@@ -1751,12 +1806,25 @@ Thomas Steiner,</p>
    <li><a href="#dom-screeninfo-availleft">availLeft</a><span>, in §3</span>
    <li><a href="#dom-screeninfo-availtop">availTop</a><span>, in §3</span>
    <li><a href="#dom-screeninfo-availwidth">availWidth</a><span>, in §3</span>
+   <li><a href="#color-depth">color depth</a><span>, in §2.2</span>
    <li><a href="#dom-screeninfo-colordepth">colorDepth</a><span>, in §3</span>
+   <li><a href="#connected-screen-connected-screens">connected screens</a><span>, in §2.4</span>
+   <li><a href="#external">external</a><span>, in §2.5</span>
    <li><a href="#dictdef-fullscreenoptions">FullscreenOptions</a><span>, in §3.2</span>
    <li><a href="#dom-window-getscreens">getScreens()</a><span>, in §3</span>
-   <li><a href="#dom-screeninfo-height">height</a><span>, in §3</span>
+   <li>
+    height
+    <ul>
+     <li><a href="#height">definition of</a><span>, in §2.3</span>
+     <li><a href="#dom-screeninfo-height">dict-member for ScreenInfo</a><span>, in §3</span>
+    </ul>
    <li><a href="#dom-screeninfo-id">id</a><span>, in §3</span>
-   <li><a href="#dom-screeninfo-internal">internal</a><span>, in §3</span>
+   <li>
+    internal
+    <ul>
+     <li><a href="#internal">definition of</a><span>, in §2.5</span>
+     <li><a href="#dom-screeninfo-internal">dict-member for ScreenInfo</a><span>, in §3</span>
+    </ul>
    <li><a href="#dom-window-ismultiscreen">isMultiScreen()</a><span>, in §3</span>
    <li><a href="#dom-screeninfo-left">left</a><span>, in §3</span>
    <li><a href="#dom-fullscreenoptions-navigationui">navigationUI</a><span>, in §3.2</span>
@@ -1765,14 +1833,28 @@ Thomas Steiner,</p>
    <li><a href="#dom-screeninfo-orientationtype">orientationType</a><span>, in §3</span>
    <li><a href="#enumdef-permissionname">PermissionName</a><span>, in §3.2</span>
    <li><a href="#dom-screeninfo-pixeldepth">pixelDepth</a><span>, in §3</span>
-   <li><a href="#dom-screeninfo-primary">primary</a><span>, in §3</span>
+   <li>
+    primary
+    <ul>
+     <li><a href="#primary">definition of</a><span>, in §2.6</span>
+     <li><a href="#dom-screeninfo-primary">dict-member for ScreenInfo</a><span>, in §3</span>
+    </ul>
    <li><a href="#dom-screeninfo-scalefactor">scaleFactor</a><span>, in §3</span>
    <li><a href="#dom-fullscreenoptions-screen">screen</a><span>, in §3.2</span>
+   <li><a href="#screen-area">screen area</a><span>, in §2.3</span>
    <li><a href="#dictdef-screeninfo">ScreenInfo</a><span>, in §3</span>
+   <li><a href="#screen-pixel">screen pixel</a><span>, in §2.1</span>
    <li><a href="#eventdef-window-screenschange">screenschange</a><span>, in §3.1</span>
+   <li><a href="#secondary">secondary</a><span>, in §2.6</span>
    <li><a href="#dom-screeninfo-top">top</a><span>, in §3</span>
+   <li><a href="#touch-support">touch support</a><span>, in §2.7</span>
    <li><a href="#dom-screeninfo-touchsupport">touchSupport</a><span>, in §3</span>
-   <li><a href="#dom-screeninfo-width">width</a><span>, in §3</span>
+   <li>
+    width
+    <ul>
+     <li><a href="#width">definition of</a><span>, in §2.3</span>
+     <li><a href="#dom-screeninfo-width">dict-member for ScreenInfo</a><span>, in §3</span>
+    </ul>
    <li><a href="#dom-permissionname-window-placement">"window-placement"</a><span>, in §3.2</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-enumdef-fullscreennavigationui">
@@ -1957,10 +2039,10 @@ Thomas Steiner,</p>
   // Shape matches https://drafts.csswg.org/cssom-view/#the-screen-interface
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long"><c- b>long</c-></a> <a data-type="long " href="#dom-screeninfo-availwidth"><code><c- g>availWidth</c-></code></a>;           // Width of the available screen area, e.g. 1920
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long"><c- b>long</c-></a> <a data-type="long " href="#dom-screeninfo-availheight"><code><c- g>availHeight</c-></code></a>;          // Height of the available screen area, e.g. 1032
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long"><c- b>long</c-></a> <a data-type="long " href="#dom-screeninfo-width"><code><c- g>width</c-></code></a>;                // Width of the screen area, e.g. 1920
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long"><c- b>long</c-></a> <a data-type="long " href="#dom-screeninfo-height"><code><c- g>height</c-></code></a>;               // Height of the screen area, e.g. 1080
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <a data-type="unsigned long " href="#dom-screeninfo-colordepth"><code><c- g>colorDepth</c-></code></a>;  // Bits allocated to colors for a pixel, e.g. 24
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <a data-type="unsigned long " href="#dom-screeninfo-pixeldepth"><code><c- g>pixelDepth</c-></code></a>;  // Bits allocated to colors for a pixel, e.g. 24
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long"><c- b>long</c-></a> <a data-type="long " href="#dom-screeninfo-width"><code><c- g>width</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long"><c- b>long</c-></a> <a data-type="long " href="#dom-screeninfo-height"><code><c- g>height</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <a data-type="unsigned long " href="#dom-screeninfo-colordepth"><code><c- g>colorDepth</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <a data-type="unsigned long " href="#dom-screeninfo-pixeldepth"><code><c- g>pixelDepth</c-></code></a>;
 
   // Shape roughly matches https://w3c.github.io/screen-orientation
   <a class="n" data-link-type="idl-name" href="https://www.w3.org/TR/screen-orientation/#dom-orientationtype"><c- n>OrientationType</c-></a> <a data-type="OrientationType " href="#dom-screeninfo-orientationtype"><code><c- g>orientationType</c-></code></a>;  // Orientation type, e.g. "portrait-primary"
@@ -1975,13 +2057,8 @@ Thomas Steiner,</p>
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long"><c- b>long</c-></a> <a data-type="long " href="#dom-screeninfo-availtop"><code><c- g>availTop</c-></code></a>;   // Top edge of the available screen area, e.g. 0
 
   // New properties critical for many multi-screen window placement use cases.
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean " href="#dom-screeninfo-primary"><code><c- g>primary</c-></code></a>;       // If this screen is designated as the 'primary' screen
-                         // by the OS (otherwise it is 'secondary'), e.g. true
-                         // Useful for placing prominent vs peripheral windows.
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean " href="#dom-screeninfo-internal"><code><c- g>internal</c-></code></a>;      // If this screen is an 'internal' display, built into
-                         // the device, like a laptop screen, e.g. false
-                         // Useful for placing slideshows on external projectors
-                         // and controls/notes on internal laptop screens.
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean " href="#dom-screeninfo-primary"><code><c- g>primary</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean " href="#dom-screeninfo-internal"><code><c- g>internal</c-></code></a>;
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-float"><c- b>float</c-></a> <a data-type="float " href="#dom-screeninfo-scalefactor"><code><c- g>scaleFactor</c-></code></a>;     // Ratio between physical pixels and device
                          // independent pixels for this screen, e.g. 2
                          // Useful for placing windows on screens with optimal
@@ -1989,8 +2066,7 @@ Thomas Steiner,</p>
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString " href="#dom-screeninfo-id"><code><c- g>id</c-></code></a>;          // A temporary, generated per-origin unique ID; resets
                          // when cookies are deleted. Useful for persisting user
                          // window placements preferences for certain screens.
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean " href="#dom-screeninfo-touchsupport"><code><c- g>touchSupport</c-></code></a>;  // If the screen supports touch input, e.g. false
-                         // Useful for placing control panels on touch-screens.
+  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean " href="#dom-screeninfo-touchsupport"><code><c- g>touchSupport</c-></code></a>;
 };
 
 <c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/window-object.html#window"><c- g>Window</c-></a> {
@@ -2018,18 +2094,92 @@ Thomas Steiner,</p>
    <div class="issue"> Write this section.<a href="#issue-089b92ec"> ↵ </a></div>
    <div class="issue"> Write this section.<a href="#issue-089b92ec①"> ↵ </a></div>
    <div class="issue"> Write this section.<a href="#issue-089b92ec②"> ↵ </a></div>
-   <div class="issue"> Write this section.<a href="#issue-089b92ec③"> ↵ </a></div>
+   <div class="issue"> Finish up this section.<a href="#issue-1e9cfe84"> ↵ </a></div>
    <div class="issue"> Permission check for above?<a href="#issue-c601b517"> ↵ </a></div>
    <div class="issue"> Add permission check to the above.<a href="#issue-af68eec8"> ↵ </a></div>
    <div class="issue"> Define when screens change.<a href="#issue-fe87ef27"> ↵ </a></div>
    <div class="issue"> File bug against permissions spec, since partial enums aren’t a thing.<a href="#issue-106908a0"> ↵ </a></div>
    <div class="issue"> Push this into other spec?<a href="#issue-a89d1969"> ↵ </a></div>
+   <div class="issue"> Write this section.<a href="#issue-089b92ec③"> ↵ </a></div>
    <div class="issue"> Write this section.<a href="#issue-089b92ec④"> ↵ </a></div>
    <div class="issue"> Write this section.<a href="#issue-089b92ec⑤"> ↵ </a></div>
    <div class="issue"> Write this section.<a href="#issue-089b92ec⑥"> ↵ </a></div>
-   <div class="issue"> Write this section.<a href="#issue-089b92ec⑦"> ↵ </a></div>
    <div class="issue"> Ensure we didn’t forget anyone!<a href="#issue-e9601204"> ↵ </a></div>
   </div>
+  <aside class="dfn-panel" data-for="screen-pixel">
+   <b><a href="#screen-pixel">#screen-pixel</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-screen-pixel">2.2. Color depth</a> <a href="#ref-for-screen-pixel①">(2)</a> <a href="#ref-for-screen-pixel②">(3)</a>
+    <li><a href="#ref-for-screen-pixel③">2.3. Screen area</a> <a href="#ref-for-screen-pixel④">(2)</a> <a href="#ref-for-screen-pixel⑤">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="color-depth">
+   <b><a href="#color-depth">#color-depth</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-color-depth">2.2. Color depth</a>
+    <li><a href="#ref-for-color-depth①">2.3. Screen area</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="screen-area">
+   <b><a href="#screen-area">#screen-area</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-screen-area">2.3. Screen area</a> <a href="#ref-for-screen-area①">(2)</a> <a href="#ref-for-screen-area②">(3)</a> <a href="#ref-for-screen-area③">(4)</a>
+    <li><a href="#ref-for-screen-area④">2.4. Connected screen</a>
+    <li><a href="#ref-for-screen-area⑤">2.7. Touch support</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="width">
+   <b><a href="#width">#width</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-width">2.3. Screen area</a> <a href="#ref-for-width①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="height">
+   <b><a href="#height">#height</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-height">2.3. Screen area</a> <a href="#ref-for-height①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="connected-screen-connected-screens">
+   <b><a href="#connected-screen-connected-screens">#connected-screen-connected-screens</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-connected-screen-connected-screens">2.4. Connected screen</a> <a href="#ref-for-connected-screen-connected-screens①">(2)</a>
+    <li><a href="#ref-for-connected-screen-connected-screens②">2.5. Internal screen</a> <a href="#ref-for-connected-screen-connected-screens③">(2)</a> <a href="#ref-for-connected-screen-connected-screens④">(3)</a> <a href="#ref-for-connected-screen-connected-screens⑤">(4)</a>
+    <li><a href="#ref-for-connected-screen-connected-screens⑥">2.6. Primary screen</a> <a href="#ref-for-connected-screen-connected-screens⑦">(2)</a> <a href="#ref-for-connected-screen-connected-screens⑧">(3)</a>
+    <li><a href="#ref-for-connected-screen-connected-screens⑨">2.7. Touch support</a>
+    <li><a href="#ref-for-connected-screen-connected-screens①⓪">3. API</a> <a href="#ref-for-connected-screen-connected-screens①①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="internal">
+   <b><a href="#internal">#internal</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-internal">2.5. Internal screen</a> <a href="#ref-for-internal①">(2)</a> <a href="#ref-for-internal②">(3)</a> <a href="#ref-for-internal③">(4)</a> <a href="#ref-for-internal④">(5)</a> <a href="#ref-for-internal⑤">(6)</a> <a href="#ref-for-internal⑥">(7)</a> <a href="#ref-for-internal⑦">(8)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="external">
+   <b><a href="#external">#external</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-external">2.5. Internal screen</a> <a href="#ref-for-external①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="primary">
+   <b><a href="#primary">#primary</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-primary">2.6. Primary screen</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="secondary">
+   <b><a href="#secondary">#secondary</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-secondary">2.6. Primary screen</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="touch-support">
+   <b><a href="#touch-support">#touch-support</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-touch-support">2.7. Touch support</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="dom-window-ismultiscreen">
    <b><a href="#dom-window-ismultiscreen">#dom-window-ismultiscreen</a></b><b>Referenced in:</b>
    <ul>

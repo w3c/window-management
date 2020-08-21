@@ -39,6 +39,17 @@ Markup Shorthands: css no, markdown yes
 
 *This section is non-normative.*
 
+
+Operating systems generally allow users to connect multiple screens to a single
+device and arrange them virtually to extend the overall visual workspace.
+
+As multi-screen devices and applications become a more common and critical part
+of user experiences, it becomes more important to give developers information
+and tools to leverage that expanded visual environment. This document describes
+some possible incremental solutions enabling web application developers to make
+use of multi-screen devices, in order to facilitate discussion and seek
+concensus on a path forward.
+
 Issue: Write this section.
 
 <!-- ====================================================================== -->
@@ -57,7 +68,110 @@ Issue: Write this section.
 # Concepts # {#concepts}
 <!-- ====================================================================== -->
 
-Issue: Write this section.
+Issue: Finish up this section.
+
+<!-- ====================================================================== -->
+## Screen pixel ## {#concept-screen-pixel}
+<!-- ====================================================================== -->
+
+A <dfn>screen pixel</dfn> is the smallest component of a screen that can be programmed directly.
+A screen pixel shows one color.
+
+<aside class=note>
+  On a liquid-crystal display (LCD), each screen pixel is made up of three components.
+  Each component is a (red, green, blue) light with variable intensity.
+  Reasoning about pixel components (subpixel rendering) is out of scope for this specification.
+</aside>
+
+<!-- ====================================================================== -->
+## Color depth ## {#concept-color-depth}
+<!-- ====================================================================== -->
+
+A [=screen pixel=]'s <dfn>color depth</dfn> is the number of bits used to represent the color displayed by that pixel.
+
+<aside class=note>
+  Some popular rendering systems model [=screen pixels=] as having a [=color
+  depth=] of 24. The 24 bits are separated into 3 groups of 8 bits used to
+  represent the intensity of the (red, green, blue) subpixels of an LCD
+  [=screen pixel=].
+
+
+</aside>
+
+<!-- ====================================================================== -->
+## Screen area ## {#concept-screen-area}
+<!-- ====================================================================== -->
+
+A <dfn>screen area</dfn> is a rectangular two-dimensional grid of [=screen pixels=] with the same [=color depth=].
+
+A [=screen area=] has a <dfn>width</dfn>, which is the number of [=screen pixels=] along the main dimension of the [=screen area=]'s rectangular pixel grid.
+
+A [=screen area=] has a <dfn>height</dfn>, which is the number of [=screen pixels=] along the secondary dimension of the [=screen area=]'s rectangular pixel grid.
+
+<aside class=note>
+  The grid size is usually expressed as [=width=] x [=height=].
+  For example, a 1920x1080 screen area has a grid with a [=width=] of 1920 pixels and a [=height=] of 1080 pixels.
+</aside>
+
+<!-- ====================================================================== -->
+## Connected screen ## {#connected-screen-concept}
+<!-- ====================================================================== -->
+
+The computer system hosting the user agent presents information using one or more <dfn for=connected-screen>connected screens</dfn>.
+
+A computer system's [=connected screens=] may change while a user agent is running.
+
+A [=connected screen=] has a [=screen area=].
+
+<!-- ====================================================================== -->
+## Internal screen ## {#internal-screen-concept}
+<!-- ====================================================================== -->
+
+Each [=connected screen=] may be designated as <dfn>internal</dfn> or <dfn>external</dfn>.
+
+[=External=] screens are manufactured separately from the computer systems they are connected to.
+It is not unusual for an [=external=] screen to be disconnected from one computer system and connected to a different computer system.
+
+[=Internal=] screens are usually attached to a computer system at manufacturing time.
+[=Internal=] screens and are not intended to be detached by users.
+However, [=internal=] [=connected screens=] may still appear and disappear while the user agent is running.
+
+<aside class=note>
+  A laptop has an [=internal=] screen and an input device.
+  A laptop might be used while opened, with its [=internal=] screen powered on.
+  However, a laptop might also be used while closed, where its [=internal=] screen is powered off.
+
+  A laptop might be opened and closed while a user agent is running.
+  In this case, the [=internal=] screen appears as a [=connected screen=] when the laptop is opened.
+  The [=internal=] [=connected screen=] disappears when the laptop is closed.
+</aside>
+
+<!-- ====================================================================== -->
+## Primary screen ## {#primary-screen-concept}
+<!-- ====================================================================== -->
+
+The computer system hosting the user agent has exactly one <dfn>primary</dfn> [=connected screen=]. All the other [=connected screens|connected screen=] are considered <dfn>secondary</dfn>.
+
+<aside class=note>
+  The primary connected screen typically hosts the operating system's user interface for task management, such as Windows' task bar and macOS' Dock.
+</aside>
+
+A [=connected screen=]'s [=primary=] / [=secondary=] designation may change while the user agent is running.
+
+<aside class=note>
+  Most operating systems let the user choose the primary connected screen using a management user interface, such as Windows' Control Panel and macOS' Preferences application.
+</aside>
+
+<!-- ====================================================================== -->
+## Touch support ## {#touch-support-concept}
+<!-- ====================================================================== -->
+
+A [=connected screen=] may have <dfn>touch support</dfn>.
+
+[=Touch support=] is usually implemented by layering a touch sensor over the [=screen area=].
+
+
+
 
 <!-- ====================================================================== -->
 # API # {#api}
@@ -87,9 +201,7 @@ The <dfn method for=Window>isMultiScreen()</dfn> method steps are:
 
 1. Run these steps [=/in parallel=]:
 
-
-    1. [=/Resolve=] |promise| with true if multiple displays are available to present content, and false otherwise.
-
+    1. [=/Resolve=] |promise| with true if the computer system has more than one [=connected screen=], and false otherwise.
 
 1. Return |promise|.
 
@@ -110,10 +222,10 @@ dictionary ScreenInfo {
   // Shape matches https://drafts.csswg.org/cssom-view/#the-screen-interface
   long availWidth;           // Width of the available screen area, e.g. 1920
   long availHeight;          // Height of the available screen area, e.g. 1032
-  long width;                // Width of the screen area, e.g. 1920
-  long height;               // Height of the screen area, e.g. 1080
-  unsigned long colorDepth;  // Bits allocated to colors for a pixel, e.g. 24
-  unsigned long pixelDepth;  // Bits allocated to colors for a pixel, e.g. 24
+  long width;
+  long height;
+  unsigned long colorDepth;
+  unsigned long pixelDepth;
 
   // Shape roughly matches https://w3c.github.io/screen-orientation
   OrientationType orientationType;  // Orientation type, e.g. "portrait-primary"
@@ -128,13 +240,8 @@ dictionary ScreenInfo {
   long availTop;   // Top edge of the available screen area, e.g. 0
 
   // New properties critical for many multi-screen window placement use cases.
-  boolean primary;       // If this screen is designated as the 'primary' screen
-                         // by the OS (otherwise it is 'secondary'), e.g. true
-                         // Useful for placing prominent vs peripheral windows.
-  boolean internal;      // If this screen is an 'internal' display, built into
-                         // the device, like a laptop screen, e.g. false
-                         // Useful for placing slideshows on external projectors
-                         // and controls/notes on internal laptop screens.
+  boolean primary;
+  boolean internal;
   float scaleFactor;     // Ratio between physical pixels and device
                          // independent pixels for this screen, e.g. 2
                          // Useful for placing windows on screens with optimal
@@ -142,8 +249,7 @@ dictionary ScreenInfo {
   DOMString id;          // A temporary, generated per-origin unique ID; resets
                          // when cookies are deleted. Useful for persisting user
                          // window placements preferences for certain screens.
-  boolean touchSupport;  // If the screen supports touch input, e.g. false
-                         // Useful for placing control panels on touch-screens.
+  boolean touchSupport;
 };
 </xmp>
 
@@ -157,9 +263,9 @@ The <dfn method for=Window>getScreens()</dfn> method steps are:
 
     1. Let |screens| be a new [=/list=].
 
-    1. For each |display| connected to the device:
+    1. For each |screen| [=connected screen=].
 
-        1. Let |info| be a new {{ScreenInfo}} dictionary describing |display|.
+        1. Let |info| be a new {{ScreenInfo}} dictionary describing |screen|.
 
         1. [=list/Append=] |info| to |screens|.
 

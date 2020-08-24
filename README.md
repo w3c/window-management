@@ -1,3 +1,5 @@
+<img src="https://webscreens.github.io/window-placement/logo.svg" height=100 align=right>
+
 # Multi-Screen Window Placement on the Web
 
 This repository considers web platform functionality for multi-screen devices.

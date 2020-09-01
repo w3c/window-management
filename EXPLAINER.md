@@ -465,7 +465,7 @@ cross-screen placement requests if the user accepts the prompt, and rejecting
 the promise if the user denies access. If the permission is not already granted,
 cross-screen placement requests could fall back to same-screen placements,
 matching pre-existing behavior of some user agents. The amount of information
-exposed to a given site would be at the discrecion of users and their agents,
+exposed to a given site would be at the discretion of users and their agents,
 which may expose no new information, or subsets for more limited use cases.
 
 The `isMultiScreen()` method could fulfill its promise without a user prompt,

@@ -296,7 +296,7 @@ dictionary ScreenInfo {
   long availTop;   // Top edge of the available screen area, e.g. 0
 
   // New properties critical for many multi-screen window placement use cases.
-  boolean primary;       // If this screen is designated as the 'primary' screen
+  boolean isPrimary;     // If this screen is designated as the 'primary' screen
                          // by the OS (otherwise it is 'secondary'), e.g. true
                          // Useful for placing prominent vs peripheral windows.
   boolean internal;      // If this screen is an 'internal' display, built into
@@ -336,7 +336,7 @@ async function getScreenForSlideshow() {
   // NEW: Returns a snapshot of information about connected screens on success.
   let screens = await window.getScreens();
   // Prefer an external screen, or failing that, a secondary screen.
-  return screens.find(s => !s.internal) ?? screens.find(s => !s.primary);
+  return screens.find(s => !s.internal) ?? screens.find(s => !s.isPrimary);
 }
 
 document.getElementById("multi-screen-slideshow").onclick = async function() {

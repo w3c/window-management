@@ -7,6 +7,7 @@ URL: https://webscreens.github.io/window-placement
 Level: 1
 Editor: Victor Costan, Google Inc. https://google.com, costan@google.com
 Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com
+Repository: webscreens/window-placement
 Group: secondscreencg
 Test Suite: https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration
 Logo: logo.svg
@@ -259,7 +260,7 @@ dictionary ScreenInfo {
   long availTop;   // Top edge of the available screen area, e.g. 0
 
   // New properties critical for many multi-screen window placement use cases.
-  boolean primary;
+  boolean isPrimary;
   boolean internal;
   float scaleFactor;     // Ratio between physical pixels and device
                          // independent pixels for this screen, e.g. 2

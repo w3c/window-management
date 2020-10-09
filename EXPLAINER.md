@@ -33,7 +33,7 @@ application development platform altogether.
 
 As multi-screen devices and applications become a more common and critical part
 of user experiences, it becomes more important to give developers information
-and tools to leverage that extended visual environment. This document describes
+and tools to leverage that expanded visual environment. This document describes
 some possible incremental solutions enabling web application developers to make
 use of multi-screen devices, in order to facilitate discussion and seek
 concensus on a path forward.
@@ -128,7 +128,7 @@ not supported and will yield a TypeError, as is typical of modern web APIs.
 
 Web applications also have compelling use cases for placing non-fullscreen
 content windows on screens other than the current screen. For example, a media
-editing application may wish to place companion windows on a speparate screen,
+editing application may wish to place companion windows on a separate screen,
 when the main editing window is maximized on a particular screen. The app may
 determine an initial multi-screen placement based on available screen info and
 application settings, or it may be restoring a user's saved window arrangement.
@@ -191,7 +191,7 @@ it has some challenges. See alternatives, considerations, and more examples in
 In the media editing application example, the user might save and close their
 current project, later selecting an option to open that saved project, which
 restores the multi-screen window placement configuration for that project. A
-similar pattern would be useful to financial dashboards and other appplications.
+similar pattern would be useful to financial dashboards and other applications.
 
 ```js
 // Save the open windows with placements when the user saves the project.
@@ -222,40 +222,34 @@ function restoreSavedWindows(project, openWindows) {
 
 ## Provide requisite information to achieve the goals above
 
-The shape of these screen information APIs has been updated to provide some
-unique advantages over previous iterations of this proposal:
-* Access to the multi-screen change EventTarget is gated by a permission
-* Screen information is synchronously available in event handlers functions
-* Separate events are fired on screen array and per-screen changes
-* Unclear permission-gating of screen plurality information is resolved
-* Naming has been updated for clarity and consistency with existing nomenclature
-
 ### Add `Screen.isExtended` to expose the presence of extended screen areas
 
 The most basic question developers may ask to support multi-screen devices is:
 "Does this device have multiple screens that may be used for window placement?"
 The proposed shape for this particularly valuable limited-information query is
-a single `Screen.isExtended` boolean.
+a single `Screen.isExtended` boolean, exposed to secure contexts without an
+explicit permission prompt.
 
 ```webidl
 partial interface Screen {
-  // NEW: Ungated bit; true if the visual workspace extends over 2+ screens.
-  readonly attribute boolean isExtended;
+  // NEW: Yields whether the visual workspace extends over 2+ screens.
+  [SecureContext] readonly attribute boolean isExtended;
 };
 ```
 
-This exposes the minimum information needed to engage multi-screen users, and to
-avoid requesting information and capabilities that are not applicable to
-single-screen users. This single bit provides sufficiently high value to users
-and developers to warrant the minimally increased device fingerprinting surface.
-See more thorough Privacy & Security considerations later in this document.
+This single bit provides high value to users and developers alike, allowing
+sites to offer multi-screen functionality only when it is applicable, and to
+avoid requesting additional information and capabilities that are not applicable
+to single-screen environments. The value of this information seems to outweigh
+the risks posed by minimally increasing the device fingerprinting surface. See
+more thorough Privacy & Security considerations later in this document.
 
-In the slideshow example, the site may offer specific UI entrypoints for
-single-screen and multi-screen users.
+In the slideshow example, the site may now offer specific UI entrypoints for
+single-screen and multi-screen environments.
 
 ```js
 function updateSlideshowButtons() {
-  // NEW: Yields true if the device has multiple extended screens.
+  // NEW: Yields whether the visual workspace extends over 2+ screens.
   const multiScreenUI = window.screen.isExtended;  // Offer multi-screen UI?
   document.getElementById("multi-screen-slideshow").hidden = !multiScreenUI;
   document.getElementById("single-screen-slideshow").hidden = multiScreenUI;
@@ -266,25 +260,23 @@ function updateSlideshowButtons() {
 
 Sites must currently poll the existing `Screen` interface for changes, which is
 a development burden. This can easily be solved by adding an event that is fired
-when screen attributes change. The proposed shape is a `Screen.onchange` event.
+when screen attributes change. The proposed shape is a `Screen.onchange` event,
+exposed to secure contexts without an explicit permission prompt.
 
 ```webidl
 // NEW: Screen inherits EventTarget.
 interface Screen : EventTarget {
   // <existing Screen spec omitted for brevity>
 
-  // NEW: Ungated per-screen change events, may be delayed on hidden documents.
-  // NOTE: ScreenAugmented fires this on changes to additional per-screen info.
-  attribute EventHandler onchange;
+  // NEW: An event fired when attributes of a specific screen change.
+  [SecureContext] attribute EventHandler onchange;
 };
 ```
 
 This is useful for updating multi-screen UI entrypoints or prompting users for
 additional multi-screen information when extended screens become available. It
-may also be useful for adapting content or window placements to other screen
-changes. The events could be delayed for hidden documents, until they are
-revealed, to reduce ephemeral fingerprinting risks. See more thorough Privacy &
-Security considerations later in this document.
+may also be useful for adapting content or window placements to screen changes.
+See Privacy & Security considerations for these events later in this document.
 
 The slideshow example's multi-screen UI can now be updated in a change handler:
 
@@ -306,8 +298,8 @@ choosing appropriate window placements. The proposed shape of this query is a
 
 ```webidl
 partial interface Window {
-  // NEW: Request permission-gated access to additional screen information.
-  Promise<Screens> getScreens();  // UAs may prompt for permission.
+  // NEW: Requests permission-gated access to additional screen information.
+  [SecureContext] Promise<Screens> getScreens();
 };
 ```
 
@@ -325,7 +317,7 @@ async function startSlideshow() {
   // NEW: Feature-detect availability of additional screen information.
   if ("getScreens" in window) {
     try {
-      // NEW: Request permission-gated access to additional screen information.
+      // NEW: Requests permission-gated access to additional screen information.
       let screensInterface = await window.getScreens();
       startMultiScreenSlideshow(screensInterface);
       return;
@@ -334,23 +326,23 @@ async function startSlideshow() {
       console.error(err.name, err.message);
     }
   }
-  // If multi-screen info is not available, start a single screen slideshow.
+  // If multi-screen info is not available, start a single-screen slideshow.
   startSingleScreenSlideshow();
 };
 ```
 
 ### Add `Screens` and `ScreenAugmented` interfaces for additional screen info
 
-The `getScreens()` method grants access to a proposed `Screens` interface on
-success, which provides multi-screen information and change events, as well as
-additional per-screen information via a proposed `ScreenAugmented` interface,
-which inherits from the existing
-[`Screen`](https://drafts.csswg.org/cssom-view/#screen) interface.
-The proposed shapes of these interfaces are outlined here:
+The `getScreens()` method grants access to a `Screens` interface on success.
+That provides multi-screen information and change events, as well as additional
+per-screen information via a `ScreenAugmented` interface, which inherits from
+the existing [`Screen`](https://drafts.csswg.org/cssom-view/#screen) interface.
+The proposed shapes of these interfaces, exposed to secure contexts with
+explicit permission, are outlined below:
 
 ```webidl
 // NEW: Interface exposing multiple screens and additional information.
-interface Screens : EventTarget {
+[SecureContext] interface Screens : EventTarget {
   // NEW: The set of available screens with additional per-screen info.
   readonly attribute FrozenArray<ScreenAugmented> screens;
 
@@ -363,13 +355,14 @@ interface Screens : EventTarget {
 };
 
 // NEW: Interface inherits Screen and exposes additional information.
-interface ScreenAugmented : Screen {
+[SecureContext] interface ScreenAugmented : Screen {
   // Shape matches commonly implemented Screen attributes that that are not yet
   // standardized; see https://developer.mozilla.org/en-US/docs/Web/API/Screen
   // Distances from a multi-screen origin (e.g. primary screen top left) to the:
   readonly attribute long left;       // Left edge of the screen area, e.g. 1920
   readonly attribute long top;        // Top edge of the screen area, e.g. 0
-  // NOTE: availLeft and availTop should be specified on the Screen interface.
+  // NOTE: readonly attribute long availLeft should be specified on Screen.
+  // NOTE: readonly attribute long availTop should be specified on Screen.
 
   // New properties critical for many multi-screen window placement use cases:
 
@@ -377,9 +370,9 @@ interface ScreenAugmented : Screen {
   // it is 'secondary'). Useful for placing prominent vs peripheral windows.
   readonly attribute boolean isPrimary;  // e.g. true
 
-  // If this screen is an 'internal' display, built into the device, like a
-  // laptop screen. Useful for placing slideshows on external projectors and
-  // controls/notes on internal laptop screens.
+  // If this screen is an 'internal' screen, built into the device, like a
+  // laptop display. Useful for placing slideshows on external projectors and
+  // controls or notes on internal laptop screens.
   readonly attribute boolean isInternal;  // e.g. false
 
   // The ratio of this screen's resolution in physical pixels to its resolution
@@ -400,7 +393,8 @@ interface ScreenAugmented : Screen {
 These interfaces provide the most crucial information for placing windows in
 extended multi-screen environments. The relative bounds establish a coordinate
 system for cross-screen window placement, while newly exposed display device
-properties allow applications to restore or choose window placements.
+properties allow applications to restore or choose window placements. See
+relevant Privacy & Security considerations later in this document.
 
 The slideshow example can now define `startMultiScreenSlideshow()` to provide an
 enhanced web application experience, commonplace among non-web counterparts:
@@ -408,19 +402,20 @@ enhanced web application experience, commonplace among non-web counterparts:
 ```js
 // Place slides and notes windows on separate screens, if available.
 async function startMultiScreenSlideshow(screensInterface) {
-  // NEW: Cache a cloned array of the last seen available screens.
-  let cachedScreens = Array.from(screensInterface.screens);
+  // NEW: Use granted multi-screen info; cache the count for comparison later.
+  let cachedScreenCount = screensInterface.screens.length;
 
   // NEW: Handle changes to the set of available screens or current screen:
   screensInterface.addEventListener('change', function() {
     // NEW: Check if the change was fired because a new screen was connected.
-    if (screensInterface.screens.length > cachedScreens.length) {
-      // Offer to move the presentation to the new display.
+    if (screensInterface.screens.length > cachedScreenCount) {
+      // Offer to move the presentation to the newly connected screen.
     }
+    cachedScreenCount = screensInterface.screens.length;
   });
 
   if (screensInterface.screens.length == 1) {
-    // If only one screen is available, start a single screen slideshow.
+    // If only one screen is available, start a single-screen slideshow.
     startSingleScreenSlideshow();
     return;
   }
@@ -434,9 +429,6 @@ async function startMultiScreenSlideshow(screensInterface) {
   const otherScreens = screensInterface.screens.filter(s => s != slidesScreen);
   const notesScreen = otherScreens.find(s => s.internal) ?? otherScreens[0];
 
-  // TODO: Demonstrate more complex screen selection logic, e.g. favor external
-  // touch-screens if there is no internal screen for notes, favor external
-  // screens with resolution and scaling most suitable for a slideshow, etc.
   // TODO: Define this with requestFullscreen and/or window.open/moveTo?
   placeSlidesAndNotesOnPreferredScreens(slidesScreen, notesScreen);
 }
@@ -469,26 +461,26 @@ let sortedScreens = screensInterface.screens.sort((a, b) => b.left - a.left);
 The `element.requestFullscreen()` algorithm could reasonably be updated to
 support being triggered by user-generated `Screens.onchange` events, matching
 [existing behavior](https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen)
-when triggered by `ScreenOrientation.onchange` events. This would allow sites to
-request fullscreen or change the screen used for fullscreen when users connect a
-new screen.
+when triggered by user-generated `ScreenOrientation.onchange` events. This would
+allow sites to request fullscreen or change the screen used for fullscreen when
+users connect a new screen.
 
 ### Standardize common `Screen.availLeft` and `Screen.availTop` attributes
 
 The [`Screen`](https://drafts.csswg.org/cssom-view/#the-screen-interface)
-interface spec currently exposes the sizes of the
+interface currently specifies the sizes of the
 [`web-exposed screen area`](https://drafts.csswg.org/cssom-view/#web-exposed-screen-area)
 and the
-[`web-exposed available screen area`](https://drafts.csswg.org/cssom-view/#web-exposed-available-screen-area),
-which excludes screen space for reserved system UI (e.g. toolbars and taskbars).
-Unfortunately, the available area bounds cannot be determined, since its origin
-is unspecified and assuming zeroes is incorrect.
+[`web-exposed available screen area`](https://drafts.csswg.org/cssom-view/#web-exposed-available-screen-area)
+(which excludes screen areas reserved for system UI, like toolbars or taskbars).
+Unfortunately, the available area's bounds cannot be determined, since its
+origin is unspecified and assuming zeroes is incorrect.
 
 Even in single-screen environments, the top or left edge of the screen may be
-reserved for system UI so `window.moveTo(0, 0)` may specify a window position
-outside the available space, triggering user-agent-defined clamping. Sites
-should be able to determine the screen's available area, to accurately formulate
-standardized window placement requests and better anticipate their outcomes.
+reserved for system UI, so `window.moveTo(0, 0)` may specify a window position
+outside the available area, and undesirably trigger user-agent-defined clamping.
+Sites should be able to determine the screen's available area, to accurately
+formulate and better anticipate outcomes of standardized placement requests.
 
 To solve this, most browsers also expose two unstandardized Screen attributes,
 [`availLeft`](https://developer.mozilla.org/en-US/docs/Web/API/Screen/availLeft)
@@ -496,8 +488,9 @@ and
 [`availTop`](https://developer.mozilla.org/en-US/docs/Web/API/Screen/availTop),
 which are critical for discerning the region available for placing windows.
 These attributes should be standardized on the `Screen` interface itself to
-support valid single-screen (or same-screen) placement requests, and support
-existing scripts that already use these unstandardized attributes.
+support valid single-screen (or same-screen) placement requests, to support
+existing scripts that already use these unstandardized attributes, and to
+support new multi-screen window placement requests.
 
 ```webidl
 partial interface Screen {
@@ -513,16 +506,12 @@ This allows sites to better determine the `web-exposed available screen area`,
 and formulate more coherent and predictable window placement requests.
 
 ```js
-// Move the window to a desired position in the available screen space.
+// NEW: Move the window to a position known to be in available screen space.
 window.moveTo(screen.availLeft + offsetX, screen.availTop + offsetY);
 ```
 
-Additional complications arise from the assumptions of a singluar output device
-in specifications, and divergent implementation handling of coordinate spaces in
-multi-screen environments. See the
-[additional_explorations.md](https://github.com/webscreens/window-placement/blob/master/additional_explorations.md)
-topic "Using cross-screen coordinates or per-screen coordinates" for related
-considerations.
+See prior discussion regarding coordinates in the section titled
+"Support requests to place web app windows on a specific screen".
 
 ### Add Permission API support for a new `window-placement` entry
 
@@ -564,7 +553,7 @@ navigator.permissions.query({name:'window-placement'}).then(function(status) {
   * Does checking `cachedReference in screensInterface.screens` suffice?
   * Should there be a `ScreenAugmented.isConnected`?
 * How can objects in the screens array be consistently ordered?
-  * Is sorting by (`left`, `top`) sufficient? Even for mirrored screens?
+  * Is sorting by (`left`, `top`) sufficient, even for mirrored screens?
 
 ## Privacy & Security
 
@@ -581,7 +570,7 @@ screens, hiding unwanted windows on less conspicuous screens, or otherwise using
 cross-screen placements to act in deceptive, abusive, or annoying manners.
 
 To help mitigate these concerns, user permission should be required for sites to
-get nontrivial multi-screen information and place windows on other screens.
+access nontrivial multi-screen information and place windows on other screens.
 Given the API shape proposed above, user agents could reasonably prompt users
 when sites call `getScreens()`, fulfilling the promise if the user accepts the
 prompt, and rejecting the promise if the user denies access. If the permission
@@ -593,16 +582,19 @@ users and their agents.
 The `Screen.isExtended` boolean is exposed without explicit permission checks,
 as this minimal single bit of information supports some critical features for
 which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI
-entry points like “Show on another screen”), and to avoid unnecessarily
+entry points like “Show on another screen”), and helps avoid unnecessarily
 prompting single-screen users for inapplicable information and capabilities.
-Accessing this bit is an example of detectable
-[active fingerprinting](https://w3c.github.io/fingerprinting-guidance/#active),
-which may be blocked by the user agent or observed by researchers.
+A point to note here is that many user agents already effectively expose the
+presence of multiple screens to windows located on secondary screens, where
+`window.screen.availLeft|Top` >> 0. Script access of this bit is a detectable
+[active fingerprinting](https://w3c.github.io/fingerprinting-guidance/#active)
+signal, which may be observed and blocked by the user agent.
 
 The new `onchange` events pose a slight risk by making
 [ephemeral fingerprinting](https://github.com/asankah/ephemeral-fingerprinting)
-easier, but existing scripts can achieve already poll for window.screen changes.
-This risk could be mitigated by delaying event dispatch for hidden documents.
+easier, but scripts can already achieve the same result by polling for changes
+to `window.screen`. This risk could be partially mitigated by delaying event
+dispatch for hidden documents until such documents are no longer hidden.
 
 User agents can generally measure and otherwise intervene when sites request the
 newly proposed information or use the newly proposed capabilities.

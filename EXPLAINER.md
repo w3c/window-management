@@ -60,7 +60,7 @@ of existing window placement APIs to support extended multi-screen environments.
   * Extend `Window.open()` and `moveTo()/moveBy()` for cross-screen coordinates
 * Provide requisite information to achieve the goals above
   * Add `Screen.isExtended` to expose the presence of extended screen areas
-  * Add `Screen.onchange`, an event fired when Screen attributes change
+  * Add `Screen.change`, an event fired when Screen attributes change
   * Add `Window.getScreens()` to request additional permission-gated screen info
   * Add `Screens` and `ScreenAugmented` interfaces for additional screen info
   * Standardize common `Screen.availLeft` and `Screen.availTop` attributes
@@ -256,11 +256,11 @@ function updateSlideshowButtons() {
 }
 ```
 
-### Add `Screen.onchange`, an event fired when Screen attributes change
+### Add `Screen.change`, an event fired when Screen attributes change
 
 Sites must currently poll the existing `Screen` interface for changes, which is
 a development burden. This can easily be solved by adding an event that is fired
-when screen attributes change. The proposed shape is a `Screen.onchange` event,
+when screen attributes change. The proposed shape is a `Screen.change` event,
 exposed to secure contexts without an explicit permission prompt.
 
 ```webidl

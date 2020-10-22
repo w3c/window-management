@@ -62,7 +62,7 @@ of existing window placement APIs to support extended multi-screen environments.
   * Add `Screen.isExtended` to expose the presence of extended screen areas
   * Add `Screen.change`, an event fired when Screen attributes change
   * Add `Window.getScreens()` to request additional permission-gated screen info
-  * Add `Screens` and `ScreenAugmented` interfaces for additional screen info
+  * Add `Screens` and `ScreenAdvanced` interfaces for additional screen info
   * Standardize common `Screen.availLeft` and `Screen.availTop` attributes
   * Add Permission API support for a new `window-placement` entry
 
@@ -258,10 +258,13 @@ function updateSlideshowButtons() {
 
 ### Add `Screen.change`, an event fired when Screen attributes change
 
-Sites must currently poll the existing `Screen` interface for changes, which is
-a development burden. This can easily be solved by adding an event that is fired
-when screen attributes change. The proposed shape is a `Screen.change` event,
-exposed to secure contexts without an explicit permission prompt.
+Sites must currently poll the existing `Screen` interface for changes. This is
+problematic, as polling frequently consumes battery life, polling infrequently
+delays UI updates (detracting from the user experience), and the overall pattern
+yields inconsistencies between sites and adds a development burden. This can
+easily be solved by adding an event that is fired when screen attributes change.
+The proposed shape is a `Screen.change` event, exposed to secure contexts
+without an explicit permission prompt.
 
 ```webidl
 // NEW: Screen inherits EventTarget.
@@ -331,23 +334,23 @@ async function startSlideshow() {
 };
 ```
 
-### Add `Screens` and `ScreenAugmented` interfaces for additional screen info
+### Add `Screens` and `ScreenAdvanced` interfaces for additional screen info
 
 The `getScreens()` method grants access to a `Screens` interface on success.
 That provides multi-screen information and change events, as well as additional
-per-screen information via a `ScreenAugmented` interface, which inherits from
-the existing [`Screen`](https://drafts.csswg.org/cssom-view/#screen) interface.
-The proposed shapes of these interfaces, exposed to secure contexts with
-explicit permission, are outlined below:
+per-screen information via a `ScreenAdvanced` interface, which inherits from the
+existing [`Screen`](https://drafts.csswg.org/cssom-view/#screen) interface. The
+proposed shapes of these interfaces, exposed to secure contexts with explicit
+permission, are outlined below:
 
 ```webidl
 // NEW: Interface exposing multiple screens and additional information.
 [SecureContext] interface Screens : EventTarget {
   // NEW: The set of available screens with additional per-screen info.
-  readonly attribute FrozenArray<ScreenAugmented> screens;
+  readonly attribute FrozenArray<ScreenAdvanced> screens;
 
   // NEW: A reference to the current screen with additional info.
-  readonly attribute ScreenAugmented currentScreen;
+  readonly attribute ScreenAdvanced currentScreen;
 
   // NEW: An event fired when 'screens' or 'currentScreen' changes.
   // NOTE: Does not fire on changes to attributes of individual Screens.
@@ -355,7 +358,7 @@ explicit permission, are outlined below:
 };
 
 // NEW: Interface inherits Screen and exposes additional information.
-[SecureContext] interface ScreenAugmented : Screen {
+[SecureContext] interface ScreenAdvanced : Screen {
   // Shape matches commonly implemented Screen attributes that that are not yet
   // standardized; see https://developer.mozilla.org/en-US/docs/Web/API/Screen
   // Distances from a multi-screen origin (e.g. primary screen top left) to the:
@@ -549,9 +552,9 @@ navigator.permissions.query({name:'window-placement'}).then(function(status) {
   * Do any sites expect open/move coordinates to be local to the current screen?
 * Is there value in supporting windows placements spanning multiple screens?
   * Suggest normative behavior for choosing a target display and clamping?
-* How should `ScreenAugmented` references behave when screens are disconnected?
+* How should `ScreenAdvanced` references behave when screens are disconnected?
   * Does checking `cachedReference in screensInterface.screens` suffice?
-  * Should there be a `ScreenAugmented.isConnected`?
+  * Should there be a `ScreenAdvanced.isConnected`?
 * How can objects in the screens array be consistently ordered?
   * Is sorting by (`left`, `top`) sufficient, even for mirrored screens?
 
@@ -584,6 +587,18 @@ as this minimal single bit of information supports some critical features for
 which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI
 entry points like “Show on another screen”), and helps avoid unnecessarily
 prompting single-screen users for inapplicable information and capabilities.
+This generally follows a TAG design principle for
+[device enumeration](https://w3ctag.github.io/design-principles/#device-enumeration):
+
+>When designing API which allows users to select a device, it may be necessary
+to also expose the fact that there are devices are available to be picked. This
+does expose one bit of fingerprinting data about the user’s environment to
+websites, so it isn’t quite as safe as an API which doesn’t have such a feature.
+
+>The trade-off is that by allowing websites this extra bit of information, the
+API lets authors make their user interface less confusing. They can choose to
+show a button to trigger the picker only if at least one device is available.
+
 A point to note here is that many user agents already effectively expose the
 presence of multiple screens to windows located on secondary screens, where
 `window.screen.availLeft|Top` >> 0. Script access of this bit is a detectable
@@ -621,8 +636,8 @@ Some other notes:
   finger is likely to be co-located with the current screen and window, not on
   the separate target screen.
 - ScreenInfo IDs generally follow patterns of other device information APIs.
-- New affordances for fullscreen requests on `Screens.onchange` events follows
-  precedent of `ScreenOrientation.onchange`, which us not permission gated.
+- A new affordance for fullscreen requests on `Screens.onchange` events follows
+  the precedent of `ScreenOrientation.onchange`, which is not permission gated.
 
 See
 [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md)

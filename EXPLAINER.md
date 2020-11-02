@@ -85,7 +85,6 @@ See explorations of alternative and supplemental proposals in
   * See [Service Worker Launch Event](https://github.com/WICG/sw-launch) and
     [PWAs as URL Handlers](https://github.com/WICG/pwa-url-handler/blob/master/explainer.md)
 
-
 ## Support requests to show elements fullscreen on a specific screen
 
 One of the primary use cases for Window Placement is showing fullscreen content

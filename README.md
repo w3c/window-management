@@ -14,3 +14,11 @@ Preview an early rough [Editor’s Draft](https://webscreens.github.io/window-pl
 File issues here, reply to our
 [Discourse posting](https://discourse.wicg.io/t/proposal-supporting-window-placement-on-multi-screen-devices/3948),
 or reach out as you see fit with feedback, relevant use cases, and thoughts.
+
+
+## Related explainers:
+| Name | Link |
+|------|------|
+| Window Segments Enumeration API | [Explainer](https://github.com/webscreens/window-segments/blob/master/EXPLAINER.md)|
+| Screen Fold API | [Explainer](https://github.com/SamsungInternet/Explainers/blob/master/Foldables/FoldState.md), [Unofficial Draft Spec](https://w3c.github.io/screen-fold/) |
+| Visual Viewport API | [Draft Community Group Report](https://wicg.github.io/visual-viewport/), [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Visual_Viewport_API) |

@@ -85,6 +85,7 @@ See explorations of alternative and supplemental proposals in
   * See [Service Worker Launch Event](https://github.com/WICG/sw-launch) and
     [PWAs as URL Handlers](https://github.com/WICG/pwa-url-handler/blob/master/explainer.md)
 
+
 ## Support requests to show elements fullscreen on a specific screen
 
 One of the primary use cases for Window Placement is showing fullscreen content
@@ -642,3 +643,10 @@ Some other notes:
 See
 [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md)
 for additional explorations of privacy and security concerns.
+
+## Related explainers:
+| Name | Link |
+|------|------|
+| Window Segments Enumeration API | [Explainer](https://github.com/webscreens/window-segments/blob/master/EXPLAINER.md)|
+| Screen Fold API | [Explainer](https://github.com/SamsungInternet/Explainers/blob/master/Foldables/FoldState.md), [Unofficial Draft Spec](https://w3c.github.io/screen-fold/) |
+| Visual Viewport API | [Draft Community Group Report](https://wicg.github.io/visual-viewport/), [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Visual_Viewport_API) |

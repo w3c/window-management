@@ -102,7 +102,7 @@ dictionary FullscreenOptions {
   FullscreenNavigationUI navigationUI = "auto";
 
   // NEW: An optional way to request a specific screen for element fullscreen.
-  ScreenInfo screen;
+  ScreenAdvanced screen;
 };
 ```
 
@@ -635,7 +635,7 @@ Some other notes:
   create additional clickjacking risk for users, since the user's cursor or
   finger is likely to be co-located with the current screen and window, not on
   the separate target screen.
-- ScreenInfo IDs generally follow patterns of other device information APIs.
+- ScreenAdvanced IDs generally follow patterns of other device information APIs.
 - A new affordance for fullscreen requests on `Screens.onchange` events follows
   the precedent of `ScreenOrientation.onchange`, which is not permission gated.
 

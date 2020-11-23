@@ -461,12 +461,15 @@ let highResolutionScreen = screensInterface.screens.reduce(
 let sortedScreens = screensInterface.screens.sort((a, b) => b.left - a.left);
 ```
 
-The `element.requestFullscreen()` algorithm could reasonably be updated to
+NOTE: The `element.requestFullscreen()` algorithm could reasonably be updated to
 support being triggered by user-generated `Screens.onchange` events, matching
 [existing behavior](https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen)
 when triggered by user-generated `ScreenOrientation.onchange` events. This would
 allow sites to request fullscreen or change the screen used for fullscreen when
 users connect a new screen.
+
+NOTE: Screen mirroring relationships are not currently exposed; Screens may omit
+destinations and only expose source screens of screen mirroring relationships.
 
 ### Standardize common `Screen.availLeft` and `Screen.availTop` attributes
 

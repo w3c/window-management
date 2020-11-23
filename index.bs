@@ -35,12 +35,13 @@ Markup Shorthands: css no, markdown yes
 }
 </style>
 
+Issue: This draft is incomplete and outdated; see [EXPLAINER.md](EXPLAINER.md) for more recent changes. (Nov, 2020)
+
 <!-- ====================================================================== -->
 # Introduction # {#introduction}
 <!-- ====================================================================== -->
 
 *This section is non-normative.*
-
 
 Operating systems generally allow users to connect multiple screens to a single
 device and arrange them virtually to extend the overall visual workspace.

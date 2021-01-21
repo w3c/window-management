@@ -6,11 +6,11 @@ Self-Review Questionnaire](https://www.w3.org/TR/security-privacy-questionnaire)
 ## 2.1 What information might this feature expose to Web sites or other parties, and for what purposes is that exposure necessary?
 
 This feature exposes information about screens connected to the device, which is
-necessary for cross-screen window placement use cases explored in the explainer.
+necessary for multi-screen window placement use cases explored in the explainer.
 
 Currently, some limited information about the screen that each window currently
 occupies is available through its Screen interface and related media queries.
-Information about the Window's placement on the current screen (or in more rich
+Information about the window's placement on the current screen (or in more rich
 cross-screen coordinates) is already available through the Window interface.
 
 This feature provides a surface to optionally expose information about all
@@ -18,11 +18,11 @@ connected screens, additional display properties of each screen, and events when
 the set of screens or their properties change. It also allows window placements
 to be exposed in multi-screen coordinates. The newly exposed information has
 been tailored to what would typically be required for the most essential
-cross-screen window placement features. See the ScreenInfo definition for full
-set of new screen properties exposed and their respective utility.
+multi-screen window placement features. See the ScreenAdvanced definition for
+the full set of new screen properties exposed and their respective utility.
 
-It should be noted that exisiting `Window.screenLeft`, and `screenTop`, and
-non-standard `Screen.left` and `top` values are generally given in cross-screen
+It should be noted that existing `Window.screenLeft`, `screenTop`, and
+non-standard `Screen.left` and `top` values, are generally given in cross-screen
 coordinates, so it may already be possible for sites to infer the presence of,
 and limited information about, screens other than the one its window currently
 occupies. Also, some user agent implementations already allow cross-screen
@@ -53,21 +53,18 @@ pattern of dragging windows between screens before entering fullscreen, and
 existing APIs like `window.screen` would expose most of the same information
 about that screen anyway. Additionally, user agents lack the context around a
 web application's window placement actions, and declarative arrangements
-specified by a site are unlikely to provide the requisite expresiveness for most
-use cases.
+specified by a site are unlikely to provide the requisite expressiveness for
+most use cases.
 
 All newly exposed information could be gated by the proposed `window-placement`
 permission, limited to secure contexts, top-level frames, gated by user gesture,
 active window contexts, and other protections to help mitigate concerns around
 [fingerprinting](https://w3c.github.io/fingerprinting-guidance).
 
-The amount of information exposed to a given site would be at the discrecion of
-users and their agents. Rejecting promises, or providing limited information
-(e.g. a single `ScreenInfo` from `getScreens()` with values equivalent to the
-existing `window.screen` interface (or `undefined`)) exposes no new information.
-Exposing the full set of proposed information enables web applications to offer
-compelling functionality, and exposing some limited subset of that new
-information may be useful in some scenarios.
+The amount of information exposed to a given site would be at the discretion of
+users and their agents. Exposing the full set of proposed information (with user
+permission) enables web applications to offer compelling functionality, but
+exposing a limited subset of new information may be useful in some scenarios.
 
 Supporting queries for limited pieces of information is not directly useful to
 sites conducting window placement use cases, and does not specifically prohibit
@@ -92,25 +89,31 @@ The user agent could persist screen permission grants.
 
 ## 2.6 What information from the underlying platform, e.g. configuration data, is exposed by this specification to an origin?
 
-This API proposes exposing about 9-17 new properties for each connected screen,
-most of which directly correlate with underyling platform configuration data.
-See ScreenInfo's definition for properties exposed and their respective utility.
+This API proposes exposing about 10-18 new properties for each connected screen,
+most of which directly correlate with underlying platform configuration data.
+See `ScreenAdvanced` for all properties exposed and their respective utility.
 
 ## 2.7 Does this specification allow an origin access to sensors on a user’s device?
 
-No. If anything, this API may expose the presence of touch sensors associated
-with each display, but not access to sensor data itself.
+No. If anything, this API may expose the presence of touch or pen sensors
+associated with each display, but not access to sensor data itself.
 
 ## 2.8 What data does this specification expose to an origin? Please also document what data is identical to data exposed by other features, in the same or different contexts.
 
-The API exposes a set of `ScreenInfo` objects, providing a snapshot of info
-about each connected display, similar in shape to the interface of the singlular
+The API exposes a new attribute and event on the `Screen` interface:
+* Whether the visual workspace extends over 2+ screens
+  * Not web-exposed, but inferrable when a site has windows on multiple screens
+* Events fired when Screen attributes change
+  * Not web-exposed, but observable with polling
+
+The API exposes a set of `ScreenAdvanced` objects in a `Screens` interface,
+providing info about each connected display, extending the singular
 [`Screen`](https://developer.mozilla.org/en-US/docs/Web/API/Screen) object
 currently available to each window, and similar to the set of `Screen` objects
 available to an origin if separate windows for that origin were placed on each
 of the connected screens, by aggregating the respective `window.screen` objects.
 
-This API currently proposes exposing these properties on each ScreenInfo object:
+This API proposes exposing these properties on each `ScreenAdvanced` object:
 * The width of the available screen area
   * Standardized as [Screen.availWidth](https://drafts.csswg.org/cssom-view/#dom-screen-availwidth)
 * The height of the available screen area
@@ -145,13 +148,16 @@ This API currently proposes exposing these properties on each ScreenInfo object:
 * Whether it is the primary display or a secondary display
   * Not web-exposed, but available via the Chrome Apps
     [`system.display` API](https://developer.chrome.com/apps/system_display#method-getInfo)
-* Display scale factor
+* The device pixel ratio for the screen
   * Not standardized, but already exposed by some browsers via
     [`Window.devicePixelRatio`](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio)
-* An identifier for the screen
+* A generated identifier for the screen
   * Not web-exposed, but a more persistent id is available via the Chrome Apps
     [`system.display` API](https://developer.chrome.com/apps/system_display#method-getInfo)
-* Whether the screen supports touch input
+* Whether the screen supports touch or pen input
+  * Not web-exposed, but available via the Chrome Apps
+    [`system.display` API](https://developer.chrome.com/apps/system_display#method-getInfo)
+* A user-friendly label for the screen
   * Not web-exposed, but available via the Chrome Apps
     [`system.display` API](https://developer.chrome.com/apps/system_display#method-getInfo)
 

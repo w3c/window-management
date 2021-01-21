@@ -390,14 +390,20 @@ permission, are outlined below:
   // The set of PointerTypes supported by the screen. Useful for placing control
   // panels on touch-screens and drawing surfaces on screens with pen support.
   readonly attribute FrozenArray<PointerType> pointerTypes;  // e.g. [ "touch" ]
+
+  // A user-friendly label for the screen, determined by the user agent and OS.
+  readonly attribute DOMString label;  // e.g. 'Samsung Electric Company 28"'
 };
 ```
 
 These interfaces provide the most crucial information for placing windows in
 extended multi-screen environments. The relative bounds establish a coordinate
 system for cross-screen window placement, while newly exposed display device
-properties allow applications to restore or choose window placements. See
-relevant Privacy & Security considerations later in this document.
+properties allow applications to restore or choose window placements. Label
+strings allow sites to offer custom configuration UIs or pickers, similar to the
+[MediaDeviceInfo.label](https://w3c.github.io/mediacapture-main/#dom-mediadeviceinfo-label)
+of the Media Capture and Streams API. See relevant Privacy & Security
+considerations later in this document.
 
 The slideshow example can now define `startMultiScreenSlideshow()` to provide an
 enhanced web application experience, commonplace among non-web counterparts:
@@ -583,7 +589,9 @@ prompt, and rejecting the promise if the user denies access. If the permission
 is not already granted, cross-screen placement requests could fall back to
 same-screen placements, matching pre-existing behavior of some user agents. The
 amount of information exposed to a given site would be at the discretion of
-users and their agents.
+users and their agents. Some APIs, like the
+[Media Capture and Streams API](https://w3c.github.io/mediacapture-main), offer
+precedent for exposing limited information about devices, with user permission.
 
 The `Screen.isExtended` boolean is exposed without explicit permission checks,
 as this minimal single bit of information supports some critical features for

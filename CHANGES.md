@@ -39,6 +39,9 @@ screensInterface.screens[0].isPrimary;  // e.g. true
 screensInterface.screens[0].isInternal;  // e.g. true
 screensInterface.screens[0].pointerTypes;  // e.g. ["touch"]
 
+// New access to user-friendly labels for each screen:
+screensInterface.screens[0].label;  // e.g. 'Samsung Electric Company 28"'
+
 // Access the live object corresponding to the current `window.screen`.
 // The object is updated on cross-screen window placements or device changes.
 screensInterface.currentScreen;

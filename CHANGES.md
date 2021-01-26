@@ -1,10 +1,30 @@
 ## API Surface Changes
 
-This file enumerates changes made to the API surface.
+This file describes API surface changes made during experimentation. These
+changes were made to address some feedback and requests:
+- Github issue [30](https://github.com/webscreens/window-placement/issues/30)
+presented compelling API design advice from @jakearchibald and @kenchris:
+  - Permission-gate access to EventTarget for screen array changes
+  - Ensure data is updated (& sync accessible...) when change events are fired
+  - Resolve unclear permission-gating of isMultiScreen()
+- GitHub issues [35](https://github.com/webscreens/window-placement/issues/35)
+and [21](https://github.com/webscreens/window-placement/issues/21) suggest
+aligning related proposals, partly motivating a new Screens interface.
+  - See the proposed [Screen Fold API](https://w3c.github.io/screen-fold/) and
+  [Window Segments Enumeration API](https://github.com/webscreens/window-segments)
+  - See the high-level [Form Factors Explainer](https://webscreens.github.io/form-factors/)
+- Partner feedback requested access to user-friendly screen label, which vastly
+improves custom multi-screen picker and configuration UIs for apps.
+- Partner feedback requested access to Screen.change events, including changes
+to the multi-screen bit, Screen.isExtended, to obviate polling.
 
-## Requesting additional screen information
+## Examples of requesting additional screen information
 
-**Before (1st Origin Trial, Chrome M86-89)**
+**Before (1st Origin Trial, Chrome M86-M88)**
+
+[This explainer snapshot](https://github.com/webscreens/window-placement/blob/a1e6c7cbf6e60ca04483ef817c5ea0ff069beecd/EXPLAINER.md)
+captures our older vision for the API, used in early experimentation.
+
 ```javascript
 // Detect the presence of extended screen areas; async method on Window.
 const multiScreenUI = await window.isMultiScreen();
@@ -28,7 +48,11 @@ window.addEventListener('screenschange', async function() {
 });
 ```
 
-**After (2nd Origin trial, Chrome M9X)**
+**After (2nd Origin Trial, Chrome M9X)**
+
+[The current explainer](https://github.com/webscreens/window-placement/blob/master/EXPLAINER.md)
+captures our latest vision for the API, used in later experimentation.
+
 ```javascript
 // Detect the presence of extended screen areas; sync attribute on Screen.
 const multiScreenUI = window.screen.isExtended;
@@ -38,7 +62,6 @@ let screensInterface = await window.getScreens();
 screensInterface.screens[0].isPrimary;  // e.g. true
 screensInterface.screens[0].isInternal;  // e.g. true
 screensInterface.screens[0].pointerTypes;  // e.g. ["touch"]
-
 // New access to user-friendly labels for each screen:
 screensInterface.screens[0].label;  // e.g. 'Samsung Electric Company 28"'
 
@@ -48,12 +71,14 @@ screensInterface.currentScreen;
 
 // Observe 'screens' array or 'currentScreen' ref changes; sync info access.
 let cachedScreenCount = screensInterface.screens.length;
+let cachedCurrentScreenId = screensInterface.currentScreen.id;
 screensInterface.addEventListener('change', function() {
   // NOTE: Does not fire on changes to attributes of individual Screens.
   let screenCountChanged = cachedScreenCount != screensInterface.screens.length;
+  let currentScreenChanged = cachedCurrentScreenId != screensInterface.currentScreen.id;
 });
 
 // Observe changes to a specific Screen's attributes.
-screensInterface.screens[0].addEventListener('change', function() { ... });
 window.screen.addEventListener('change', function() { ... });
+screensInterface.screens[0].addEventListener('change', function() { ... });
 ```

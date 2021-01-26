@@ -13,10 +13,9 @@ aligning related proposals, partly motivating a new Screens interface.
   - See the proposed [Screen Fold API](https://w3c.github.io/screen-fold/) and
   [Window Segments Enumeration API](https://github.com/webscreens/window-segments)
   - See the high-level [Form Factors Explainer](https://webscreens.github.io/form-factors/)
-- Partner feedback requested access to user-friendly screen label, which vastly
-improves custom multi-screen picker and configuration UIs for apps.
-- Partner feedback requested access to Screen.change events, including changes
-to the multi-screen bit, Screen.isExtended, to obviate polling.
+- Partner feedback requested access to:
+  - User-friendly screen labels, which vastly improve custom multi-screen picker and configuration UIs for apps
+  - Screen change events, including changes to the multi-screen bit, to obviate polling
 
 ## Examples of requesting additional screen information
 

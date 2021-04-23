@@ -1487,7 +1487,7 @@ Possible extra rowspan handling
   <meta content="Bikeshed version b94c7e755, updated Fri Feb 19 16:28:59 2021 -0800" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="74783038d95a6661d5e0664505a65550e8e14a5b" name="document-revision">
+  <meta content="01c699c9a266b7190e46d25ff0a1c0ad35f56a61" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -2077,7 +2077,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://w3.org/community/webscreens/"> <img alt="Logo" height="100" src="logo.svg" width="100"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2021-03-29">29 March 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2021-04-23">23 April 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2405,7 +2405,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
       <p>Returns <code>true</code> if the device’s display is extended across multiple screens.</p>
     </dl>
    </div>
-<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen③"><c- g>Screen</c-></a> {
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen③"><c- g>Screen</c-></a> /* : EventTarget */ {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext" id="ref-for-SecureContext"><c- g>SecureContext</c-></a>]
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended②"><c- g>isExtended</c-></a>;
 
@@ -2413,6 +2413,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler"><c- n>EventHandler</c-></a> <a class="idl-code" data-link-type="attribute" data-type="EventHandler" href="#dom-screen-onchange" id="ref-for-dom-screen-onchange"><c- g>onchange</c-></a>;
 };
 </pre>
+   <p class="issue" id="issue-e61a06d2"><a class="self-link" href="#issue-e61a06d2"></a> <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen④">Screen</a></code> needs to derived from <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#eventtarget" id="ref-for-eventtarget">EventTarget</a></code>. This will require changes to <a href="https://www.w3.org/TR/cssom-view/#the-screen-interface">CSSOM View Module 1 §4.3 The Screen Interface</a>.</p>
    <div class="algorithm" data-algorithm="isExtended" data-algorithm-for="Screen">
     <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="attribute" data-export id="dom-screen-isextended"><code>isExtended</code></dfn> getter steps are:</p>
     <ol>
@@ -2420,9 +2421,9 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
       <p>Return true if the computer system has more than one <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑧">connected screen</a>, and false otherwise.</p>
     </ol>
    </div>
-   <h4 class="heading settled" data-level="3.1.1" id="api-screen-events"><span class="secno">3.1.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen④">Screen</a></code> events</span><a class="self-link" href="#api-screen-events"></a></h4>
+   <h4 class="heading settled" data-level="3.1.1" id="api-screen-events"><span class="secno">3.1.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑤">Screen</a></code> events</span><a class="self-link" href="#api-screen-events"></a></h4>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="attribute" data-export id="dom-screen-onchange"><code>onchange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screen-change" id="ref-for-eventdef-screen-change"><code>change</code></a>.</p>
-   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties">basic observable property</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window②">Window</a></code>'s <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen">current screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="event" data-export id="eventdef-screen-change"><code>change</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window③">Window</a></code>'s associated <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑤">Screen</a></code> object.</p>
+   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties">basic observable property</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window②">Window</a></code>'s <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen">current screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="event" data-export id="eventdef-screen-change"><code>change</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window③">Window</a></code>'s associated <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑥">Screen</a></code> object.</p>
    <h3 class="heading settled" data-level="3.2" id="api-extensions-to-window"><span class="secno">3.2. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window④">Window</a></code> interface</span><a class="self-link" href="#api-extensions-to-window"></a></h3>
    <div class="domintro note" role="note">
     <dl>
@@ -2468,7 +2469,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
     <li data-md>
      <p>Handling of <code>"left"</code> and <code>"top"</code> for <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-document-open-window" id="ref-for-dom-document-open-window">open()</a></code> move the target window relative to the top or left edge (respectively) of the <a data-link-type="dfn" href="#primary-screen" id="ref-for-primary-screen⑤">primary screen</a>'s Web-exposed screen area.</p>
    </ul>
-   <p class="issue" id="issue-c00910d1"><a class="self-link" href="#issue-c00910d1"></a> Merge the above with <a data-link-type="biblio" href="#biblio-cssom-view">[CSSOM-VIEW]</a>.</p>
+   <p class="issue" id="issue-c121dd6b"><a class="self-link" href="#issue-c121dd6b"></a> Merge the above with <a href="https://www.w3.org/TR/cssom-view/#extensions-to-the-window-interface">CSSOM View Module 1 §4 Extensions to the Window Interface</a>.</p>
    <h3 class="heading settled" data-level="3.3" id="api-screens-interface"><span class="secno">3.3. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#screens" id="ref-for-screens④">Screens</a></code> interface</span><a class="self-link" href="#api-screens-interface"></a></h3>
    <div class="domintro note" role="note">
     <dl>
@@ -2560,7 +2561,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
       <p>A user-friendly label for the screen, determined by the user agent and OS.</p>
     </dl>
    </div>
-<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext" id="ref-for-SecureContext④"><c- g>SecureContext</c-></a>] <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="screenadvanced"><code><c- g>ScreenAdvanced</c-></code></dfn> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑥"><c- n>Screen</c-></a> {
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext" id="ref-for-SecureContext④"><c- g>SecureContext</c-></a>] <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="screenadvanced"><code><c- g>ScreenAdvanced</c-></code></dfn> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑦"><c- n>Screen</c-></a> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long" id="ref-for-idl-long"><c- b>long</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="long" href="#dom-screenadvanced-left" id="ref-for-dom-screenadvanced-left①"><c- g>left</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long" id="ref-for-idl-long①"><c- b>long</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="long" href="#dom-screenadvanced-top" id="ref-for-dom-screenadvanced-top①"><c- g>top</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-screenadvanced-isprimary" id="ref-for-dom-screenadvanced-isprimary①"><c- g>isPrimary</c-></a>;
@@ -2580,17 +2581,17 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenAdvanced" data-dfn-type="attribute" data-export id="dom-screenadvanced-pointertypes"><code>pointerTypes</code></dfn> getter steps are to return <a data-link-type="dfn" href="https://heycam.github.io/webidl/#this" id="ref-for-this⑧">this</a>'s <a data-link-type="dfn" href="#connected-screen-supported-pointer-types" id="ref-for-connected-screen-supported-pointer-types②">supported pointer types</a>.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenAdvanced" data-dfn-type="attribute" data-export id="dom-screenadvanced-label"><code>label</code></dfn> getter steps are to return <a data-link-type="dfn" href="https://heycam.github.io/webidl/#this" id="ref-for-this⑨">this</a>'s <a data-link-type="dfn" href="#connected-screen-label" id="ref-for-connected-screen-label③">label</a>.</p>
    <h4 class="heading settled" data-level="3.4.1" id="api-screenadvanced-events"><span class="secno">3.4.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced①⓪">ScreenAdvanced</a></code> events</span><a class="self-link" href="#api-screenadvanced-events"></a></h4>
-   <p>When any <a data-link-type="dfn" href="#connected-screen-advanced-observable-properties" id="ref-for-connected-screen-advanced-observable-properties">advanced observable property</a> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③④">connected screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire③">fire an event</a> with type <dfn class="idl-code" data-dfn-for="ScreenAdvanced" data-dfn-type="event" data-export id="eventdef-screenadvanced-change"><code>change</code><a class="self-link" href="#eventdef-screenadvanced-change"></a></dfn> at the associated <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced①①">ScreenAdvanced</a></code> object.</p>
+   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties①">basic observable property</a> or <a data-link-type="dfn" href="#connected-screen-advanced-observable-properties" id="ref-for-connected-screen-advanced-observable-properties">advanced observable property</a> of a <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced①①">ScreenAdvanced</a></code>'s associated <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③④">connected screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire③">fire an event</a> with type <dfn class="idl-code" data-dfn-for="ScreenAdvanced" data-dfn-type="event" data-export id="eventdef-screenadvanced-change"><code>change</code><a class="self-link" href="#eventdef-screenadvanced-change"></a></dfn> at the <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced①②">ScreenAdvanced</a></code> object.</p>
    <h3 class="heading settled" data-level="3.5" id="api-extensions-to-fullscreen-options"><span class="secno">3.5. </span><span class="content">Extensions to <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions">FullscreenOptions</a></code></span><a class="self-link" href="#api-extensions-to-fullscreen-options"></a></h3>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions①"><c- g>FullscreenOptions</c-></a> {
   // An optional way to request a specific screen for element fullscreen.
-  <a data-link-type="idl-name" href="#screenadvanced" id="ref-for-screenadvanced①②"><c- n>ScreenAdvanced</c-></a> <dfn class="idl-code" data-dfn-for="FullscreenOptions" data-dfn-type="dict-member" data-export data-type="ScreenAdvanced " id="dom-fullscreenoptions-screen"><code><c- g>screen</c-></code><a class="self-link" href="#dom-fullscreenoptions-screen"></a></dfn>;
+  <a data-link-type="idl-name" href="#screenadvanced" id="ref-for-screenadvanced①③"><c- n>ScreenAdvanced</c-></a> <dfn class="idl-code" data-dfn-for="FullscreenOptions" data-dfn-type="dict-member" data-export data-type="ScreenAdvanced " id="dom-fullscreenoptions-screen"><code><c- g>screen</c-></code><a class="self-link" href="#dom-fullscreenoptions-screen"></a></dfn>;
 };
 </pre>
    <p class="issue" id="issue-e091725c"><a class="self-link" href="#issue-e091725c"></a> Write me.</p>
    <h3 class="heading settled" data-level="3.6" id="api-permissions"><span class="secno">3.6. </span><span class="content">Permissions</span><a class="self-link" href="#api-permissions"></a></h3>
    <p>The <dfn class="idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export id="dom-permissionname-window-placement"><code>"window-placement"</code><a class="self-link" href="#dom-permissionname-window-placement"></a></dfn> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#powerful-feature" id="ref-for-powerful-feature①">powerful feature</a> is a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#boolean-feature" id="ref-for-boolean-feature">boolean feature</a>.</p>
-   <p class="issue" id="issue-143aeacf"><a class="self-link" href="#issue-143aeacf"></a> Call it <code>"multiscreen"</code> instead?</p>
+   <p class="issue" id="issue-143aeacf"><a class="self-link" href="#issue-143aeacf"></a> Call it <code>"multiscreen"</code> instead? <a href="https://github.com/webscreens/window-placement/issues/54">&lt;https://github.com/webscreens/window-placement/issues/54></a></p>
    <p class="issue" id="issue-4fd37938"><a class="self-link" href="#issue-4fd37938"></a> File bug against <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>, to add to the registry.</p>
    <h2 class="heading settled" data-level="4" id="security"><span class="secno">4. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
    <p class="issue" id="issue-089b92ec"><a class="self-link" href="#issue-089b92ec"></a> Write this section.</p>
@@ -2752,9 +2753,9 @@ Thomas Steiner,</p>
    <ul>
     <li><a href="#ref-for-screen">1.2.1. Detecting when screen properties change</a>
     <li><a href="#ref-for-screen①">2.6. Current screen</a>
-    <li><a href="#ref-for-screen②">3.1. Extensions to the Screen interface</a> <a href="#ref-for-screen③">(2)</a>
-    <li><a href="#ref-for-screen④">3.1.1. Screen events</a> <a href="#ref-for-screen⑤">(2)</a>
-    <li><a href="#ref-for-screen⑥">3.4. The ScreenAdvanced interface</a>
+    <li><a href="#ref-for-screen②">3.1. Extensions to the Screen interface</a> <a href="#ref-for-screen③">(2)</a> <a href="#ref-for-screen④">(3)</a>
+    <li><a href="#ref-for-screen⑤">3.1.1. Screen events</a> <a href="#ref-for-screen⑥">(2)</a>
+    <li><a href="#ref-for-screen⑦">3.4. The ScreenAdvanced interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-window-moveto">
@@ -2792,6 +2793,12 @@ Thomas Steiner,</p>
    <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screeny">https://drafts.csswg.org/cssom-view-1/#dom-window-screeny</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-screeny">3.2. Extensions to the Window interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-eventtarget">
+   <a href="https://dom.spec.whatwg.org/#eventtarget">https://dom.spec.whatwg.org/#eventtarget</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-eventtarget">3.1. Extensions to the Screen interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-concept-event-fire">
@@ -3050,7 +3057,7 @@ Thomas Steiner,</p>
      <li><span class="dfn-paneled" id="term-for-px">css pixel</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSSOM-VIEW]</a> defines the following terms:
+    <a data-link-type="biblio">[cssom-view-1]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-screen">Screen</span>
      <li><span class="dfn-paneled" id="term-for-dom-window-moveto">moveTo(x, y)</span>
@@ -3063,6 +3070,7 @@ Thomas Steiner,</p>
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-eventtarget">EventTarget</span>
      <li><span class="dfn-paneled" id="term-for-concept-event-fire">fire an event</span>
     </ul>
    <li>
@@ -3140,7 +3148,7 @@ Thomas Steiner,</p>
   <dl>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/">CSS Values and Units Module Level 4</a>. 11 November 2020. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
-   <dt id="biblio-cssom-view">[CSSOM-VIEW]
+   <dt id="biblio-cssom-view-1">[CSSOM-VIEW-1]
    <dd>Simon Pieters. <a href="https://www.w3.org/TR/cssom-view-1/">CSSOM View Module</a>. 17 March 2016. WD. URL: <a href="https://www.w3.org/TR/cssom-view-1/">https://www.w3.org/TR/cssom-view-1/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
@@ -3169,7 +3177,7 @@ Thomas Steiner,</p>
    <dd>Mounir Lamouri; Marcos Caceres; Johanna Herman. <a href="https://www.w3.org/TR/screen-orientation/">The Screen Orientation API</a>. 19 October 2020. WD. URL: <a href="https://www.w3.org/TR/screen-orientation/">https://www.w3.org/TR/screen-orientation/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
-<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://drafts.csswg.org/cssom-view-1/#screen"><c- g>Screen</c-></a> {
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://drafts.csswg.org/cssom-view-1/#screen"><c- g>Screen</c-></a> /* : EventTarget */ {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext"><c- g>SecureContext</c-></a>]
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-screen-isextended"><c- g>isExtended</c-></a>;
 
@@ -3216,10 +3224,11 @@ Thomas Steiner,</p>
    <div class="issue"> Write this section, using examples from Explainer:<a href="#issue-ce27403d"> ↵ </a></div>
    <div class="issue"> Finish up this section.<a href="#issue-1e9cfe84"> ↵ </a></div>
    <div class="issue"> Are these definitions actually needed? Reference <a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-information">CSSOM View Module 1 §2.3 Web-exposed screen information</a> if so.<a href="#issue-088e06af"> ↵ </a></div>
-   <div class="issue"> Merge the above with <a data-link-type="biblio" href="#biblio-cssom-view">[CSSOM-VIEW]</a>.<a href="#issue-c00910d1"> ↵ </a></div>
+   <div class="issue"> <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen">Screen</a></code> needs to derived from <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a></code>. This will require changes to <a href="https://www.w3.org/TR/cssom-view/#the-screen-interface">CSSOM View Module 1 §4.3 The Screen Interface</a>.<a href="#issue-e61a06d2"> ↵ </a></div>
+   <div class="issue"> Merge the above with <a href="https://www.w3.org/TR/cssom-view/#extensions-to-the-window-interface">CSSOM View Module 1 §4 Extensions to the Window Interface</a>.<a href="#issue-c121dd6b"> ↵ </a></div>
    <div class="issue"> Should x or y have sort priority? Fall back to id?<a href="#issue-5472e41c"> ↵ </a></div>
    <div class="issue"> Write me.<a href="#issue-e091725c"> ↵ </a></div>
-   <div class="issue"> Call it <code>"multiscreen"</code> instead?<a href="#issue-143aeacf"> ↵ </a></div>
+   <div class="issue"> Call it <code>"multiscreen"</code> instead? <a href="https://github.com/webscreens/window-placement/issues/54">&lt;https://github.com/webscreens/window-placement/issues/54></a><a href="#issue-143aeacf"> ↵ </a></div>
    <div class="issue"> File bug against <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>, to add to the registry.<a href="#issue-4fd37938"> ↵ </a></div>
    <div class="issue"> Write this section.<a href="#issue-089b92ec"> ↵ </a></div>
    <div class="issue"> Write this section.<a href="#issue-089b92ec①"> ↵ </a></div>
@@ -3359,6 +3368,7 @@ Thomas Steiner,</p>
    <b><a href="#connected-screen-basic-observable-properties">#connected-screen-basic-observable-properties</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-connected-screen-basic-observable-properties">3.1.1. Screen events</a>
+    <li><a href="#ref-for-connected-screen-basic-observable-properties①">3.4.1. ScreenAdvanced events</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="connected-screen-advanced-observable-properties">
@@ -3491,8 +3501,8 @@ Thomas Steiner,</p>
     <li><a href="#ref-for-screenadvanced①">3.2. Extensions to the Window interface</a>
     <li><a href="#ref-for-screenadvanced②">3.3. The Screens interface</a> <a href="#ref-for-screenadvanced③">(2)</a> <a href="#ref-for-screenadvanced④">(3)</a> <a href="#ref-for-screenadvanced⑤">(4)</a> <a href="#ref-for-screenadvanced⑥">(5)</a> <a href="#ref-for-screenadvanced⑦">(6)</a>
     <li><a href="#ref-for-screenadvanced⑧">3.4. The ScreenAdvanced interface</a> <a href="#ref-for-screenadvanced⑨">(2)</a>
-    <li><a href="#ref-for-screenadvanced①⓪">3.4.1. ScreenAdvanced events</a> <a href="#ref-for-screenadvanced①①">(2)</a>
-    <li><a href="#ref-for-screenadvanced①②">3.5. Extensions to FullscreenOptions</a>
+    <li><a href="#ref-for-screenadvanced①⓪">3.4.1. ScreenAdvanced events</a> <a href="#ref-for-screenadvanced①①">(2)</a> <a href="#ref-for-screenadvanced①②">(3)</a>
+    <li><a href="#ref-for-screenadvanced①③">3.5. Extensions to FullscreenOptions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-screenadvanced-left">

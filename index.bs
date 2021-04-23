@@ -273,7 +273,7 @@ The <dfn>available height</dfn> of a [=/connected screen=] is the [=screen area/
 
 </div>
 
-Issue: Are these definitions actually needed? Reference [[cssom-view#web-exposed-screen-information]] if so.
+Issue: Are these definitions actually needed? Reference [[CSSOM-VIEW#web-exposed-screen-information]] if so.
 
 
 <!-- ====================================================================== -->
@@ -391,7 +391,7 @@ Note: On many operating systems, a window can be presented across multiple scree
 </div>
 
 <xmp class=idl>
-partial interface Screen {
+partial interface Screen /* : EventTarget */ {
   [SecureContext]
   readonly attribute boolean isExtended;
 
@@ -399,6 +399,8 @@ partial interface Screen {
   attribute EventHandler onchange;
 };
 </xmp>
+
+Issue: {{Screen}} needs to derived from {{EventTarget}}. This will require changes to [[CSSOM-VIEW#the-screen-interface]].
 
 <div algorithm>
 
@@ -465,7 +467,7 @@ In addition to the partial interface additions defined above, the {{Window}} int
 * The {{Window/moveTo()}} steps move the target window relative to the top left corner of the [=/primary screen=]'s Web-exposed screen area.
 * Handling of `"left"` and `"top"` for {{Window/open(url, name, features)|open()}} move the target window relative to the top or left edge (respectively) of the [=/primary screen=]'s Web-exposed screen area.
 
-Issue: Merge the above with [[CSSOM-VIEW]].
+Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
 
 <!-- ====================================================================== -->
 ## The {{Screens}} interface ## {#api-screens-interface}
@@ -611,7 +613,7 @@ The <dfn attribute for=ScreenAdvanced>label</dfn> getter steps are to return [=/
 ### {{ScreenAdvanced}} events ### {#api-screenadvanced-events}
 <!-- ====================================================================== -->
 
-When any [=connected screen/advanced observable property=] of a [=/connected screen=] changes, [=/fire an event=] with type <dfn event for=ScreenAdvanced>`change`</dfn> at the associated {{ScreenAdvanced}} object.
+When any [=connected screen/basic observable property=] or [=connected screen/advanced observable property=] of a {{ScreenAdvanced}}'s associated [=/connected screen=] changes, [=/fire an event=] with type <dfn event for=ScreenAdvanced>`change`</dfn> at the {{ScreenAdvanced}} object.
 
 
 <!-- ====================================================================== -->
@@ -634,7 +636,7 @@ Issue: Write me.
 
 The <dfn for=PermissionName enum-value>"window-placement"</dfn> [=/powerful feature=] is a [=/boolean feature=].
 
-Issue: Call it `"multiscreen"` instead?
+Issue(54): Call it `"multiscreen"` instead?
 
 Issue: File bug against [[permissions]], to add to the registry.
 

@@ -350,9 +350,9 @@ permission, are outlined below:
   readonly attribute FrozenArray<ScreenAdvanced> screens;
 
   // NEW: A reference to the current screen with additional info.
-  readonly attribute ScreenAdvanced currentScreen;
+  [SameObject] readonly attribute ScreenAdvanced currentScreen;
 
-  // NEW: An event fired when 'screens' or 'currentScreen' changes.
+  // NEW: An event fired when a screen is added or removed from 'screens'.
   // NOTE: Does not fire on changes to attributes of individual Screens.
   attribute EventHandler onchange;
 };

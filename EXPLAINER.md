@@ -350,11 +350,17 @@ permission, are outlined below:
   readonly attribute FrozenArray<ScreenAdvanced> screens;
 
   // NEW: A reference to the current screen with additional info.
-  [SameObject] readonly attribute ScreenAdvanced currentScreen;
+  // NOTE: This is intentionally not [SameObject] so that currentScreen
+  // can be a member of screens.
+  readonly attribute ScreenAdvanced currentScreen;
 
-  // NEW: An event fired when a screen is added or removed from 'screens'.
+  // NEW: Change event fired when the set of screens changes.
   // NOTE: Does not fire on changes to attributes of individual Screens.
-  attribute EventHandler onchange;
+  attribute EventHandler onscreenschange;
+
+  // NEW: Change event fired when any attribute on the currentScreen changes,
+  // including when the window is moved to another screen.
+  attribute EventHandler oncurrentscreenchange;
 };
 
 // NEW: Interface inherits Screen and exposes additional information.
@@ -414,8 +420,8 @@ async function startMultiScreenSlideshow(screensInterface) {
   // NEW: Use granted multi-screen info; cache the count for comparison later.
   let cachedScreenCount = screensInterface.screens.length;
 
-  // NEW: Handle changes to the set of available screens or current screen:
-  screensInterface.addEventListener('change', function() {
+  // NEW: Handle changes to the set of available screens.
+  screensInterface.addEventListener('screenschange', function() {
     // NEW: Check if the change was fired because a new screen was connected.
     if (screensInterface.screens.length > cachedScreenCount) {
       // Offer to move the presentation to the newly connected screen.
@@ -468,7 +474,7 @@ let sortedScreens = screensInterface.screens.sort((a, b) => b.left - a.left);
 ```
 
 NOTE: The `element.requestFullscreen()` algorithm could reasonably be updated to
-support being triggered by user-generated `Screens.onchange` events, matching
+support being triggered by user-generated `Screens.onscreenschange` events, matching
 [existing behavior](https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen)
 when triggered by user-generated `ScreenOrientation.onchange` events. This would
 allow sites to request fullscreen or change the screen used for fullscreen when
@@ -616,7 +622,7 @@ presence of multiple screens to windows located on secondary screens, where
 [active fingerprinting](https://w3c.github.io/fingerprinting-guidance/#active)
 signal, which may be observed and blocked by the user agent.
 
-The new `onchange` events pose a slight risk by making
+The new `Screen.onchange` events pose a slight risk by making
 [ephemeral fingerprinting](https://github.com/asankah/ephemeral-fingerprinting)
 easier, but scripts can already achieve the same result by polling for changes
 to `window.screen`. This risk could be partially mitigated by delaying event
@@ -647,7 +653,7 @@ Some other notes:
   finger is likely to be co-located with the current screen and window, not on
   the separate target screen.
 - ScreenAdvanced IDs generally follow patterns of other device information APIs.
-- A new affordance for fullscreen requests on `Screens.onchange` events follows
+- A new affordance for fullscreen requests on `Screens.onscreenschange` events follows
   the precedent of `ScreenOrientation.onchange`, which is not permission gated.
 
 See

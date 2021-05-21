@@ -68,12 +68,15 @@ screensInterface.screens[0].label;  // e.g. 'Samsung Electric Company 28"'
 // The object is updated on cross-screen window placements or device changes.
 screensInterface.currentScreen;
 
-// Observe 'screens' array or 'currentScreen' ref changes; sync info access.
+// Observe 'screens' array and 'currentScreen' changes; sync info access.
 let cachedScreenCount = screensInterface.screens.length;
 let cachedCurrentScreenId = screensInterface.currentScreen.id;
-screensInterface.addEventListener('change', function() {
+screensInterface.addEventListener('screenschange', function() {
   // NOTE: Does not fire on changes to attributes of individual Screens.
   let screenCountChanged = cachedScreenCount != screensInterface.screens.length;
+});
+screensInterface.addEventListener('currentscreenchange', function() {
+  // NOTE: Fires on currentScreen attribute changes, and when the window moves to another screen.
   let currentScreenChanged = cachedCurrentScreenId != screensInterface.currentScreen.id;
 });
 

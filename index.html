@@ -368,8 +368,8 @@
 /** Subheadings ***************************************************************/
 
 	h1 + h2,
-	#subtitle {
-		/* #subtitle is a subtitle in an H2 under the H1 */
+	#profile-and-date {
+		/* #profile-and-date is a subtitle in an H2 under the H1 */
 		margin-top: 0;
 	}
 	h2 + h3,
@@ -583,34 +583,27 @@
 	a[href] {
 		color: #034575;
 		color: var(--a-normal-text);
-		text-decoration: none;
-		border-bottom: 1px solid #707070;
-		border-bottom: 1px solid var(--a-normal-underline);
-		/* Need a bit of extending for it to look okay */
-		padding: 0 1px 0;
-		margin: 0 -1px 0;
+		text-decoration: underline #707070;
+		text-decoration: underline var(--a-normal-underline);
+		text-decoration-skip-ink: none;
 	}
 	a:visited {
 		color: #034575;
 		color: var(--a-visited-text);
-		border-bottom-color: #bbb;
-		border-bottom-color: var(--a-visited-underline);
+		text-decoration-color: #bbb;
+		text-decoration-color: var(--a-visited-underline);
 	}
 
-	/* Use distinguishing colors when user is interacting with the link */
+	/* Indicate interaction with the link */
 	a[href]:focus,
 	a[href]:hover {
-		background: #f8f8f8;
-		background: rgba(75%, 75%, 75%, .25);
-		background: var(--a-hover-bg);
-		border-bottom-width: 3px;
-		margin-bottom: -2px;
+		text-decoration-thickness: 2px;
 	}
 	a[href]:active {
 		color: #c00;
 		color: var(--a-active-text);
-		border-color: #c00;
-		border-color: var(--a-active-underline);
+		text-decoration-color: #c00;
+		text-decoration-color: var(--a-active-underline);
 	}
 
 	/* Backout above styling for W3C logo */
@@ -1116,9 +1109,12 @@ Possible extra rowspan handling
 
 	.toc a {
 		/* More spacing; use padding to make it part of the click target. */
-		padding-top: 0.1rem;
+		padding: 0.1rem 1px 0;
 		/* Larger, more consistently-sized click target */
 		display: block;
+		/* Switch to using border-bottom for underlines */
+		text-decoration: none;
+		border-bottom: 1px solid;
 		/* Reverse color scheme */
 		color: black;
 		color: var(--toclink-text);
@@ -1130,6 +1126,13 @@ Possible extra rowspan handling
 		color: var(--toclink-visited-text);
 		border-color: #054572;
 		border-color: var(--toclink-visited-underline);
+	}
+	.toc a:focus,
+	.toc a:hover {
+		background: rgba(75%, 75%, 75%, .25);
+		background: var(--a-hover-bg);
+		border-bottom-width: 3px;
+		margin-bottom: -2px;
 	}
 	.toc a:not(:focus):not(:hover) {
 		/* Allow colors to cascade through from link styling */
@@ -1484,10 +1487,10 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version b94c7e755, updated Fri Feb 19 16:28:59 2021 -0800" name="generator">
+  <meta content="Bikeshed version 800b43329, updated Tue May 25 14:13:32 2021 -0700" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="01c699c9a266b7190e46d25ff0a1c0ad35f56a61" name="document-revision">
+  <meta content="98fa9b17890be9a12ec2e1466bd4fd04a550a8d8" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -1612,9 +1615,9 @@ pre .property::before, pre .property::after {
     --ins-bg: transparent;
 
     --a-normal-text: #034575;
-    --a-normal-underline: #707070;
+    --a-normal-underline: #bbb;
     --a-visited-text: var(--a-normal-text);
-    --a-visited-underline: #bbb;
+    --a-visited-underline: #707070;
     --a-hover-bg: rgba(75%, 75%, 75%, .25);
     --a-active-text: #c00;
     --a-active-underline: #c00;
@@ -2077,7 +2080,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://w3.org/community/webscreens/"> <img alt="Logo" height="100" src="logo.svg" width="100"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2021-04-23">23 April 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2021-06-04">4 June 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2212,7 +2215,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
     <li data-md>
      <p>Medical app opens images (e.g. x-rays) on a high-resolution grayscale display.</p>
     <li data-md>
-     <p>Creativity app shows secondary windows (e.g. pallete) on a separate screen.</p>
+     <p>Creativity app shows secondary windows (e.g. palette) on a separate screen.</p>
     <li data-md>
      <p>Conference room app shows controls on a touch screen device and video on a TV.</p>
     <li data-md>
@@ -2231,7 +2234,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <h4 class="heading settled" data-level="1.2.1" id="usage-overview-property-changes"><span class="secno">1.2.1. </span><span class="content">Detecting when screen properties change</span><a class="self-link" href="#usage-overview-property-changes"></a></h4>
    <p>Without even considering multiple screens, sites may want to adapt to screen attribute changes. To avoid polling, <code>change</code> events are fired at the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen">Screen</a></code> object:</p>
 <pre class="language-js highlight">screen<c- p>.</c->addEventListener<c- p>(</c-><c- t>'change'</c-><c- p>)</c-> e <c- p>=></c-> <c- p>{</c->
-  <c- d>/* display properties have changed */</c->
+  <c- d>/* display properties have changed for the current screen */</c->
 <c- p>});</c->
 </pre>
    <h4 class="heading settled" data-level="1.2.2" id="usage-overview-extended"><span class="secno">1.2.2. </span><span class="content">Detecting the presence of extended screen areas</span><a class="self-link" href="#usage-overview-extended"></a></h4>
@@ -2269,7 +2272,13 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 </pre>
    <h4 class="heading settled" data-level="1.2.4" id="usage-overview-fullscreen-on-specific-screen"><span class="secno">1.2.4. </span><span class="content">Showing elements fullscreen on a specific screen</span><a class="self-link" href="#usage-overview-fullscreen-on-specific-screen"></a></h4>
    <p>A common use case is to present a slideshow or other media fullscreen on a particular screen, while showing controls for the content on another screen. Once a screen has been selected, either interactively, using the screen’s properties, or remembering a previous selection, it can be passed to the <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen" id="ref-for-dom-element-requestfullscreen">requestFullscreen()</a></code> method.</p>
-<pre class="language-js highlight">slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> <c- k>await</c-> getScreenForSlideshow<c- p>()</c-> <c- p>});</c->
+<pre class="language-js highlight"><c- c1>// Call an assumed helper function which asynchronously selects</c->
+<c- c1>// a screen, and returns a ScreenAdvanced instance.</c->
+<c- a>const</c-> screenAdvanced <c- o>=</c-> <c- k>await</c-> getScreenForSlideshow<c- p>();</c->
+
+<c- c1>// Request that a particular element go fullscreen on the selected</c->
+<c- c1>// screen.</c->
+slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> screenAdvanced <c- p>});</c->
 </pre>
    <h4 class="heading settled" data-level="1.2.5" id="usage-overview-place-windows-on-specific-screen"><span class="secno">1.2.5. </span><span class="content">Placing windows on a specific screen</span><a class="self-link" href="#usage-overview-place-windows-on-specific-screen"></a></h4>
    <p>Windows can be placed on specific screens using the coordinates provided in the <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced">ScreenAdvanced</a></code> interface.</p>
@@ -2339,7 +2348,7 @@ The rectangle’s edges are parallel to the <a data-link-type="dfn" href="#scree
    <p class="issue" id="issue-088e06af"><a class="self-link" href="#issue-088e06af"></a> Are these definitions actually needed? Reference <a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-information">CSSOM View Module 1 §2.3 Web-exposed screen information</a> if so.</p>
    <h4 class="heading settled" data-level="2.3.2" id="concept-pointer-type-support"><span class="secno">2.3.2. </span><span class="content">Pointer type support</span><a class="self-link" href="#concept-pointer-type-support"></a></h4>
    <p>Users often interact with content on <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①③">connected screens</a> using a <a data-link-type="dfn" href="https://www.w3.org/TR/pointerevents/#dfn-pointer" id="ref-for-dfn-pointer">pointer</a>, an input device that can target coordinates on the screen. Examples include mouse, pen, or touch contact. <a data-link-type="biblio" href="#biblio-pointerevents">[PointerEvents]</a></p>
-   <p>The <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-supported-pointer-types">supported pointer types</dfn> for a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①④">connected screen</a> is the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of possible <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent-pointertype" id="ref-for-dom-pointerevent-pointertype">pointerType</a></code> values that can appear in <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent">PointerEvent</a></code>s fired for content on the screen. The set is ordered by <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-sort-in-ascending-order" id="ref-for-list-sort-in-ascending-order">sorting in ascending order</a> with the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#code-unit-less-than" id="ref-for-code-unit-less-than">code unit less than</a> algorithm.</p>
+   <p>The <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-supported-pointer-types">supported pointer types</dfn> for a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①④">connected screen</a> is the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of possible <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent-pointertype" id="ref-for-dom-pointerevent-pointertype">pointerType</a></code> values that can appear in <code class="idl"><a data-link-type="idl">PointerEvent</a></code>s fired for content on the screen. The set is ordered by <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-sort-in-ascending-order" id="ref-for-list-sort-in-ascending-order">sorting in ascending order</a> with the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#code-unit-less-than" id="ref-for-code-unit-less-than">code unit less than</a> algorithm.</p>
    <p class="note" role="note"><span>Note:</span> As an example, the <a data-link-type="dfn" href="#connected-screen-supported-pointer-types" id="ref-for-connected-screen-supported-pointer-types">supported pointer types</a> for a device supporting both mouse and touch input would be « <code>"mouse"</code>, <code>"touch"</code> ».</p>
    <h4 class="heading settled" data-level="2.3.3" id="concept-screen-position"><span class="secno">2.3.3. </span><span class="content">Screen position</span><a class="self-link" href="#concept-screen-position"></a></h4>
    <p>A computer system has a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="virtual-screen-area">virtual screen area</dfn>, with x- and y-coordinates that increase rightwards and downwards, respectively. Every <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑤">connected screen</a>'s <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area①⓪">screen area</a> is a view onto a rectangular subset of the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area">virtual screen area</a>.</p>
@@ -2485,7 +2494,6 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="screens"><code><c- g>Screens</c-></code></dfn> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-frozen-array" id="ref-for-idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a data-link-type="idl-name" href="#screenadvanced" id="ref-for-screenadvanced④"><c- n>ScreenAdvanced</c-></a>> <a class="idl-code" data-link-type="attribute" data-readonly data-type="FrozenArray<ScreenAdvanced>" href="#dom-screens-screens" id="ref-for-dom-screens-screens①"><c- g>screens</c-></a>;
 
-  [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject" id="ref-for-SameObject"><c- g>SameObject</c-></a>]
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#screenadvanced" id="ref-for-screenadvanced⑤"><c- n>ScreenAdvanced</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Screens" data-dfn-type="attribute" data-export data-readonly data-type="ScreenAdvanced" id="dom-screens-currentscreen"><code><c- g>currentScreen</c-></code></dfn>;
 
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler①"><c- n>EventHandler</c-></a> <a class="idl-code" data-link-type="attribute" data-type="EventHandler" href="#dom-screens-onscreenschange" id="ref-for-dom-screens-onscreenschange"><c- g>onscreenschange</c-></a>;
@@ -2530,9 +2538,9 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Screens" data-dfn-type="attribute" data-export id="dom-screens-onscreenschange"><code>onscreenschange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes①">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type①">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screens-screenschange" id="ref-for-eventdef-screens-screenschange"><code>screenschange</code></a>.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Screens" data-dfn-type="attribute" data-export id="dom-screens-oncurrentscreenchange"><code>oncurrentscreenchange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes②">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type②">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screens-currentscreenchange" id="ref-for-eventdef-screens-currentscreenchange"><code>currentscreenchange</code></a>.</p>
    <p>When the set of <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③②">connected screens</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire①">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="Screens" data-dfn-type="event" data-export id="eventdef-screens-screenschange"><code>screenschange</code></dfn> at every <code class="idl"><a data-link-type="idl" href="#screens" id="ref-for-screens⑥">Screens</a></code> object.</p>
-   <p>When the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen②">current screen</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①①">Window</a></code> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire②">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="Screens" data-dfn-type="event" data-export id="eventdef-screens-currentscreenchange"><code>currentscreenchange</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①②">Window</a></code>'s associated <code class="idl"><a data-link-type="idl" href="#screens" id="ref-for-screens⑦">Screens</a></code> object.</p>
+   <p>When the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen②">current screen</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①①">Window</a></code> changes from one <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③③">connected screen</a> to another (e.g. the {{Window has been moved to a different display), <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire②">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="Screens" data-dfn-type="event" data-export id="eventdef-screens-currentscreenchange"><code>currentscreenchange</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①②">Window</a></code>'s associated <code class="idl"><a data-link-type="idl" href="#screens" id="ref-for-screens⑦">Screens</a></code> object.</p>
    <h3 class="heading settled" data-level="3.4" id="api-screenadvanced-interface"><span class="secno">3.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced⑧">ScreenAdvanced</a></code> interface</span><a class="self-link" href="#api-screenadvanced-interface"></a></h3>
-   <p>A <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced⑨">ScreenAdvanced</a></code> object represents a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③③">connected screen</a>.</p>
+   <p>A <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced⑨">ScreenAdvanced</a></code> object represents a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③④">connected screen</a>.</p>
    <div class="domintro note" role="note">
     <dl>
      <dt data-md><var>screen</var> . <code class="idl"><a data-link-type="idl" href="#dom-screenadvanced-left" id="ref-for-dom-screenadvanced-left">left</a></code>
@@ -2581,7 +2589,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenAdvanced" data-dfn-type="attribute" data-export id="dom-screenadvanced-pointertypes"><code>pointerTypes</code></dfn> getter steps are to return <a data-link-type="dfn" href="https://heycam.github.io/webidl/#this" id="ref-for-this⑧">this</a>'s <a data-link-type="dfn" href="#connected-screen-supported-pointer-types" id="ref-for-connected-screen-supported-pointer-types②">supported pointer types</a>.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenAdvanced" data-dfn-type="attribute" data-export id="dom-screenadvanced-label"><code>label</code></dfn> getter steps are to return <a data-link-type="dfn" href="https://heycam.github.io/webidl/#this" id="ref-for-this⑨">this</a>'s <a data-link-type="dfn" href="#connected-screen-label" id="ref-for-connected-screen-label③">label</a>.</p>
    <h4 class="heading settled" data-level="3.4.1" id="api-screenadvanced-events"><span class="secno">3.4.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced①⓪">ScreenAdvanced</a></code> events</span><a class="self-link" href="#api-screenadvanced-events"></a></h4>
-   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties①">basic observable property</a> or <a data-link-type="dfn" href="#connected-screen-advanced-observable-properties" id="ref-for-connected-screen-advanced-observable-properties">advanced observable property</a> of a <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced①①">ScreenAdvanced</a></code>'s associated <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③④">connected screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire③">fire an event</a> with type <dfn class="idl-code" data-dfn-for="ScreenAdvanced" data-dfn-type="event" data-export id="eventdef-screenadvanced-change"><code>change</code><a class="self-link" href="#eventdef-screenadvanced-change"></a></dfn> at the <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced①②">ScreenAdvanced</a></code> object.</p>
+   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties①">basic observable property</a> or <a data-link-type="dfn" href="#connected-screen-advanced-observable-properties" id="ref-for-connected-screen-advanced-observable-properties">advanced observable property</a> of a <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced①①">ScreenAdvanced</a></code>'s associated <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③⑤">connected screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire③">fire an event</a> with type <dfn class="idl-code" data-dfn-for="ScreenAdvanced" data-dfn-type="event" data-export id="eventdef-screenadvanced-change"><code>change</code><a class="self-link" href="#eventdef-screenadvanced-change"></a></dfn> at the <code class="idl"><a data-link-type="idl" href="#screenadvanced" id="ref-for-screenadvanced①②">ScreenAdvanced</a></code> object.</p>
    <h3 class="heading settled" data-level="3.5" id="api-extensions-to-fullscreen-options"><span class="secno">3.5. </span><span class="content">Extensions to <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions">FullscreenOptions</a></code></span><a class="self-link" href="#api-extensions-to-fullscreen-options"></a></h3>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions①"><c- g>FullscreenOptions</c-></a> {
   // An optional way to request a specific screen for element fullscreen.
@@ -2940,12 +2948,6 @@ Thomas Steiner,</p>
     <li><a href="#ref-for-dfn-pointer">2.3.2. Pointer type support</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-pointerevent">
-   <a href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent">https://www.w3.org/TR/pointerevents3/#dom-pointerevent</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-pointerevent">2.3.2. Pointer type support</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-dom-pointerevent-pointertype">
    <a href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent-pointertype">https://www.w3.org/TR/pointerevents3/#dom-pointerevent-pointertype</a><b>Referenced in:</b>
    <ul>
@@ -2987,12 +2989,6 @@ Thomas Steiner,</p>
    <a href="https://heycam.github.io/webidl/#idl-promise">https://heycam.github.io/webidl/#idl-promise</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-promise">3.2. Extensions to the Window interface</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-SameObject">
-   <a href="https://heycam.github.io/webidl/#SameObject">https://heycam.github.io/webidl/#SameObject</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-SameObject">3.3. The Screens interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-SecureContext">
@@ -3120,7 +3116,6 @@ Thomas Steiner,</p>
    <li>
     <a data-link-type="biblio">[pointerevents3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dom-pointerevent">PointerEvent</span>
      <li><span class="dfn-paneled" id="term-for-dom-pointerevent-pointertype">pointerType</span>
     </ul>
    <li>
@@ -3132,7 +3127,6 @@ Thomas Steiner,</p>
      <li><span class="dfn-paneled" id="term-for-idl-frozen-array">FrozenArray</span>
      <li><span class="dfn-paneled" id="term-for-notallowederror">NotAllowedError</span>
      <li><span class="dfn-paneled" id="term-for-idl-promise">Promise</span>
-     <li><span class="dfn-paneled" id="term-for-SameObject">SameObject</span>
      <li><span class="dfn-paneled" id="term-for-SecureContext">SecureContext</span>
      <li><span class="dfn-paneled" id="term-for-a-new-promise">a new promise</span>
      <li><span class="dfn-paneled" id="term-for-idl-boolean">boolean</span>
@@ -3165,7 +3159,7 @@ Thomas Steiner,</p>
    <dt id="biblio-pointerevents">[PointerEvents]
    <dd>Jacob Rossi; Matt Brubeck. <a href="https://www.w3.org/TR/pointerevents/">Pointer Events</a>. 4 April 2019. REC. URL: <a href="https://www.w3.org/TR/pointerevents/">https://www.w3.org/TR/pointerevents/</a>
    <dt id="biblio-pointerevents3">[POINTEREVENTS3]
-   <dd>Patrick Lauke; et al. <a href="https://www.w3.org/TR/pointerevents3/">Pointer Events</a>. 1 October 2020. WD. URL: <a href="https://www.w3.org/TR/pointerevents3/">https://www.w3.org/TR/pointerevents3/</a>
+   <dd>Patrick Lauke; et al. <a href="https://www.w3.org/TR/pointerevents3/">Pointer Events</a>. 2 June 2021. WD. URL: <a href="https://www.w3.org/TR/pointerevents3/">https://www.w3.org/TR/pointerevents3/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-webidl">[WebIDL]
@@ -3194,7 +3188,6 @@ Thomas Steiner,</p>
 <c- b>interface</c-> <a href="#screens"><code><c- g>Screens</c-></code></a> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a data-link-type="idl-name" href="#screenadvanced"><c- n>ScreenAdvanced</c-></a>> <a class="idl-code" data-link-type="attribute" data-readonly data-type="FrozenArray<ScreenAdvanced>" href="#dom-screens-screens"><c- g>screens</c-></a>;
 
-  [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject"><c- g>SameObject</c-></a>]
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#screenadvanced"><c- n>ScreenAdvanced</c-></a> <a data-readonly data-type="ScreenAdvanced" href="#dom-screens-currentscreen"><code><c- g>currentScreen</c-></code></a>;
 
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><c- n>EventHandler</c-></a> <a class="idl-code" data-link-type="attribute" data-type="EventHandler" href="#dom-screens-onscreenschange"><c- g>onscreenschange</c-></a>;
@@ -3288,9 +3281,9 @@ Thomas Steiner,</p>
     <li><a href="#ref-for-connected-screens②⑦">2.6. Current screen</a>
     <li><a href="#ref-for-connected-screens②⑧">3.1. Extensions to the Screen interface</a>
     <li><a href="#ref-for-connected-screens②⑨">3.3. The Screens interface</a> <a href="#ref-for-connected-screens③⓪">(2)</a> <a href="#ref-for-connected-screens③①">(3)</a>
-    <li><a href="#ref-for-connected-screens③②">3.3.1. Screens events</a>
-    <li><a href="#ref-for-connected-screens③③">3.4. The ScreenAdvanced interface</a>
-    <li><a href="#ref-for-connected-screens③④">3.4.1. ScreenAdvanced events</a>
+    <li><a href="#ref-for-connected-screens③②">3.3.1. Screens events</a> <a href="#ref-for-connected-screens③③">(2)</a>
+    <li><a href="#ref-for-connected-screens③④">3.4. The ScreenAdvanced interface</a>
+    <li><a href="#ref-for-connected-screens③⑤">3.4.1. ScreenAdvanced events</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="connected-screen-screen-area">

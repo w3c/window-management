@@ -68,7 +68,7 @@ The aim of this specification is enable better experiences for web application u
 * Slideshow app presents on a projector, shows speaker notes on a laptop screen.
 * Financial app opens a dashboard of windows across multiple monitors.
 * Medical app opens images (e.g. x-rays) on a high-resolution grayscale display.
-* Creativity app shows secondary windows (e.g. pallete) on a separate screen.
+* Creativity app shows secondary windows (e.g. palette) on a separate screen.
 * Conference room app shows controls on a touch screen device and video on a TV.
 * Multi-screen layouts in gaming, signage, artistic, and other types of apps.
 * Site optimizes content and layout when a window spans multiple screens.
@@ -91,7 +91,7 @@ Without even considering multiple screens, sites may want to adapt to screen att
 
 ```js
 screen.addEventListener('change') e => {
-  /* display properties have changed */
+  /* display properties have changed for the current screen */
 });
 ```
 
@@ -150,7 +150,13 @@ A common use case is to present a slideshow or other media fullscreen on a parti
 
 
 ```js
-slideshowElement.requestFullscreen({ screen: await getScreenForSlideshow() });
+// Call an assumed helper function which asynchronously selects
+// a screen, and returns a ScreenAdvanced instance.
+const screenAdvanced = await getScreenForSlideshow();
+
+// Request that a particular element go fullscreen on the selected
+// screen.
+slideshowElement.requestFullscreen({ screen: screenAdvanced });
 ```
 
 <!-- ====================================================================== -->
@@ -489,7 +495,6 @@ Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
 interface Screens {
   readonly attribute FrozenArray<ScreenAdvanced> screens;
 
-  [SameObject]
   readonly attribute ScreenAdvanced currentScreen;
 
   attribute EventHandler onscreenschange;
@@ -541,7 +546,7 @@ The <dfn attribute for=Screens>oncurrentscreenchange</dfn> attribute is an [=/ev
 
 When the set of [=/connected screens=] changes, [=/fire an event=] with type <dfn event for=Screens>`screenschange`</dfn> at every {{Screens}} object.
 
-When the [=/current screen=] of a {{Window}} changes, [=/fire an event=] with type <dfn event for=Screens>`currentscreenchange`</dfn> at the {{Window}}'s associated {{Screens}} object.
+When the [=/current screen=] of a {{Window}} changes from one [=/connected screen=] to another (e.g. the {{Window has been moved to a different display), [=/fire an event=] with type <dfn event for=Screens>`currentscreenchange`</dfn> at the {{Window}}'s associated {{Screens}} object.
 
 
 <!-- ====================================================================== -->

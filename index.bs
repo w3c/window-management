@@ -546,7 +546,7 @@ The <dfn attribute for=Screens>oncurrentscreenchange</dfn> attribute is an [=/ev
 
 When the set of [=/connected screens=] changes, [=/fire an event=] with type <dfn event for=Screens>`screenschange`</dfn> at every {{Screens}} object.
 
-When the [=/current screen=] of a {{Window}} changes from one [=/connected screen=] to another (e.g. the {{Window has been moved to a different display), [=/fire an event=] with type <dfn event for=Screens>`currentscreenchange`</dfn> at the {{Window}}'s associated {{Screens}} object.
+When the [=/current screen=] of a {{Window}} changes from one [=/connected screen=] to another (e.g. the {{Window}} has been moved to a different display), [=/fire an event=] with type <dfn event for=Screens>`currentscreenchange`</dfn> at the {{Window}}'s associated {{Screens}} object.
 
 
 <!-- ====================================================================== -->

@@ -561,6 +561,16 @@ navigator.permissions.query({name:'window-placement'}).then(function(status) {
 });
 ```
 
+Window Placement is also a
+[policy-controlled feature](https://w3c.github.io/webappsec-permissions-policy/)
+which is disabled by default for embedded pages.
+If a page wants an embedded pages have access to this api,
+then it needs to specify an `allow` attribute on the iframe, e.g.
+
+```html
+<iframe src="some_page.html" allow="window-placement">
+```
+
 ### Open questions
 
 * Would changes to the existing synchronous methods break critical assumptions?

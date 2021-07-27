@@ -3,7 +3,9 @@ Title: Multi-Screen Window Placement
 Shortname: multi-screen
 Abstract: This document defines a web platform API that allows script to query the device for information about connected displays, and additional APIs to position windows relative to those displays.
 Status: CG-DRAFT
-URL: https://webscreens.github.io/window-placement Level: 1 Editor: Victor Costan, Google Inc. https://google.com, costan@google.com
+URL: https://webscreens.github.io/window-placement
+Level: 1
+Editor: Victor Costan, Google Inc. https://google.com, costan@google.com
 Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com
 Repository: webscreens/window-placement
 Group: secondscreencg

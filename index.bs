@@ -645,6 +645,8 @@ Issue(54): Call it `"multiscreen"` instead?
 
 Issue: File bug against [[permissions]], to add to the registry.
 
+Issue: Talk about permissions policy integration.
+
 
 <!-- ====================================================================== -->
 # Security Considerations # {#security}

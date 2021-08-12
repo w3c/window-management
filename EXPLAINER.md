@@ -82,8 +82,7 @@ See explorations of alternative and supplemental proposals in
   * See the [Presentation](https://www.w3.org/TR/presentation-api/) and
     [Remote Playback](https://www.w3.org/TR/remote-playback/) APIs
 * Capturing links in specific existing/new windows, etc.
-  * See [Service Worker Launch Event](https://github.com/WICG/sw-launch) and
-    [PWAs as URL Handlers](https://github.com/WICG/pwa-url-handler/blob/master/explainer.md)
+  * See [Link Capturing](https://docs.google.com/document/d/1w9qHqVJmZfO07kbiRMd9lDQMW15DeK5o-p-rZyL7twk/edit?usp=sharing)
 
 ## Support requests to show elements fullscreen on a specific screen
 

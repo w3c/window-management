@@ -51,7 +51,7 @@ Returns a user-friendly label string for the screen, determined by the user agen
 
 **`ScreenAdvanced.pointerTypes`**
 
-Returns an array of `PointerType` strings.
+Returns an array of `PointerType` strings representing input modes supported by the display.
 
 ## Examples
 

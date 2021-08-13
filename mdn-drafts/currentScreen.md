@@ -22,8 +22,6 @@ A `ScreenAdvanced` object.
 
 ## Examples
 
-
-
 ### Detailed information about the current screen
 
 The following example shows how to query the browser for more
@@ -31,10 +29,8 @@ information about the current screen. The example assumes that
 permission is granted.
 
 ```js
-
 window.getScreens().then(
   screens => {
-
     var screen = screens.currentScreen;
 
     console.log("ID: " + screen.id);

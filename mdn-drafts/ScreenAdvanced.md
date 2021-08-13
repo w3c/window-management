@@ -35,11 +35,11 @@ Returns true if this screen is the primary screen.
 
 **`ScreenAdvanced.isInternal`**
 
-Returns true if this scren is built into the device, like a laptop display.
+Returns true if this screen is built into the device, like a laptop display.
 
 **`ScreenAdvanced.devicePixelRatio`**
 
-Returns ratio of this screen's resolution in physical pixels to its resolution in CSS pixels.
+Returns the ratio of this screen's resolution in physical pixels to its resolution in CSS pixels.
 
 **`ScreenAdvanced.id`**
 

@@ -31,5 +31,4 @@ if (screen.isExtended) {
     // ...
   });
 }
-
 ```

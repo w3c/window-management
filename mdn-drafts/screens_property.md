@@ -8,7 +8,7 @@ browser_compatibility: api.Screens.screens
 
 ## Description
 
-The `screens` read-only property of the `Screens` interface returns an array of `ScreenAdvanced` objects which describe the available screens.
+The `screens` read-only property of the `Screens` interface returns an array of `ScreenAdvanced` objects that describe the available screens.
 
 ## Syntax
 
@@ -16,7 +16,7 @@ The `screens` read-only property of the `Screens` interface returns an array of 
 
 ### Value
 
-An frozen array of `ScreenAdvanced` objects.
+A frozen array of `ScreenAdvanced` objects.
 
 ## Examples
 
@@ -27,11 +27,9 @@ information about all available screens. The example assumes
 that permission is granted.
 
 ```js
-
 window.getScreens().then(
   screens => {
     var availableScreens = screens.screens;
-
     availableScreens.forEach(screen => {
       console.log("ID: " + screen.id);
       console.log("  Size: " + screen.width + " x " + screen.height);

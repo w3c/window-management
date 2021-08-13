@@ -2,12 +2,11 @@
 recipe: api-interface
 title: 'Screens'
 mdn_url: /en-US/docs/Web/API/Screens
-specifications: https://webscreens.github.io/window-placement
+specifications: https://webscreens.github.io/window-placement/#screens
 browser_compatibility: api.Screens
 ---
 
 ## Description
-
 
 The `Screens` interface of the Window Placement API provides multi-screen information and change events.
 
@@ -27,11 +26,15 @@ Returns a `ScreenAdvanced` object for the current screen.
 
 ## Eventhandlers
 
-**`Screens.onchange`**
+ **`Screens.onscreenschange`**
 
-Called when `screens` or `currentScreen` changes.
+Called when `screens` changes.
 
-Note that this is not called on changes to the attributes of individual screens. `Screen.onchange` can be used to observe those changes.
+Note that this is not called on changes to the attributes of individual screens. Use `Screen.onchange` to observe those changes.
+
+**`Screens.oncurrentscreenchange`**
+
+Called when any attribute on `currentScreen` changes.
 
 ## Examples
 
@@ -54,7 +57,7 @@ if (screen.isExtended) {
 }
 ```
 
-### Detecting when screen properties change
+### Detecting when the set of screens change
 
 The following example logs a message if the set of available screens
 changes. This example assumes the permission was granted.
@@ -62,7 +65,7 @@ changes. This example assumes the permission was granted.
 ```js
 window.getScreens().then(
   screens => {
-    screens.onchange = event => {
+    screens.onscreenchange = event => {
       console.log("screens changed");
     };
   }
@@ -78,7 +81,7 @@ such as when the window has moved to another screen.
 window.getScreens().then(
   screens => {
     let id = screens.currentScreen.id;
-    screens.onchange = event => {
+    screens.oncurrentscreenchange = event => {
       if (id !== screens.currentScreen.id) {
         console.log("current screen changed");
         id = screens.currentScreen.id;

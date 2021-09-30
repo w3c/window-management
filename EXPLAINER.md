@@ -563,7 +563,7 @@ navigator.permissions.query({name:'window-placement'}).then(function(status) {
 Window Placement is also a
 [policy-controlled feature](https://w3c.github.io/webappsec-permissions-policy/)
 which is disabled by default for embedded cross-origin pages.
-If a cross-origin page wants an embedded pages have access to this API,
+If a cross-origin page wants an embedded page to have access to this API,
 then it needs to specify an `allow` attribute on the iframe, e.g.
 
 ```html

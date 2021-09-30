@@ -1487,10 +1487,10 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 4f053d00e, updated Tue Aug 10 14:13:32 2021 -0700" name="generator">
+  <meta content="Bikeshed version a210b7d86, updated Thu Sep 16 13:45:19 2021 -0700" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="02b3cd9dc1eaeb2fe2d75a2eb89c31fb110baef8" name="document-revision">
+  <meta content="7cd152b5f542c339bef114c53f932d6cc7435d46" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -2080,7 +2080,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://w3.org/community/webscreens/"> <img alt="Logo" height="100" src="logo.svg" width="100"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2021-08-13">13 August 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2021-09-30">30 September 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2348,7 +2348,7 @@ The rectangle’s edges are parallel to the <a data-link-type="dfn" href="#scree
    <p class="issue" id="issue-088e06af"><a class="self-link" href="#issue-088e06af"></a> Are these definitions actually needed? Reference <a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-information"><cite>CSSOM View Module 1</cite> § 2.3 Web-exposed screen information</a> if so.</p>
    <h4 class="heading settled" data-level="2.3.2" id="concept-pointer-type-support"><span class="secno">2.3.2. </span><span class="content">Pointer type support</span><a class="self-link" href="#concept-pointer-type-support"></a></h4>
    <p>Users often interact with content on <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①③">connected screens</a> using a <a data-link-type="dfn" href="https://www.w3.org/TR/pointerevents/#dfn-pointer" id="ref-for-dfn-pointer">pointer</a>, an input device that can target coordinates on the screen. Examples include mouse, pen, or touch contact. <a data-link-type="biblio" href="#biblio-pointerevents">[PointerEvents]</a></p>
-   <p>The <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-supported-pointer-types">supported pointer types</dfn> for a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①④">connected screen</a> is the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of possible <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent-pointertype" id="ref-for-dom-pointerevent-pointertype">pointerType</a></code> values that can appear in <code class="idl"><a data-link-type="idl">PointerEvent</a></code>s fired for content on the screen. The set is ordered by <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-sort-in-ascending-order" id="ref-for-list-sort-in-ascending-order">sorting in ascending order</a> with the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#code-unit-less-than" id="ref-for-code-unit-less-than">code unit less than</a> algorithm.</p>
+   <p>The <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-supported-pointer-types">supported pointer types</dfn> for a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①④">connected screen</a> is the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of possible <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent-pointertype" id="ref-for-dom-pointerevent-pointertype">pointerType</a></code> values that can appear in <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent" id="ref-for-dom-pointerevent">PointerEvent</a></code>s fired for content on the screen. The set is ordered by <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-sort-in-ascending-order" id="ref-for-list-sort-in-ascending-order">sorting in ascending order</a> with the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#code-unit-less-than" id="ref-for-code-unit-less-than">code unit less than</a> algorithm.</p>
    <p class="note" role="note"><span>Note:</span> As an example, the <a data-link-type="dfn" href="#connected-screen-supported-pointer-types" id="ref-for-connected-screen-supported-pointer-types">supported pointer types</a> for a device supporting both mouse and touch input would be « <code>"mouse"</code>, <code>"touch"</code> ».</p>
    <h4 class="heading settled" data-level="2.3.3" id="concept-screen-position"><span class="secno">2.3.3. </span><span class="content">Screen position</span><a class="self-link" href="#concept-screen-position"></a></h4>
    <p>A computer system has a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="virtual-screen-area">virtual screen area</dfn>, with x- and y-coordinates that increase rightwards and downwards, respectively. Every <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑤">connected screen</a>'s <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area①⓪">screen area</a> is a view onto a rectangular subset of the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area">virtual screen area</a>.</p>
@@ -2457,7 +2457,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel">in parallel</a>:</p>
       <ol>
        <li data-md>
-        <p>Let <var>permissionState</var> be the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#request-permission-to-use" id="ref-for-request-permission-to-use">requesting permission to use</a> the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#powerful-feature" id="ref-for-powerful-feature">powerful feature</a> named <code>"window-placement"</code>.</p>
+        <p>Let <var>permissionState</var> be the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">requesting permission to use</a> the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature">powerful feature</a> named <code>"window-placement"</code>.</p>
        <li data-md>
         <p>If <var>permissionState</var> is <code>"denied"</code> then <a data-link-type="dfn" href="https://heycam.github.io/webidl/#reject" id="ref-for-reject">reject</a> <var>promise</var> with a <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#notallowederror" id="ref-for-notallowederror">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code> and abort these steps.</p>
        <li data-md>
@@ -2598,7 +2598,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
 </pre>
    <p class="issue" id="issue-e091725c"><a class="self-link" href="#issue-e091725c"></a> Write me.</p>
    <h3 class="heading settled" data-level="3.6" id="api-permissions"><span class="secno">3.6. </span><span class="content">Permissions</span><a class="self-link" href="#api-permissions"></a></h3>
-   <p>The <dfn class="idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export id="dom-permissionname-window-placement"><code>"window-placement"</code><a class="self-link" href="#dom-permissionname-window-placement"></a></dfn> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#powerful-feature" id="ref-for-powerful-feature①">powerful feature</a> is a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#boolean-feature" id="ref-for-boolean-feature">boolean feature</a>.</p>
+   <p>The <dfn class="idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export id="dom-permissionname-window-placement"><code>"window-placement"</code><a class="self-link" href="#dom-permissionname-window-placement"></a></dfn> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①">powerful feature</a> is a <a data-link-type="dfn">boolean feature</a>.</p>
    <p class="issue" id="issue-143aeacf"><a class="self-link" href="#issue-143aeacf"></a> Call it <code>"multiscreen"</code> instead? <a href="https://github.com/webscreens/window-placement/issues/54">&lt;https://github.com/webscreens/window-placement/issues/54></a></p>
    <p class="issue" id="issue-4fd37938"><a class="self-link" href="#issue-4fd37938"></a> File bug against <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>, to add to the registry.</p>
    <p class="issue" id="issue-3b648991"><a class="self-link" href="#issue-3b648991"></a> Talk about permissions policy integration.</p>
@@ -2918,29 +2918,29 @@ Thomas Steiner,</p>
     <li><a href="#ref-for-list-sort-in-ascending-order①">3.3. The Screens interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-boolean-feature">
-   <a href="https://w3c.github.io/permissions/#boolean-feature">https://w3c.github.io/permissions/#boolean-feature</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dfn-powerful-feature">
+   <a href="https://w3c.github.io/permissions/#dfn-powerful-feature">https://w3c.github.io/permissions/#dfn-powerful-feature</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-boolean-feature">3.6. Permissions</a>
+    <li><a href="#ref-for-dfn-powerful-feature">3.2. Extensions to the Window interface</a>
+    <li><a href="#ref-for-dfn-powerful-feature①">3.6. Permissions</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-powerful-feature">
-   <a href="https://w3c.github.io/permissions/#powerful-feature">https://w3c.github.io/permissions/#powerful-feature</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dfn-request-permission-to-use">
+   <a href="https://w3c.github.io/permissions/#dfn-request-permission-to-use">https://w3c.github.io/permissions/#dfn-request-permission-to-use</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-powerful-feature">3.2. Extensions to the Window interface</a>
-    <li><a href="#ref-for-powerful-feature①">3.6. Permissions</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-request-permission-to-use">
-   <a href="https://w3c.github.io/permissions/#request-permission-to-use">https://w3c.github.io/permissions/#request-permission-to-use</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-request-permission-to-use">3.2. Extensions to the Window interface</a>
+    <li><a href="#ref-for-dfn-request-permission-to-use">3.2. Extensions to the Window interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-pointer">
    <a href="https://www.w3.org/TR/pointerevents/#dfn-pointer">https://www.w3.org/TR/pointerevents/#dfn-pointer</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-pointer">2.3.2. Pointer type support</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-pointerevent">
+   <a href="https://www.w3.org/TR/pointerevents3/#dom-pointerevent">https://www.w3.org/TR/pointerevents3/#dom-pointerevent</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-pointerevent">2.3.2. Pointer type support</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-pointerevent-pointertype">
@@ -3098,9 +3098,8 @@ Thomas Steiner,</p>
    <li>
     <a data-link-type="biblio">[permissions]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-boolean-feature">boolean feature</span>
-     <li><span class="dfn-paneled" id="term-for-powerful-feature">powerful feature</span>
-     <li><span class="dfn-paneled" id="term-for-request-permission-to-use">requesting permission to use</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-powerful-feature">powerful feature</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-request-permission-to-use">requesting permission to use</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PointerEvents]</a> defines the following terms:
@@ -3110,6 +3109,7 @@ Thomas Steiner,</p>
    <li>
     <a data-link-type="biblio">[pointerevents3]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-dom-pointerevent">PointerEvent</span>
      <li><span class="dfn-paneled" id="term-for-dom-pointerevent-pointertype">pointerType</span>
     </ul>
    <li>
@@ -3149,11 +3149,11 @@ Thomas Steiner,</p>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
-   <dd>Mounir Lamouri; Marcos Caceres; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 20 July 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
+   <dd>Marcos Caceres; Micheal Taylor; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 7 September 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-pointerevents">[PointerEvents]
    <dd>Jacob Rossi; Matt Brubeck. <a href="https://www.w3.org/TR/pointerevents/"><cite>Pointer Events</cite></a>. 4 April 2019. REC. URL: <a href="https://www.w3.org/TR/pointerevents/">https://www.w3.org/TR/pointerevents/</a>
    <dt id="biblio-pointerevents3">[POINTEREVENTS3]
-   <dd>Patrick Lauke; et al. <a href="https://www.w3.org/TR/pointerevents3/"><cite>Pointer Events</cite></a>. 8 August 2021. WD. URL: <a href="https://www.w3.org/TR/pointerevents3/">https://www.w3.org/TR/pointerevents3/</a>
+   <dd>Patrick Lauke; et al. <a href="https://www.w3.org/TR/pointerevents3/"><cite>Pointer Events</cite></a>. 29 September 2021. WD. URL: <a href="https://www.w3.org/TR/pointerevents3/">https://www.w3.org/TR/pointerevents3/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-webidl">[WebIDL]
@@ -3162,7 +3162,7 @@ Thomas Steiner,</p>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-screen-orientation">[SCREEN-ORIENTATION]
-   <dd>Mounir Lamouri; Marcos Caceres; Johanna Herman. <a href="https://www.w3.org/TR/screen-orientation/"><cite>The Screen Orientation API</cite></a>. 17 June 2021. WD. URL: <a href="https://www.w3.org/TR/screen-orientation/">https://www.w3.org/TR/screen-orientation/</a>
+   <dd>Mounir Lamouri; Marcos Caceres; Johanna Herman. <a href="https://www.w3.org/TR/screen-orientation/"><cite>The Screen Orientation API</cite></a>. 6 September 2021. WD. URL: <a href="https://www.w3.org/TR/screen-orientation/">https://www.w3.org/TR/screen-orientation/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://drafts.csswg.org/cssom-view-1/#screen"><c- g>Screen</c-></a> /* : EventTarget */ {

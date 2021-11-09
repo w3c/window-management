@@ -62,7 +62,7 @@ of existing window placement APIs to support extended multi-screen environments.
   * Add `Screen.isExtended` to expose the presence of extended screen areas
   * Add `Screen.change`, an event fired when Screen attributes change
   * Add `Window.getScreenDetails()` to request additional permission-gated screen info
-  * Add `Screens` and `ScreenDetailed` interfaces for additional screen info
+  * Add `ScreenDetails` and `ScreenDetailed` interfaces for additional screen info
   * Standardize common `Screen.availLeft` and `Screen.availTop` attributes
   * Add Permission API support for a new `window-placement` entry
 
@@ -301,7 +301,7 @@ choosing appropriate window placements. The proposed shape of this query is a
 ```webidl
 partial interface Window {
   // NEW: Requests permission-gated access to additional screen information.
-  [SecureContext] Promise<Screens> getScreenDetails();
+  [SecureContext] Promise<ScreenDetails> getScreenDetails();
 };
 ```
 
@@ -333,9 +333,9 @@ async function startSlideshow() {
 };
 ```
 
-### Add `Screens` and `ScreenDetailed` interfaces for additional screen info
+### Add `ScreenDetails` and `ScreenDetailed` interfaces for additional screen info
 
-The `getScreenDetails()` method grants access to a `Screens` interface on success.
+The `getScreenDetails()` method grants access to a `ScreenDetails` interface on success.
 That provides multi-screen information and change events, as well as additional
 per-screen information via a `ScreenDetailed` interface, which inherits from the
 existing [`Screen`](https://drafts.csswg.org/cssom-view/#screen) interface. The
@@ -344,7 +344,7 @@ permission, are outlined below:
 
 ```webidl
 // NEW: Interface exposing multiple screens and additional information.
-[SecureContext] interface Screens : EventTarget {
+[SecureContext] interface ScreenDetails: EventTarget {
   // NEW: The set of available screens with additional per-screen info.
   readonly attribute FrozenArray<ScreenDetailed> screens;
 
@@ -354,7 +354,7 @@ permission, are outlined below:
   readonly attribute ScreenDetailed currentScreen;
 
   // NEW: Change event fired when the set of screens changes.
-  // NOTE: Does not fire on changes to attributes of individual Screens.
+  // NOTE: Does not fire on changes to attributes of individual ScreenDetails.
   attribute EventHandler onscreenschange;
 
   // NEW: Change event fired when any attribute on the currentScreen changes,
@@ -473,7 +473,7 @@ let sortedScreens = screenDetails.screens.sort((a, b) => b.left - a.left);
 ```
 
 NOTE: The `element.requestFullscreen()` algorithm could reasonably be updated to
-support being triggered by user-generated `Screens.onscreenschange` events, matching
+support being triggered by user-generated `ScreenDetails.onscreenschange` events, matching
 [existing behavior](https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen)
 when triggered by user-generated `ScreenOrientation.onchange` events. This would
 allow sites to request fullscreen or change the screen used for fullscreen when
@@ -662,7 +662,7 @@ Some other notes:
   finger is likely to be co-located with the current screen and window, not on
   the separate target screen.
 - ScreenDetailed IDs generally follow patterns of other device information APIs.
-- A new affordance for fullscreen requests on `Screens.onscreenschange` events follows
+- A new affordance for fullscreen requests on `ScreenDetails.onscreenschange` events follows
   the precedent of `ScreenOrientation.onchange`, which is not permission gated.
 
 See

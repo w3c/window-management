@@ -1,14 +1,14 @@
 ---
 recipe: api-interface
-title: 'Screens'
-mdn_url: /en-US/docs/Web/API/Screens
-specifications: https://webscreens.github.io/window-placement/#screens
-browser_compatibility: api.Screens
+title: 'ScreenDetails'
+mdn_url: /en-US/docs/Web/API/ScreenDetails
+specifications: https://webscreens.github.io/window-placement/#screendetails
+browser_compatibility: api.ScreenDetails
 ---
 
 ## Description
 
-The `Screens` interface of the Window Placement API provides multi-screen information and change events.
+The `ScreenDetails` interface of the Window Placement API provides multi-screen information and change events.
 
 ## Constructor
 
@@ -16,23 +16,23 @@ None.
 
 ## Properties
 
-**`Screens.screens`**
+**`ScreenDetails.screens`**
 
 Returns an array of `ScreenDetailed` objects, which describe each connected screen.
 
-**`Screens.currentScreen`**
+**`ScreenDetails.currentScreen`**
 
 Returns a `ScreenDetailed` object for the current screen.
 
 ## Eventhandlers
 
- **`Screens.onscreenschange`**
+ **`ScreenDetails.onscreenschange`**
 
 Called when `screens` changes.
 
 Note that this is not called on changes to the attributes of individual screens. Use `Screen.onchange` to observe those changes.
 
-**`Screens.oncurrentscreenchange`**
+**`ScreenDetails.oncurrentscreenchange`**
 
 Called when any attribute on `currentScreen` changes.
 

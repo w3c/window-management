@@ -1,20 +1,20 @@
 ---
 recipe: api-interface
-title: 'Screens.currentScreen'
-mdn_url: /en-US/docs/Web/API/Screens/currentScreen
-specifications: https://webscreens.github.io/window-placement/#dom-screens-currentscreen
-browser_compatibility: api.Screens.currentScreen
+title: 'ScreenDetails.currentScreen'
+mdn_url: /en-US/docs/Web/API/ScreenDetails/currentScreen
+specifications: https://webscreens.github.io/window-placement/#dom-screendetails-currentscreen
+browser_compatibility: api.ScreenDetails.currentScreen
 ---
 
 ## Description
 
-The `currentScreen` read-only property of the `Screens` interface returns
+The `currentScreen` read-only property of the `ScreenDetails` interface returns
 a `ScreenDetailed` object giving more details about the current screen
 than is available on the `window.screen` object.
 
 ## Syntax
 
-`var _screen_ = Screens.currentScreen`
+`var _screen_ = ScreenDetails.currentScreen`
 
 ### Value
 

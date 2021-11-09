@@ -119,17 +119,17 @@ try {
   const screenDetails = await window.getScreenDetails();
 
   // Do something with the screens right now.
-  processScreens(screenDetails);
+  processScreenDetails(screenDetails);
 
   // And also if the screens change in the future.
   screenDetails.onscreenschange = e => {
-    processScreens(screenDetails);
+    processScreenDetails(screenDetails);
   };
 } catch (ex) {
   /* permission denied, or other error */
 }
 
-function processScreens(screenDetails) {
+function processScreenDetails(screenDetails) {
   // Build a UI listing screens.
   clearScreenList();
   screenDetails.screens.forEach(screen => {
@@ -433,18 +433,18 @@ When any [=connected screen/basic observable property=] of a {{Window}}'s [=/cur
 
     : await window . {{Window/getScreenDetails()}}
 
-    :: Returns a promise that fulfills with a {{Screens}} object with information about all connected screens. The promise will be rejected if permission is denied.
+    :: Returns a promise that fulfills with a {{ScreenDetails}} object with information about all connected screens. The promise will be rejected if permission is denied.
 
 </div>
 
 <xmp class=idl>
 partial interface Window {
   [SecureContext]
-  Promise<Screens> getScreenDetails();
+  Promise<ScreenDetails> getScreenDetails();
 };
 </xmp>
 
-Each {{Window}} object has an associated {{Screens}} object.
+Each {{Window}} object has an associated {{ScreenDetails}} object.
 
 Each {{Window}} object also has an associated {{ScreenDetailed}} object which reflects the properties of the window's [=/current screen=].
 
@@ -460,7 +460,7 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
     1. If |permissionState| is `"denied"` then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
-    1. [=/Resolve=] |promise| with [=/this=]'s associated {{Screens}} object.
+    1. [=/Resolve=] |promise| with [=/this=]'s associated {{ScreenDetails}} object.
 
 1. Return |promise|.
 
@@ -476,23 +476,23 @@ In addition to the partial interface additions defined above, the {{Window}} int
 Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
 
 <!-- ====================================================================== -->
-## The {{Screens}} interface ## {#api-screens-interface}
+## The {{ScreenDetails}} interface ## {#api-screens-interface}
 <!-- ====================================================================== -->
 
 
 <div class="domintro note">
 
-    : <var ignore>screens</var> . {{Screens/screens}}
+    : <var ignore>screens</var> . {{ScreenDetails/screens}}
     :: Returns an array of {{ScreenDetailed}} objects that describe each of the connected screens.
 
-    : <var ignore>screens</var> . {{Screens/currentScreen}}
+    : <var ignore>screens</var> . {{ScreenDetails/currentScreen}}
     :: Returns a {{ScreenDetailed}} object that describes the current screen. This object describes the same object that the {{Window/screen}} property of {{Window}} describes, but provides a superset of the information.
 
 </div>
 
 <xmp class=idl>
 [Exposed=Window, SecureContext]
-interface Screens {
+interface ScreenDetails {
   readonly attribute FrozenArray<ScreenDetailed> screens;
 
   readonly attribute ScreenDetailed currentScreen;
@@ -504,7 +504,7 @@ interface Screens {
 
 <div algorithm>
 
-The <dfn attribute for=Screens>screens</dfn> getter steps are:
+The <dfn attribute for=ScreenDetails>screens</dfn> getter steps are:
 
 1. Let |screens| be a new [=/list=].
 
@@ -533,20 +533,20 @@ The <dfn>screen ordering</dfn> algorithm defines a [=/connected screen=] |a| as 
 
 Issue: Should x or y have sort priority? Fall back to id?
 
-The <dfn attribute for=Screens>currentScreens</dfn> getter steps are to return the {{ScreenDetailed}} object associated with the {{Window}} associated with [=/this=].
+The <dfn attribute for=ScreenDetails>currentScreens</dfn> getter steps are to return the {{ScreenDetailed}} object associated with the {{Window}} associated with [=/this=].
 
 
 <!-- ====================================================================== -->
-### {{Screens}} events ### {#api-screens-events}
+### {{ScreenDetails}} events ### {#api-screens-events}
 <!-- ====================================================================== -->
 
-The <dfn attribute for=Screens>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=Screens>`screenschange`</a>.
+The <dfn attribute for=ScreenDetails>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`screenschange`</a>.
 
-The <dfn attribute for=Screens>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=Screens>`currentscreenchange`</a>.
+The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`currentscreenchange`</a>.
 
-When the set of [=/connected screens=] changes, [=/fire an event=] with type <dfn event for=Screens>`screenschange`</dfn> at every {{Screens}} object.
+When the set of [=/connected screens=] changes, [=/fire an event=] with type <dfn event for=ScreenDetails>`screenschange`</dfn> at every {{ScreenDetails}} object.
 
-When the [=/current screen=] of a {{Window}} changes from one [=/connected screen=] to another (e.g. the {{Window}} has been moved to a different display), [=/fire an event=] with type <dfn event for=Screens>`currentscreenchange`</dfn> at the {{Window}}'s associated {{Screens}} object.
+When the [=/current screen=] of a {{Window}} changes from one [=/connected screen=] to another (e.g. the {{Window}} has been moved to a different display), [=/fire an event=] with type <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{Window}}'s associated {{ScreenDetails}} object.
 
 
 <!-- ====================================================================== -->

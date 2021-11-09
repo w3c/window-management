@@ -1,18 +1,18 @@
 ---
 recipe: api-interface
-title: 'Screens.screens'
-mdn_url: /en-US/docs/Web/API/Screens/screens
-specifications: https://webscreens.github.io/window-placement/#dom-screens-screens
-browser_compatibility: api.Screens.screens
+title: 'ScreenDetails.screens'
+mdn_url: /en-US/docs/Web/API/ScreenDetails/screens
+specifications: https://webscreens.github.io/window-placement/#dom-screendetails-screens
+browser_compatibility: api.ScreenDetails.screens
 ---
 
 ## Description
 
-The `screens` read-only property of the `Screens` interface returns an array of `ScreenDetailed` objects that describe the available screens.
+The `screens` read-only property of the `ScreenDetails` interface returns an array of `ScreenDetailed` objects that describe the available screens.
 
 ## Syntax
 
-`var _availableScreens_ = Screens.screens`
+`var _availableScreens_ = ScreenDetails.screens`
 
 ### Value
 

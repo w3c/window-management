@@ -106,7 +106,7 @@ The API exposes a new attribute and event on the `Screen` interface:
 * Events fired when Screen attributes change
   * Not web-exposed, but observable with polling
 
-The API exposes a set of `ScreenDetailed` objects in a `Screens` interface,
+The API exposes a set of `ScreenDetailed` objects in a `ScreenDetails` interface,
 providing info about each connected display, extending the singular
 [`Screen`](https://developer.mozilla.org/en-US/docs/Web/API/Screen) object
 currently available to each window, and similar to the set of `Screen` objects

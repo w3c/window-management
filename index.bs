@@ -151,26 +151,26 @@ A common use case is to present a slideshow or other media fullscreen on a parti
 
 ```js
 // Call an assumed helper function which asynchronously selects
-// a screen, and returns a ScreenAdvanced instance.
-const screenAdvanced = await getScreenForSlideshow();
+// a screen, and returns a ScreenDetailed instance.
+const screenDetailed = await getScreenForSlideshow();
 
 // Request that a particular element go fullscreen on the selected
 // screen.
-slideshowElement.requestFullscreen({ screen: screenAdvanced });
+slideshowElement.requestFullscreen({ screen: screenDetailed });
 ```
 
 <!-- ====================================================================== -->
 ### Placing windows on a specific screen ### {#usage-overview-place-windows-on-specific-screen}
 <!-- ====================================================================== -->
 
-Windows can be placed on specific screens using the coordinates provided in the {{ScreenAdvanced}} interface.
+Windows can be placed on specific screens using the coordinates provided in the {{ScreenDetailed}} interface.
 
 ```js
-function openAndCenterWindow(url, screenAdvanced, width, height) {
+function openAndCenterWindow(url, screenDetailed, width, height) {
 
   // Compute coordinates relative to the target screen's coordinates.
-  const left = Math.round(screenAdvanced.width  - width) / 2;
-  const top = Math.round(screenAdvanced.height - height) / 2;
+  const left = Math.round(screenDetailed.width  - width) / 2;
+  const top = Math.round(screenDetailed.height - height) / 2;
 
   // Open the window with the requested dimensions.
   return window.open(url, '_blank', `left=${left},top=${top},width=${width},height=${height}`);
@@ -446,7 +446,7 @@ partial interface Window {
 
 Each {{Window}} object has an associated {{Screens}} object.
 
-Each {{Window}} object also has an associated {{ScreenAdvanced}} object which reflects the properties of the window's [=/current screen=].
+Each {{Window}} object also has an associated {{ScreenDetailed}} object which reflects the properties of the window's [=/current screen=].
 
 <div algorithm>
 
@@ -483,19 +483,19 @@ Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
 <div class="domintro note">
 
     : <var ignore>screens</var> . {{Screens/screens}}
-    :: Returns an array of {{ScreenAdvanced}} objects that describe each of the connected screens.
+    :: Returns an array of {{ScreenDetailed}} objects that describe each of the connected screens.
 
     : <var ignore>screens</var> . {{Screens/currentScreen}}
-    :: Returns a {{ScreenAdvanced}} object that describes the current screen. This object describes the same object that the {{Window/screen}} property of {{Window}} describes, but provides a superset of the information.
+    :: Returns a {{ScreenDetailed}} object that describes the current screen. This object describes the same object that the {{Window/screen}} property of {{Window}} describes, but provides a superset of the information.
 
 </div>
 
 <xmp class=idl>
 [Exposed=Window, SecureContext]
 interface Screens {
-  readonly attribute FrozenArray<ScreenAdvanced> screens;
+  readonly attribute FrozenArray<ScreenDetailed> screens;
 
-  readonly attribute ScreenAdvanced currentScreen;
+  readonly attribute ScreenDetailed currentScreen;
 
   attribute EventHandler onscreenschange;
   attribute EventHandler oncurrentscreenchange;
@@ -510,7 +510,7 @@ The <dfn attribute for=Screens>screens</dfn> getter steps are:
 
 1. For each |screen| of [=/connected screens=]:
 
-    1. Let |a| be the {{ScreenAdvanced}} object describing |screen|.
+    1. Let |a| be the {{ScreenDetailed}} object describing |screen|.
 
     1. [=list/Append=] |a| to |screens|.
 
@@ -533,7 +533,7 @@ The <dfn>screen ordering</dfn> algorithm defines a [=/connected screen=] |a| as 
 
 Issue: Should x or y have sort priority? Fall back to id?
 
-The <dfn attribute for=Screens>currentScreens</dfn> getter steps are to return the {{ScreenAdvanced}} object associated with the {{Window}} associated with [=/this=].
+The <dfn attribute for=Screens>currentScreens</dfn> getter steps are to return the {{ScreenDetailed}} object associated with the {{Window}} associated with [=/this=].
 
 
 <!-- ====================================================================== -->
@@ -550,41 +550,41 @@ When the [=/current screen=] of a {{Window}} changes from one [=/connected scree
 
 
 <!-- ====================================================================== -->
-## The {{ScreenAdvanced}} interface ## {#api-screenadvanced-interface}
+## The {{ScreenDetailed}} interface ## {#api-screenadvanced-interface}
 <!-- ====================================================================== -->
 
-A {{ScreenAdvanced}} object represents a [=/connected screen=].
+A {{ScreenDetailed}} object represents a [=/connected screen=].
 
 <div class="domintro note">
 
-  : |screen| . {{ScreenAdvanced/left}}
+  : |screen| . {{ScreenDetailed/left}}
   :: Returns the distance from the left edge of the primary screen to the left edge of the screen area.
 
-  : |screen| . {{ScreenAdvanced/top}}
+  : |screen| . {{ScreenDetailed/top}}
   :: Returns the distance from the top edge of the primary screen to the top edge of the screen area.
 
-  : |screen| . {{ScreenAdvanced/isPrimary}}
+  : |screen| . {{ScreenDetailed/isPrimary}}
   :: Returns whether this screen is designated as the 'primary' screen by the OS (otherwise it is a 'secondary' screen).
 
-  : |screen| . {{ScreenAdvanced/isInternal}}
+  : |screen| . {{ScreenDetailed/isInternal}}
   :: Returns whether this screen is an 'internal' panel built into the device, like a laptop display (otherwise it is 'external', like a wired monitor).
 
-  : |screen| . {{ScreenAdvanced/devicePixelRatio}}
+  : |screen| . {{ScreenDetailed/devicePixelRatio}}
   :: Returns the ratio between physical and logical pixels.
 
-  : |screen| . {{ScreenAdvanced/id}}
+  : |screen| . {{ScreenDetailed/id}}
   :: Returns a temporary generated per-origin unique ID; reset when cookies are deleted.
 
-  : |screen| . {{ScreenAdvanced/pointerTypes}}
+  : |screen| . {{ScreenDetailed/pointerTypes}}
   :: Returns an array of pointer types supported by the screen, e.g. `"mouse"`, `"touch"`, or `"pen"`.
 
-  : |screen| . {{ScreenAdvanced/label}}
+  : |screen| . {{ScreenDetailed/label}}
   :: A user-friendly label for the screen, determined by the user agent and OS.
 
 </div>
 
 <xmp class=idl>
-[SecureContext] interface ScreenAdvanced : Screen {
+[SecureContext] interface ScreenDetailed : Screen {
   readonly attribute long left;
   readonly attribute long top;
   readonly attribute boolean isPrimary;
@@ -597,28 +597,28 @@ A {{ScreenAdvanced}} object represents a [=/connected screen=].
 </xmp>
 
 
-The <dfn attribute for=ScreenAdvanced>left</dfn> getter steps to return [=/this=]'s [=connected screen/screen position=]'s x-coordinate.
+The <dfn attribute for=ScreenDetailed>left</dfn> getter steps to return [=/this=]'s [=connected screen/screen position=]'s x-coordinate.
 
-The <dfn attribute for=ScreenAdvanced>top</dfn> getter steps to return [=/this=]'s [=connected screen/screen position=]'s y-coordinate.
+The <dfn attribute for=ScreenDetailed>top</dfn> getter steps to return [=/this=]'s [=connected screen/screen position=]'s y-coordinate.
 
-The <dfn attribute for=ScreenAdvanced>isPrimary</dfn> getter steps are to return true if [=/this=] is the [=/primary screen=], or false otherwise.
+The <dfn attribute for=ScreenDetailed>isPrimary</dfn> getter steps are to return true if [=/this=] is the [=/primary screen=], or false otherwise.
 
-The <dfn attribute for=ScreenAdvanced>isInternal</dfn> getter steps are to return true if [=/this=] is [=/internal=], or false otherwise.
+The <dfn attribute for=ScreenDetailed>isInternal</dfn> getter steps are to return true if [=/this=] is [=/internal=], or false otherwise.
 
-The <dfn attribute for=ScreenAdvanced>devicePixelRatio</dfn> getter steps are to return [=/this=]'s [=connected screen/device pixel ratio=].
+The <dfn attribute for=ScreenDetailed>devicePixelRatio</dfn> getter steps are to return [=/this=]'s [=connected screen/device pixel ratio=].
 
-The <dfn attribute for=ScreenAdvanced>id</dfn> getter steps are to return [=/this=]'s [=connected screen/id=].
+The <dfn attribute for=ScreenDetailed>id</dfn> getter steps are to return [=/this=]'s [=connected screen/id=].
 
-The <dfn attribute for=ScreenAdvanced>pointerTypes</dfn> getter steps are to return [=/this=]'s [=connected screen/supported pointer types=].
+The <dfn attribute for=ScreenDetailed>pointerTypes</dfn> getter steps are to return [=/this=]'s [=connected screen/supported pointer types=].
 
-The <dfn attribute for=ScreenAdvanced>label</dfn> getter steps are to return [=/this=]'s [=connected screen/label=].
+The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return [=/this=]'s [=connected screen/label=].
 
 
 <!-- ====================================================================== -->
-### {{ScreenAdvanced}} events ### {#api-screenadvanced-events}
+### {{ScreenDetailed}} events ### {#api-screenadvanced-events}
 <!-- ====================================================================== -->
 
-When any [=connected screen/basic observable property=] or [=connected screen/advanced observable property=] of a {{ScreenAdvanced}}'s associated [=/connected screen=] changes, [=/fire an event=] with type <dfn event for=ScreenAdvanced>`change`</dfn> at the {{ScreenAdvanced}} object.
+When any [=connected screen/basic observable property=] or [=connected screen/advanced observable property=] of a {{ScreenDetailed}}'s associated [=/connected screen=] changes, [=/fire an event=] with type <dfn event for=ScreenDetailed>`change`</dfn> at the {{ScreenDetailed}} object.
 
 
 <!-- ====================================================================== -->
@@ -628,7 +628,7 @@ When any [=connected screen/basic observable property=] or [=connected screen/ad
 <xmp class=idl>
 partial dictionary FullscreenOptions {
   // An optional way to request a specific screen for element fullscreen.
-  ScreenAdvanced screen;
+  ScreenDetailed screen;
 };
 </xmp>
 

@@ -9,7 +9,7 @@ browser_compatibility: api.Screens.currentScreen
 ## Description
 
 The `currentScreen` read-only property of the `Screens` interface returns
-a `ScreenAdvanced` object giving more details about the current screen
+a `ScreenDetailed` object giving more details about the current screen
 than is available on the `window.screen` object.
 
 ## Syntax
@@ -18,7 +18,7 @@ than is available on the `window.screen` object.
 
 ### Value
 
-A `ScreenAdvanced` object.
+A `ScreenDetailed` object.
 
 ## Examples
 

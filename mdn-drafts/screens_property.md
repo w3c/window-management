@@ -8,7 +8,7 @@ browser_compatibility: api.Screens.screens
 
 ## Description
 
-The `screens` read-only property of the `Screens` interface returns an array of `ScreenAdvanced` objects that describe the available screens.
+The `screens` read-only property of the `Screens` interface returns an array of `ScreenDetailed` objects that describe the available screens.
 
 ## Syntax
 
@@ -16,7 +16,7 @@ The `screens` read-only property of the `Screens` interface returns an array of 
 
 ### Value
 
-A frozen array of `ScreenAdvanced` objects.
+A frozen array of `ScreenDetailed` objects.
 
 ## Examples
 

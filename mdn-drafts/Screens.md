@@ -18,11 +18,11 @@ None.
 
 **`Screens.screens`**
 
-Returns an array of `ScreenAdvanced` objects, which describe each connected screen.
+Returns an array of `ScreenDetailed` objects, which describe each connected screen.
 
 **`Screens.currentScreen`**
 
-Returns a `ScreenAdvanced` object for the current screen.
+Returns a `ScreenDetailed` object for the current screen.
 
 ## Eventhandlers
 

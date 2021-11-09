@@ -62,7 +62,6 @@ const multiScreenUI = window.screen.isExtended;
 const screenDetails = await window.getScreenDetails();
 screenDetails.screens[0].isPrimary;  // e.g. true
 screenDetails.screens[0].isInternal;  // e.g. true
-screenDetails.screens[0].pointerTypes;  // e.g. ["touch"]
 // New access to user-friendly labels for each screen:
 screenDetails.screens[0].label;  // e.g. 'Samsung Electric Company 28"'
 
@@ -72,14 +71,14 @@ screenDetails.currentScreen;
 
 // Observe 'screens' array and 'currentScreen' changes; sync info access.
 let cachedScreenCount = screenDetails.screens.length;
-let cachedCurrentScreenId = screenDetails.currentScreen.id;
+let cachedCurrentScreen = screenDetails.currentScreen;
 screenDetails.addEventListener('screenschange', function() {
   // NOTE: Does not fire on changes to attributes of individual Screens.
   let screenCountChanged = cachedScreenCount != screenDetails.screens.length;
 });
 screenDetails.addEventListener('currentscreenchange', function() {
   // NOTE: Fires on currentScreen attribute changes, and when the window moves to another screen.
-  let currentScreenChanged = cachedCurrentScreenId != screenDetails.currentScreen.id;
+  let currentScreenChanged = cachedCurrentScreen !== screenDetails.currentScreen;
 });
 
 // Observe changes to a specific Screen's attributes.

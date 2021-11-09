@@ -37,8 +37,6 @@ Assume Explicit For: yes
 </style>
 
 <pre class=anchors>
-spec: pointerevents; urlPrefix: https://www.w3.org/TR/pointerevents/
-    type: dfn; text: pointer; url: dfn-pointer
 spec: css-values-4; urlPrefix: https://drafts.csswg.org/css-values-4/
     type: dfn; text: CSS pixel; url: px
 spec: fingerprinting-guidance; urlPrefix: https://www.w3.org/TR/fingerprinting-guidance/
@@ -133,11 +131,11 @@ function processScreenDetails(screenDetails) {
   // Build a UI listing screens.
   clearScreenList();
   screenDetails.screens.forEach(screen => {
-    addToScreenList({id: screen.id, name: screen.label, screen: screen});
+    addToScreenList({name: screen.label, screen: screen});
   });
 
   // Set the selection to the current screen.
-  selectCurrentInScreenList(screenDetails.currentScreen.id);
+  selectCurrentInScreenList(screenDetails.currentScreen);
 }
 ```
 
@@ -258,7 +256,6 @@ A [=/connected screen=] has an <dfn>id</dfn>, which is a string that uniquely id
 
 </div>
 
-Advisement: To prevent the [=connected screen/id=] being used to correlate users across sites ([=/active fingerprinting=]), the [=connected screen/id=] assigned to a screen should be unique to each site. To prevent the [=connected screen/id=] being used as a form of persistent re-identifier ([=/cookie-like fingerprinting=]), a new [=connected screen/id=] should be assigned to a screen after storage is cleared for the site.
 
 
 <!-- ====================================================================== -->
@@ -280,18 +277,6 @@ The <dfn>available height</dfn> of a [=/connected screen=] is the [=screen area/
 </div>
 
 Issue: Are these definitions actually needed? Reference [[CSSOM-VIEW#web-exposed-screen-information]] if so.
-
-
-<!-- ====================================================================== -->
-### Pointer type support ### {#concept-pointer-type-support}
-<!-- ====================================================================== -->
-
-Users often interact with content on [=/connected screens=] using a [=/pointer=], an input device that can target coordinates on the screen. Examples include mouse, pen, or touch contact. [[PointerEvents]]
-
-The <dfn for="connected screen">supported pointer types</dfn> for a [=/connected screen=] is the [=/ordered set=] of possible {{PointerEvent/pointerType}} values that can appear in {{PointerEvent}}s fired for content on the screen. The set is ordered by [=list/sorting in ascending order=] with the [=/code unit less than=] algorithm.
-
-Note:
-  As an example, the [=connected screen/supported pointer types=] for a device supporting both mouse and touch input would be « `"mouse"`, `"touch"` ».
 
 
 <!-- ====================================================================== -->
@@ -322,7 +307,6 @@ The <dfn for="connected screen">advanced observable properties</dfn> of a [=/con
 * [=connected screen/device pixel ratio=]
 * [=connected screen/orientation=]
 * [=connected screen/label=]
-* [=connected screen/supported pointer types=]
 
 
 <!-- ====================================================================== -->
@@ -527,11 +511,10 @@ The <dfn>screen ordering</dfn> algorithm defines a [=/connected screen=] |a| as 
 1. If |b|'s [=connected screen/screen position=] y-coordinate is less than |a|'s [=connected screen/screen position=] y-coordinate, then return false.
 1. If |a|'s [=connected screen/screen position=] x-coordinate is less than |b|'s [=connected screen/screen position=] x-coordinate, then return true.
 1. If |b|'s [=connected screen/screen position=] x-coordinate is less than |a|'s [=connected screen/screen position=] x-coordinate, then return false.
-1. Return whether or not |a|'s [=connected screen/id=] is [=/code unit less than=] |b|'s [=connected screen/id=].
 
 </div>
 
-Issue: Should x or y have sort priority? Fall back to id?
+Issue: Should x or y have sort priority?
 
 The <dfn attribute for=ScreenDetails>currentScreens</dfn> getter steps are to return the {{ScreenDetailed}} object associated with the {{Window}} associated with [=/this=].
 
@@ -572,12 +555,6 @@ A {{ScreenDetailed}} object represents a [=/connected screen=].
   : |screen| . {{ScreenDetailed/devicePixelRatio}}
   :: Returns the ratio between physical and logical pixels.
 
-  : |screen| . {{ScreenDetailed/id}}
-  :: Returns a temporary generated per-origin unique ID; reset when cookies are deleted.
-
-  : |screen| . {{ScreenDetailed/pointerTypes}}
-  :: Returns an array of pointer types supported by the screen, e.g. `"mouse"`, `"touch"`, or `"pen"`.
-
   : |screen| . {{ScreenDetailed/label}}
   :: A user-friendly label for the screen, determined by the user agent and OS.
 
@@ -590,8 +567,6 @@ A {{ScreenDetailed}} object represents a [=/connected screen=].
   readonly attribute boolean isPrimary;
   readonly attribute boolean isInternal;
   readonly attribute float devicePixelRatio;
-  readonly attribute DOMString id;
-  readonly attribute FrozenArray<DOMString> pointerTypes;
   readonly attribute DOMString label;
 };
 </xmp>
@@ -606,10 +581,6 @@ The <dfn attribute for=ScreenDetailed>isPrimary</dfn> getter steps are to return
 The <dfn attribute for=ScreenDetailed>isInternal</dfn> getter steps are to return true if [=/this=] is [=/internal=], or false otherwise.
 
 The <dfn attribute for=ScreenDetailed>devicePixelRatio</dfn> getter steps are to return [=/this=]'s [=connected screen/device pixel ratio=].
-
-The <dfn attribute for=ScreenDetailed>id</dfn> getter steps are to return [=/this=]'s [=connected screen/id=].
-
-The <dfn attribute for=ScreenDetailed>pointerTypes</dfn> getter steps are to return [=/this=]'s [=connected screen/supported pointer types=].
 
 The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return [=/this=]'s [=connected screen/label=].
 

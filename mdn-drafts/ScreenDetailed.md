@@ -41,17 +41,9 @@ Returns true if this screen is built into the device, like a laptop display.
 
 Returns the ratio of this screen's resolution in physical pixels to its resolution in CSS pixels.
 
-**`ScreenDetailed.id`**
-
-Returns a temporary, generated per-origin unique ID; resets when cookies are deleted.
-
 **`ScreenDetailed.label`**
 
 Returns a user-friendly label string for the screen, determined by the user agent and OS.
-
-**`ScreenDetailed.pointerTypes`**
-
-Returns an array of `PointerType` strings representing input modes supported by the display.
 
 ## Examples
 
@@ -67,13 +59,11 @@ window.getScreenDetails().then(
   screenDetails => {
     var screen = screenDetails.currentScreen;
     console.log("Label: " + screen.label);
-    console.log("ID: " + screen.id);
     console.log("Size: " + screen.width + " x " + screen.height);
     console.log("Position: " + screen.left + " x " + screen.top);
     console.log("Scale: " + screen.devicePixelRatio);
     console.log("Primary? " + screen.isPrimary);
     console.log("Internal? " + screen.isInternal);
-    console.log("Touch? " + screen.pointerTypes.includes("touch"));
   }
 );
 ```
@@ -97,7 +87,6 @@ window.getScreenDetails().then(
       console.log("  Scale: " + screen.devicePixelRatio);
       console.log("  Primary? " + screen.isPrimary);
       console.log("  Internal? " + screen.isInternal);
-      console.log("  Touch? " + screen.pointerTypes.includes("touch"));
     });
   }
 );

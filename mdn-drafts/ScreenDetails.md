@@ -80,11 +80,11 @@ such as when the window has moved to another screen.
 ```js
 window.getScreenDetails().then(
   screenDetails => {
-    let id = screenDetails.currentScreen.id;
+    let currentScreen = screenDetails.currentScreen;
     screenDetails.oncurrentscreenchange = event => {
-      if (id !== screenDetails.currentScreen.id) {
+      if (currentScreen !== screenDetails.currentScreen) {
         console.log("current screen changed");
-        id = screenDetails.currentScreen.id;
+        currentScreen = screenDetails.currentScreen;
       }
     };
   }

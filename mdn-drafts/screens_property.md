@@ -31,13 +31,12 @@ window.getScreenDetails().then(
   screenDetails => {
     var availableScreens = screenDetails.screens;
     availableScreens.forEach(screen => {
-      console.log("ID: " + screen.id);
+      console.log("Label: " + screen.label);
       console.log("  Size: " + screen.width + " x " + screen.height);
       console.log("  Position: " + screen.left + " x " + screen.top);
       console.log("  Scale: " + screen.devicePixelRatio);
       console.log("  Primary? " + screen.isPrimary);
       console.log("  Internal? " + screen.isInternal);
-      console.log("  Touch? " + screen.pointerTypes.includes("touch"));
     });
   }
 );

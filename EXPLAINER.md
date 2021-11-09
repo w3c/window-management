@@ -388,14 +388,6 @@ permission, are outlined below:
   // and appearances for a given application.
   readonly attribute float devicePixelRatio;  // e.g. 2
 
-  // A temporary generated per-origin unique ID; reset when cookies are deleted.
-  // Useful for persisting window placement preferences for certain screens.
-  readonly attribute DOMString id;
-
-  // The set of PointerTypes supported by the screen. Useful for placing control
-  // panels on touch-screens and drawing surfaces on screens with pen support.
-  readonly attribute FrozenArray<PointerType> pointerTypes;  // e.g. [ "touch" ]
-
   // A user-friendly label for the screen, determined by the user agent and OS.
   readonly attribute DOMString label;  // e.g. 'Samsung Electric Company 28"'
 };

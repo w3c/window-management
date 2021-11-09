@@ -112,32 +112,32 @@ if (screen.isExtended) {
 ### Requesting extended screen information ### {#usage-overview-screen-information}
 <!-- ====================================================================== -->
 
-After determining that there are multiple screens, information can be requested about them using the {{Window/getScreens()}} method. This method may prompt the user for permission. The resulting object lets developers enumerate screens, inspect screen properties, and watch for changes.
+After determining that there are multiple screens, information can be requested about them using the {{Window/getScreenDetails()}} method. This method may prompt the user for permission. The resulting object lets developers enumerate screens, inspect screen properties, and watch for changes.
 
 ```js
 try {
-  const screensInfo = await window.getScreens();
+  const screenDetails = await window.getScreenDetails();
 
   // Do something with the screens right now.
-  processScreens(screensInfo);
+  processScreens(screenDetails);
 
   // And also if the screens change in the future.
-  screensInfo.onscreenschange = e => {
-    processScreens(screensInfo);
+  screenDetails.onscreenschange = e => {
+    processScreens(screenDetails);
   };
 } catch (ex) {
   /* permission denied, or other error */
 }
 
-function processScreens(screensInfo) {
+function processScreens(screenDetails) {
   // Build a UI listing screens.
   clearScreenList();
-  screensInfo.screens.forEach(screen => {
+  screenDetails.screens.forEach(screen => {
     addToScreenList({id: screen.id, name: screen.label, screen: screen});
   });
 
   // Set the selection to the current screen.
-  selectCurrentInScreenList(screensInfo.currentScreen.id);
+  selectCurrentInScreenList(screenDetails.currentScreen.id);
 }
 ```
 
@@ -431,7 +431,7 @@ When any [=connected screen/basic observable property=] of a {{Window}}'s [=/cur
 
 <div class="domintro note">
 
-    : await window . {{Window/getScreens()}}
+    : await window . {{Window/getScreenDetails()}}
 
     :: Returns a promise that fulfills with a {{Screens}} object with information about all connected screens. The promise will be rejected if permission is denied.
 
@@ -440,7 +440,7 @@ When any [=connected screen/basic observable property=] of a {{Window}}'s [=/cur
 <xmp class=idl>
 partial interface Window {
   [SecureContext]
-  Promise<Screens> getScreens();
+  Promise<Screens> getScreenDetails();
 };
 </xmp>
 
@@ -450,7 +450,7 @@ Each {{Window}} object also has an associated {{ScreenAdvanced}} object which re
 
 <div algorithm>
 
-The <dfn method for=Window>getScreens()</dfn> method steps are:
+The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 1. Let |promise| be [=/a new promise=].
 

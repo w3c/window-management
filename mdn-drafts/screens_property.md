@@ -27,9 +27,9 @@ information about all available screens. The example assumes
 that permission is granted.
 
 ```js
-window.getScreens().then(
-  screens => {
-    var availableScreens = screens.screens;
+window.getScreenDetails().then(
+  screenDetails => {
+    var availableScreens = screenDetails.screens;
     availableScreens.forEach(screen => {
       console.log("ID: " + screen.id);
       console.log("  Size: " + screen.width + " x " + screen.height);

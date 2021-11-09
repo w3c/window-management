@@ -70,7 +70,7 @@ Supporting queries for limited pieces of information is not directly useful to
 sites conducting window placement use cases, and does not specifically prohibit
 abusive sites from requesting all available information. Broad filters or making
 multiple calls with opposite filters wouldn't constrain the information returned
-(e.g. getScreens({minWidth:10}) or getScreens({internal:true}) +
+(e.g. getScreenDetails({minWidth:10}) or getScreenDetails({internal:true}) +
 getscreens({internal:false})).
 
 ## 2.3 How does this specification deal with personal information or personally-identifiable information or information derived thereof?

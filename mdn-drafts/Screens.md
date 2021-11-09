@@ -41,14 +41,14 @@ Called when any attribute on `currentScreen` changes.
 ### Logging the number of connected screens
 
 The following example shows how to count the number of connected screens,
-or log a warning if the permission is denied. The `getScreens()` call
+or log a warning if the permission is denied. The `getScreenDetails()` call
 may show a permission prompt if necessary.
 
 ```js
 if (screen.isExtended) {
-  window.getScreens().then(
-    screens => {
-      console.log("Screens: " + screens.screens.length);
+  window.getScreenDetials().then(
+    screenDetails => {
+      console.log("Screens: " + screenDetails.screens.length);
     },
     error => {
       console.warn("Permission denied");
@@ -63,9 +63,9 @@ The following example logs a message if the set of available screens
 changes. This example assumes the permission was granted.
 
 ```js
-window.getScreens().then(
-  screens => {
-    screens.onscreenchange = event => {
+window.getScreenDetails().then(
+  screenDetails => {
+    screenDetails.onscreenchange = event => {
       console.log("screens changed");
     };
   }
@@ -78,13 +78,13 @@ The following example logs a message if the current screen changes,
 such as when the window has moved to another screen.
 
 ```js
-window.getScreens().then(
-  screens => {
-    let id = screens.currentScreen.id;
-    screens.oncurrentscreenchange = event => {
-      if (id !== screens.currentScreen.id) {
+window.getScreenDetails().then(
+  screenDetails => {
+    let id = screenDetails.currentScreen.id;
+    screenDetails.oncurrentscreenchange = event => {
+      if (id !== screenDetails.currentScreen.id) {
         console.log("current screen changed");
-        id = screens.currentScreen.id;
+        id = screenDetails.currentScreen.id;
       }
     };
   }

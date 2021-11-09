@@ -63,9 +63,9 @@ permission is granted.
 
 ```js
 
-window.getScreens().then(
-  screens => {
-    var screen = screens.currentScreen;
+window.getScreenDetails().then(
+  screenDetails => {
+    var screen = screenDetails.currentScreen;
     console.log("Label: " + screen.label);
     console.log("ID: " + screen.id);
     console.log("Size: " + screen.width + " x " + screen.height);
@@ -86,9 +86,9 @@ permission is granted.
 
 ```js
 
-window.getScreens().then(
-  screens => {
-    var availableScreens = screens.screens;
+window.getScreenDetails().then(
+  screenDetails => {
+    var availableScreens = screenDetails.screens;
     availableScreens.forEach(screen => {
       console.log("Label: " + screen.label);
       console.log("  ID: " + screen.id);

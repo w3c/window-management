@@ -27,7 +27,7 @@ avoid showing a permission prompt if the system only has one.
 ```js
 if (screen.isExtended) {
   console.log("Multiple screens available");
-  window.getScreens().then(screens => {
+  window.getScreenDetails().then(screenDetails => {
     // ...
   });
 }

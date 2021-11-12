@@ -37,8 +37,6 @@ Assume Explicit For: yes
 </style>
 
 <pre class=anchors>
-spec: pointerevents; urlPrefix: https://www.w3.org/TR/pointerevents/
-    type: dfn; text: pointer; url: dfn-pointer
 spec: css-values-4; urlPrefix: https://drafts.csswg.org/css-values-4/
     type: dfn; text: CSS pixel; url: px
 spec: fingerprinting-guidance; urlPrefix: https://www.w3.org/TR/fingerprinting-guidance/
@@ -112,32 +110,32 @@ if (screen.isExtended) {
 ### Requesting extended screen information ### {#usage-overview-screen-information}
 <!-- ====================================================================== -->
 
-After determining that there are multiple screens, information can be requested about them using the {{Window/getScreens()}} method. This method may prompt the user for permission. The resulting object lets developers enumerate screens, inspect screen properties, and watch for changes.
+After determining that there are multiple screens, information can be requested about them using the {{Window/getScreenDetails()}} method. This method may prompt the user for permission. The resulting object lets developers enumerate screens, inspect screen properties, and watch for changes.
 
 ```js
 try {
-  const screensInfo = await window.getScreens();
+  const screenDetails = await window.getScreenDetails();
 
   // Do something with the screens right now.
-  processScreens(screensInfo);
+  processScreenDetails(screenDetails);
 
   // And also if the screens change in the future.
-  screensInfo.onscreenschange = e => {
-    processScreens(screensInfo);
+  screenDetails.onscreenschange = e => {
+    processScreenDetails(screenDetails);
   };
 } catch (ex) {
   /* permission denied, or other error */
 }
 
-function processScreens(screensInfo) {
+function processScreenDetails(screenDetails) {
   // Build a UI listing screens.
   clearScreenList();
-  screensInfo.screens.forEach(screen => {
-    addToScreenList({id: screen.id, name: screen.label, screen: screen});
+  screenDetails.screens.forEach(screen => {
+    addToScreenList({name: screen.label, screen: screen});
   });
 
   // Set the selection to the current screen.
-  selectCurrentInScreenList(screensInfo.currentScreen.id);
+  selectCurrentInScreenList(screenDetails.currentScreen);
 }
 ```
 
@@ -151,26 +149,26 @@ A common use case is to present a slideshow or other media fullscreen on a parti
 
 ```js
 // Call an assumed helper function which asynchronously selects
-// a screen, and returns a ScreenAdvanced instance.
-const screenAdvanced = await getScreenForSlideshow();
+// a screen, and returns a ScreenDetailed instance.
+const screenDetailed = await getScreenForSlideshow();
 
 // Request that a particular element go fullscreen on the selected
 // screen.
-slideshowElement.requestFullscreen({ screen: screenAdvanced });
+slideshowElement.requestFullscreen({ screen: screenDetailed });
 ```
 
 <!-- ====================================================================== -->
 ### Placing windows on a specific screen ### {#usage-overview-place-windows-on-specific-screen}
 <!-- ====================================================================== -->
 
-Windows can be placed on specific screens using the coordinates provided in the {{ScreenAdvanced}} interface.
+Windows can be placed on specific screens using the coordinates provided in the {{ScreenDetailed}} interface.
 
 ```js
-function openAndCenterWindow(url, screenAdvanced, width, height) {
+function openAndCenterWindow(url, screenDetailed, width, height) {
 
   // Compute coordinates relative to the target screen's coordinates.
-  const left = Math.round(screenAdvanced.width  - width) / 2;
-  const top = Math.round(screenAdvanced.height - height) / 2;
+  const left = Math.round(screenDetailed.width  - width) / 2;
+  const top = Math.round(screenDetailed.height - height) / 2;
 
   // Open the window with the requested dimensions.
   return window.open(url, '_blank', `left=${left},top=${top},width=${width},height=${height}`);
@@ -258,7 +256,6 @@ A [=/connected screen=] has an <dfn>id</dfn>, which is a string that uniquely id
 
 </div>
 
-Advisement: To prevent the [=connected screen/id=] being used to correlate users across sites ([=/active fingerprinting=]), the [=connected screen/id=] assigned to a screen should be unique to each site. To prevent the [=connected screen/id=] being used as a form of persistent re-identifier ([=/cookie-like fingerprinting=]), a new [=connected screen/id=] should be assigned to a screen after storage is cleared for the site.
 
 
 <!-- ====================================================================== -->
@@ -280,18 +277,6 @@ The <dfn>available height</dfn> of a [=/connected screen=] is the [=screen area/
 </div>
 
 Issue: Are these definitions actually needed? Reference [[CSSOM-VIEW#web-exposed-screen-information]] if so.
-
-
-<!-- ====================================================================== -->
-### Pointer type support ### {#concept-pointer-type-support}
-<!-- ====================================================================== -->
-
-Users often interact with content on [=/connected screens=] using a [=/pointer=], an input device that can target coordinates on the screen. Examples include mouse, pen, or touch contact. [[PointerEvents]]
-
-The <dfn for="connected screen">supported pointer types</dfn> for a [=/connected screen=] is the [=/ordered set=] of possible {{PointerEvent/pointerType}} values that can appear in {{PointerEvent}}s fired for content on the screen. The set is ordered by [=list/sorting in ascending order=] with the [=/code unit less than=] algorithm.
-
-Note:
-  As an example, the [=connected screen/supported pointer types=] for a device supporting both mouse and touch input would be « `"mouse"`, `"touch"` ».
 
 
 <!-- ====================================================================== -->
@@ -322,7 +307,6 @@ The <dfn for="connected screen">advanced observable properties</dfn> of a [=/con
 * [=connected screen/device pixel ratio=]
 * [=connected screen/orientation=]
 * [=connected screen/label=]
-* [=connected screen/supported pointer types=]
 
 
 <!-- ====================================================================== -->
@@ -431,26 +415,26 @@ When any [=connected screen/basic observable property=] of a {{Window}}'s [=/cur
 
 <div class="domintro note">
 
-    : await window . {{Window/getScreens()}}
+    : await window . {{Window/getScreenDetails()}}
 
-    :: Returns a promise that fulfills with a {{Screens}} object with information about all connected screens. The promise will be rejected if permission is denied.
+    :: Returns a promise that fulfills with a {{ScreenDetails}} object with information about all connected screens. The promise will be rejected if permission is denied.
 
 </div>
 
 <xmp class=idl>
 partial interface Window {
   [SecureContext]
-  Promise<Screens> getScreens();
+  Promise<ScreenDetails> getScreenDetails();
 };
 </xmp>
 
-Each {{Window}} object has an associated {{Screens}} object.
+Each {{Window}} object has an associated {{ScreenDetails}} object.
 
-Each {{Window}} object also has an associated {{ScreenAdvanced}} object which reflects the properties of the window's [=/current screen=].
+Each {{Window}} object also has an associated {{ScreenDetailed}} object which reflects the properties of the window's [=/current screen=].
 
 <div algorithm>
 
-The <dfn method for=Window>getScreens()</dfn> method steps are:
+The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 1. Let |promise| be [=/a new promise=].
 
@@ -460,7 +444,7 @@ The <dfn method for=Window>getScreens()</dfn> method steps are:
 
     1. If |permissionState| is `"denied"` then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
-    1. [=/Resolve=] |promise| with [=/this=]'s associated {{Screens}} object.
+    1. [=/Resolve=] |promise| with [=/this=]'s associated {{ScreenDetails}} object.
 
 1. Return |promise|.
 
@@ -476,26 +460,26 @@ In addition to the partial interface additions defined above, the {{Window}} int
 Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
 
 <!-- ====================================================================== -->
-## The {{Screens}} interface ## {#api-screens-interface}
+## The {{ScreenDetails}} interface ## {#api-screens-interface}
 <!-- ====================================================================== -->
 
 
 <div class="domintro note">
 
-    : <var ignore>screens</var> . {{Screens/screens}}
-    :: Returns an array of {{ScreenAdvanced}} objects that describe each of the connected screens.
+    : <var ignore>screens</var> . {{ScreenDetails/screens}}
+    :: Returns an array of {{ScreenDetailed}} objects that describe each of the connected screens.
 
-    : <var ignore>screens</var> . {{Screens/currentScreen}}
-    :: Returns a {{ScreenAdvanced}} object that describes the current screen. This object describes the same object that the {{Window/screen}} property of {{Window}} describes, but provides a superset of the information.
+    : <var ignore>screens</var> . {{ScreenDetails/currentScreen}}
+    :: Returns a {{ScreenDetailed}} object that describes the current screen. This object describes the same object that the {{Window/screen}} property of {{Window}} describes, but provides a superset of the information.
 
 </div>
 
 <xmp class=idl>
 [Exposed=Window, SecureContext]
-interface Screens {
-  readonly attribute FrozenArray<ScreenAdvanced> screens;
+interface ScreenDetails {
+  readonly attribute FrozenArray<ScreenDetailed> screens;
 
-  readonly attribute ScreenAdvanced currentScreen;
+  readonly attribute ScreenDetailed currentScreen;
 
   attribute EventHandler onscreenschange;
   attribute EventHandler oncurrentscreenchange;
@@ -504,13 +488,13 @@ interface Screens {
 
 <div algorithm>
 
-The <dfn attribute for=Screens>screens</dfn> getter steps are:
+The <dfn attribute for=ScreenDetails>screens</dfn> getter steps are:
 
 1. Let |screens| be a new [=/list=].
 
 1. For each |screen| of [=/connected screens=]:
 
-    1. Let |a| be the {{ScreenAdvanced}} object describing |screen|.
+    1. Let |a| be the {{ScreenDetailed}} object describing |screen|.
 
     1. [=list/Append=] |a| to |screens|.
 
@@ -527,98 +511,86 @@ The <dfn>screen ordering</dfn> algorithm defines a [=/connected screen=] |a| as 
 1. If |b|'s [=connected screen/screen position=] y-coordinate is less than |a|'s [=connected screen/screen position=] y-coordinate, then return false.
 1. If |a|'s [=connected screen/screen position=] x-coordinate is less than |b|'s [=connected screen/screen position=] x-coordinate, then return true.
 1. If |b|'s [=connected screen/screen position=] x-coordinate is less than |a|'s [=connected screen/screen position=] x-coordinate, then return false.
-1. Return whether or not |a|'s [=connected screen/id=] is [=/code unit less than=] |b|'s [=connected screen/id=].
 
 </div>
 
-Issue: Should x or y have sort priority? Fall back to id?
+Issue: Should x or y have sort priority?
 
-The <dfn attribute for=Screens>currentScreens</dfn> getter steps are to return the {{ScreenAdvanced}} object associated with the {{Window}} associated with [=/this=].
-
-
-<!-- ====================================================================== -->
-### {{Screens}} events ### {#api-screens-events}
-<!-- ====================================================================== -->
-
-The <dfn attribute for=Screens>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=Screens>`screenschange`</a>.
-
-The <dfn attribute for=Screens>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=Screens>`currentscreenchange`</a>.
-
-When the set of [=/connected screens=] changes, [=/fire an event=] with type <dfn event for=Screens>`screenschange`</dfn> at every {{Screens}} object.
-
-When the [=/current screen=] of a {{Window}} changes from one [=/connected screen=] to another (e.g. the {{Window}} has been moved to a different display), [=/fire an event=] with type <dfn event for=Screens>`currentscreenchange`</dfn> at the {{Window}}'s associated {{Screens}} object.
+The <dfn attribute for=ScreenDetails>currentScreens</dfn> getter steps are to return the {{ScreenDetailed}} object associated with the {{Window}} associated with [=/this=].
 
 
 <!-- ====================================================================== -->
-## The {{ScreenAdvanced}} interface ## {#api-screenadvanced-interface}
+### {{ScreenDetails}} events ### {#api-screens-events}
 <!-- ====================================================================== -->
 
-A {{ScreenAdvanced}} object represents a [=/connected screen=].
+The <dfn attribute for=ScreenDetails>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`screenschange`</a>.
+
+The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`currentscreenchange`</a>.
+
+When the set of [=/connected screens=] changes, [=/fire an event=] with type <dfn event for=ScreenDetails>`screenschange`</dfn> at every {{ScreenDetails}} object.
+
+When the [=/current screen=] of a {{Window}} changes from one [=/connected screen=] to another (e.g. the {{Window}} has been moved to a different display), [=/fire an event=] with type <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{Window}}'s associated {{ScreenDetails}} object.
+
+
+<!-- ====================================================================== -->
+## The {{ScreenDetailed}} interface ## {#api-screenadvanced-interface}
+<!-- ====================================================================== -->
+
+A {{ScreenDetailed}} object represents a [=/connected screen=].
 
 <div class="domintro note">
 
-  : |screen| . {{ScreenAdvanced/left}}
+  : |screen| . {{ScreenDetailed/left}}
   :: Returns the distance from the left edge of the primary screen to the left edge of the screen area.
 
-  : |screen| . {{ScreenAdvanced/top}}
+  : |screen| . {{ScreenDetailed/top}}
   :: Returns the distance from the top edge of the primary screen to the top edge of the screen area.
 
-  : |screen| . {{ScreenAdvanced/isPrimary}}
+  : |screen| . {{ScreenDetailed/isPrimary}}
   :: Returns whether this screen is designated as the 'primary' screen by the OS (otherwise it is a 'secondary' screen).
 
-  : |screen| . {{ScreenAdvanced/isInternal}}
+  : |screen| . {{ScreenDetailed/isInternal}}
   :: Returns whether this screen is an 'internal' panel built into the device, like a laptop display (otherwise it is 'external', like a wired monitor).
 
-  : |screen| . {{ScreenAdvanced/devicePixelRatio}}
+  : |screen| . {{ScreenDetailed/devicePixelRatio}}
   :: Returns the ratio between physical and logical pixels.
 
-  : |screen| . {{ScreenAdvanced/id}}
-  :: Returns a temporary generated per-origin unique ID; reset when cookies are deleted.
-
-  : |screen| . {{ScreenAdvanced/pointerTypes}}
-  :: Returns an array of pointer types supported by the screen, e.g. `"mouse"`, `"touch"`, or `"pen"`.
-
-  : |screen| . {{ScreenAdvanced/label}}
+  : |screen| . {{ScreenDetailed/label}}
   :: A user-friendly label for the screen, determined by the user agent and OS.
 
 </div>
 
 <xmp class=idl>
-[SecureContext] interface ScreenAdvanced : Screen {
+[Exposed=Window, SecureContext]
+interface ScreenDetailed : Screen {
   readonly attribute long left;
   readonly attribute long top;
   readonly attribute boolean isPrimary;
   readonly attribute boolean isInternal;
   readonly attribute float devicePixelRatio;
-  readonly attribute DOMString id;
-  readonly attribute FrozenArray<DOMString> pointerTypes;
   readonly attribute DOMString label;
 };
 </xmp>
 
 
-The <dfn attribute for=ScreenAdvanced>left</dfn> getter steps to return [=/this=]'s [=connected screen/screen position=]'s x-coordinate.
+The <dfn attribute for=ScreenDetailed>left</dfn> getter steps to return [=/this=]'s [=connected screen/screen position=]'s x-coordinate.
 
-The <dfn attribute for=ScreenAdvanced>top</dfn> getter steps to return [=/this=]'s [=connected screen/screen position=]'s y-coordinate.
+The <dfn attribute for=ScreenDetailed>top</dfn> getter steps to return [=/this=]'s [=connected screen/screen position=]'s y-coordinate.
 
-The <dfn attribute for=ScreenAdvanced>isPrimary</dfn> getter steps are to return true if [=/this=] is the [=/primary screen=], or false otherwise.
+The <dfn attribute for=ScreenDetailed>isPrimary</dfn> getter steps are to return true if [=/this=] is the [=/primary screen=], or false otherwise.
 
-The <dfn attribute for=ScreenAdvanced>isInternal</dfn> getter steps are to return true if [=/this=] is [=/internal=], or false otherwise.
+The <dfn attribute for=ScreenDetailed>isInternal</dfn> getter steps are to return true if [=/this=] is [=/internal=], or false otherwise.
 
-The <dfn attribute for=ScreenAdvanced>devicePixelRatio</dfn> getter steps are to return [=/this=]'s [=connected screen/device pixel ratio=].
+The <dfn attribute for=ScreenDetailed>devicePixelRatio</dfn> getter steps are to return [=/this=]'s [=connected screen/device pixel ratio=].
 
-The <dfn attribute for=ScreenAdvanced>id</dfn> getter steps are to return [=/this=]'s [=connected screen/id=].
-
-The <dfn attribute for=ScreenAdvanced>pointerTypes</dfn> getter steps are to return [=/this=]'s [=connected screen/supported pointer types=].
-
-The <dfn attribute for=ScreenAdvanced>label</dfn> getter steps are to return [=/this=]'s [=connected screen/label=].
+The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return [=/this=]'s [=connected screen/label=].
 
 
 <!-- ====================================================================== -->
-### {{ScreenAdvanced}} events ### {#api-screenadvanced-events}
+### {{ScreenDetailed}} events ### {#api-screenadvanced-events}
 <!-- ====================================================================== -->
 
-When any [=connected screen/basic observable property=] or [=connected screen/advanced observable property=] of a {{ScreenAdvanced}}'s associated [=/connected screen=] changes, [=/fire an event=] with type <dfn event for=ScreenAdvanced>`change`</dfn> at the {{ScreenAdvanced}} object.
+When any [=connected screen/basic observable property=] or [=connected screen/advanced observable property=] of a {{ScreenDetailed}}'s associated [=/connected screen=] changes, [=/fire an event=] with type <dfn event for=ScreenDetailed>`change`</dfn> at the {{ScreenDetailed}} object.
 
 
 <!-- ====================================================================== -->
@@ -628,7 +600,7 @@ When any [=connected screen/basic observable property=] or [=connected screen/ad
 <xmp class=idl>
 partial dictionary FullscreenOptions {
   // An optional way to request a specific screen for element fullscreen.
-  ScreenAdvanced screen;
+  ScreenDetailed screen;
 };
 </xmp>
 

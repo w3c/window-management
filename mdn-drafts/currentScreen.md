@@ -1,24 +1,24 @@
 ---
 recipe: api-interface
-title: 'Screens.currentScreen'
-mdn_url: /en-US/docs/Web/API/Screens/currentScreen
-specifications: https://webscreens.github.io/window-placement/#dom-screens-currentscreen
-browser_compatibility: api.Screens.currentScreen
+title: 'ScreenDetails.currentScreen'
+mdn_url: /en-US/docs/Web/API/ScreenDetails/currentScreen
+specifications: https://webscreens.github.io/window-placement/#dom-screendetails-currentscreen
+browser_compatibility: api.ScreenDetails.currentScreen
 ---
 
 ## Description
 
-The `currentScreen` read-only property of the `Screens` interface returns
-a `ScreenAdvanced` object giving more details about the current screen
+The `currentScreen` read-only property of the `ScreenDetails` interface returns
+a `ScreenDetailed` object giving more details about the current screen
 than is available on the `window.screen` object.
 
 ## Syntax
 
-`var _screen_ = Screens.currentScreen`
+`var _screen_ = ScreenDetails.currentScreen`
 
 ### Value
 
-A `ScreenAdvanced` object.
+A `ScreenDetailed` object.
 
 ## Examples
 
@@ -29,17 +29,16 @@ information about the current screen. The example assumes that
 permission is granted.
 
 ```js
-window.getScreens().then(
-  screens => {
-    var screen = screens.currentScreen;
+window.getScreenDetails().then(
+  screenDetails => {
+    var screen = screenDetails.currentScreen;
 
-    console.log("ID: " + screen.id);
+    console.log("Label: " + screen.label);
     console.log("Size: " + screen.width + " x " + screen.height);
     console.log("Position: " + screen.left + " x " + screen.top);
     console.log("Scale: " + screen.devicePixelRatio);
     console.log("Primary? " + screen.isPrimary);
     console.log("Internal? " + screen.isInternal);
-    console.log("Touch? " + screen.pointerTypes.includes("touch"));
   }
 );
 ```

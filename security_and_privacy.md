@@ -18,7 +18,7 @@ connected screens, additional display properties of each screen, and events when
 the set of screens or their properties change. It also allows window placements
 to be exposed in multi-screen coordinates. The newly exposed information has
 been tailored to what would typically be required for the most essential
-multi-screen window placement features. See the ScreenAdvanced definition for
+multi-screen window placement features. See the ScreenDetailed definition for
 the full set of new screen properties exposed and their respective utility.
 
 It should be noted that existing `Window.screenLeft`, `screenTop`, and
@@ -70,7 +70,7 @@ Supporting queries for limited pieces of information is not directly useful to
 sites conducting window placement use cases, and does not specifically prohibit
 abusive sites from requesting all available information. Broad filters or making
 multiple calls with opposite filters wouldn't constrain the information returned
-(e.g. getScreens({minWidth:10}) or getScreens({internal:true}) +
+(e.g. getScreenDetails({minWidth:10}) or getScreenDetails({internal:true}) +
 getscreens({internal:false})).
 
 ## 2.3 How does this specification deal with personal information or personally-identifiable information or information derived thereof?
@@ -91,7 +91,7 @@ The user agent could persist screen permission grants.
 
 This API proposes exposing about 10-18 new properties for each connected screen,
 most of which directly correlate with underlying platform configuration data.
-See `ScreenAdvanced` for all properties exposed and their respective utility.
+See `ScreenDetailed` for all properties exposed and their respective utility.
 
 ## 2.7 Does this specification allow an origin access to sensors on a user’s device?
 
@@ -106,14 +106,14 @@ The API exposes a new attribute and event on the `Screen` interface:
 * Events fired when Screen attributes change
   * Not web-exposed, but observable with polling
 
-The API exposes a set of `ScreenAdvanced` objects in a `Screens` interface,
+The API exposes a set of `ScreenDetailed` objects in a `ScreenDetails` interface,
 providing info about each connected display, extending the singular
 [`Screen`](https://developer.mozilla.org/en-US/docs/Web/API/Screen) object
 currently available to each window, and similar to the set of `Screen` objects
 available to an origin if separate windows for that origin were placed on each
 of the connected screens, by aggregating the respective `window.screen` objects.
 
-This API proposes exposing these properties on each `ScreenAdvanced` object:
+This API proposes exposing these properties on each `ScreenDetailed` object:
 * The width of the available screen area
   * Standardized as [Screen.availWidth](https://drafts.csswg.org/cssom-view/#dom-screen-availwidth)
 * The height of the available screen area

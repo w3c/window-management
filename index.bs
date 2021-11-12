@@ -561,7 +561,8 @@ A {{ScreenDetailed}} object represents a [=/connected screen=].
 </div>
 
 <xmp class=idl>
-[SecureContext] interface ScreenDetailed : Screen {
+[Exposed=Window, SecureContext]
+interface ScreenDetailed : Screen {
   readonly attribute long left;
   readonly attribute long top;
   readonly attribute boolean isPrimary;

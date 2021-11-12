@@ -175,6 +175,13 @@ primary screen) in existing API surfaces. Coordinates are currently specified as
 which refers to a singular output device. Those definitions would be updated to
 clarify the behavior in multi-screen environments.
 
+A common convention of most window managers is to use the top-left corner of the
+system's primary screen as the origin of the coordinate system used to position
+other screens in a two-dimensional plane, relative to the primary screen.
+However, in other cases, an arbitrary point may be used as the multi-screen
+coordinate space origin, and all screens are placed relative to that point.
+This is both window manager and implementation specific behavior.
+
 Most browser implementations already use coordinates relative to a multi-screen
 origin, but may clamp placement within the current screen, rather than allowing
 placement on other screens. Implementation-specific behaviors may be acceptable,

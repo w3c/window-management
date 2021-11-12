@@ -252,8 +252,6 @@ Note: The [=connected screen/label=] can be an arbitrary string selected by the 
 
 Advisement: While many properties of screens could be used for [=/active fingerprinting=], the strings used as [=connected screen/labels=] in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.
 
-A [=/connected screen=] has an <dfn>id</dfn>, which is a string that uniquely identifies the screen to a web application.
-
 </div>
 
 
@@ -451,9 +449,9 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 1. Run the following steps [=/in parallel=]:
 
-    1. Let |permissionState| be the result of [=/requesting permission to use=] the [=/powerful feature=] named `"window-placement"`.
+    1. Let |permissionState| be [=/request permission to use=] `"window-placement"`.
 
-    1. If |permissionState| is `"denied"` then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+    1. If |permissionState| is "{{PermissionState/denied}}" then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
     1. [=/Resolve=] |promise| with [=/this=]'s associated {{ScreenDetails}} object.
 
@@ -466,7 +464,7 @@ In addition to the partial interface additions defined above, the {{Window}} int
 * The {{Window/screenX}} and {{Window/screenLeft}} attributes must return the x-coordinate, relative to the top left corner of the [=/primary screen=]'s Web-exposed screen area, of the left of the client window as number of [=/CSS pixels=], or zero if there is no such thing.
 * The {{Window/screenY}} and {{Window/screenTop}} attributes must return the y-coordinate, relative to the top left corner of the of the [=/primary screen=]'s Web-exposed screen area, of the top of the client window as number of [=/CSS pixels=], or zero if there is no such thing.
 * The {{Window/moveTo()}} steps move the target window relative to the top left corner of the [=/primary screen=]'s Web-exposed screen area.
-* Handling of `"left"` and `"top"` for {{Window/open(url, name, features)|open()}} move the target window relative to the top or left edge (respectively) of the [=/primary screen=]'s Web-exposed screen area.
+* Handling of `"left"` and `"top"` for {{Window/open()}} move the target window relative to the top or left edge (respectively) of the [=/primary screen=]'s Web-exposed screen area.
 
 Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
 
@@ -622,14 +620,14 @@ Issue: Write me.
 ## Permissions ## {#api-permissions}
 <!-- ====================================================================== -->
 
-The <dfn for=PermissionName enum-value>"window-placement"</dfn> [=/powerful feature=] is a [=/boolean feature=].
-
-Issue(54): Call it `"multiscreen"` instead?
+The Multi-Screen Window Placement API is a [=/default powerful feature=] that is identified by the [=powerful feature/name=] <dfn for=PermissionName export enum-value>"window-placement"</dfn>.
 
 Issue: File bug against [[permissions]], to add to the registry.
 
 Issue: Talk about permissions policy integration.
-
+<!--
+The Multi-Screen Window Placement API defines a [=/policy-controlled feature=] named "window-placement" which has a [=/default allowlist=] of `"self"`.
+-->
 
 <!-- ====================================================================== -->
 # Security Considerations # {#security}
@@ -663,8 +661,9 @@ Issue: Write this section.
 # Acknowledgements # {#acknowledgements}
 <!-- ====================================================================== -->
 
-Many thanks to
-
+Many thanks to<!--
+-->
+Adrienne Walker,
 Anssi Kostiainen,
 Chris Terefinko,
 Domenic Denicola,
@@ -680,10 +679,10 @@ Nadav Sinai,
 Peter Linss,
 Staphany Park,
 Theresa O'Connor,
-Thomas Nattestad,
-Thomas Steiner,
-
-for helping craft this specification.
+Thomas Nattestad, and
+Thomas Steiner
+<!--
+-->for helping craft this specification.
 
 Issue: Ensure we didn't forget anyone!
 

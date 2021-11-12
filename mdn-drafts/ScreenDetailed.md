@@ -81,7 +81,6 @@ window.getScreenDetails().then(
     var availableScreens = screenDetails.screens;
     availableScreens.forEach(screen => {
       console.log("Label: " + screen.label);
-      console.log("  ID: " + screen.id);
       console.log("  Size: " + screen.width + " x " + screen.height);
       console.log("  Position: " + screen.left + " x " + screen.top);
       console.log("  Scale: " + screen.devicePixelRatio);

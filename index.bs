@@ -280,12 +280,23 @@ Issue: Are these definitions actually needed? Reference [[CSSOM-VIEW#web-exposed
 
 
 <!-- ====================================================================== -->
+### Virtual screen area ### {#concept-virtual-screen-area}
+<!-- ====================================================================== -->
+
+A computer system has a two-dimensional <dfn>virtual screen area</dfn> that extends in all directions.  It has x- and y-coordinates that increase rightwards and downwards respectively from the <dfn>multi-screen origin</dfn>.  The [=/multi-screen origin=] is an implementation-defined point that defines the 0,0 coordinate of the [=/virtual screen area=].
+
+A common convention is to set the [=/multi-screen origin=] to the top left of the [=/primary=] [=/connected screen=], but can be any arbitrary point within the [=/virtual screen area=].  Every [=/connected screen=]'s [=/screen area=] is a view onto a rectangular subset of the [=/virtual screen area=].
+
+Non-exhaustive example of multiple [=/connected screens=], their [=/screen area=], and potential [=/multi-screen origins=]:
+
+<img src="multiscreenorigin.png" alt="Diagram showing various examples of screens and multi-screen origins">
+
+
+<!-- ====================================================================== -->
 ### Screen position ### {#concept-screen-position}
 <!-- ====================================================================== -->
 
-A computer system has a <dfn>virtual screen area</dfn>, with x- and y-coordinates that increase rightwards and downwards, respectively. Every [=/connected screen=]'s [=/screen area=] is a view onto a rectangular subset of the [=/virtual screen area=].
-
-A [=/connected screen=] has a <dfn for="connected screen">screen position</dfn> which is the x- and y-coordinates in the [=/virtual screen area=] of the top left corner the rectangular subset it is a view onto, in pixels. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
+A [=/connected screen=] has a <dfn for="connected screen">screen position</dfn> which is the x- and y-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
 
 
 <!-- ====================================================================== -->

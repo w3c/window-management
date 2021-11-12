@@ -59,30 +59,29 @@ captures our latest vision for the API, used in later experimentation.
 const multiScreenUI = window.screen.isExtended;
 
 // Request an interface with a FrozenArray of live Screen-inheriting objects.
-let screensInterface = await window.getScreens();
-screensInterface.screens[0].isPrimary;  // e.g. true
-screensInterface.screens[0].isInternal;  // e.g. true
-screensInterface.screens[0].pointerTypes;  // e.g. ["touch"]
+const screenDetails = await window.getScreenDetails();
+screenDetails.screens[0].isPrimary;  // e.g. true
+screenDetails.screens[0].isInternal;  // e.g. true
 // New access to user-friendly labels for each screen:
-screensInterface.screens[0].label;  // e.g. 'Samsung Electric Company 28"'
+screenDetails.screens[0].label;  // e.g. 'Samsung Electric Company 28"'
 
 // Access the live object corresponding to the current `window.screen`.
 // The object is updated on cross-screen window placements or device changes.
-screensInterface.currentScreen;
+screenDetails.currentScreen;
 
 // Observe 'screens' array and 'currentScreen' changes; sync info access.
-let cachedScreenCount = screensInterface.screens.length;
-let cachedCurrentScreenId = screensInterface.currentScreen.id;
-screensInterface.addEventListener('screenschange', function() {
+let cachedScreenCount = screenDetails.screens.length;
+let cachedCurrentScreen = screenDetails.currentScreen;
+screenDetails.addEventListener('screenschange', function() {
   // NOTE: Does not fire on changes to attributes of individual Screens.
-  let screenCountChanged = cachedScreenCount != screensInterface.screens.length;
+  let screenCountChanged = cachedScreenCount != screenDetails.screens.length;
 });
-screensInterface.addEventListener('currentscreenchange', function() {
+screenDetails.addEventListener('currentscreenchange', function() {
   // NOTE: Fires on currentScreen attribute changes, and when the window moves to another screen.
-  let currentScreenChanged = cachedCurrentScreenId != screensInterface.currentScreen.id;
+  let currentScreenChanged = cachedCurrentScreen !== screenDetails.currentScreen;
 });
 
 // Observe changes to a specific Screen's attributes.
 window.screen.addEventListener('change', function() { ... });
-screensInterface.screens[0].addEventListener('change', function() { ... });
+screenDetails.screens[0].addEventListener('change', function() { ... });
 ```

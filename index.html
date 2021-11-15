@@ -1490,7 +1490,7 @@ Possible extra rowspan handling
   <meta content="Bikeshed version dfbc2b297, updated Thu Nov 11 15:52:32 2021 -0800" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="9a76abda4c489d662f579a4698ed951eb1c8bdf8" name="document-revision">
+  <meta content="8a1503b0e65c3be6e70e9ba3d6fb9e7c79d4dc62" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -2090,7 +2090,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://w3.org/community/webscreens/"> <img alt="Logo" height="100" src="logo.svg" width="100"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2021-11-12">12 November 2021</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2021-11-15">15 November 2021</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2343,27 +2343,26 @@ A screen pixel shows one color.</p>
     <p>A <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens⑤">connected screen</a> has a <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-label">label</dfn>, which is a string that meaningfully describes the screen to a user.</p>
     <p class="note" role="note"><span>Note:</span> The <a data-link-type="dfn" href="#connected-screen-label" id="ref-for-connected-screen-label">label</a> can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. <code>"internal"</code> vs. <code>"external"</code>, it could include the dimensions, e.g. <code>"640x480"</code>, it could include a distinguishing number, e.g. <code>"screen 1"</code> vs. <code>"screen 2"</code>, or all of the preceeding.</p>
     <p><strong class="advisement"> While many properties of screens could be used for <a data-link-type="dfn" href="https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting" id="ref-for-dfn-active-fingerprinting">active fingerprinting</a>, the strings used as <a data-link-type="dfn" href="#connected-screen-label" id="ref-for-connected-screen-label①">labels</a> in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.</strong></p>
-    <p>A <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens⑥">connected screen</a> has an <dfn data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-id">id<a class="self-link" href="#connected-screen-id"></a></dfn>, which is a string that uniquely identifies the screen to a web application.</p>
    </div>
    <h4 class="heading settled" data-level="2.3.1" id="concept-available-screen-area"><span class="secno">2.3.1. </span><span class="content">Available screen area</span><a class="self-link" href="#concept-available-screen-area"></a></h4>
-   <p>Web applications cannot assume that a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens⑦">connected screen</a>'s <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area⑤">screen area</a> is entirely available to them.
+   <p>Web applications cannot assume that a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens⑥">connected screen</a>'s <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area⑤">screen area</a> is entirely available to them.
 The operating system hosting the user agent may reserve some of the <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area⑥">screen area</a> for its own user interface, and the user agent’s chrome may be taking some of the <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area⑦">screen area</a>.</p>
    <div>
-    <p>The <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-available-screen-area">available screen area</dfn> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens⑧">connected screen</a> is a subset of the <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area⑧">screen area</a> that is entirely available for web applications.
+    <p>The <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-available-screen-area">available screen area</dfn> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens⑦">connected screen</a> is a subset of the <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area⑧">screen area</a> that is entirely available for web applications.
 The rectangle’s edges are parallel to the <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area⑨">screen area</a> edges.</p>
-    <p>The <dfn data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-available-width">available width<a class="self-link" href="#connected-screen-available-width"></a></dfn> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens⑨">connected screen</a> is the <a data-link-type="dfn" href="#screen-area-width" id="ref-for-screen-area-width②">width</a> of the <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⓪">connected screen</a>'s <a data-link-type="dfn" href="#connected-screen-available-screen-area" id="ref-for-connected-screen-available-screen-area">available screen area</a>.</p>
-    <p>The <dfn data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-available-height">available height<a class="self-link" href="#connected-screen-available-height"></a></dfn> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①①">connected screen</a> is the <a data-link-type="dfn" href="#screen-area-height" id="ref-for-screen-area-height②">height</a> of the <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①②">connected screen</a>'s <a data-link-type="dfn" href="#connected-screen-available-screen-area" id="ref-for-connected-screen-available-screen-area①">available screen area</a>.</p>
+    <p>The <dfn data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-available-width">available width<a class="self-link" href="#connected-screen-available-width"></a></dfn> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens⑧">connected screen</a> is the <a data-link-type="dfn" href="#screen-area-width" id="ref-for-screen-area-width②">width</a> of the <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens⑨">connected screen</a>'s <a data-link-type="dfn" href="#connected-screen-available-screen-area" id="ref-for-connected-screen-available-screen-area">available screen area</a>.</p>
+    <p>The <dfn data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-available-height">available height<a class="self-link" href="#connected-screen-available-height"></a></dfn> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⓪">connected screen</a> is the <a data-link-type="dfn" href="#screen-area-height" id="ref-for-screen-area-height②">height</a> of the <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①①">connected screen</a>'s <a data-link-type="dfn" href="#connected-screen-available-screen-area" id="ref-for-connected-screen-available-screen-area①">available screen area</a>.</p>
    </div>
    <p class="issue" id="issue-088e06af"><a class="self-link" href="#issue-088e06af"></a> Are these definitions actually needed? Reference <a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-information"><cite>CSSOM View Module 1</cite> § 2.3 Web-exposed screen information</a> if so.</p>
    <h4 class="heading settled" data-level="2.3.2" id="concept-virtual-screen-area"><span class="secno">2.3.2. </span><span class="content">Virtual screen area</span><a class="self-link" href="#concept-virtual-screen-area"></a></h4>
    <p>A computer system has a two-dimensional <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="virtual-screen-area">virtual screen area</dfn> that extends in all directions.  It has x- and y-coordinates that increase rightwards and downwards respectively from the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="multi-screen-origin">multi-screen origin</dfn>.  The <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin">multi-screen origin</a> is an implementation-defined point that defines the 0,0 coordinate of the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area">virtual screen area</a>.</p>
-   <p>A common convention is to set the <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin①">multi-screen origin</a> to the top left of the <a data-link-type="dfn" href="#primary" id="ref-for-primary">primary</a> <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①③">connected screen</a>, but can be any arbitrary point within the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area①">virtual screen area</a>.  Every <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①④">connected screen</a>'s <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area①⓪">screen area</a> is a view onto a rectangular subset of the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area②">virtual screen area</a>.</p>
-   <p>Non-exhaustive example of multiple <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑤">connected screens</a>, their <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area①①">screen area</a>, and potential <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin②">multi-screen origins</a>:</p>
+   <p>A common convention is to set the <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin①">multi-screen origin</a> to the top left of the <a data-link-type="dfn" href="#primary" id="ref-for-primary">primary</a> <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①②">connected screen</a>, but can be any arbitrary point within the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area①">virtual screen area</a>.  Every <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①③">connected screen</a>'s <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area①⓪">screen area</a> is a view onto a rectangular subset of the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area②">virtual screen area</a>.</p>
+   <p>Non-exhaustive example of multiple <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①④">connected screens</a>, their <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area①①">screen area</a>, and potential <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin②">multi-screen origins</a>:</p>
    <p><img alt="Diagram showing various examples of screens and multi-screen origins" height="401" src="multiscreenorigin.png" width="512"></p>
    <h4 class="heading settled" data-level="2.3.3" id="concept-screen-position"><span class="secno">2.3.3. </span><span class="content">Screen position</span><a class="self-link" href="#concept-screen-position"></a></h4>
-   <p>A <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑥">connected screen</a> has a <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-screen-position">screen position</dfn> which is the x- and y-coordinates in the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area③">virtual screen area</a> relative to the <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin③">multi-screen origin</a>. Coordinates may be negative, and are typically expressed as (<var>x</var>, <var>y</var>).</p>
+   <p>A <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑤">connected screen</a> has a <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-screen-position">screen position</dfn> which is the x- and y-coordinates in the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area③">virtual screen area</a> relative to the <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin③">multi-screen origin</a>. Coordinates may be negative, and are typically expressed as (<var>x</var>, <var>y</var>).</p>
    <h4 class="heading settled" data-level="2.3.4" id="concept-observable-properties"><span class="secno">2.3.4. </span><span class="content">Observable properties</span><a class="self-link" href="#concept-observable-properties"></a></h4>
-   <p>The <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-basic-observable-properties">basic observable properties</dfn> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑦">connected screen</a> are:</p>
+   <p>The <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-basic-observable-properties">basic observable properties</dfn> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑥">connected screen</a> are:</p>
    <ul>
     <li data-md>
      <p>The width and height of the <a data-link-type="dfn" href="#connected-screen-screen-area" id="ref-for-connected-screen-screen-area">screen area</a></p>
@@ -2372,7 +2371,7 @@ The rectangle’s edges are parallel to the <a data-link-type="dfn" href="#scree
     <li data-md>
      <p><a data-link-type="dfn" href="#connected-screen-color-depth" id="ref-for-connected-screen-color-depth">color depth</a></p>
    </ul>
-   <p>The <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-advanced-observable-properties">advanced observable properties</dfn> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑧">connected screen</a> are:</p>
+   <p>The <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-advanced-observable-properties">advanced observable properties</dfn> of a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑦">connected screen</a> are:</p>
    <ul>
     <li data-md>
      <p><a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position">screen position</a></p>
@@ -2390,27 +2389,27 @@ The rectangle’s edges are parallel to the <a data-link-type="dfn" href="#scree
      <p><a data-link-type="dfn" href="#connected-screen-label" id="ref-for-connected-screen-label②">label</a></p>
    </ul>
    <h3 class="heading settled" data-level="2.4" id="concept-primary-screen"><span class="secno">2.4. </span><span class="content">Primary screen</span><a class="self-link" href="#concept-primary-screen"></a></h3>
-   <p>The computer system hosting the user agent has exactly one <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="primary">primary</dfn> <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑨">connected screen</a>. All the other <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⓪">connected screen</a> are considered <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="secondary">secondary</dfn>.</p>
+   <p>The computer system hosting the user agent has exactly one <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="primary">primary</dfn> <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑧">connected screen</a>. All the other <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑨">connected screen</a> are considered <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="secondary">secondary</dfn>.</p>
    <p class="note" role="note"><span>Note:</span> The primary connected screen typically hosts the operating system’s user interface for task management, such as the Windows task bar and the macOS Dock.</p>
-   <p>A <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②①">connected screen</a>'s designation as <a data-link-type="dfn" href="#primary" id="ref-for-primary①">primary</a> or <a data-link-type="dfn" href="#secondary" id="ref-for-secondary">secondary</a> may change while the user agent is running.</p>
-   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="primary-screen">primary screen</dfn> is the <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②②">connected screen</a> that is currently <a data-link-type="dfn" href="#primary" id="ref-for-primary②">primary</a>.</p>
+   <p>A <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⓪">connected screen</a>'s designation as <a data-link-type="dfn" href="#primary" id="ref-for-primary①">primary</a> or <a data-link-type="dfn" href="#secondary" id="ref-for-secondary">secondary</a> may change while the user agent is running.</p>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="primary-screen">primary screen</dfn> is the <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②①">connected screen</a> that is currently <a data-link-type="dfn" href="#primary" id="ref-for-primary②">primary</a>.</p>
    <p class="note" role="note"><span>Note:</span> Most operating systems let the user choose the primary connected screen using a management user interface, such as the Windows Control Panel and the macOS Preferences application.</p>
    <p>By convention, the <a data-link-type="dfn" href="#primary-screen" id="ref-for-primary-screen">primary screen</a>'s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position①">screen position</a> is (0,0).</p>
    <p class="note" role="note"><span>Note:</span> As an example, consider a computer system with three 1920x1080 screens arranged horizontally. If the middle screen is the <a data-link-type="dfn" href="#primary-screen" id="ref-for-primary-screen①">primary screen</a>, then the left screen’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position②">screen position</a> (-1920,0). The middle screen’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position③">screen position</a> (0,0). The right screen’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position④">screen position</a> is (3840,0).</p>
    <h3 class="heading settled" data-level="2.5" id="concept-internal-screen"><span class="secno">2.5. </span><span class="content">Internal screen</span><a class="self-link" href="#concept-internal-screen"></a></h3>
-   <p>Each <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②③">connected screen</a> may be designated as <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="internal">internal</dfn> or <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="external">external</dfn>.</p>
+   <p>Each <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②②">connected screen</a> may be designated as <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="internal">internal</dfn> or <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="external">external</dfn>.</p>
    <p><a data-link-type="dfn" href="#external" id="ref-for-external">External</a> screens are manufactured separately from the computer systems they are connected to.
 It is not unusual for an <a data-link-type="dfn" href="#external" id="ref-for-external①">external</a> screen to be disconnected from one computer system and connected to a different computer system.</p>
    <p><a data-link-type="dfn" href="#internal" id="ref-for-internal">Internal</a> screens are usually attached to a computer system at manufacturing time. <a data-link-type="dfn" href="#internal" id="ref-for-internal①">Internal</a> screens and are not intended to be detached by users.
-However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">internal</a> <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②④">connected screens</a> may still appear and disappear while the user agent is running.</p>
+However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">internal</a> <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②③">connected screens</a> may still appear and disappear while the user agent is running.</p>
    <p class="note" role="note"><span>Note:</span> A laptop has an <a data-link-type="dfn" href="#internal" id="ref-for-internal③">internal</a> screen and an input device.
   A laptop might be used while opened, with its <a data-link-type="dfn" href="#internal" id="ref-for-internal④">internal</a> screen powered on.
   However, a laptop might also be used while closed, where its <a data-link-type="dfn" href="#internal" id="ref-for-internal⑤">internal</a> screen is powered off.</p>
    <p>A laptop might be opened and closed while a user agent is running.
-  In this case, the <a data-link-type="dfn" href="#internal" id="ref-for-internal⑥">internal</a> screen appears as a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑤">connected screen</a> when the laptop is opened.
-  The <a data-link-type="dfn" href="#internal" id="ref-for-internal⑦">internal</a> <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑥">connected screen</a> disappears when the laptop is closed.</p>
+  In this case, the <a data-link-type="dfn" href="#internal" id="ref-for-internal⑥">internal</a> screen appears as a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②④">connected screen</a> when the laptop is opened.
+  The <a data-link-type="dfn" href="#internal" id="ref-for-internal⑦">internal</a> <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑤">connected screen</a> disappears when the laptop is closed.</p>
    <h3 class="heading settled" data-level="2.6" id="concept-current-screen"><span class="secno">2.6. </span><span class="content">Current screen</span><a class="self-link" href="#concept-current-screen"></a></h3>
-   <p>Scripts executing in a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window">Window</a></code> context can access the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-screen" id="ref-for-dom-window-screen">screen</a></code> property. This <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen①">Screen</a></code> object reflects the properties of the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="current-screen">current screen</dfn>, which is a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑦">connected screen</a> that presents the window.</p>
+   <p>Scripts executing in a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window">Window</a></code> context can access the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-screen" id="ref-for-dom-window-screen">screen</a></code> property. This <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen①">Screen</a></code> object reflects the properties of the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="current-screen">current screen</dfn>, which is a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑥">connected screen</a> that presents the window.</p>
    <p class="note" role="note"><span>Note:</span> On many operating systems, a window can be presented across multiple screens with different properties, or can be in a "hidden" state and not presented on any screen. Operating systems and user agents are assumed to define a canonical screen for a given <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①">Window</a></code>, for example the screen with the largest intersection area with the window.</p>
    <h2 class="heading settled" data-level="3" id="api"><span class="secno">3. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
    <h3 class="heading settled" data-level="3.1" id="api-extensions-to-screen"><span class="secno">3.1. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen②">Screen</a></code> interface</span><a class="self-link" href="#api-extensions-to-screen"></a></h3>
@@ -2434,7 +2433,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
     <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="attribute" data-export id="dom-screen-isextended"><code>isExtended</code></dfn> getter steps are:</p>
     <ol>
      <li data-md>
-      <p>Return true if the computer system has more than one <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑧">connected screen</a>, and false otherwise.</p>
+      <p>Return true if the computer system has more than one <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑦">connected screen</a>, and false otherwise.</p>
     </ol>
    </div>
    <h4 class="heading settled" data-level="3.1.1" id="api-screen-events"><span class="secno">3.1.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑤">Screen</a></code> events</span><a class="self-link" href="#api-screen-events"></a></h4>
@@ -2464,9 +2463,9 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel">in parallel</a>:</p>
       <ol>
        <li data-md>
-        <p>Let <var>permissionState</var> be the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">requesting permission to use</a> the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature">powerful feature</a> named <code>"window-placement"</code>.</p>
+        <p>Let <var>permissionState</var> be <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">request permission to use</a> <code>"window-placement"</code>.</p>
        <li data-md>
-        <p>If <var>permissionState</var> is <code>"denied"</code> then <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject">reject</a> <var>promise</var> with a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code> and abort these steps.</p>
+        <p>If <var>permissionState</var> is "<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-denied" id="ref-for-dom-permissionstate-denied">denied</a></code>" then <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject">reject</a> <var>promise</var> with a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code> and abort these steps.</p>
        <li data-md>
         <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#resolve" id="ref-for-resolve">Resolve</a> <var>promise</var> with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a>'s associated <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails③">ScreenDetails</a></code> object.</p>
       </ol>
@@ -2483,7 +2482,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
     <li data-md>
      <p>The <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-moveto" id="ref-for-dom-window-moveto">moveTo()</a></code> steps move the target window relative to the top left corner of the <a data-link-type="dfn" href="#primary-screen" id="ref-for-primary-screen④">primary screen</a>'s Web-exposed screen area.</p>
     <li data-md>
-     <p>Handling of <code>"left"</code> and <code>"top"</code> for <code class="idl"><a data-link-type="idl">open()</a></code> move the target window relative to the top or left edge (respectively) of the <a data-link-type="dfn" href="#primary-screen" id="ref-for-primary-screen⑤">primary screen</a>'s Web-exposed screen area.</p>
+     <p>Handling of <code>"left"</code> and <code>"top"</code> for <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#dom-open" id="ref-for-dom-open">open()</a></code> move the target window relative to the top or left edge (respectively) of the <a data-link-type="dfn" href="#primary-screen" id="ref-for-primary-screen⑤">primary screen</a>'s Web-exposed screen area.</p>
    </ul>
    <p class="issue" id="issue-c121dd6b"><a class="self-link" href="#issue-c121dd6b"></a> Merge the above with <a href="https://www.w3.org/TR/cssom-view/#extensions-to-the-window-interface"><cite>CSSOM View Module 1</cite> § 4 Extensions to the Window Interface</a>.</p>
    <h3 class="heading settled" data-level="3.3" id="api-screens-interface"><span class="secno">3.3. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails④">ScreenDetails</a></code> interface</span><a class="self-link" href="#api-screens-interface"></a></h3>
@@ -2513,7 +2512,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
      <li data-md>
       <p>Let <var>screens</var> be a new <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a>.</p>
      <li data-md>
-      <p>For each <var>screen</var> of <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑨">connected screens</a>:</p>
+      <p>For each <var>screen</var> of <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑧">connected screens</a>:</p>
       <ol>
        <li data-md>
         <p>Let <var>a</var> be the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑥">ScreenDetailed</a></code> object describing <var>screen</var>.</p>
@@ -2525,7 +2524,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
     </ol>
    </div>
    <div class="algorithm" data-algorithm="screen ordering">
-    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="screen-ordering">screen ordering</dfn> algorithm defines a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③⓪">connected screen</a> <var>a</var> as less than a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③①">connected screen</a> <var>b</var> if the following steps return true:</p>
+    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="screen-ordering">screen ordering</dfn> algorithm defines a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑨">connected screen</a> <var>a</var> as less than a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③⓪">connected screen</a> <var>b</var> if the following steps return true:</p>
     <ol>
      <li data-md>
       <p>If <var>a</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑤">screen position</a> y-coordinate is less than <var>b</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑥">screen position</a> y-coordinate, then return true.</p>
@@ -2542,10 +2541,10 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
    <h4 class="heading settled" data-level="3.3.1" id="api-screens-events"><span class="secno">3.3.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑤">ScreenDetails</a></code> events</span><a class="self-link" href="#api-screens-events"></a></h4>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-onscreenschange"><code>onscreenschange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes①">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type①">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screendetails-screenschange" id="ref-for-eventdef-screendetails-screenschange"><code>screenschange</code></a>.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-oncurrentscreenchange"><code>oncurrentscreenchange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes②">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type②">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screendetails-currentscreenchange" id="ref-for-eventdef-screendetails-currentscreenchange"><code>currentscreenchange</code></a>.</p>
-   <p>When the set of <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③②">connected screens</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire①">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="event" data-export id="eventdef-screendetails-screenschange"><code>screenschange</code></dfn> at every <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑥">ScreenDetails</a></code> object.</p>
-   <p>When the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen②">current screen</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①①">Window</a></code> changes from one <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③③">connected screen</a> to another (e.g. the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①②">Window</a></code> has been moved to a different display), <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire②">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="event" data-export id="eventdef-screendetails-currentscreenchange"><code>currentscreenchange</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①③">Window</a></code>'s associated <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑦">ScreenDetails</a></code> object.</p>
+   <p>When the set of <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③①">connected screens</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire①">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="event" data-export id="eventdef-screendetails-screenschange"><code>screenschange</code></dfn> at every <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑥">ScreenDetails</a></code> object.</p>
+   <p>When the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen②">current screen</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①①">Window</a></code> changes from one <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③②">connected screen</a> to another (e.g. the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①②">Window</a></code> has been moved to a different display), <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire②">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="event" data-export id="eventdef-screendetails-currentscreenchange"><code>currentscreenchange</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①③">Window</a></code>'s associated <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑦">ScreenDetails</a></code> object.</p>
    <h3 class="heading settled" data-level="3.4" id="api-screenadvanced-interface"><span class="secno">3.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑧">ScreenDetailed</a></code> interface</span><a class="self-link" href="#api-screenadvanced-interface"></a></h3>
-   <p>A <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑨">ScreenDetailed</a></code> object represents a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③④">connected screen</a>.</p>
+   <p>A <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑨">ScreenDetailed</a></code> object represents a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③③">connected screen</a>.</p>
    <div class="domintro note" role="note">
     <dl>
      <dt data-md><var>screen</var> . <code class="idl"><a data-link-type="idl" href="#dom-screendetailed-left" id="ref-for-dom-screendetailed-left">left</a></code>
@@ -2585,7 +2584,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-devicepixelratio"><code>devicePixelRatio</code></dfn> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>'s <a data-link-type="dfn" href="#connected-screen-device-pixel-ratio" id="ref-for-connected-screen-device-pixel-ratio①">device pixel ratio</a>.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-label"><code>label</code></dfn> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this</a>'s <a data-link-type="dfn" href="#connected-screen-label" id="ref-for-connected-screen-label③">label</a>.</p>
    <h4 class="heading settled" data-level="3.4.1" id="api-screenadvanced-events"><span class="secno">3.4.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①⓪">ScreenDetailed</a></code> events</span><a class="self-link" href="#api-screenadvanced-events"></a></h4>
-   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties①">basic observable property</a> or <a data-link-type="dfn" href="#connected-screen-advanced-observable-properties" id="ref-for-connected-screen-advanced-observable-properties">advanced observable property</a> of a <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①①">ScreenDetailed</a></code>'s associated <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③⑤">connected screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire③">fire an event</a> with type <dfn class="idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="event" data-export id="eventdef-screendetailed-change"><code>change</code><a class="self-link" href="#eventdef-screendetailed-change"></a></dfn> at the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①②">ScreenDetailed</a></code> object.</p>
+   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties①">basic observable property</a> or <a data-link-type="dfn" href="#connected-screen-advanced-observable-properties" id="ref-for-connected-screen-advanced-observable-properties">advanced observable property</a> of a <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①①">ScreenDetailed</a></code>'s associated <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③④">connected screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire③">fire an event</a> with type <dfn class="idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="event" data-export id="eventdef-screendetailed-change"><code>change</code><a class="self-link" href="#eventdef-screendetailed-change"></a></dfn> at the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①②">ScreenDetailed</a></code> object.</p>
    <h3 class="heading settled" data-level="3.5" id="api-extensions-to-fullscreen-options"><span class="secno">3.5. </span><span class="content">Extensions to <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions">FullscreenOptions</a></code></span><a class="self-link" href="#api-extensions-to-fullscreen-options"></a></h3>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions①"><c- g>FullscreenOptions</c-></a> {
   // An optional way to request a specific screen for element fullscreen.
@@ -2594,8 +2593,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
 </pre>
    <p class="issue" id="issue-e091725c"><a class="self-link" href="#issue-e091725c"></a> Write me.</p>
    <h3 class="heading settled" data-level="3.6" id="api-permissions"><span class="secno">3.6. </span><span class="content">Permissions</span><a class="self-link" href="#api-permissions"></a></h3>
-   <p>The <dfn class="idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export id="dom-permissionname-window-placement"><code>"window-placement"</code><a class="self-link" href="#dom-permissionname-window-placement"></a></dfn> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①">powerful feature</a> is a <a data-link-type="dfn">boolean feature</a>.</p>
-   <p class="issue" id="issue-143aeacf"><a class="self-link" href="#issue-143aeacf"></a> Call it <code>"multiscreen"</code> instead? <a href="https://github.com/webscreens/window-placement/issues/54">[Issue #54]</a></p>
+   <p>The Multi-Screen Window Placement API is a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-default-powerful-feature" id="ref-for-dfn-default-powerful-feature">default powerful feature</a> that is identified by the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-name" id="ref-for-dfn-name">name</a> <dfn class="idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export id="dom-permissionname-window-placement"><code>"window-placement"</code><a class="self-link" href="#dom-permissionname-window-placement"></a></dfn>.</p>
    <p class="issue" id="issue-4fd37938"><a class="self-link" href="#issue-4fd37938"></a> File bug against <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>, to add to the registry.</p>
    <p class="issue" id="issue-3b648991"><a class="self-link" href="#issue-3b648991"></a> Talk about permissions policy integration.</p>
    <h2 class="heading settled" data-level="4" id="security"><span class="secno">4. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
@@ -2607,8 +2605,9 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
    <h2 class="heading settled" data-level="7" id="i18n"><span class="secno">7. </span><span class="content">Internationalization Considerations</span><a class="self-link" href="#i18n"></a></h2>
    <p class="issue" id="issue-089b92ec③"><a class="self-link" href="#issue-089b92ec③"></a> Write this section.</p>
    <h2 class="heading settled" data-level="8" id="acknowledgements"><span class="secno">8. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledgements"></a></h2>
-   <p>Many thanks to</p>
-   <p>Anssi Kostiainen,
+   <p>Many thanks to
+Adrienne Walker,
+Anssi Kostiainen,
 Chris Terefinko,
 Domenic Denicola,
 Jonathan Garbee,
@@ -2623,9 +2622,9 @@ Nadav Sinai,
 Peter Linss,
 Staphany Park,
 Theresa O’Connor,
-Thomas Nattestad,
-Thomas Steiner,</p>
-   <p>for helping craft this specification.</p>
+Thomas Nattestad, and
+Thomas Steiner
+for helping craft this specification.</p>
    <p class="issue" id="issue-e9601204"><a class="self-link" href="#issue-e9601204"></a> Ensure we didn’t forget anyone!</p>
    <p>Special thanks to Tab Atkins, Jr. for creating and maintaining <a href="https://github.com/tabatkins/bikeshed">Bikeshed</a>, the specification authoring tool used to create this document, and for his general authoring advice.</p>
   </main>
@@ -2701,7 +2700,6 @@ Thomas Steiner,</p>
    <li><a href="#external">external</a><span>, in § 2.5</span>
    <li><a href="#dom-window-getscreendetails">getScreenDetails()</a><span>, in § 3.2</span>
    <li><a href="#screen-area-height">height</a><span>, in § 2.2</span>
-   <li><a href="#connected-screen-id">id</a><span>, in § 2.3</span>
    <li><a href="#internal">internal</a><span>, in § 2.5</span>
    <li><a href="#dom-screen-isextended">isExtended</a><span>, in § 3.1</span>
    <li><a href="#dom-screendetailed-isinternal">isInternal</a><span>, in § 3.4</span>
@@ -2863,6 +2861,12 @@ Thomas Steiner,</p>
     <li><a href="#ref-for-in-parallel">3.2. Extensions to the Window interface</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-open">
+   <a href="https://html.spec.whatwg.org/multipage/window-object.html#dom-open">https://html.spec.whatwg.org/multipage/window-object.html#dom-open</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-open">3.2. Extensions to the Window interface</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-list-append">
    <a href="https://infra.spec.whatwg.org/#list-append">https://infra.spec.whatwg.org/#list-append</a><b>Referenced in:</b>
    <ul>
@@ -2881,11 +2885,22 @@ Thomas Steiner,</p>
     <li><a href="#ref-for-list-sort-in-ascending-order">3.3. The ScreenDetails interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-powerful-feature">
-   <a href="https://w3c.github.io/permissions/#dfn-powerful-feature">https://w3c.github.io/permissions/#dfn-powerful-feature</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dfn-default-powerful-feature">
+   <a href="https://w3c.github.io/permissions/#dfn-default-powerful-feature">https://w3c.github.io/permissions/#dfn-default-powerful-feature</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dfn-powerful-feature">3.2. Extensions to the Window interface</a>
-    <li><a href="#ref-for-dfn-powerful-feature①">3.6. Permissions</a>
+    <li><a href="#ref-for-dfn-default-powerful-feature">3.6. Permissions</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-permissionstate-denied">
+   <a href="https://w3c.github.io/permissions/#dom-permissionstate-denied">https://w3c.github.io/permissions/#dom-permissionstate-denied</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-permissionstate-denied">3.2. Extensions to the Window interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-name">
+   <a href="https://w3c.github.io/permissions/#dfn-name">https://w3c.github.io/permissions/#dfn-name</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-name">3.6. Permissions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-request-permission-to-use">
@@ -3028,6 +3043,7 @@ Thomas Steiner,</p>
      <li><span class="dfn-paneled" id="term-for-event-handler-event-type">event handler event type</span>
      <li><span class="dfn-paneled" id="term-for-event-handler-idl-attributes">event handler idl attribute</span>
      <li><span class="dfn-paneled" id="term-for-in-parallel">in parallel</span>
+     <li><span class="dfn-paneled" id="term-for-dom-open">open(url, target, features)</span>
     </ul>
    <li>
     <a data-link-type="biblio">[INFRA]</a> defines the following terms:
@@ -3039,8 +3055,10 @@ Thomas Steiner,</p>
    <li>
     <a data-link-type="biblio">[permissions]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dfn-powerful-feature">powerful feature</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-request-permission-to-use">requesting permission to use</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-default-powerful-feature">default powerful feature</span>
+     <li><span class="dfn-paneled" id="term-for-dom-permissionstate-denied">denied</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-name">name</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-request-permission-to-use">request permission to use</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
@@ -3140,7 +3158,6 @@ Thomas Steiner,</p>
    <div class="issue"> Merge the above with <a href="https://www.w3.org/TR/cssom-view/#extensions-to-the-window-interface"><cite>CSSOM View Module 1</cite> § 4 Extensions to the Window Interface</a>. <a class="issue-return" href="#issue-c121dd6b" title="Jump to section">↵</a></div>
    <div class="issue"> Should x or y have sort priority? <a class="issue-return" href="#issue-0726058d" title="Jump to section">↵</a></div>
    <div class="issue"> Write me. <a class="issue-return" href="#issue-e091725c" title="Jump to section">↵</a></div>
-   <div class="issue"> Call it <code>"multiscreen"</code> instead? <a href="https://github.com/webscreens/window-placement/issues/54">[Issue #54]</a> <a class="issue-return" href="#issue-143aeacf" title="Jump to section">↵</a></div>
    <div class="issue"> File bug against <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>, to add to the registry. <a class="issue-return" href="#issue-4fd37938" title="Jump to section">↵</a></div>
    <div class="issue"> Talk about permissions policy integration. <a class="issue-return" href="#issue-3b648991" title="Jump to section">↵</a></div>
    <div class="issue"> Write this section. <a class="issue-return" href="#issue-089b92ec" title="Jump to section">↵</a></div>
@@ -3191,19 +3208,19 @@ Thomas Steiner,</p>
   <aside class="dfn-panel" data-for="connected-screens">
    <b><a href="#connected-screens">#connected-screens</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-connected-screens">2.3. Connected screen</a> <a href="#ref-for-connected-screens①">(2)</a> <a href="#ref-for-connected-screens②">(3)</a> <a href="#ref-for-connected-screens③">(4)</a> <a href="#ref-for-connected-screens④">(5)</a> <a href="#ref-for-connected-screens⑤">(6)</a> <a href="#ref-for-connected-screens⑥">(7)</a>
-    <li><a href="#ref-for-connected-screens⑦">2.3.1. Available screen area</a> <a href="#ref-for-connected-screens⑧">(2)</a> <a href="#ref-for-connected-screens⑨">(3)</a> <a href="#ref-for-connected-screens①⓪">(4)</a> <a href="#ref-for-connected-screens①①">(5)</a> <a href="#ref-for-connected-screens①②">(6)</a>
-    <li><a href="#ref-for-connected-screens①③">2.3.2. Virtual screen area</a> <a href="#ref-for-connected-screens①④">(2)</a> <a href="#ref-for-connected-screens①⑤">(3)</a>
-    <li><a href="#ref-for-connected-screens①⑥">2.3.3. Screen position</a>
-    <li><a href="#ref-for-connected-screens①⑦">2.3.4. Observable properties</a> <a href="#ref-for-connected-screens①⑧">(2)</a>
-    <li><a href="#ref-for-connected-screens①⑨">2.4. Primary screen</a> <a href="#ref-for-connected-screens②⓪">(2)</a> <a href="#ref-for-connected-screens②①">(3)</a> <a href="#ref-for-connected-screens②②">(4)</a>
-    <li><a href="#ref-for-connected-screens②③">2.5. Internal screen</a> <a href="#ref-for-connected-screens②④">(2)</a> <a href="#ref-for-connected-screens②⑤">(3)</a> <a href="#ref-for-connected-screens②⑥">(4)</a>
-    <li><a href="#ref-for-connected-screens②⑦">2.6. Current screen</a>
-    <li><a href="#ref-for-connected-screens②⑧">3.1. Extensions to the Screen interface</a>
-    <li><a href="#ref-for-connected-screens②⑨">3.3. The ScreenDetails interface</a> <a href="#ref-for-connected-screens③⓪">(2)</a> <a href="#ref-for-connected-screens③①">(3)</a>
-    <li><a href="#ref-for-connected-screens③②">3.3.1. ScreenDetails events</a> <a href="#ref-for-connected-screens③③">(2)</a>
-    <li><a href="#ref-for-connected-screens③④">3.4. The ScreenDetailed interface</a>
-    <li><a href="#ref-for-connected-screens③⑤">3.4.1. ScreenDetailed events</a>
+    <li><a href="#ref-for-connected-screens">2.3. Connected screen</a> <a href="#ref-for-connected-screens①">(2)</a> <a href="#ref-for-connected-screens②">(3)</a> <a href="#ref-for-connected-screens③">(4)</a> <a href="#ref-for-connected-screens④">(5)</a> <a href="#ref-for-connected-screens⑤">(6)</a>
+    <li><a href="#ref-for-connected-screens⑥">2.3.1. Available screen area</a> <a href="#ref-for-connected-screens⑦">(2)</a> <a href="#ref-for-connected-screens⑧">(3)</a> <a href="#ref-for-connected-screens⑨">(4)</a> <a href="#ref-for-connected-screens①⓪">(5)</a> <a href="#ref-for-connected-screens①①">(6)</a>
+    <li><a href="#ref-for-connected-screens①②">2.3.2. Virtual screen area</a> <a href="#ref-for-connected-screens①③">(2)</a> <a href="#ref-for-connected-screens①④">(3)</a>
+    <li><a href="#ref-for-connected-screens①⑤">2.3.3. Screen position</a>
+    <li><a href="#ref-for-connected-screens①⑥">2.3.4. Observable properties</a> <a href="#ref-for-connected-screens①⑦">(2)</a>
+    <li><a href="#ref-for-connected-screens①⑧">2.4. Primary screen</a> <a href="#ref-for-connected-screens①⑨">(2)</a> <a href="#ref-for-connected-screens②⓪">(3)</a> <a href="#ref-for-connected-screens②①">(4)</a>
+    <li><a href="#ref-for-connected-screens②②">2.5. Internal screen</a> <a href="#ref-for-connected-screens②③">(2)</a> <a href="#ref-for-connected-screens②④">(3)</a> <a href="#ref-for-connected-screens②⑤">(4)</a>
+    <li><a href="#ref-for-connected-screens②⑥">2.6. Current screen</a>
+    <li><a href="#ref-for-connected-screens②⑦">3.1. Extensions to the Screen interface</a>
+    <li><a href="#ref-for-connected-screens②⑧">3.3. The ScreenDetails interface</a> <a href="#ref-for-connected-screens②⑨">(2)</a> <a href="#ref-for-connected-screens③⓪">(3)</a>
+    <li><a href="#ref-for-connected-screens③①">3.3.1. ScreenDetails events</a> <a href="#ref-for-connected-screens③②">(2)</a>
+    <li><a href="#ref-for-connected-screens③③">3.4. The ScreenDetailed interface</a>
+    <li><a href="#ref-for-connected-screens③④">3.4.1. ScreenDetailed events</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="connected-screen-screen-area">

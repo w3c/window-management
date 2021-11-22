@@ -516,14 +516,12 @@ The <dfn attribute for=ScreenDetails>screens</dfn> getter steps are:
 
 The <dfn>screen ordering</dfn> algorithm defines a [=/connected screen=] |a| as less than a [=/connected screen=] |b| if the following steps return true:
 
-1. If |a|'s [=connected screen/screen position=] y-coordinate is less than |b|'s [=connected screen/screen position=] y-coordinate, then return true.
-1. If |b|'s [=connected screen/screen position=] y-coordinate is less than |a|'s [=connected screen/screen position=] y-coordinate, then return false.
 1. If |a|'s [=connected screen/screen position=] x-coordinate is less than |b|'s [=connected screen/screen position=] x-coordinate, then return true.
 1. If |b|'s [=connected screen/screen position=] x-coordinate is less than |a|'s [=connected screen/screen position=] x-coordinate, then return false.
+1. If |a|'s [=connected screen/screen position=] y-coordinate is less than |b|'s [=connected screen/screen position=] y-coordinate, then return true.
+1. Otherwise, return false.
 
 </div>
-
-Issue: Should x or y have sort priority?
 
 The <dfn attribute for=ScreenDetails>currentScreens</dfn> getter steps are to return the {{ScreenDetailed}} object associated with the {{Window}} associated with [=/this=].
 

@@ -1487,10 +1487,10 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version dfbc2b297, updated Thu Nov 11 15:52:32 2021 -0800" name="generator">
+  <meta content="Bikeshed version bbc364800, updated Mon Nov 15 13:57:55 2021 -0800" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="8a1503b0e65c3be6e70e9ba3d6fb9e7c79d4dc62" name="document-revision">
+  <meta content="4f17ff0bef20c887d90143c227f8518cdf0c195b" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -2090,7 +2090,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://w3.org/community/webscreens/"> <img alt="Logo" height="100" src="logo.svg" width="100"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2021-11-15">15 November 2021</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2021-11-22">22 November 2021</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2527,16 +2527,15 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
     <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="screen-ordering">screen ordering</dfn> algorithm defines a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑨">connected screen</a> <var>a</var> as less than a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③⓪">connected screen</a> <var>b</var> if the following steps return true:</p>
     <ol>
      <li data-md>
-      <p>If <var>a</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑤">screen position</a> y-coordinate is less than <var>b</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑥">screen position</a> y-coordinate, then return true.</p>
+      <p>If <var>a</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑤">screen position</a> x-coordinate is less than <var>b</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑥">screen position</a> x-coordinate, then return true.</p>
      <li data-md>
-      <p>If <var>b</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑦">screen position</a> y-coordinate is less than <var>a</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑧">screen position</a> y-coordinate, then return false.</p>
+      <p>If <var>b</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑦">screen position</a> x-coordinate is less than <var>a</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑧">screen position</a> x-coordinate, then return false.</p>
      <li data-md>
-      <p>If <var>a</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑨">screen position</a> x-coordinate is less than <var>b</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position①⓪">screen position</a> x-coordinate, then return true.</p>
+      <p>If <var>a</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position⑨">screen position</a> y-coordinate is less than <var>b</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position①⓪">screen position</a> y-coordinate, then return true.</p>
      <li data-md>
-      <p>If <var>b</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position①①">screen position</a> x-coordinate is less than <var>a</var>’s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position①②">screen position</a> x-coordinate, then return false.</p>
+      <p>Otherwise, return false.</p>
     </ol>
    </div>
-   <p class="issue" id="issue-0726058d"><a class="self-link" href="#issue-0726058d"></a> Should x or y have sort priority?</p>
    <p>The <dfn class="idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-currentscreens"><code>currentScreens</code><a class="self-link" href="#dom-screendetails-currentscreens"></a></dfn> getter steps are to return the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑦">ScreenDetailed</a></code> object associated with the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①⓪">Window</a></code> associated with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>.</p>
    <h4 class="heading settled" data-level="3.3.1" id="api-screens-events"><span class="secno">3.3.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑤">ScreenDetails</a></code> events</span><a class="self-link" href="#api-screens-events"></a></h4>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-onscreenschange"><code>onscreenschange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes①">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type①">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screendetails-screenschange" id="ref-for-eventdef-screendetails-screenschange"><code>screenschange</code></a>.</p>
@@ -2577,8 +2576,8 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="DOMString" href="#dom-screendetailed-label" id="ref-for-dom-screendetailed-label①"><c- g>label</c-></a>;
 };
 </pre>
-   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-left"><code>left</code></dfn> getter steps to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a>'s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position①③">screen position</a>'s x-coordinate.</p>
-   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-top"><code>top</code></dfn> getter steps to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>'s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position①④">screen position</a>'s y-coordinate.</p>
+   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-left"><code>left</code></dfn> getter steps to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a>'s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position①①">screen position</a>'s x-coordinate.</p>
+   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-top"><code>top</code></dfn> getter steps to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>'s <a data-link-type="dfn" href="#connected-screen-screen-position" id="ref-for-connected-screen-screen-position①②">screen position</a>'s y-coordinate.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-isprimary"><code>isPrimary</code></dfn> getter steps are to return true if <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a> is the <a data-link-type="dfn" href="#primary-screen" id="ref-for-primary-screen⑥">primary screen</a>, or false otherwise.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-isinternal"><code>isInternal</code></dfn> getter steps are to return true if <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a> is <a data-link-type="dfn" href="#internal" id="ref-for-internal⑧">internal</a>, or false otherwise.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-devicepixelratio"><code>devicePixelRatio</code></dfn> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>'s <a data-link-type="dfn" href="#connected-screen-device-pixel-ratio" id="ref-for-connected-screen-device-pixel-ratio①">device pixel ratio</a>.</p>
@@ -3097,7 +3096,7 @@ for helping craft this specification.</p>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
-   <dd>Marcos Caceres; Mike Taylor; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 28 October 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
+   <dd>Marcos Caceres; Mike Taylor. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 21 November 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-webidl">[WEBIDL]
@@ -3156,7 +3155,6 @@ for helping craft this specification.</p>
    <div class="issue"> Are these definitions actually needed? Reference <a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-information"><cite>CSSOM View Module 1</cite> § 2.3 Web-exposed screen information</a> if so. <a class="issue-return" href="#issue-088e06af" title="Jump to section">↵</a></div>
    <div class="issue"> <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen">Screen</a></code> needs to derived from <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a></code>. This will require changes to <a href="https://www.w3.org/TR/cssom-view/#the-screen-interface"><cite>CSSOM View Module 1</cite> § 4.3 The Screen Interface</a>. <a class="issue-return" href="#issue-e61a06d2" title="Jump to section">↵</a></div>
    <div class="issue"> Merge the above with <a href="https://www.w3.org/TR/cssom-view/#extensions-to-the-window-interface"><cite>CSSOM View Module 1</cite> § 4 Extensions to the Window Interface</a>. <a class="issue-return" href="#issue-c121dd6b" title="Jump to section">↵</a></div>
-   <div class="issue"> Should x or y have sort priority? <a class="issue-return" href="#issue-0726058d" title="Jump to section">↵</a></div>
    <div class="issue"> Write me. <a class="issue-return" href="#issue-e091725c" title="Jump to section">↵</a></div>
    <div class="issue"> File bug against <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>, to add to the registry. <a class="issue-return" href="#issue-4fd37938" title="Jump to section">↵</a></div>
    <div class="issue"> Talk about permissions policy integration. <a class="issue-return" href="#issue-3b648991" title="Jump to section">↵</a></div>
@@ -3282,8 +3280,8 @@ for helping craft this specification.</p>
    <ul>
     <li><a href="#ref-for-connected-screen-screen-position">2.3.4. Observable properties</a>
     <li><a href="#ref-for-connected-screen-screen-position①">2.4. Primary screen</a> <a href="#ref-for-connected-screen-screen-position②">(2)</a> <a href="#ref-for-connected-screen-screen-position③">(3)</a> <a href="#ref-for-connected-screen-screen-position④">(4)</a>
-    <li><a href="#ref-for-connected-screen-screen-position⑤">3.3. The ScreenDetails interface</a> <a href="#ref-for-connected-screen-screen-position⑥">(2)</a> <a href="#ref-for-connected-screen-screen-position⑦">(3)</a> <a href="#ref-for-connected-screen-screen-position⑧">(4)</a> <a href="#ref-for-connected-screen-screen-position⑨">(5)</a> <a href="#ref-for-connected-screen-screen-position①⓪">(6)</a> <a href="#ref-for-connected-screen-screen-position①①">(7)</a> <a href="#ref-for-connected-screen-screen-position①②">(8)</a>
-    <li><a href="#ref-for-connected-screen-screen-position①③">3.4. The ScreenDetailed interface</a> <a href="#ref-for-connected-screen-screen-position①④">(2)</a>
+    <li><a href="#ref-for-connected-screen-screen-position⑤">3.3. The ScreenDetails interface</a> <a href="#ref-for-connected-screen-screen-position⑥">(2)</a> <a href="#ref-for-connected-screen-screen-position⑦">(3)</a> <a href="#ref-for-connected-screen-screen-position⑧">(4)</a> <a href="#ref-for-connected-screen-screen-position⑨">(5)</a> <a href="#ref-for-connected-screen-screen-position①⓪">(6)</a>
+    <li><a href="#ref-for-connected-screen-screen-position①①">3.4. The ScreenDetailed interface</a> <a href="#ref-for-connected-screen-screen-position①②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="connected-screen-basic-observable-properties">

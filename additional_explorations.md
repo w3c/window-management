@@ -522,6 +522,11 @@ window.addEventListener("move", e => { palette.moveBy(e.deltaX, e.deltaY); });
 
 ### New `ScreenInfo` properties to consider as use cases arise
 
+* `id`: A temporary generated per-origin unique ID; reset when cookies are deleted.
+  * May be useful for persisting window placement preferences for certain screens.
+* `pointerTypes`: The set of PointerTypes supported by the screen.
+  * May be useful for placing control panels on touch-screens and drawing surfaces on
+    screens with pen support.
 * `accelerometer`: True if the display has an accelerometer.
   * May be useful for showing immersive controls (e.g. game steering wheel).
   * Not web-exposed
@@ -551,6 +556,22 @@ window.addEventListener("move", e => { palette.moveBy(e.deltaX, e.deltaY); });
 * `hidden`: True if the display is not visible (e.g. closed laptop).
   * May be useful for recognizing when displays may be active but not visible.
   * Not web-exposed
+* `hdrMetadataTypes`: The display's supported high dynamic range metadata types.
+  * May be useful for choosing a suitable HDR display or adapting content.
+  * May also be expressed as minimum luminance, maximum SDR luminance,
+    maximum HDR luminance, and maximum full frame HDR luminance (see
+    [#20](https://github.com/webscreens/window-placement/issues/20#issuecomment-847451686))
+  * Similar information is exposed or proposed - see
+    [High Dynamic Range and Wide Gamut Color on the Web](https://w3c.github.io/ColorWeb-CG)
+    and [Media Capabilities](https://www.w3.org/TR/media-capabilities)
+* `colorGamut`: The display's supported color gamut.
+  * May be useful for choosing a suitable WCG display or adapting content.
+  * May also be expressed with red, green, blue, and white point chromaticity
+    coordinates (see
+    [#20](https://github.com/webscreens/window-placement/issues/20#issuecomment-847451686))
+  * Similar information is exposed or proposed - see
+    [High Dynamic Range and Wide Gamut Color on the Web](https://w3c.github.io/ColorWeb-CG)
+    and [Media Capabilities](https://www.w3.org/TR/media-capabilities)
 
 ### New `Window` properties to consider exposing
 

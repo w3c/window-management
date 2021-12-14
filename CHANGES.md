@@ -18,13 +18,17 @@ aligning related proposals, partly motivating a new Screens interface.
   - Screen change events, including changes to the multi-screen bit, to obviate polling
 - Chrome Security requested that this feature be disabled by default on embedded pages via a [permissions policy](https://w3c.github.io/webappsec-permissions-policy/)
   - In the second origin trial, cross origin iframes need to specify an `allow="window-placement"` attribute.
+- Some screen properties of reduced imperative were removed, at least for now.
+  - `id`: A temporary generated per-origin unique ID; reset when cookies are deleted.
+  - `touchSupport`: Whether the screen supports touch input; a predecessor of `pointerTypes`.
+  - `pointerTypes`: The set of PointerTypes supported by the screen.
 
 ## Examples of requesting additional screen information
 
 **Before (1st Origin Trial, Chrome M86-M88)**
 
 [This explainer snapshot](https://github.com/webscreens/window-placement/blob/a1e6c7cbf6e60ca04483ef817c5ea0ff069beecd/EXPLAINER.md)
-captures our older vision for the API, used in early experimentation.
+captures our older vision for the API, implemented in early experimentation.
 
 ```javascript
 // Detect the presence of extended screen areas; async method on Window.
@@ -35,6 +39,7 @@ let cachedScreens = await window.getScreens();
 cachedScreens[0].primary;  // e.g. true
 cachedScreens[0].internal;  // e.g. true
 cachedScreens[0].touchSupport;  // e.g. true
+cachedScreens[0].scaleFactor;  // e.g. 2
 
 // Access the static dictionary corresponding to the current `window.screen`.
 // The object is stale on cross-screen window placements or device changes.
@@ -49,10 +54,11 @@ window.addEventListener('screenschange', async function() {
 });
 ```
 
-**After (2nd Origin Trial, Chrome M9X)**
+**After (2nd Origin Trial, Chrome M93-M96)**
 
-[The current explainer](https://github.com/webscreens/window-placement/blob/master/EXPLAINER.md)
-captures our latest vision for the API, used in later experimentation.
+The [explainer](https://github.com/webscreens/window-placement/blob/master/EXPLAINER.md)
+and [draft spec](https://webscreens.github.io/window-placement/) capture our
+latest vision for the API, implemented in later experimentation.
 
 ```javascript
 // Detect the presence of extended screen areas; sync attribute on Screen.
@@ -62,6 +68,7 @@ const multiScreenUI = window.screen.isExtended;
 const screenDetails = await window.getScreenDetails();
 screenDetails.screens[0].isPrimary;  // e.g. true
 screenDetails.screens[0].isInternal;  // e.g. true
+screenDetails.screens[0].devicePixelRatio;  // e.g. 2
 // New access to user-friendly labels for each screen:
 screenDetails.screens[0].label;  // e.g. 'Samsung Electric Company 28"'
 

@@ -450,11 +450,6 @@ async function startMultiScreenSlideshow(screenDetails) {
 Similar screen selection logic is critical for other web application use cases:
 
 ```js
-// Get a touch-screen for a conference room app's touch-based interface.
-let touchScreen = screenDetails.screens.find(s => s.touchSupport);
-```
-
-```js
 // Get a wide color gamut screen for a creativity app's color balancing window.
 let wideColorGamutScreen = screenDetails.screens.reduce(
     (a, b) => a.colorDepth > b.colorDepth ? a : b);

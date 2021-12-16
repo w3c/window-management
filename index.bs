@@ -7,6 +7,7 @@ URL: https://webscreens.github.io/window-placement
 Level: 1
 Editor: Victor Costan, Google Inc. https://google.com, costan@google.com
 Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com
+Editor: Mike Wasserman, Google Inc. https://google.com, msw@google.com
 Repository: webscreens/window-placement
 Group: secondscreencg
 Test Suite: https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration
@@ -55,7 +56,7 @@ Operating systems generally allow users to connect multiple screens to a single 
 
 As multi-screen devices and applications become a more common and critical part of user experiences, it becomes more important to give developers information and tools to leverage that expanded visual environment.
 
-Issue: More in this section?
+This document extends existing {{Window}}, {{Screen}}, and {{FullscreenOptions}} concepts, and offers new {{ScreenDetails}} and {{ScreenDetailed}} interfaces to place windows and request fullscreen on specific screens.
 
 <!-- ====================================================================== -->
 ## Motivating Use Cases ## {#motivations}
@@ -70,7 +71,6 @@ The aim of this specification is enable better experiences for web application u
 * Conference room app shows controls on a touch screen device and video on a TV.
 * Multi-screen layouts in gaming, signage, artistic, and other types of apps.
 * Site optimizes content and layout when a window spans multiple screens.
-
 
 <!-- ====================================================================== -->
 ## Usage Overview ## {#usage-overview}
@@ -92,7 +92,6 @@ screen.addEventListener('change') e => {
   /* display properties have changed for the current screen */
 });
 ```
-
 
 <!-- ====================================================================== -->
 ### Detecting the presence of extended screen areas ### {#usage-overview-extended}
@@ -138,7 +137,6 @@ function processScreenDetails(screenDetails) {
   selectCurrentInScreenList(screenDetails.currentScreen);
 }
 ```
-
 
 <!-- ====================================================================== -->
 ### Showing elements fullscreen on a specific screen ### {#usage-overview-fullscreen-on-specific-screen}
@@ -254,8 +252,6 @@ Advisement: While many properties of screens could be used for [=/active fingerp
 
 </div>
 
-
-
 <!-- ====================================================================== -->
 ### Available screen area ### {#concept-available-screen-area}
 <!-- ====================================================================== -->
@@ -276,7 +272,6 @@ The <dfn>available height</dfn> of a [=/connected screen=] is the [=screen area/
 
 Issue: Are these definitions actually needed? Reference [[CSSOM-VIEW#web-exposed-screen-information]] if so.
 
-
 <!-- ====================================================================== -->
 ### Virtual screen area ### {#concept-virtual-screen-area}
 <!-- ====================================================================== -->
@@ -289,13 +284,11 @@ Non-exhaustive example of multiple [=/connected screens=], their [=/screen area=
 
 <img src="multiscreenorigin.png" alt="Diagram showing various examples of screens and multi-screen origins">
 
-
 <!-- ====================================================================== -->
 ### Screen position ### {#concept-screen-position}
 <!-- ====================================================================== -->
 
 A [=/connected screen=] has a <dfn for="connected screen">screen position</dfn> which is the x- and y-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
-
 
 <!-- ====================================================================== -->
 ### Observable properties ### {#concept-observable-properties}
@@ -317,7 +310,6 @@ The <dfn for="connected screen">advanced observable properties</dfn> of a [=/con
 * [=connected screen/orientation=]
 * [=connected screen/label=]
 
-
 <!-- ====================================================================== -->
 ## Primary screen ## {#concept-primary-screen}
 <!-- ====================================================================== -->
@@ -338,8 +330,6 @@ By convention, the [=/primary screen=]'s [=connected screen/screen position=] is
 
 Note:
   As an example, consider a computer system with three 1920x1080 screens arranged horizontally. If the middle screen is the [=/primary screen=], then the left screen's [=connected screen/screen position=] (-1920,0). The middle screen's [=connected screen/screen position=] (0,0). The right screen's [=connected screen/screen position=] is (3840,0).
-
-
 
 <!-- ====================================================================== -->
 ## Internal screen ## {#concept-internal-screen}
@@ -363,7 +353,6 @@ Note:
   In this case, the [=internal=] screen appears as a [=/connected screen=] when the laptop is opened.
   The [=internal=] [=/connected screen=] disappears when the laptop is closed.
 
-
 <!-- ====================================================================== -->
 ## Current screen ## {#concept-current-screen}
 <!-- ====================================================================== -->
@@ -371,7 +360,6 @@ Note:
 Scripts executing in a {{Window}} context can access the {{Window/screen}} property. This {{Screen}} object reflects the properties of the <dfn>current screen</dfn>, which is a [=/connected screen=] that presents the window.
 
 Note: On many operating systems, a window can be presented across multiple screens with different properties, or can be in a "hidden" state and not presented on any screen. Operating systems and user agents are assumed to define a canonical screen for a given {{Window}}, for example the screen with the largest intersection area with the window.
-
 
 <!-- ====================================================================== -->
 # API # {#api}
@@ -416,7 +404,6 @@ The <dfn attribute for=Screen>isExtended</dfn> getter steps are:
 The <dfn attribute for=Screen>onchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=Screen>`change`</a>.
 
 When any [=connected screen/basic observable property=] of a {{Window}}'s [=/current screen=] changes, [=/fire an event=] with type <dfn event for=Screen>`change`</dfn> at the {{Window}}'s associated {{Screen}} object.
-
 
 <!-- ====================================================================== -->
 ## Extensions to the {{Window}} interface ## {#api-extensions-to-window}
@@ -472,7 +459,6 @@ Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
 ## The {{ScreenDetails}} interface ## {#api-screens-interface}
 <!-- ====================================================================== -->
 
-
 <div class="domintro note">
 
     : <var ignore>screens</var> . {{ScreenDetails/screens}}
@@ -525,7 +511,6 @@ The <dfn>screen ordering</dfn> algorithm defines a [=/connected screen=] |a| as 
 
 The <dfn attribute for=ScreenDetails>currentScreens</dfn> getter steps are to return the {{ScreenDetailed}} object associated with the {{Window}} associated with [=/this=].
 
-
 <!-- ====================================================================== -->
 ### {{ScreenDetails}} events ### {#api-screens-events}
 <!-- ====================================================================== -->
@@ -537,7 +522,6 @@ The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an
 When the set of [=/connected screens=] changes, [=/fire an event=] with type <dfn event for=ScreenDetails>`screenschange`</dfn> at every {{ScreenDetails}} object.
 
 When the [=/current screen=] of a {{Window}} changes from one [=/connected screen=] to another (e.g. the {{Window}} has been moved to a different display), [=/fire an event=] with type <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{Window}}'s associated {{ScreenDetails}} object.
-
 
 <!-- ====================================================================== -->
 ## The {{ScreenDetailed}} interface ## {#api-screenadvanced-interface}
@@ -592,13 +576,11 @@ The <dfn attribute for=ScreenDetailed>devicePixelRatio</dfn> getter steps are to
 
 The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return [=/this=]'s [=connected screen/label=].
 
-
 <!-- ====================================================================== -->
 ### {{ScreenDetailed}} events ### {#api-screenadvanced-events}
 <!-- ====================================================================== -->
 
 When any [=connected screen/basic observable property=] or [=connected screen/advanced observable property=] of a {{ScreenDetailed}}'s associated [=/connected screen=] changes, [=/fire an event=] with type <dfn event for=ScreenDetailed>`change`</dfn> at the {{ScreenDetailed}} object.
-
 
 <!-- ====================================================================== -->
 ## Extensions to {{FullscreenOptions}} ## {#api-extensions-to-fullscreen-options}
@@ -612,7 +594,6 @@ partial dictionary FullscreenOptions {
 </xmp>
 
 Issue: Write me.
-
 
 <!-- ====================================================================== -->
 ## Permissions ## {#api-permissions}
@@ -633,13 +614,11 @@ The Multi-Screen Window Placement API defines a [=/policy-controlled feature=] n
 
 Issue: Write this section.
 
-
 <!-- ====================================================================== -->
 # Privacy Considerations # {#privacy}
 <!-- ====================================================================== -->
 
 Issue: Write this section.
-
 
 <!-- ====================================================================== -->
 # Accessibility Considerations # {#a11y}
@@ -647,13 +626,11 @@ Issue: Write this section.
 
 Issue: Write this section.
 
-
 <!-- ====================================================================== -->
 # Internationalization Considerations # {#i18n}
 <!-- ====================================================================== -->
 
 Issue: Write this section.
-
 
 <!-- ====================================================================== -->
 # Acknowledgements # {#acknowledgements}

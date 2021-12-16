@@ -9,7 +9,7 @@
   <meta content="Bikeshed version cace53f8c, updated Tue Dec 7 12:12:54 2021 -0800" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="9a3b62496bd6ee6bc7a2d2e691c0fb3105a298f8" name="document-revision">
+  <meta content="8b1c377ac37b25f603e996306e0ff4e1aad8a947" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -609,7 +609,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://w3.org/community/webscreens/"> <img alt="Logo" height="100" src="logo.svg" width="100"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2021-12-14">14 December 2021</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2021-12-16">16 December 2021</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -624,6 +624,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <dt class="editor">Editors:
       <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:costan@google.com">Victor Costan</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
       <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:jsbell@google.com">Joshua Bell</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
+      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:msw@google.com">Mike Wasserman</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
      </dl>
     </div>
    </details>
@@ -735,7 +736,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <p><em>This section is non-normative.</em></p>
    <p>Operating systems generally allow users to connect multiple screens to a single device and arrange them virtually to extend the overall visual workspace.</p>
    <p>As multi-screen devices and applications become a more common and critical part of user experiences, it becomes more important to give developers information and tools to leverage that expanded visual environment.</p>
-   <p class="issue" id="issue-8a36eb3a"><a class="self-link" href="#issue-8a36eb3a"></a> More in this section?</p>
+   <p>This document extends existing <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window">Window</a></code>, <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen">Screen</a></code>, and <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions">FullscreenOptions</a></code> concepts, and offers new <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails">ScreenDetails</a></code> and <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed">ScreenDetailed</a></code> interfaces to place windows and request fullscreen on specific screens.</p>
    <h3 class="heading settled" data-level="1.1" id="motivations"><span class="secno">1.1. </span><span class="content">Motivating Use Cases</span><a class="self-link" href="#motivations"></a></h3>
    <p>The aim of this specification is enable better experiences for web application users with multiple screens. Here are some use cases that inform the design:</p>
    <ul>
@@ -763,7 +764,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <p>Place web app windows on a specific screen</p>
    </ul>
    <h4 class="heading settled" data-level="1.2.1" id="usage-overview-property-changes"><span class="secno">1.2.1. </span><span class="content">Detecting when screen properties change</span><a class="self-link" href="#usage-overview-property-changes"></a></h4>
-   <p>Without even considering multiple screens, sites may want to adapt to screen attribute changes. To avoid polling, <code>change</code> events are fired at the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen">Screen</a></code> object:</p>
+   <p>Without even considering multiple screens, sites may want to adapt to screen attribute changes. To avoid polling, <code>change</code> events are fired at the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen①">Screen</a></code> object:</p>
 <pre class="language-js highlight">screen<c- p>.</c->addEventListener<c- p>(</c-><c- t>'change'</c-><c- p>)</c-> e <c- p>=></c-> <c- p>{</c->
   <c- d>/* display properties have changed for the current screen */</c->
 <c- p>});</c->
@@ -812,7 +813,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
 slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> screenDetailed <c- p>});</c->
 </pre>
    <h4 class="heading settled" data-level="1.2.5" id="usage-overview-place-windows-on-specific-screen"><span class="secno">1.2.5. </span><span class="content">Placing windows on a specific screen</span><a class="self-link" href="#usage-overview-place-windows-on-specific-screen"></a></h4>
-   <p>Windows can be placed on specific screens using the coordinates provided in the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed">ScreenDetailed</a></code> interface.</p>
+   <p>Windows can be placed on specific screens using the coordinates provided in the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①">ScreenDetailed</a></code> interface.</p>
 <pre class="language-js highlight"><c- a>function</c-> openAndCenterWindow<c- p>(</c->url<c- p>,</c-> screenDetailed<c- p>,</c-> width<c- p>,</c-> height<c- p>)</c-> <c- p>{</c->
 
   <c- c1>// Compute coordinates relative to the target screen’s coordinates.</c->
@@ -930,10 +931,10 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
   In this case, the <a data-link-type="dfn" href="#internal" id="ref-for-internal⑥">internal</a> screen appears as a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②④">connected screen</a> when the laptop is opened.
   The <a data-link-type="dfn" href="#internal" id="ref-for-internal⑦">internal</a> <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑤">connected screen</a> disappears when the laptop is closed.</p>
    <h3 class="heading settled" data-level="2.6" id="concept-current-screen"><span class="secno">2.6. </span><span class="content">Current screen</span><a class="self-link" href="#concept-current-screen"></a></h3>
-   <p>Scripts executing in a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window">Window</a></code> context can access the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-screen" id="ref-for-dom-window-screen">screen</a></code> property. This <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen①">Screen</a></code> object reflects the properties of the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="current-screen">current screen</dfn>, which is a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑥">connected screen</a> that presents the window.</p>
-   <p class="note" role="note"><span>Note:</span> On many operating systems, a window can be presented across multiple screens with different properties, or can be in a "hidden" state and not presented on any screen. Operating systems and user agents are assumed to define a canonical screen for a given <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①">Window</a></code>, for example the screen with the largest intersection area with the window.</p>
+   <p>Scripts executing in a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①">Window</a></code> context can access the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-screen" id="ref-for-dom-window-screen">screen</a></code> property. This <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen②">Screen</a></code> object reflects the properties of the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="current-screen">current screen</dfn>, which is a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑥">connected screen</a> that presents the window.</p>
+   <p class="note" role="note"><span>Note:</span> On many operating systems, a window can be presented across multiple screens with different properties, or can be in a "hidden" state and not presented on any screen. Operating systems and user agents are assumed to define a canonical screen for a given <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window②">Window</a></code>, for example the screen with the largest intersection area with the window.</p>
    <h2 class="heading settled" data-level="3" id="api"><span class="secno">3. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
-   <h3 class="heading settled" data-level="3.1" id="api-extensions-to-screen"><span class="secno">3.1. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen②">Screen</a></code> interface</span><a class="self-link" href="#api-extensions-to-screen"></a></h3>
+   <h3 class="heading settled" data-level="3.1" id="api-extensions-to-screen"><span class="secno">3.1. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen③">Screen</a></code> interface</span><a class="self-link" href="#api-extensions-to-screen"></a></h3>
    <div class="domintro note" role="note">
     <dl>
      <dt data-md>window . screen . <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended①">isExtended</a></code>
@@ -941,7 +942,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
       <p>Returns <code>true</code> if the device’s display is extended across multiple screens.</p>
     </dl>
    </div>
-<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen③"><c- g>Screen</c-></a> /* : EventTarget */ {
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen④"><c- g>Screen</c-></a> /* : EventTarget */ {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext" id="ref-for-SecureContext"><c- g>SecureContext</c-></a>]
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended②"><c- g>isExtended</c-></a>;
 
@@ -949,7 +950,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler"><c- n>EventHandler</c-></a> <a class="idl-code" data-link-type="attribute" data-type="EventHandler" href="#dom-screen-onchange" id="ref-for-dom-screen-onchange"><c- g>onchange</c-></a>;
 };
 </pre>
-   <p class="issue" id="issue-e61a06d2"><a class="self-link" href="#issue-e61a06d2"></a> <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen④">Screen</a></code> needs to derived from <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#eventtarget" id="ref-for-eventtarget">EventTarget</a></code>. This will require changes to <a href="https://www.w3.org/TR/cssom-view/#the-screen-interface"><cite>CSSOM View Module 1</cite> § 4.3 The Screen Interface</a>.</p>
+   <p class="issue" id="issue-e61a06d2"><a class="self-link" href="#issue-e61a06d2"></a> <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑤">Screen</a></code> needs to derived from <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#eventtarget" id="ref-for-eventtarget">EventTarget</a></code>. This will require changes to <a href="https://www.w3.org/TR/cssom-view/#the-screen-interface"><cite>CSSOM View Module 1</cite> § 4.3 The Screen Interface</a>.</p>
    <div class="algorithm" data-algorithm="isExtended" data-algorithm-for="Screen">
     <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="attribute" data-export id="dom-screen-isextended"><code>isExtended</code></dfn> getter steps are:</p>
     <ol>
@@ -957,24 +958,24 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
       <p>Return true if the computer system has more than one <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑦">connected screen</a>, and false otherwise.</p>
     </ol>
    </div>
-   <h4 class="heading settled" data-level="3.1.1" id="api-screen-events"><span class="secno">3.1.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑤">Screen</a></code> events</span><a class="self-link" href="#api-screen-events"></a></h4>
+   <h4 class="heading settled" data-level="3.1.1" id="api-screen-events"><span class="secno">3.1.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑥">Screen</a></code> events</span><a class="self-link" href="#api-screen-events"></a></h4>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="attribute" data-export id="dom-screen-onchange"><code>onchange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screen-change" id="ref-for-eventdef-screen-change"><code>change</code></a>.</p>
-   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties">basic observable property</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window②">Window</a></code>'s <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen">current screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="event" data-export id="eventdef-screen-change"><code>change</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window③">Window</a></code>'s associated <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑥">Screen</a></code> object.</p>
-   <h3 class="heading settled" data-level="3.2" id="api-extensions-to-window"><span class="secno">3.2. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window④">Window</a></code> interface</span><a class="self-link" href="#api-extensions-to-window"></a></h3>
+   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties">basic observable property</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window③">Window</a></code>'s <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen">current screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="event" data-export id="eventdef-screen-change"><code>change</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window④">Window</a></code>'s associated <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑦">Screen</a></code> object.</p>
+   <h3 class="heading settled" data-level="3.2" id="api-extensions-to-window"><span class="secno">3.2. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑤">Window</a></code> interface</span><a class="self-link" href="#api-extensions-to-window"></a></h3>
    <div class="domintro note" role="note">
     <dl>
      <dt data-md>await window . <code class="idl"><a data-link-type="idl" href="#dom-window-getscreendetails" id="ref-for-dom-window-getscreendetails①">getScreenDetails()</a></code>
      <dd data-md>
-      <p>Returns a promise that fulfills with a <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails">ScreenDetails</a></code> object with information about all connected screens. The promise will be rejected if permission is denied.</p>
+      <p>Returns a promise that fulfills with a <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails①">ScreenDetails</a></code> object with information about all connected screens. The promise will be rejected if permission is denied.</p>
     </dl>
    </div>
-<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑤"><c- g>Window</c-></a> {
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑥"><c- g>Window</c-></a> {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext" id="ref-for-SecureContext②"><c- g>SecureContext</c-></a>]
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="#screendetails" id="ref-for-screendetails①"><c- n>ScreenDetails</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-window-getscreendetails" id="ref-for-dom-window-getscreendetails②"><c- g>getScreenDetails</c-></a>();
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="#screendetails" id="ref-for-screendetails②"><c- n>ScreenDetails</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-window-getscreendetails" id="ref-for-dom-window-getscreendetails②"><c- g>getScreenDetails</c-></a>();
 };
 </pre>
-   <p>Each <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑥">Window</a></code> object has an associated <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails②">ScreenDetails</a></code> object.</p>
-   <p>Each <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑦">Window</a></code> object also has an associated <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①">ScreenDetailed</a></code> object which reflects the properties of the window’s <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①">current screen</a>.</p>
+   <p>Each <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑦">Window</a></code> object has an associated <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails③">ScreenDetails</a></code> object.</p>
+   <p>Each <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑧">Window</a></code> object also has an associated <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed②">ScreenDetailed</a></code> object which reflects the properties of the window’s <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①">current screen</a>.</p>
    <div class="algorithm" data-algorithm="getScreenDetails()" data-algorithm-for="Window">
     <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="method" data-export id="dom-window-getscreendetails"><code>getScreenDetails()</code></dfn> method steps are:</p>
     <ol>
@@ -988,13 +989,13 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
        <li data-md>
         <p>If <var>permissionState</var> is "<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-denied" id="ref-for-dom-permissionstate-denied">denied</a></code>" then <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject">reject</a> <var>promise</var> with a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code> and abort these steps.</p>
        <li data-md>
-        <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#resolve" id="ref-for-resolve">Resolve</a> <var>promise</var> with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a>'s associated <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails③">ScreenDetails</a></code> object.</p>
+        <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#resolve" id="ref-for-resolve">Resolve</a> <var>promise</var> with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a>'s associated <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails④">ScreenDetails</a></code> object.</p>
       </ol>
      <li data-md>
       <p>Return <var>promise</var>.</p>
     </ol>
    </div>
-   <p>In addition to the partial interface additions defined above, the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑧">Window</a></code> interface described in <a href="https://www.w3.org/TR/cssom-view/#extensions-to-the-window-interface"><cite>CSSOM View Module 1</cite> § 4 Extensions to the Window Interface</a> are modified:</p>
+   <p>In addition to the partial interface additions defined above, the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑨">Window</a></code> interface described in <a href="https://www.w3.org/TR/cssom-view/#extensions-to-the-window-interface"><cite>CSSOM View Module 1</cite> § 4 Extensions to the Window Interface</a> are modified:</p>
    <ul>
     <li data-md>
      <p>The <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-screenx" id="ref-for-dom-window-screenx">screenX</a></code> and <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-screenleft" id="ref-for-dom-window-screenleft">screenLeft</a></code> attributes must return the x-coordinate, relative to the top left corner of the <a data-link-type="dfn" href="#primary-screen" id="ref-for-primary-screen②">primary screen</a>'s Web-exposed screen area, of the left of the client window as number of <a data-link-type="dfn" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px①">CSS pixels</a>, or zero if there is no such thing.</p>
@@ -1006,22 +1007,22 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
      <p>Handling of <code>"left"</code> and <code>"top"</code> for <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#dom-open" id="ref-for-dom-open">open()</a></code> move the target window relative to the top or left edge (respectively) of the <a data-link-type="dfn" href="#primary-screen" id="ref-for-primary-screen⑤">primary screen</a>'s Web-exposed screen area.</p>
    </ul>
    <p class="issue" id="issue-c121dd6b"><a class="self-link" href="#issue-c121dd6b"></a> Merge the above with <a href="https://www.w3.org/TR/cssom-view/#extensions-to-the-window-interface"><cite>CSSOM View Module 1</cite> § 4 Extensions to the Window Interface</a>.</p>
-   <h3 class="heading settled" data-level="3.3" id="api-screens-interface"><span class="secno">3.3. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails④">ScreenDetails</a></code> interface</span><a class="self-link" href="#api-screens-interface"></a></h3>
+   <h3 class="heading settled" data-level="3.3" id="api-screens-interface"><span class="secno">3.3. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑤">ScreenDetails</a></code> interface</span><a class="self-link" href="#api-screens-interface"></a></h3>
    <div class="domintro note" role="note">
     <dl>
      <dt data-md><var>screens</var> . <code class="idl"><a data-link-type="idl" href="#dom-screendetails-screens" id="ref-for-dom-screendetails-screens">screens</a></code>
      <dd data-md>
-      <p>Returns an array of <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed②">ScreenDetailed</a></code> objects that describe each of the connected screens.</p>
+      <p>Returns an array of <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed③">ScreenDetailed</a></code> objects that describe each of the connected screens.</p>
      <dt data-md><var>screens</var> . <code class="idl"><a data-link-type="idl" href="#dom-screendetails-currentscreen" id="ref-for-dom-screendetails-currentscreen">currentScreen</a></code>
      <dd data-md>
-      <p>Returns a <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed③">ScreenDetailed</a></code> object that describes the current screen. This object describes the same object that the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-screen" id="ref-for-dom-window-screen①">screen</a></code> property of <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑨">Window</a></code> describes, but provides a superset of the information.</p>
+      <p>Returns a <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed④">ScreenDetailed</a></code> object that describes the current screen. This object describes the same object that the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-screen" id="ref-for-dom-window-screen①">screen</a></code> property of <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①⓪">Window</a></code> describes, but provides a superset of the information.</p>
     </dl>
    </div>
 <pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext" id="ref-for-SecureContext③"><c- g>SecureContext</c-></a>]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="screendetails"><code><c- g>ScreenDetails</c-></code></dfn> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-frozen-array" id="ref-for-idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a data-link-type="idl-name" href="#screendetailed" id="ref-for-screendetailed④"><c- n>ScreenDetailed</c-></a>> <a class="idl-code" data-link-type="attribute" data-readonly data-type="FrozenArray<ScreenDetailed>" href="#dom-screendetails-screens" id="ref-for-dom-screendetails-screens①"><c- g>screens</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-frozen-array" id="ref-for-idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a data-link-type="idl-name" href="#screendetailed" id="ref-for-screendetailed⑤"><c- n>ScreenDetailed</c-></a>> <a class="idl-code" data-link-type="attribute" data-readonly data-type="FrozenArray<ScreenDetailed>" href="#dom-screendetails-screens" id="ref-for-dom-screendetails-screens①"><c- g>screens</c-></a>;
 
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#screendetailed" id="ref-for-screendetailed⑤"><c- n>ScreenDetailed</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export data-readonly data-type="ScreenDetailed" id="dom-screendetails-currentscreen"><code><c- g>currentScreen</c-></code></dfn>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#screendetailed" id="ref-for-screendetailed⑥"><c- n>ScreenDetailed</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export data-readonly data-type="ScreenDetailed" id="dom-screendetails-currentscreen"><code><c- g>currentScreen</c-></code></dfn>;
 
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler①"><c- n>EventHandler</c-></a> <a class="idl-code" data-link-type="attribute" data-type="EventHandler" href="#dom-screendetails-onscreenschange" id="ref-for-dom-screendetails-onscreenschange"><c- g>onscreenschange</c-></a>;
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler②"><c- n>EventHandler</c-></a> <a class="idl-code" data-link-type="attribute" data-type="EventHandler" href="#dom-screendetails-oncurrentscreenchange" id="ref-for-dom-screendetails-oncurrentscreenchange"><c- g>oncurrentscreenchange</c-></a>;
@@ -1036,7 +1037,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
       <p>For each <var>screen</var> of <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens②⑧">connected screens</a>:</p>
       <ol>
        <li data-md>
-        <p>Let <var>a</var> be the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑥">ScreenDetailed</a></code> object describing <var>screen</var>.</p>
+        <p>Let <var>a</var> be the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑦">ScreenDetailed</a></code> object describing <var>screen</var>.</p>
        <li data-md>
         <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> <var>a</var> to <var>screens</var>.</p>
       </ol>
@@ -1057,14 +1058,14 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
       <p>Otherwise, return false.</p>
     </ol>
    </div>
-   <p>The <dfn class="idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-currentscreens"><code>currentScreens</code><a class="self-link" href="#dom-screendetails-currentscreens"></a></dfn> getter steps are to return the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑦">ScreenDetailed</a></code> object associated with the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①⓪">Window</a></code> associated with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>.</p>
-   <h4 class="heading settled" data-level="3.3.1" id="api-screens-events"><span class="secno">3.3.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑤">ScreenDetails</a></code> events</span><a class="self-link" href="#api-screens-events"></a></h4>
+   <p>The <dfn class="idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-currentscreens"><code>currentScreens</code><a class="self-link" href="#dom-screendetails-currentscreens"></a></dfn> getter steps are to return the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑧">ScreenDetailed</a></code> object associated with the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①①">Window</a></code> associated with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>.</p>
+   <h4 class="heading settled" data-level="3.3.1" id="api-screens-events"><span class="secno">3.3.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑥">ScreenDetails</a></code> events</span><a class="self-link" href="#api-screens-events"></a></h4>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-onscreenschange"><code>onscreenschange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes①">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type①">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screendetails-screenschange" id="ref-for-eventdef-screendetails-screenschange"><code>screenschange</code></a>.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-oncurrentscreenchange"><code>oncurrentscreenchange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes②">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type②">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screendetails-currentscreenchange" id="ref-for-eventdef-screendetails-currentscreenchange"><code>currentscreenchange</code></a>.</p>
-   <p>When the set of <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③①">connected screens</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire①">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="event" data-export id="eventdef-screendetails-screenschange"><code>screenschange</code></dfn> at every <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑥">ScreenDetails</a></code> object.</p>
-   <p>When the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen②">current screen</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①①">Window</a></code> changes from one <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③②">connected screen</a> to another (e.g. the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①②">Window</a></code> has been moved to a different display), <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire②">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="event" data-export id="eventdef-screendetails-currentscreenchange"><code>currentscreenchange</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①③">Window</a></code>'s associated <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑦">ScreenDetails</a></code> object.</p>
-   <h3 class="heading settled" data-level="3.4" id="api-screenadvanced-interface"><span class="secno">3.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑧">ScreenDetailed</a></code> interface</span><a class="self-link" href="#api-screenadvanced-interface"></a></h3>
-   <p>A <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑨">ScreenDetailed</a></code> object represents a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③③">connected screen</a>.</p>
+   <p>When the set of <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③①">connected screens</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire①">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="event" data-export id="eventdef-screendetails-screenschange"><code>screenschange</code></dfn> at every <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑦">ScreenDetails</a></code> object.</p>
+   <p>When the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen②">current screen</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①②">Window</a></code> changes from one <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③②">connected screen</a> to another (e.g. the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①③">Window</a></code> has been moved to a different display), <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire②">fire an event</a> with type <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="event" data-export id="eventdef-screendetails-currentscreenchange"><code>currentscreenchange</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①④">Window</a></code>'s associated <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑧">ScreenDetails</a></code> object.</p>
+   <h3 class="heading settled" data-level="3.4" id="api-screenadvanced-interface"><span class="secno">3.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑨">ScreenDetailed</a></code> interface</span><a class="self-link" href="#api-screenadvanced-interface"></a></h3>
+   <p>A <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①⓪">ScreenDetailed</a></code> object represents a <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③③">connected screen</a>.</p>
    <div class="domintro note" role="note">
     <dl>
      <dt data-md><var>screen</var> . <code class="idl"><a data-link-type="idl" href="#dom-screendetailed-left" id="ref-for-dom-screendetailed-left">left</a></code>
@@ -1088,7 +1089,7 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
     </dl>
    </div>
 <pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext" id="ref-for-SecureContext④"><c- g>SecureContext</c-></a>]
-<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="screendetailed"><code><c- g>ScreenDetailed</c-></code></dfn> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑦"><c- n>Screen</c-></a> {
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="screendetailed"><code><c- g>ScreenDetailed</c-></code></dfn> : <a data-link-type="idl-name" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen⑧"><c- n>Screen</c-></a> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-long" id="ref-for-idl-long"><c- b>long</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="long" href="#dom-screendetailed-left" id="ref-for-dom-screendetailed-left①"><c- g>left</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-long" id="ref-for-idl-long①"><c- b>long</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="long" href="#dom-screendetailed-top" id="ref-for-dom-screendetailed-top①"><c- g>top</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-screendetailed-isprimary" id="ref-for-dom-screendetailed-isprimary①"><c- g>isPrimary</c-></a>;
@@ -1103,12 +1104,12 @@ However, <a data-link-type="dfn" href="#internal" id="ref-for-internal②">inter
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-isinternal"><code>isInternal</code></dfn> getter steps are to return true if <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a> is <a data-link-type="dfn" href="#internal" id="ref-for-internal⑧">internal</a>, or false otherwise.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-devicepixelratio"><code>devicePixelRatio</code></dfn> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>'s <a data-link-type="dfn" href="#connected-screen-device-pixel-ratio" id="ref-for-connected-screen-device-pixel-ratio①">device pixel ratio</a>.</p>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="attribute" data-export id="dom-screendetailed-label"><code>label</code></dfn> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this</a>'s <a data-link-type="dfn" href="#connected-screen-label" id="ref-for-connected-screen-label③">label</a>.</p>
-   <h4 class="heading settled" data-level="3.4.1" id="api-screenadvanced-events"><span class="secno">3.4.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①⓪">ScreenDetailed</a></code> events</span><a class="self-link" href="#api-screenadvanced-events"></a></h4>
-   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties①">basic observable property</a> or <a data-link-type="dfn" href="#connected-screen-advanced-observable-properties" id="ref-for-connected-screen-advanced-observable-properties">advanced observable property</a> of a <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①①">ScreenDetailed</a></code>'s associated <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③④">connected screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire③">fire an event</a> with type <dfn class="idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="event" data-export id="eventdef-screendetailed-change"><code>change</code><a class="self-link" href="#eventdef-screendetailed-change"></a></dfn> at the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①②">ScreenDetailed</a></code> object.</p>
-   <h3 class="heading settled" data-level="3.5" id="api-extensions-to-fullscreen-options"><span class="secno">3.5. </span><span class="content">Extensions to <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions">FullscreenOptions</a></code></span><a class="self-link" href="#api-extensions-to-fullscreen-options"></a></h3>
-<pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions①"><c- g>FullscreenOptions</c-></a> {
+   <h4 class="heading settled" data-level="3.4.1" id="api-screenadvanced-events"><span class="secno">3.4.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①①">ScreenDetailed</a></code> events</span><a class="self-link" href="#api-screenadvanced-events"></a></h4>
+   <p>When any <a data-link-type="dfn" href="#connected-screen-basic-observable-properties" id="ref-for-connected-screen-basic-observable-properties①">basic observable property</a> or <a data-link-type="dfn" href="#connected-screen-advanced-observable-properties" id="ref-for-connected-screen-advanced-observable-properties">advanced observable property</a> of a <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①②">ScreenDetailed</a></code>'s associated <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens③④">connected screen</a> changes, <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire③">fire an event</a> with type <dfn class="idl-code" data-dfn-for="ScreenDetailed" data-dfn-type="event" data-export id="eventdef-screendetailed-change"><code>change</code><a class="self-link" href="#eventdef-screendetailed-change"></a></dfn> at the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①③">ScreenDetailed</a></code> object.</p>
+   <h3 class="heading settled" data-level="3.5" id="api-extensions-to-fullscreen-options"><span class="secno">3.5. </span><span class="content">Extensions to <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions①">FullscreenOptions</a></code></span><a class="self-link" href="#api-extensions-to-fullscreen-options"></a></h3>
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions②"><c- g>FullscreenOptions</c-></a> {
   // An optional way to request a specific screen for element fullscreen.
-  <a data-link-type="idl-name" href="#screendetailed" id="ref-for-screendetailed①③"><c- n>ScreenDetailed</c-></a> <dfn class="idl-code" data-dfn-for="FullscreenOptions" data-dfn-type="dict-member" data-export data-type="ScreenDetailed " id="dom-fullscreenoptions-screen"><code><c- g>screen</c-></code><a class="self-link" href="#dom-fullscreenoptions-screen"></a></dfn>;
+  <a data-link-type="idl-name" href="#screendetailed" id="ref-for-screendetailed①④"><c- n>ScreenDetailed</c-></a> <dfn class="idl-code" data-dfn-for="FullscreenOptions" data-dfn-type="dict-member" data-export data-type="ScreenDetailed " id="dom-fullscreenoptions-screen"><code><c- g>screen</c-></code><a class="self-link" href="#dom-fullscreenoptions-screen"></a></dfn>;
 };
 </pre>
    <p class="issue" id="issue-e091725c"><a class="self-link" href="#issue-e091725c"></a> Write me.</p>
@@ -1268,11 +1269,12 @@ for helping craft this specification.</p>
   <aside class="dfn-panel" data-for="term-for-screen">
    <a href="https://drafts.csswg.org/cssom-view-1/#screen">https://drafts.csswg.org/cssom-view-1/#screen</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-screen">1.2.1. Detecting when screen properties change</a>
-    <li><a href="#ref-for-screen①">2.6. Current screen</a>
-    <li><a href="#ref-for-screen②">3.1. Extensions to the Screen interface</a> <a href="#ref-for-screen③">(2)</a> <a href="#ref-for-screen④">(3)</a>
-    <li><a href="#ref-for-screen⑤">3.1.1. Screen events</a> <a href="#ref-for-screen⑥">(2)</a>
-    <li><a href="#ref-for-screen⑦">3.4. The ScreenDetailed interface</a>
+    <li><a href="#ref-for-screen">1. Introduction</a>
+    <li><a href="#ref-for-screen①">1.2.1. Detecting when screen properties change</a>
+    <li><a href="#ref-for-screen②">2.6. Current screen</a>
+    <li><a href="#ref-for-screen③">3.1. Extensions to the Screen interface</a> <a href="#ref-for-screen④">(2)</a> <a href="#ref-for-screen⑤">(3)</a>
+    <li><a href="#ref-for-screen⑥">3.1.1. Screen events</a> <a href="#ref-for-screen⑦">(2)</a>
+    <li><a href="#ref-for-screen⑧">3.4. The ScreenDetailed interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-window-moveto">
@@ -1335,7 +1337,8 @@ for helping craft this specification.</p>
   <aside class="dfn-panel" data-for="term-for-dictdef-fullscreenoptions">
    <a href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions">https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dictdef-fullscreenoptions">3.5. Extensions to FullscreenOptions</a> <a href="#ref-for-dictdef-fullscreenoptions①">(2)</a>
+    <li><a href="#ref-for-dictdef-fullscreenoptions">1. Introduction</a>
+    <li><a href="#ref-for-dictdef-fullscreenoptions①">3.5. Extensions to FullscreenOptions</a> <a href="#ref-for-dictdef-fullscreenoptions②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-element-requestfullscreen">
@@ -1354,11 +1357,12 @@ for helping craft this specification.</p>
   <aside class="dfn-panel" data-for="term-for-window">
    <a href="https://html.spec.whatwg.org/multipage/window-object.html#window">https://html.spec.whatwg.org/multipage/window-object.html#window</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-window">2.6. Current screen</a> <a href="#ref-for-window①">(2)</a>
-    <li><a href="#ref-for-window②">3.1.1. Screen events</a> <a href="#ref-for-window③">(2)</a>
-    <li><a href="#ref-for-window④">3.2. Extensions to the Window interface</a> <a href="#ref-for-window⑤">(2)</a> <a href="#ref-for-window⑥">(3)</a> <a href="#ref-for-window⑦">(4)</a> <a href="#ref-for-window⑧">(5)</a>
-    <li><a href="#ref-for-window⑨">3.3. The ScreenDetails interface</a> <a href="#ref-for-window①⓪">(2)</a>
-    <li><a href="#ref-for-window①①">3.3.1. ScreenDetails events</a> <a href="#ref-for-window①②">(2)</a> <a href="#ref-for-window①③">(3)</a>
+    <li><a href="#ref-for-window">1. Introduction</a>
+    <li><a href="#ref-for-window①">2.6. Current screen</a> <a href="#ref-for-window②">(2)</a>
+    <li><a href="#ref-for-window③">3.1.1. Screen events</a> <a href="#ref-for-window④">(2)</a>
+    <li><a href="#ref-for-window⑤">3.2. Extensions to the Window interface</a> <a href="#ref-for-window⑥">(2)</a> <a href="#ref-for-window⑦">(3)</a> <a href="#ref-for-window⑧">(4)</a> <a href="#ref-for-window⑨">(5)</a>
+    <li><a href="#ref-for-window①⓪">3.3. The ScreenDetails interface</a> <a href="#ref-for-window①①">(2)</a>
+    <li><a href="#ref-for-window①②">3.3.1. ScreenDetails events</a> <a href="#ref-for-window①③">(2)</a> <a href="#ref-for-window①④">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-event-handler-event-type">
@@ -1670,7 +1674,6 @@ for helping craft this specification.</p>
 </pre>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> More in this section? <a class="issue-return" href="#issue-8a36eb3a" title="Jump to section">↵</a></div>
    <div class="issue"> Write this section, using examples from Explainer: <a class="issue-return" href="#issue-ce27403d" title="Jump to section">↵</a></div>
    <div class="issue"> Finish up this section. <a class="issue-return" href="#issue-1e9cfe84" title="Jump to section">↵</a></div>
    <div class="issue"> Are these definitions actually needed? Reference <a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-information"><cite>CSSOM View Module 1</cite> § 2.3 Web-exposed screen information</a> if so. <a class="issue-return" href="#issue-088e06af" title="Jump to section">↵</a></div>
@@ -1889,9 +1892,10 @@ for helping craft this specification.</p>
   <aside class="dfn-panel" data-for="screendetails">
    <b><a href="#screendetails">#screendetails</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-screendetails">3.2. Extensions to the Window interface</a> <a href="#ref-for-screendetails①">(2)</a> <a href="#ref-for-screendetails②">(3)</a> <a href="#ref-for-screendetails③">(4)</a>
-    <li><a href="#ref-for-screendetails④">3.3. The ScreenDetails interface</a>
-    <li><a href="#ref-for-screendetails⑤">3.3.1. ScreenDetails events</a> <a href="#ref-for-screendetails⑥">(2)</a> <a href="#ref-for-screendetails⑦">(3)</a>
+    <li><a href="#ref-for-screendetails">1. Introduction</a>
+    <li><a href="#ref-for-screendetails①">3.2. Extensions to the Window interface</a> <a href="#ref-for-screendetails②">(2)</a> <a href="#ref-for-screendetails③">(3)</a> <a href="#ref-for-screendetails④">(4)</a>
+    <li><a href="#ref-for-screendetails⑤">3.3. The ScreenDetails interface</a>
+    <li><a href="#ref-for-screendetails⑥">3.3.1. ScreenDetails events</a> <a href="#ref-for-screendetails⑦">(2)</a> <a href="#ref-for-screendetails⑧">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-screendetails-currentscreen">
@@ -1939,12 +1943,13 @@ for helping craft this specification.</p>
   <aside class="dfn-panel" data-for="screendetailed">
    <b><a href="#screendetailed">#screendetailed</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-screendetailed">1.2.5. Placing windows on a specific screen</a>
-    <li><a href="#ref-for-screendetailed①">3.2. Extensions to the Window interface</a>
-    <li><a href="#ref-for-screendetailed②">3.3. The ScreenDetails interface</a> <a href="#ref-for-screendetailed③">(2)</a> <a href="#ref-for-screendetailed④">(3)</a> <a href="#ref-for-screendetailed⑤">(4)</a> <a href="#ref-for-screendetailed⑥">(5)</a> <a href="#ref-for-screendetailed⑦">(6)</a>
-    <li><a href="#ref-for-screendetailed⑧">3.4. The ScreenDetailed interface</a> <a href="#ref-for-screendetailed⑨">(2)</a>
-    <li><a href="#ref-for-screendetailed①⓪">3.4.1. ScreenDetailed events</a> <a href="#ref-for-screendetailed①①">(2)</a> <a href="#ref-for-screendetailed①②">(3)</a>
-    <li><a href="#ref-for-screendetailed①③">3.5. Extensions to FullscreenOptions</a>
+    <li><a href="#ref-for-screendetailed">1. Introduction</a>
+    <li><a href="#ref-for-screendetailed①">1.2.5. Placing windows on a specific screen</a>
+    <li><a href="#ref-for-screendetailed②">3.2. Extensions to the Window interface</a>
+    <li><a href="#ref-for-screendetailed③">3.3. The ScreenDetails interface</a> <a href="#ref-for-screendetailed④">(2)</a> <a href="#ref-for-screendetailed⑤">(3)</a> <a href="#ref-for-screendetailed⑥">(4)</a> <a href="#ref-for-screendetailed⑦">(5)</a> <a href="#ref-for-screendetailed⑧">(6)</a>
+    <li><a href="#ref-for-screendetailed⑨">3.4. The ScreenDetailed interface</a> <a href="#ref-for-screendetailed①⓪">(2)</a>
+    <li><a href="#ref-for-screendetailed①①">3.4.1. ScreenDetailed events</a> <a href="#ref-for-screendetailed①②">(2)</a> <a href="#ref-for-screendetailed①③">(3)</a>
+    <li><a href="#ref-for-screendetailed①④">3.5. Extensions to FullscreenOptions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-screendetailed-left">

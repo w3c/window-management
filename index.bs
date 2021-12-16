@@ -7,6 +7,7 @@ URL: https://webscreens.github.io/window-placement
 Level: 1
 Editor: Victor Costan, Google Inc. https://google.com, costan@google.com
 Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com
+Editor: Mike Wasserman, Google Inc. https://google.com, msw@google.com
 Repository: webscreens/window-placement
 Group: secondscreencg
 Test Suite: https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration
@@ -55,7 +56,7 @@ Operating systems generally allow users to connect multiple screens to a single 
 
 As multi-screen devices and applications become a more common and critical part of user experiences, it becomes more important to give developers information and tools to leverage that expanded visual environment.
 
-Issue: More in this section?
+This document extends existing {{Window}}, {{Screen}}, and {{FullscreenOptions}} concepts, and offers new {{ScreenDetails}} and {{ScreenDetailed}} interfaces to place windows and request fullscreen on specific screens.
 
 <!-- ====================================================================== -->
 ## Motivating Use Cases ## {#motivations}
@@ -70,7 +71,6 @@ The aim of this specification is enable better experiences for web application u
 * Conference room app shows controls on a touch screen device and video on a TV.
 * Multi-screen layouts in gaming, signage, artistic, and other types of apps.
 * Site optimizes content and layout when a window spans multiple screens.
-
 
 <!-- ====================================================================== -->
 ## Usage Overview ## {#usage-overview}
@@ -92,7 +92,6 @@ screen.addEventListener('change') e => {
   /* display properties have changed for the current screen */
 });
 ```
-
 
 <!-- ====================================================================== -->
 ### Detecting the presence of extended screen areas ### {#usage-overview-extended}

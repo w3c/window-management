@@ -83,11 +83,11 @@ The API can be used as follows:
 1. Show an element fullscreen on a specific screen
 1. Place a window on a specific screen
 
-<aside class=example id=example-basic-usage>
+<aside class=example>
 
 A basic example of the API usage is as follows:
 
-``js
+```js
 // Detect the presence of extended screen areas.
 if (window.screen.isExtended) {
   // Request extended screen information.
@@ -102,10 +102,10 @@ if (window.screen.isExtended) {
   // Place a window on a specific screen.
   const otherScreens = screenDetails.screens.filter(s => s != fullscreenScreen);
   const windowScreen = otherScreens.find(s => s.internal) ?? otherScreens[0];
-  window.open(url, name, `left=${windowScreen.availLeft},` +
-                         `top=${windowScreen.availTop},` +
-                         `width=${windowScreen.availWidth},` +
-                         `height=${windowScreen.availHeight}`);
+  window.open(url, '_blank', \`left=${windowScreen.availLeft},\` +
+                             \`top=${windowScreen.availTop},\` +
+                             \`width=${windowScreen.availWidth},\` +
+                             \`height=${windowScreen.availHeight}\`);
 } else {
   // Arrange content within the traditional single-screen environment.
 }
@@ -201,7 +201,7 @@ function openAndCenterWindow(url, screenDetailed, width, height) {
   const top = Math.round(screenDetailed.height - height) / 2;
 
   // Open the window with the requested dimensions.
-  return window.open(url, '_blank', `left=${left},top=${top},width=${width},height=${height}`);
+  return window.open(url, '_blank', \`left=${left},top=${top},width=${width},height=${height}\`);
 }
 ```
 

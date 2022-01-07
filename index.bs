@@ -76,10 +76,39 @@ The aim of this specification is enable better experiences for web application u
 ## Usage Overview ## {#usage-overview}
 <!-- ====================================================================== -->
 
-Issue: Write this section, using examples from Explainer:
+The API can be used as follows:
 
-* Show elements fullscreen on a specific screen
-* Place web app windows on a specific screen
+1. Detect the presence of extended screen areas
+1. Request extended screen information
+1. Show an element fullscreen on a specific screen
+1. Place a window on a specific screen
+
+<aside class=example>
+
+A basic example of the API usage is as follows:
+
+```js
+// Detect the presence of extended screen areas.
+if (window.screen.isExtended) {
+  // Request extended screen information.
+  const screenDetails = await window.getScreenDetails();
+
+  // Find the primary screen, show some content fullscreen there.
+  const primaryScreen = screenDetails.screens.find(s => s.isPrimary);
+  document.documentElement.requestFullscreen({screen : primaryScreen});
+
+  // Find a different screen, fill its available area with a new window.
+  const otherScreen = screenDetails.screens.find(s => s != primaryScreen);
+  window.open(url, '_blank', \`left=${otherScreen.availLeft},\` +
+                             \`top=${otherScreen.availTop},\` +
+                             \`width=${otherScreen.availWidth},\` +
+                             \`height=${otherScreen.availHeight}\`);
+} else {
+  // Arrange content within the traditional single-screen environment.
+}
+```
+
+</aside>
 
 <!-- ====================================================================== -->
 ### Detecting when screen properties change ### {#usage-overview-property-changes}
@@ -169,7 +198,7 @@ function openAndCenterWindow(url, screenDetailed, width, height) {
   const top = Math.round(screenDetailed.height - height) / 2;
 
   // Open the window with the requested dimensions.
-  return window.open(url, '_blank', `left=${left},top=${top},width=${width},height=${height}`);
+  return window.open(url, '_blank', \`left=${left},top=${top},width=${width},height=${height}\`);
 }
 ```
 

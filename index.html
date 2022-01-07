@@ -9,7 +9,7 @@
   <meta content="Bikeshed version cace53f8c, updated Tue Dec 7 12:12:54 2021 -0800" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="8b1c377ac37b25f603e996306e0ff4e1aad8a947" name="document-revision">
+  <meta content="1adcb7cbc930285c21cba6d20397c026c225b93e" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -609,7 +609,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://w3.org/community/webscreens/"> <img alt="Logo" height="100" src="logo.svg" width="100"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2021-12-16">16 December 2021</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2022-01-07">7 January 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -629,7 +629,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2021 the Contributors to the Multi-Screen Window Placement Specification, published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
+   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2022 the Contributors to the Multi-Screen Window Placement Specification, published by the <a href="https://www.w3.org/community/webscreens/">Second Screen Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
 A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available. </p>
    <hr title="Separator for header">
   </div>
@@ -756,13 +756,40 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
      <p>Site optimizes content and layout when a window spans multiple screens.</p>
    </ul>
    <h3 class="heading settled" data-level="1.2" id="usage-overview"><span class="secno">1.2. </span><span class="content">Usage Overview</span><a class="self-link" href="#usage-overview"></a></h3>
-   <p class="issue" id="issue-ce27403d"><a class="self-link" href="#issue-ce27403d"></a> Write this section, using examples from Explainer:</p>
-   <ul>
+   <p>The API can be used as follows:</p>
+   <ol>
     <li data-md>
-     <p>Show elements fullscreen on a specific screen</p>
+     <p>Detect the presence of extended screen areas</p>
     <li data-md>
-     <p>Place web app windows on a specific screen</p>
-   </ul>
+     <p>Request extended screen information</p>
+    <li data-md>
+     <p>Show an element fullscreen on a specific screen</p>
+    <li data-md>
+     <p>Place a window on a specific screen</p>
+   </ol>
+   <aside class="example" id="example-21c761d8">
+    <a class="self-link" href="#example-21c761d8"></a> 
+    <p>A basic example of the API usage is as follows:</p>
+<pre class="language-js highlight"><c- c1>// Detect the presence of extended screen areas.</c->
+<c- k>if</c-> <c- p>(</c->window<c- p>.</c->screen<c- p>.</c->isExtended<c- p>)</c-> <c- p>{</c->
+  <c- c1>// Request extended screen information.</c->
+  <c- a>const</c-> screenDetails <c- o>=</c-> <c- k>await</c-> window<c- p>.</c->getScreenDetails<c- p>();</c->
+
+  <c- c1>// Find the primary screen, show some content fullscreen there.</c->
+  <c- a>const</c-> primaryScreen <c- o>=</c-> screenDetails<c- p>.</c->screens<c- p>.</c->find<c- p>(</c->s <c- p>=></c-> s<c- p>.</c->isPrimary<c- p>);</c->
+  document<c- p>.</c->documentElement<c- p>.</c->requestFullscreen<c- p>({</c->screen <c- o>:</c-> primaryScreen<c- p>});</c->
+
+  <c- c1>// Find a different screen, fill its available area with a new window.</c->
+  <c- a>const</c-> otherScreen <c- o>=</c-> screenDetails<c- p>.</c->screens<c- p>.</c->find<c- p>(</c->s <c- p>=></c-> s <c- o>!=</c-> primaryScreen<c- p>);</c->
+  window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> <c- sb>`left=</c-><c- si>${</c->otherScreen<c- p>.</c->availLeft<c- si>}</c-><c- sb>,`</c-> <c- o>+</c->
+                             <c- sb>`top=</c-><c- si>${</c->otherScreen<c- p>.</c->availTop<c- si>}</c-><c- sb>,`</c-> <c- o>+</c->
+                             <c- sb>`width=</c-><c- si>${</c->otherScreen<c- p>.</c->availWidth<c- si>}</c-><c- sb>,`</c-> <c- o>+</c->
+                             <c- sb>`height=</c-><c- si>${</c->otherScreen<c- p>.</c->availHeight<c- si>}</c-><c- sb>`</c-><c- p>);</c->
+<c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+  <c- c1>// Arrange content within the traditional single-screen environment.</c->
+<c- p>}</c->
+</pre>
+   </aside>
    <h4 class="heading settled" data-level="1.2.1" id="usage-overview-property-changes"><span class="secno">1.2.1. </span><span class="content">Detecting when screen properties change</span><a class="self-link" href="#usage-overview-property-changes"></a></h4>
    <p>Without even considering multiple screens, sites may want to adapt to screen attribute changes. To avoid polling, <code>change</code> events are fired at the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen①">Screen</a></code> object:</p>
 <pre class="language-js highlight">screen<c- p>.</c->addEventListener<c- p>(</c-><c- t>'change'</c-><c- p>)</c-> e <c- p>=></c-> <c- p>{</c->
@@ -821,7 +848,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
   <c- a>const</c-> top <c- o>=</c-> Math<c- p>.</c->round<c- p>(</c->screenDetailed<c- p>.</c->height <c- o>-</c-> height<c- p>)</c-> <c- o>/</c-> <c- mf>2</c-><c- p>;</c->
 
   <c- c1>// Open the window with the requested dimensions.</c->
-  <c- k>return</c-> window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> <c- o>&lt;</c->code data<c- o>-</c->opaque bs<c- o>-</c->autolink<c- o>-</c->syntax<c- o>=</c-><c- t>'`left=${left},top=${top},width=${width},height=${height}`'</c-><c- o>></c->left<c- o>=</c->$<c- p>{</c->left<c- p>},</c->top<c- o>=</c->$<c- p>{</c->top<c- p>},</c->width<c- o>=</c->$<c- p>{</c->width<c- p>},</c->height<c- o>=</c->$<c- p>{</c->height<c- p>}</c-><c- o>&lt;</c->/code>);
+  <c- k>return</c-> window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> <c- sb>`left=</c-><c- si>${</c->left<c- si>}</c-><c- sb>,top=</c-><c- si>${</c->top<c- si>}</c-><c- sb>,width=</c-><c- si>${</c->width<c- si>}</c-><c- sb>,height=</c-><c- si>${</c->height<c- si>}</c-><c- sb>`</c-><c- p>);</c->
 <c- p>}</c->
 </pre>
    <h2 class="heading settled" data-level="2" id="concepts"><span class="secno">2. </span><span class="content">Concepts</span><a class="self-link" href="#concepts"></a></h2>
@@ -1607,7 +1634,7 @@ for helping craft this specification.</p>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. 16 October 2021. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. 16 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
    <dt id="biblio-cssom-view-1">[CSSOM-VIEW-1]
    <dd>Simon Pieters. <a href="https://www.w3.org/TR/cssom-view-1/"><cite>CSSOM View Module</cite></a>. 17 March 2016. WD. URL: <a href="https://www.w3.org/TR/cssom-view-1/">https://www.w3.org/TR/cssom-view-1/</a>
    <dt id="biblio-dom">[DOM]
@@ -1674,7 +1701,6 @@ for helping craft this specification.</p>
 </pre>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Write this section, using examples from Explainer: <a class="issue-return" href="#issue-ce27403d" title="Jump to section">↵</a></div>
    <div class="issue"> Finish up this section. <a class="issue-return" href="#issue-1e9cfe84" title="Jump to section">↵</a></div>
    <div class="issue"> Are these definitions actually needed? Reference <a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-information"><cite>CSSOM View Module 1</cite> § 2.3 Web-exposed screen information</a> if so. <a class="issue-return" href="#issue-088e06af" title="Jump to section">↵</a></div>
    <div class="issue"> <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen">Screen</a></code> needs to derived from <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a></code>. This will require changes to <a href="https://www.w3.org/TR/cssom-view/#the-screen-interface"><cite>CSSOM View Module 1</cite> § 4.3 The Screen Interface</a>. <a class="issue-return" href="#issue-e61a06d2" title="Jump to section">↵</a></div>

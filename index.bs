@@ -194,8 +194,8 @@ Windows can be placed on specific screens using the coordinates provided in the 
 function openAndCenterWindow(url, screenDetailed, width, height) {
 
   // Compute coordinates relative to the target screen's coordinates.
-  const left = Math.round(screenDetailed.width  - width) / 2;
-  const top = Math.round(screenDetailed.height - height) / 2;
+  const left = screenDetailed.availLeft + Math.round(screenDetailed.availWidth  - width) / 2;
+  const top = screenDetailed.availTop + Math.round(screenDetailed.availHeight - height) / 2;
 
   // Open the window with the requested dimensions.
   return window.open(url, '_blank', \`left=${left},top=${top},width=${width},height=${height}\`);

@@ -370,7 +370,7 @@ Each [=/connected screen=] may be designated as <dfn>internal</dfn> or <dfn>exte
 It is not unusual for an [=external=] screen to be disconnected from one computer system and connected to a different computer system.
 
 [=Internal=] screens are usually attached to a computer system at manufacturing time.
-[=Internal=] screens and are not intended to be detached by users.
+[=Internal=] screens are not intended to be detached by users.
 However, [=internal=] [=/connected screens=] may still appear and disappear while the user agent is running.
 
 Note:

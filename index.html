@@ -9,7 +9,7 @@
   <meta content="Bikeshed version cace53f8c, updated Tue Dec 7 12:12:54 2021 -0800" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="fc8bc5e82a67dbf13ad0673c65ceea4c6c8cc12c" name="document-revision">
+  <meta content="b857eec3a0b043e8303acdf1c24296d89fd2daf8" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -609,7 +609,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://w3.org/community/webscreens/"> <img alt="Logo" height="100" src="logo.svg" width="100"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2022-01-08">8 January 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2022-01-10">10 January 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -907,7 +907,7 @@ The rectangle’s edges are parallel to the <a data-link-type="dfn" href="#scree
    <p>A computer system has a two-dimensional <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="virtual-screen-area">virtual screen area</dfn> that extends in all directions.  It has x- and y-coordinates that increase rightwards and downwards respectively from the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="multi-screen-origin">multi-screen origin</dfn>.  The <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin">multi-screen origin</a> is an implementation-defined point that defines the 0,0 coordinate of the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area">virtual screen area</a>.</p>
    <p>A common convention is to set the <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin①">multi-screen origin</a> to the top left of the <a data-link-type="dfn" href="#primary" id="ref-for-primary">primary</a> <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①②">connected screen</a>, but can be any arbitrary point within the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area①">virtual screen area</a>.  Every <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①③">connected screen</a>'s <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area①⓪">screen area</a> is a view onto a rectangular subset of the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area②">virtual screen area</a>.</p>
    <p>Non-exhaustive example of multiple <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①④">connected screens</a>, their <a data-link-type="dfn" href="#screen-area" id="ref-for-screen-area①①">screen area</a>, and potential <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin②">multi-screen origins</a>:</p>
-   <p><img alt="Diagram showing various examples of screens and multi-screen origins" height="401" src="multiscreenorigin.png" width="512"></p>
+   <p><img alt="Diagram showing various examples of screens and multi-screen origins" src="multi_screen_origin.svg"></p>
    <h4 class="heading settled" data-level="2.3.3" id="concept-screen-position"><span class="secno">2.3.3. </span><span class="content">Screen position</span><a class="self-link" href="#concept-screen-position"></a></h4>
    <p>A <a data-link-type="dfn" href="#connected-screens" id="ref-for-connected-screens①⑤">connected screen</a> has a <dfn class="dfn-paneled" data-dfn-for="connected screen" data-dfn-type="dfn" data-noexport id="connected-screen-screen-position">screen position</dfn> which is the x- and y-coordinates in the <a data-link-type="dfn" href="#virtual-screen-area" id="ref-for-virtual-screen-area③">virtual screen area</a> relative to the <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin③">multi-screen origin</a>. Coordinates may be negative, and are typically expressed as (<var>x</var>, <var>y</var>).</p>
    <h4 class="heading settled" data-level="2.3.4" id="concept-observable-properties"><span class="secno">2.3.4. </span><span class="content">Observable properties</span><a class="self-link" href="#concept-observable-properties"></a></h4>

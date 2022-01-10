@@ -311,7 +311,7 @@ A common convention is to set the [=/multi-screen origin=] to the top left of th
 
 Non-exhaustive example of multiple [=/connected screens=], their [=/screen area=], and potential [=/multi-screen origins=]:
 
-<img src="multiscreenorigin.png" alt="Diagram showing various examples of screens and multi-screen origins">
+<img src="multi_screen_origin.svg" alt="Diagram showing various examples of screens and multi-screen origins">
 
 <!-- ====================================================================== -->
 ### Screen position ### {#concept-screen-position}

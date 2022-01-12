@@ -194,8 +194,8 @@ Windows can be placed on specific screens using the coordinates provided in the 
 function openAndCenterWindow(url, screenDetailed, width, height) {
 
   // Compute coordinates relative to the target screen's coordinates.
-  const left = Math.round(screenDetailed.width  - width) / 2;
-  const top = Math.round(screenDetailed.height - height) / 2;
+  const left = screenDetailed.availLeft + Math.round(screenDetailed.availWidth - width) / 2;
+  const top = screenDetailed.availTop + Math.round(screenDetailed.availHeight - height) / 2;
 
   // Open the window with the requested dimensions.
   return window.open(url, '_blank', \`left=${left},top=${top},width=${width},height=${height}\`);
@@ -226,24 +226,6 @@ Note:
   depth=] of 24. The 24 bits are separated into 3 groups of 8 bits used to
   represent the intensity of the (red, green, blue) subpixels of an LCD
   [=screen pixel=].
-
-<!-- ====================================================================== -->
-## Screen area ## {#concept-screen-area}
-<!-- ====================================================================== -->
-
-A <dfn>screen area</dfn> is a rectangular two-dimensional grid of [=/screen pixels=] with the same [=/color depth=].
-
-<div dfn-for="screen area">
-
-A [=/screen area=] has a <dfn>width</dfn>, which is the number of [=/screen pixels=] along the main dimension of the [=/screen area=]'s rectangular pixel grid.
-
-A [=/screen area=] has a <dfn>height</dfn>, which is the number of [=/screen pixels=] along the secondary dimension of the [=/screen area=]'s rectangular pixel grid.
-
-</div>
-
-Note:
-  The grid size is usually expressed as [=screen area/width=] x [=screen area/height=].
-  For example, a 1920x1080 screen area has a grid with a [=screen area/width=] of 1920 pixels and a [=screen area/height=] of 1080 pixels.
 
 <!-- ====================================================================== -->
 ## Connected screen ## {#concept-connected-screen}
@@ -282,6 +264,26 @@ Advisement: While many properties of screens could be used for [=/active fingerp
 </div>
 
 <!-- ====================================================================== -->
+### Screen area ### {#concept-screen-area}
+<!-- ====================================================================== -->
+
+A <dfn>screen area</dfn> is a rectangular two-dimensional grid of [=/screen pixels=] with the same [=/color depth=].
+
+<div dfn-for="screen area">
+
+A [=/screen area=] has a <dfn>width</dfn>, which is the number of [=/screen pixels=] along the horizontal dimension of the [=/screen area=]'s rectangular pixel grid.
+
+A [=/screen area=] has a <dfn>height</dfn>, which is the number of [=/screen pixels=] along the vertical dimension of the [=/screen area=]'s rectangular pixel grid.
+
+</div>
+
+Note:
+  The grid size is usually expressed as [=screen area/width=] x [=screen area/height=].
+  For example, a 1920x1080 screen area has a grid with a [=screen area/width=] of 1920 pixels and a [=screen area/height=] of 1080 pixels.
+
+Issue: Are these definitions actually needed? Reference [[CSSOM-VIEW#web-exposed-screen-information]] if so.
+
+<!-- ====================================================================== -->
 ### Available screen area ### {#concept-available-screen-area}
 <!-- ====================================================================== -->
 
@@ -317,7 +319,13 @@ Non-exhaustive example of multiple [=/connected screens=], their [=/screen area=
 ### Screen position ### {#concept-screen-position}
 <!-- ====================================================================== -->
 
-A [=/connected screen=] has a <dfn for="connected screen">screen position</dfn> which is the x- and y-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
+A [=/connected screen=] has a <dfn for="connected screen">screen position</dfn> which is the [=/screen area=]'s x- and y-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
+
+<!-- ====================================================================== -->
+### Available screen position ### {#concept-available-screen-position}
+<!-- ====================================================================== -->
+
+A [=/connected screen=] has an <dfn for="connected screen">available screen position</dfn> which is the [=/available screen area=]'s x- and y-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
 
 <!-- ====================================================================== -->
 ### Observable properties ### {#concept-observable-properties}
@@ -490,10 +498,10 @@ Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
 
 <div class="domintro note">
 
-    : <var ignore>screens</var> . {{ScreenDetails/screens}}
+    : |screenDetails| . {{ScreenDetails/screens}}
     :: Returns an array of {{ScreenDetailed}} objects that describe each of the connected screens.
 
-    : <var ignore>screens</var> . {{ScreenDetails/currentScreen}}
+    : |screenDetails| . {{ScreenDetails/currentScreen}}
     :: Returns a {{ScreenDetailed}} object that describes the current screen. This object describes the same object that the {{Window/screen}} property of {{Window}} describes, but provides a superset of the information.
 
 </div>
@@ -560,22 +568,28 @@ A {{ScreenDetailed}} object represents a [=/connected screen=].
 
 <div class="domintro note">
 
-  : |screen| . {{ScreenDetailed/left}}
+  : |screenDetailed| . {{ScreenDetailed/availLeft}}
+  :: Returns the distance from the left edge of the primary screen to the left edge of the available screen area.
+
+  : |screenDetailed| . {{ScreenDetailed/availTop}}
+  :: Returns the distance from the top edge of the primary screen to the top edge of the available screen area.
+
+  : |screenDetailed| . {{ScreenDetailed/left}}
   :: Returns the distance from the left edge of the primary screen to the left edge of the screen area.
 
-  : |screen| . {{ScreenDetailed/top}}
+  : |screenDetailed| . {{ScreenDetailed/top}}
   :: Returns the distance from the top edge of the primary screen to the top edge of the screen area.
 
-  : |screen| . {{ScreenDetailed/isPrimary}}
+  : |screenDetailed| . {{ScreenDetailed/isPrimary}}
   :: Returns whether this screen is designated as the 'primary' screen by the OS (otherwise it is a 'secondary' screen).
 
-  : |screen| . {{ScreenDetailed/isInternal}}
+  : |screenDetailed| . {{ScreenDetailed/isInternal}}
   :: Returns whether this screen is an 'internal' panel built into the device, like a laptop display (otherwise it is 'external', like a wired monitor).
 
-  : |screen| . {{ScreenDetailed/devicePixelRatio}}
+  : |screenDetailed| . {{ScreenDetailed/devicePixelRatio}}
   :: Returns the ratio between physical and logical pixels.
 
-  : |screen| . {{ScreenDetailed/label}}
+  : |screenDetailed| . {{ScreenDetailed/label}}
   :: A user-friendly label for the screen, determined by the user agent and OS.
 
 </div>
@@ -583,6 +597,8 @@ A {{ScreenDetailed}} object represents a [=/connected screen=].
 <xmp class=idl>
 [Exposed=Window, SecureContext]
 interface ScreenDetailed : Screen {
+  readonly attribute long availLeft;
+  readonly attribute long availTop;
   readonly attribute long left;
   readonly attribute long top;
   readonly attribute boolean isPrimary;
@@ -592,10 +608,13 @@ interface ScreenDetailed : Screen {
 };
 </xmp>
 
+The <dfn attribute for=ScreenDetailed>availLeft</dfn> getter steps are to return [=/this=]'s [=connected screen/available screen position=]'s x-coordinate.
 
-The <dfn attribute for=ScreenDetailed>left</dfn> getter steps to return [=/this=]'s [=connected screen/screen position=]'s x-coordinate.
+The <dfn attribute for=ScreenDetailed>availTop</dfn> getter steps are to return [=/this=]'s [=connected screen/available screen position=]'s y-coordinate.
 
-The <dfn attribute for=ScreenDetailed>top</dfn> getter steps to return [=/this=]'s [=connected screen/screen position=]'s y-coordinate.
+The <dfn attribute for=ScreenDetailed>left</dfn> getter steps are to return [=/this=]'s [=connected screen/screen position=]'s x-coordinate.
+
+The <dfn attribute for=ScreenDetailed>top</dfn> getter steps are to return [=/this=]'s [=connected screen/screen position=]'s y-coordinate.
 
 The <dfn attribute for=ScreenDetailed>isPrimary</dfn> getter steps are to return true if [=/this=] is the [=/primary screen=], or false otherwise.
 

@@ -11,6 +11,11 @@ Here is an example of how to use the API:
 
 ```javascript
 async function main() {
+  // Run feature detection.
+  if (!('getScreenDetails' in window)) {
+    console.log('The Multi-Screen Window Placement API is not supported.');
+    return;
+  }
   // Detect the presence of extended screen areas.
   if (window.screen.isExtended) {
     // Request extended screen information.

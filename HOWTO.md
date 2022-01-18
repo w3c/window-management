@@ -28,9 +28,9 @@ async function main() {
     // Find a different screen, fill its available area with a new window.
     const otherScreen = screenDetails.screens.find(s => s != primaryScreen);
     window.open(url, '_blank', `left=${otherScreen.availLeft},` +
-                              `top=${otherScreen.availTop},` +
-                              `width=${otherScreen.availWidth},` +
-                              `height=${otherScreen.availHeight}`);
+                               `top=${otherScreen.availTop},` +
+                               `width=${otherScreen.availWidth},` +
+                               `height=${otherScreen.availHeight}`);
   } else {
     // Arrange content within the traditional single-screen environment.
   }

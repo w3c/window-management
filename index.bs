@@ -1,7 +1,7 @@
 <pre class=metadata>
 Title: Multi-Screen Window Placement
 Shortname: multi-screen
-Abstract: This document defines a web platform API that allows script to query the device for information about connected displays, and additional APIs to position windows relative to those displays.
+Abstract: This document defines a web platform API that allows script to query the device for information about its screens, and additional APIs to place content on specific screens.
 Status: CG-DRAFT
 URL: https://webscreens.github.io/window-placement
 Level: 1
@@ -54,9 +54,11 @@ spec: fingerprinting-guidance; urlPrefix: https://www.w3.org/TR/fingerprinting-g
 
 Operating systems generally allow users to connect multiple screens to a single device and arrange them virtually to extend the overall visual workspace.
 
-As multi-screen devices and applications become a more common and critical part of user experiences, it becomes more important to give developers information and tools to leverage that expanded visual environment.
+A variety of applications use platform tools to place windows in such multi-screen environments, but web application developers are limited by existing APIs, which were generally designed around the use of a single screen.
 
-This document extends existing {{Window}}, {{Screen}}, and {{FullscreenOptions}} concepts, and offers new {{ScreenDetails}} and {{ScreenDetailed}} interfaces to place windows and request fullscreen on specific screens.
+As multi-screen devices and applications become a more common and critical part of user experiences, it becomes more important to give web developers information and tools to leverage that expanded visual environment.
+
+This document extends existing {{Window}}, {{Screen}}, and {{FullscreenOptions}} concepts, and offers new {{ScreenDetails}} and {{ScreenDetailed}} interfaces to place content on specific screens.
 
 <!-- ====================================================================== -->
 ## Motivating Use Cases ## {#motivations}
@@ -76,10 +78,12 @@ The aim of this specification is enable better experiences for web application u
 ## Usage Overview ## {#usage-overview}
 <!-- ====================================================================== -->
 
-The API can be used as follows:
+To support multi-screen experiences, the API allows web applications to:
 
-1. Detect the presence of extended screen areas
-1. Request extended screen information
+1. Detect if the device has more than one screen
+1. Request information required to place content on specific screens
+1. Detect when a screen is added or removed
+1. Detect when the current screen or an attribute thereof changes
 1. Show an element fullscreen on a specific screen
 1. Place a window on a specific screen
 
@@ -88,81 +92,87 @@ The API can be used as follows:
 A basic example of the API usage is as follows:
 
 ```js
-// Detect the presence of extended screen areas.
+// Detect if the device has more than one screen.
 if (window.screen.isExtended) {
-  // Request extended screen information.
+  // Request information required to place content on specific screens.
   const screenDetails = await window.getScreenDetails();
+
+  // Detect when a screen is added or removed.
+  screenDetails.addEventListener('screenschange', onScreensChange);
+
+  // Detect when the current {{ScreenDetailed}} or an attribute thereof changes.
+  screenDetails.addEventListener('currentscreenchange', onCurrentScreenChange);
 
   // Find the primary screen, show some content fullscreen there.
   const primaryScreen = screenDetails.screens.find(s => s.isPrimary);
   document.documentElement.requestFullscreen({screen : primaryScreen});
 
   // Find a different screen, fill its available area with a new window.
-  const otherScreen = screenDetails.screens.find(s => s != primaryScreen);
+  const otherScreen = screenDetails.screens.find(s => s !== primaryScreen);
   window.open(url, '_blank', \`left=${otherScreen.availLeft},\` +
                              \`top=${otherScreen.availTop},\` +
                              \`width=${otherScreen.availWidth},\` +
                              \`height=${otherScreen.availHeight}\`);
 } else {
-  // Arrange content within the traditional single-screen environment.
+  // Detect when the current {{Screen}} or an attribute thereof changes.
+  window.screen.addEventListener('change', onScreenChange);
+
+  // Arrange content within the traditional single-screen environment...
 }
 ```
 
 </aside>
 
 <!-- ====================================================================== -->
-### Detecting when screen properties change ### {#usage-overview-property-changes}
+### Detecting the presence of multiple screens ### {#usage-overview-extended}
 <!-- ====================================================================== -->
 
-Without even considering multiple screens, sites may want to adapt to screen attribute changes. To avoid polling, `change` events are fired at the {{Screen}} object:
-
-```js
-screen.addEventListener('change') e => {
-  /* display properties have changed for the current screen */
-});
-```
-
-<!-- ====================================================================== -->
-### Detecting the presence of extended screen areas ### {#usage-overview-extended}
-<!-- ====================================================================== -->
-
-The most basic question developers may ask to support multi-screen devices is: "Does this device have multiple screens that may be used for window placement?" This is provided by the {{Screen/isExtended}} boolean, exposed to secure contexts without a permission prompt.
+A principal question for supporting multi-screen experiences is whether the device has multiple screens that may be used when placing content. This is provided by the {{Screen/isExtended}} boolean, exposed to secure contexts without a permission prompt.
 
 ```js
 if (screen.isExtended) {
-  /* enable multi-screen options */
+  // Offer multi-screen controls for the user.
 }
+```
+
+<!-- ====================================================================== -->
+### Detecting when {{Screen}} attributes change ### {#usage-overview-property-changes}
+<!-- ====================================================================== -->
+
+Observing {{Screen}} attribute changes is useful for adapting content, even on single-screen devices. Further, observing {{Screen/isExtended}} is useful for detecting transitions between single-screen and multi-screen configurations. To avoid polling, {{Screen/change}} events are fired at the {{Screen}} object:
+
+```js
+screen.addEventListener('change') e => {
+  // The window's current screen or an attribute thereof has changed.
+});
 ```
 
 <!-- ====================================================================== -->
 ### Requesting extended screen information ### {#usage-overview-screen-information}
 <!-- ====================================================================== -->
 
-After determining that there are multiple screens, information can be requested about them using the {{Window/getScreenDetails()}} method. This method may prompt the user for permission. The resulting object lets developers enumerate screens, inspect screen properties, and watch for changes.
+After determining that the device has multiple screens, information can be requested about them using the {{Window/getScreenDetails()}} method. This method may prompt the user for permission. The resulting {{ScreenDetailed}} object lets developers enumerate screens, inspect screen attributes, and listen for changes.
 
 ```js
 try {
+  // Request screen details and process the information immediately.
   const screenDetails = await window.getScreenDetails();
-
-  // Do something with the screens right now.
   processScreenDetails(screenDetails);
 
-  // And also if the screens change in the future.
-  screenDetails.onscreenschange = e => {
+  // Process updated screen details when the set of screens change.
+  screenDetails.onscreenschange = () => {
     processScreenDetails(screenDetails);
   };
-} catch (ex) {
-  /* permission denied, or other error */
+} catch () {
+  // Handle denied permission and other errors.
 }
 
 function processScreenDetails(screenDetails) {
-  // Build a UI listing screens.
+  // Build a UI listing screens, using assumed helpers.
   clearScreenList();
   screenDetails.screens.forEach(screen => {
     addToScreenList({name: screen.label, screen: screen});
   });
-
-  // Set the selection to the current screen.
   selectCurrentInScreenList(screenDetails.currentScreen);
 }
 ```
@@ -171,16 +181,13 @@ function processScreenDetails(screenDetails) {
 ### Showing elements fullscreen on a specific screen ### {#usage-overview-fullscreen-on-specific-screen}
 <!-- ====================================================================== -->
 
-A common use case is to present a slideshow or other media fullscreen on a particular screen, while showing controls for the content on another screen. Once a screen has been selected, either interactively, using the screen's properties, or remembering a previous selection, it can be passed to the {{Element/requestFullscreen()}} method.
-
+A common multi-screen use case is to present some content fullscreen on a specific screen. The screen may be selected interactively, or automatically selected based on prior user selections or screen attributes. A screen, once selected, can be passed to the {{Element/requestFullscreen()}} method.
 
 ```js
-// Call an assumed helper function which asynchronously selects
-// a screen, and returns a ScreenDetailed instance.
-const screenDetailed = await getScreenForSlideshow();
+// Call an assumed helper that returns a selected ScreenDetailed instance.
+const screenDetailed = getScreenForSlideshow();
 
-// Request that a particular element go fullscreen on the selected
-// screen.
+// Request that a particular element be shown fullscreen on the selected screen.
 slideshowElement.requestFullscreen({ screen: screenDetailed });
 ```
 
@@ -188,17 +195,16 @@ slideshowElement.requestFullscreen({ screen: screenDetailed });
 ### Placing windows on a specific screen ### {#usage-overview-place-windows-on-specific-screen}
 <!-- ====================================================================== -->
 
-Windows can be placed on specific screens using the coordinates provided in the {{ScreenDetailed}} interface.
+Another common multi-screen use cases is to place a window on a specific screen. This can be accomplished by using coordinates provided in the {{ScreenDetailed}} interface with existing {{Window/open()}} and {{Window/moveTo()}} methods.
 
 ```js
-function openAndCenterWindow(url, screenDetailed, width, height) {
-
+function openCenteredWindow(url, screen, w, h) {
   // Compute coordinates relative to the target screen's coordinates.
-  const left = screenDetailed.availLeft + Math.round(screenDetailed.availWidth - width) / 2;
-  const top = screenDetailed.availTop + Math.round(screenDetailed.availHeight - height) / 2;
+  const l = screen.availLeft + Math.round(screen.availWidth - width) / 2;
+  const t = screen.availTop + Math.round(screen.availHeight - height) / 2;
 
   // Open the window with the requested dimensions.
-  return window.open(url, '_blank', \`left=${left},top=${top},width=${width},height=${height}\`);
+  return window.open(url, '_blank', \`left=${l},top=${t},width=${w},height=${h}\`);
 }
 ```
 
@@ -206,44 +212,23 @@ function openAndCenterWindow(url, screenDetailed, width, height) {
 # Concepts # {#concepts}
 <!-- ====================================================================== -->
 
-Issue: Finish up this section.
+Concepts in this specification build upon those in [[CSSOM-View]], the latest [CSSOM-View Editor's draft](https://drafts.csswg.org/cssom-view/), [[HTML]], and [[Fullscreen]].
 
 <!-- ====================================================================== -->
-## Screen pixel ## {#concept-screen-pixel}
+## Screen ## {#concept-screen}
 <!-- ====================================================================== -->
 
-A <dfn>screen pixel</dfn> is the smallest component of a screen that can be programmed directly.
-A screen pixel shows one color.
+A device hosting the user agent has a single <dfn>screen</dfn> or multiple [=/screens=], which are used to display visual content. The set of [=/screens=] used by a device may change while a user agent is running, reflecting changes in the hardware or software configutation of the device.
 
-Note: On a liquid-crystal display (LCD), each screen pixel is made up of three components.
-  Each component is a (red, green, blue) light with variable intensity.
-  Reasoning about pixel components (subpixel rendering) is out of scope for this specification.
+Note: Some basic examples of screen configuration change include connecting a television or projector to a laptop with an HDMI cable, closing the lid of a laptop to disable its built-in LCD panel, and changing the display resolution of a connected LCD computer monitor.
 
-A [=/screen pixel=]'s <dfn>color depth</dfn> is the number of bits used to represent the color displayed by that pixel.
+<div dfn-for="screen">
 
-Note:
-  Some popular rendering systems model [=screen pixels=] as having a [=/color
-  depth=] of 24. The 24 bits are separated into 3 groups of 8 bits used to
-  represent the intensity of the (red, green, blue) subpixels of an LCD
-  [=screen pixel=].
-
-<!-- ====================================================================== -->
-## Connected screen ## {#concept-connected-screen}
-<!-- ====================================================================== -->
-
-The computer system hosting the user agent presents information using one or more <dfn>connected screens</dfn>.
-
-A computer system's [=/connected screens=] may change while a user agent is running.
-
-<div dfn-for="connected screen">
-
-A [=/connected screen=] has a <dfn>screen area</dfn> (a [=/screen area=]), which is used to present information to the user.
-
-A [=/connected screen=] has a <dfn>color depth</dfn>, which is the [=/color depth=] of the screen's pixels.
+A [=/screen=] has a <dfn>color depth</dfn>, which is the [=pixel/color depth=] of the screen's pixels.
 
 <div algorithm>
 
-A [=/connected screen=]'s <dfn>device pixel ratio</dfn> is the result of this algorithm:
+A [=/screen=] has a <dfn>device pixel ratio</dfn>, similar to {{Window}}'s {{Window/devicePixelRatio}}, which is the result of the following algorithm:
 
 1. Let |CSS pixel size| be the size of a [=/CSS pixel=].
 
@@ -253,13 +238,29 @@ A [=/connected screen=]'s <dfn>device pixel ratio</dfn> is the result of this al
 
 </div>
 
-A [=/connected screen=] has an <dfn>orientation</dfn>, which is described in [[screen-orientation]].
+A [=/screen=] has an <dfn>orientation</dfn>, which is described in [[screen-orientation]].
 
-A [=/connected screen=] has a <dfn>label</dfn>, which is a string that meaningfully describes the screen to a user.
+A [=/screen=] has a <dfn>label</dfn>, which is a string that meaningfully describes the screen to a user.
 
-Note: The [=connected screen/label=] can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. `"internal"` vs. `"external"`, it could include the dimensions, e.g. `"640x480"`, it could include a distinguishing number, e.g. `"screen 1"` vs. `"screen 2"`, or all of the preceeding.
+Note: The [=screen/label=] can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. `"internal"` vs. `"external"`, it could include the dimensions, e.g. `"640x480"`, it could include a distinguishing number, e.g. `"screen 1"` vs. `"screen 2"`, or all of the preceeding.
 
-Advisement: While many properties of screens could be used for [=/active fingerprinting=], the strings used as [=connected screen/labels=] in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.
+Advisement: While many screen atrtibutes could be used for [=/active fingerprinting=], the strings used as [=screen/labels=] in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.
+
+</div>
+
+<!-- ====================================================================== -->
+### Screen pixel ### {#concept-screen-pixel}
+<!-- ====================================================================== -->
+
+<div dfn-for="screen">
+
+A [=/screen=] has <dfn>pixels</dfn>, which are the smallest screen components that can be programmed directly. Each pixel shows one color.
+
+Note: On a liquid-crystal display (LCD), each pixel is made up of three components. Each component is a (red, green, blue) light with variable intensity. Reasoning about pixel components (subpixel rendering) is out of scope for this specification.
+
+A [=/pixel=] has a <dfn for=pixel>color depth</dfn>, which is the number of bits used to represent the colors it can display.
+
+Note: Some popular rendering systems model [=pixels=] as having a [=pixel/color depth=] of 24. These 3 groups of 8 bits represent the intensity of the (red, green, blue) subpixels of an LCD [=pixel=].
 
 </div>
 
@@ -267,9 +268,9 @@ Advisement: While many properties of screens could be used for [=/active fingerp
 ### Screen area ### {#concept-screen-area}
 <!-- ====================================================================== -->
 
-A <dfn>screen area</dfn> is a rectangular two-dimensional grid of [=/screen pixels=] with the same [=/color depth=].
+<div dfn-for="screen">
 
-<div dfn-for="screen area">
+A [=/screen=] has a <dfn>screen area</dfn>, which is a rectangular two-dimensional grid of [=/screen pixels=], used to present visual content from the operating system and client applications to the user. This equates to the [=/Web-exposed screen area=] of a particular [=/screen=].
 
 A [=/screen area=] has a <dfn>width</dfn>, which is the number of [=/screen pixels=] along the horizontal dimension of the [=/screen area=]'s rectangular pixel grid.
 
@@ -277,41 +278,33 @@ A [=/screen area=] has a <dfn>height</dfn>, which is the number of [=/screen pix
 
 </div>
 
-Note:
-  The grid size is usually expressed as [=screen area/width=] x [=screen area/height=].
-  For example, a 1920x1080 screen area has a grid with a [=screen area/width=] of 1920 pixels and a [=screen area/height=] of 1080 pixels.
+Note: The grid size is usually expressed as [=screen/width=] x [=screen/height=]. For example, a 1920x1080 screen area has a grid with a [=screen/width=] of 1920 pixels and a [=screen/height=] of 1080 pixels.
 
-Issue: Are these definitions actually needed? Reference [[CSSOM-VIEW#web-exposed-screen-information]] if so.
+Note: As specified in [[CSSOM-VIEW#web-exposed-screen-information]], user agents may choose to hide information about the screen of the output device, in order to protect the user’s privacy. In this case, the screen area 
 
 <!-- ====================================================================== -->
 ### Available screen area ### {#concept-available-screen-area}
 <!-- ====================================================================== -->
 
-Web applications cannot assume that a [=/connected screen=]'s [=/screen area=] is entirely available to them.
-The operating system hosting the user agent may reserve some of the [=/screen area=] for its own user interface, and the user agent's chrome may be taking some of the [=/screen area=].
+<div dfn-for="screen">
 
-<div dfn-for="connected screen">
+A [=/screen=] has an <dfn>available screen area</dfn>, which is a rectangular subset of the [=/screen area=] where the operating system permits web application window placements. The rectangle's edges are parallel to the [=/screen area=] edges.This region does not include any portions of the [=/screen area=] that are reserved by the operating system for its own user interface elements, such as taskbars and menu bars. This equates to the [=/Web-exposed available screen area=] of a particular [=/screen=].
 
-The <dfn>available screen area</dfn> of a [=/connected screen=] is a subset of the [=/screen area=] that is entirely available for web applications.
-The rectangle's edges are parallel to the [=/screen area=] edges.
+The <dfn>available width</dfn> of a [=/screen=] is the number of [=/screen pixels=] along the horizontal dimension of the [=/available screen area=]'s rectangular pixel grid.
 
-The <dfn>available width</dfn> of a [=/connected screen=] is the [=screen area/width=] of the [=/connected screen=]'s [=connected screen/available screen area=].
-
-The <dfn>available height</dfn> of a [=/connected screen=] is the [=screen area/height=] of the [=/connected screen=]'s [=connected screen/available screen area=].
+The <dfn>available height</dfn> of a [=/screen=] is the number of [=/screen pixels=] along the vertical dimension of the [=/available screen area=]'s rectangular pixel grid.
 
 </div>
-
-Issue: Are these definitions actually needed? Reference [[CSSOM-VIEW#web-exposed-screen-information]] if so.
 
 <!-- ====================================================================== -->
 ### Virtual screen area ### {#concept-virtual-screen-area}
 <!-- ====================================================================== -->
 
-A computer system has a two-dimensional <dfn>virtual screen area</dfn> that extends in all directions.  It has x- and y-coordinates that increase rightwards and downwards respectively from the <dfn>multi-screen origin</dfn>.  The [=/multi-screen origin=] is an implementation-defined point that defines the 0,0 coordinate of the [=/virtual screen area=].
+A device has a two-dimensional <dfn>virtual screen area</dfn> that extends in all directions. It has x- and y-coordinates that increase rightwards and downwards respectively from the <dfn>multi-screen origin</dfn>. The [=/multi-screen origin=] is an implementation-defined point that defines the (0, 0) coordinate of the [=/virtual screen area=].
 
-A common convention is to set the [=/multi-screen origin=] to the top left of the [=/primary=] [=/connected screen=], but can be any arbitrary point within the [=/virtual screen area=].  Every [=/connected screen=]'s [=/screen area=] is a view onto a rectangular subset of the [=/virtual screen area=].
+A common convention is to set the [=/multi-screen origin=] to the top-left of the [=/primary=] [=/screen=], but can be any arbitrary point within the [=/virtual screen area=]. Every [=/screen=]'s [=/screen area=] is a view onto a rectangular subset of the [=/virtual screen area=].
 
-Non-exhaustive example of multiple [=/connected screens=], their [=/screen area=], and potential [=/multi-screen origins=]:
+This diagram shows some examples of how multiple [=/screens=] might be arranged within a [=/virtual screen area=], along with some potential [=/multi-screen origins=]:
 
 <img src="multi_screen_origin.svg" alt="Diagram showing various examples of screens and multi-screen origins">
 
@@ -319,84 +312,71 @@ Non-exhaustive example of multiple [=/connected screens=], their [=/screen area=
 ### Screen position ### {#concept-screen-position}
 <!-- ====================================================================== -->
 
-A [=/connected screen=] has a <dfn for="connected screen">screen position</dfn> which is the [=/screen area=]'s x- and y-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
+A [=/screen=] has a <dfn for="screen">screen position</dfn> which is the [=/screen area=]'s (x, y)-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
 
 <!-- ====================================================================== -->
 ### Available screen position ### {#concept-available-screen-position}
 <!-- ====================================================================== -->
 
-A [=/connected screen=] has an <dfn for="connected screen">available screen position</dfn> which is the [=/available screen area=]'s x- and y-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
-
-<!-- ====================================================================== -->
-### Observable properties ### {#concept-observable-properties}
-<!-- ====================================================================== -->
-
-The <dfn for="connected screen">basic observable properties</dfn> of a [=/connected screen=] are:
-
-* The width and height of the [=connected screen/screen area=]
-* The width and height of the [=connected screen/available screen area=]
-* [=connected screen/color depth=]
-
-The <dfn for="connected screen">advanced observable properties</dfn> of a [=/connected screen=] are:
-
-* [=connected screen/screen position=]
-* [=connected screen/screen area=]
-* [=connected screen/available screen area=]
-* [=connected screen/color depth=]
-* [=connected screen/device pixel ratio=]
-* [=connected screen/orientation=]
-* [=connected screen/label=]
+A [=/screen=] has an <dfn for="screen">available screen position</dfn> which is the [=/available screen area=]'s (x, y)-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
 
 <!-- ====================================================================== -->
 ## Primary screen ## {#concept-primary-screen}
 <!-- ====================================================================== -->
 
-The computer system hosting the user agent has exactly one <dfn>primary</dfn> [=/connected screen=]. All the other [=connected screens|connected screen=] are considered <dfn>secondary</dfn>.
+The device hosting the user agent has exactly one <dfn>primary</dfn> [=/screen=]. All the other [=/screens=] are considered <dfn>secondary</dfn>.
 
-Note:
-  The primary connected screen typically hosts the operating system's user interface for task management, such as the Windows task bar and the macOS Dock.
+Note: The primary screen typically hosts the operating system's user interface for task management, such as the Windows task bar and the macOS Dock.
 
-A [=/connected screen=]'s designation as [=primary=] or [=secondary=] may change while the user agent is running.
+A [=/screen=]'s designation as [=primary=] or [=secondary=] may change while the user agent is running.
 
-The <dfn>primary screen</dfn> is the [=/connected screen=] that is currently [=/primary=].
+The <dfn>primary screen</dfn> is the [=/screen=] that is currently [=/primary=].
 
-Note:
-  Most operating systems let the user choose the primary connected screen using a management user interface, such as the Windows Control Panel and the macOS Preferences application.
+Note: Most operating systems let the user choose the primary screen using a management user interface, such as the Windows Control Panel and the macOS Preferences application.
 
-By convention, the [=/primary screen=]'s [=connected screen/screen position=] is (0,0).
+By convention, the [=/primary screen=]'s [=screen/screen position=] is (0,0).
 
-Note:
-  As an example, consider a computer system with three 1920x1080 screens arranged horizontally. If the middle screen is the [=/primary screen=], then the left screen's [=connected screen/screen position=] (-1920,0). The middle screen's [=connected screen/screen position=] (0,0). The right screen's [=connected screen/screen position=] is (3840,0).
+Note: As an example, consider a device with three 1920x1080 screens arranged horizontally. If the middle screen is the [=/primary screen=], then the left screen's [=screen/screen position=] (-1920,0). The middle screen's [=screen/screen position=] (0,0). The right screen's [=screen/screen position=] is (3840,0).
 
 <!-- ====================================================================== -->
 ## Internal screen ## {#concept-internal-screen}
 <!-- ====================================================================== -->
 
-Each [=/connected screen=] may be designated as <dfn>internal</dfn> or <dfn>external</dfn>.
+Each [=/screen=] may be designated as <dfn>internal</dfn> or <dfn>external</dfn>.
 
-[=External=] screens are manufactured separately from the computer systems they are connected to.
-It is not unusual for an [=external=] screen to be disconnected from one computer system and connected to a different computer system.
+[=External=] screens are manufactured separately from the devices they are connected to. It is not unusual for an [=external=] screen to be disconnected from one device and connected to a different device.
 
-[=Internal=] screens are usually attached to a computer system at manufacturing time.
-[=Internal=] screens are not intended to be detached by users.
-However, [=internal=] [=/connected screens=] may still appear and disappear while the user agent is running.
+[=Internal=] screens are usually attached to a device at manufacturing time. [=Internal=] screens are not intended to be detached by users. However an [=internal=] [=/screen=] may still be enabled or disabled while the user agent is running.
 
-Note:
-  A laptop has an [=internal=] screen and an input device.
-  A laptop might be used while opened, with its [=internal=] screen powered on.
-  However, a laptop might also be used while closed, where its [=internal=] screen is powered off.
-
-  A laptop might be opened and closed while a user agent is running.
-  In this case, the [=internal=] screen appears as a [=/connected screen=] when the laptop is opened.
-  The [=internal=] [=/connected screen=] disappears when the laptop is closed.
+Note: As an example, a laptop might disable its [=internal=] screen and input device when the lid is closed. The laptop may still be used in this configuration with an [=external=] screen and input device. The disabled [=internal=] screen may not be reported as a [=/screen=] used by the device while the lid is closed.
 
 <!-- ====================================================================== -->
 ## Current screen ## {#concept-current-screen}
 <!-- ====================================================================== -->
 
-Scripts executing in a {{Window}} context can access the {{Window/screen}} property. This {{Screen}} object reflects the properties of the <dfn>current screen</dfn>, which is a [=/connected screen=] that presents the window.
+Scripts executing in a {{Window}} context can access the {{Window/screen}} property. This {{Screen}} object reflects the properties of the <dfn>current screen</dfn>, which is a [=/screen=] that presents the window.
 
 Note: On many operating systems, a window can be presented across multiple screens with different properties, or can be in a "hidden" state and not presented on any screen. Operating systems and user agents are assumed to define a canonical screen for a given {{Window}}, for example the screen with the largest intersection area with the window.
+
+<!-- ====================================================================== -->
+### Observable properties ### {#concept-observable-properties}
+<!-- ====================================================================== -->
+
+The <dfn for="screen">basic observable properties</dfn> of a [=/screen=] are:
+
+* The [=screen/width=] and [=screen/height=] of the [=screen/screen area=]
+* The [=screen/available width=] and [=screen/available height=] of the [=screen/available screen area=]
+* [=screen/color depth=]
+* [=screen/orientation=]
+
+The <dfn for="screen">advanced observable properties</dfn> of a [=/screen=] are:
+
+* [=screen/screen position=]
+* [=screen/available screen position=]
+* [=screen/device pixel ratio=]
+* [=screen/label=]
+* The [=screen=]'s desgination as [=primary=] or [=secondary=]
+* The [=screen=]'s desgination as [=internal=] or [=external=]
 
 <!-- ====================================================================== -->
 # API # {#api}
@@ -406,13 +386,7 @@ Note: On many operating systems, a window can be presented across multiple scree
 ## Extensions to the {{Screen}} interface ## {#api-extensions-to-screen}
 <!-- ====================================================================== -->
 
-<div class="domintro note">
-
-    : window . screen . {{Screen/isExtended}}
-
-    :: Returns `true` if the device's display is extended across multiple screens.
-
-</div>
+The [[CSSOM-VIEW|CSSOM View Module]] specification defines the {{Screen}} interface, which this specification extends:
 
 <xmp class=idl>
 partial interface Screen /* : EventTarget */ {
@@ -424,33 +398,59 @@ partial interface Screen /* : EventTarget */ {
 };
 </xmp>
 
-Issue: {{Screen}} needs to derived from {{EventTarget}}. This will require changes to [[CSSOM-VIEW#the-screen-interface]].
+Issue: {{Screen}} needs to derive from {{EventTarget}}. This will require changes to [[CSSOM-VIEW#the-screen-interface]].
+
+<!-- ====================================================================== -->
+### {{Screen/isExtended}} attribute ### {#api-screen-isExtended-attribute}
+<!-- ====================================================================== -->
+
+<div class="domintro note">
+
+    : window . screen . {{Screen/isExtended}}
+
+    :: Returns `true` if the device's display is extended across multiple screens.
+
+</div>
 
 <div algorithm>
 
 The <dfn attribute for=Screen>isExtended</dfn> getter steps are:
 
-1. Return true if the computer system has more than one [=/connected screen=], and false otherwise.
+1. Return true if the device has more than one [=/screen=], and false otherwise.
 
 </div>
 
 <!-- ====================================================================== -->
-### {{Screen}} events ### {#api-screen-events}
+### {{Screen/onchange}} attribute ### {#api-screen-onchange-attribute}
 <!-- ====================================================================== -->
+
+<div class="domintro note">
+
+    : window . screen . {{Screen/onchange}}
+
+    :: Fired when the window's screen or attributes thereof change.
+
+</div>
 
 The <dfn attribute for=Screen>onchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=Screen>`change`</a>.
 
-When any [=connected screen/basic observable property=] of a {{Window}}'s [=/current screen=] changes, [=/fire an event=] with type <dfn event for=Screen>`change`</dfn> at the {{Window}}'s associated {{Screen}} object.
+When any [=screen/basic observable property=] of a {{Window}}'s [=/current screen=] changes, [=/fire an event=] with type <dfn event for=Screen>`change`</dfn> at the {{Window}}'s associated {{Screen}} object.
 
 <!-- ====================================================================== -->
 ## Extensions to the {{Window}} interface ## {#api-extensions-to-window}
+<!-- ====================================================================== -->
+
+The [[HTML]] standard defines the {{Window}} interface, which this specification extends:
+
+<!-- ====================================================================== -->
+## {{Window/getScreenDetails()}} method ## {#api-window-getScreenDetails-method}
 <!-- ====================================================================== -->
 
 <div class="domintro note">
 
     : await window . {{Window/getScreenDetails()}}
 
-    :: Returns a promise that fulfills with a {{ScreenDetails}} object with information about all connected screens. The promise will be rejected if permission is denied.
+    :: Returns a promise that fulfills with a {{ScreenDetails}} object with information about all screens. The promise will be rejected if permission is denied.
 
 </div>
 
@@ -493,13 +493,13 @@ In addition to the partial interface additions defined above, the {{Window}} int
 Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
 
 <!-- ====================================================================== -->
-## The {{ScreenDetails}} interface ## {#api-screens-interface}
+## The {{ScreenDetails}} interface ## {#api-screendetails-interface}
 <!-- ====================================================================== -->
 
 <div class="domintro note">
 
     : |screenDetails| . {{ScreenDetails/screens}}
-    :: Returns an array of {{ScreenDetailed}} objects that describe each of the connected screens.
+    :: Returns an array of {{ScreenDetailed}} objects that describe each of the screens.
 
     : |screenDetails| . {{ScreenDetails/currentScreen}}
     :: Returns a {{ScreenDetailed}} object that describes the current screen. This object describes the same object that the {{Window/screen}} property of {{Window}} describes, but provides a superset of the information.
@@ -524,7 +524,7 @@ The <dfn attribute for=ScreenDetails>screens</dfn> getter steps are:
 
 1. Let |screens| be a new [=/list=].
 
-1. For each |screen| of [=/connected screens=]:
+1. For each |screen| of [=/screens=]:
 
     1. Let |a| be the {{ScreenDetailed}} object describing |screen|.
 
@@ -537,34 +537,38 @@ The <dfn attribute for=ScreenDetails>screens</dfn> getter steps are:
 
 <div algorithm>
 
-The <dfn>screen ordering</dfn> algorithm defines a [=/connected screen=] |a| as less than a [=/connected screen=] |b| if the following steps return true:
+The <dfn>screen ordering</dfn> algorithm defines a [=/screen=] |a| as less than a [=/screen=] |b| if the following steps return true:
 
-1. If |a|'s [=connected screen/screen position=] x-coordinate is less than |b|'s [=connected screen/screen position=] x-coordinate, then return true.
-1. If |b|'s [=connected screen/screen position=] x-coordinate is less than |a|'s [=connected screen/screen position=] x-coordinate, then return false.
-1. If |a|'s [=connected screen/screen position=] y-coordinate is less than |b|'s [=connected screen/screen position=] y-coordinate, then return true.
+1. If |a|'s [=screen/screen position=] x-coordinate is less than |b|'s [=screen/screen position=] x-coordinate, then return true.
+1. If |b|'s [=screen/screen position=] x-coordinate is less than |a|'s [=screen/screen position=] x-coordinate, then return false.
+1. If |a|'s [=screen/screen position=] y-coordinate is less than |b|'s [=screen/screen position=] y-coordinate, then return true.
 1. Otherwise, return false.
 
 </div>
 
-The <dfn attribute for=ScreenDetails>currentScreens</dfn> getter steps are to return the {{ScreenDetailed}} object associated with the {{Window}} associated with [=/this=].
+The <dfn attribute for=ScreenDetails>currentScreen</dfn> getter steps are to return the {{ScreenDetailed}} object representing the current screen of the {{Window}} object associated with [=/this=].
+
+Issue: define the getter steps explicitl, using internal slots to hold the exact object instances which should be returned by each accessor's getter steps. See https://github.com/webscreens/window-placement/issues/81 and https://webbluetoothcg.github.io/web-bluetooth/#bluetoothdevice-interface
+
+Note: The {{ScreenDetails/currentScreen}} is not marked [SameObject], in order to allow comparisons with objects in {{ScreenDetails/screens}}, e.g. `screenDetails.screens.find(s => s !== screenDetails.currentScreen);`
 
 <!-- ====================================================================== -->
-### {{ScreenDetails}} events ### {#api-screens-events}
+### {{ScreenDetails}} events ### {#api-screendetails-events}
 <!-- ====================================================================== -->
 
 The <dfn attribute for=ScreenDetails>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`screenschange`</a>.
 
 The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`currentscreenchange`</a>.
 
-When the set of [=/connected screens=] changes, [=/fire an event=] with type <dfn event for=ScreenDetails>`screenschange`</dfn> at every {{ScreenDetails}} object.
+When the set of [=/screens=] changes, [=/fire an event=] with type <dfn event for=ScreenDetails>`screenschange`</dfn> at every {{ScreenDetails}} object.
 
-When the [=/current screen=] of a {{Window}} changes from one [=/connected screen=] to another (e.g. the {{Window}} has been moved to a different display), [=/fire an event=] with type <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{Window}}'s associated {{ScreenDetails}} object.
+When the [=/current screen=] of a {{Window}} changes from one [=/screen=] to another (e.g. the {{Window}} has been moved to a different display), [=/fire an event=] with type <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{Window}}'s associated {{ScreenDetails}} object.
 
 <!-- ====================================================================== -->
 ## The {{ScreenDetailed}} interface ## {#api-screenadvanced-interface}
 <!-- ====================================================================== -->
 
-A {{ScreenDetailed}} object represents a [=/connected screen=].
+A {{ScreenDetailed}} object represents a [=/screen=].
 
 <div class="domintro note">
 
@@ -608,27 +612,27 @@ interface ScreenDetailed : Screen {
 };
 </xmp>
 
-The <dfn attribute for=ScreenDetailed>availLeft</dfn> getter steps are to return [=/this=]'s [=connected screen/available screen position=]'s x-coordinate.
+The <dfn attribute for=ScreenDetailed>availLeft</dfn> getter steps are to return [=/this=]'s [=screen/available screen position=]'s x-coordinate.
 
-The <dfn attribute for=ScreenDetailed>availTop</dfn> getter steps are to return [=/this=]'s [=connected screen/available screen position=]'s y-coordinate.
+The <dfn attribute for=ScreenDetailed>availTop</dfn> getter steps are to return [=/this=]'s [=screen/available screen position=]'s y-coordinate.
 
-The <dfn attribute for=ScreenDetailed>left</dfn> getter steps are to return [=/this=]'s [=connected screen/screen position=]'s x-coordinate.
+The <dfn attribute for=ScreenDetailed>left</dfn> getter steps are to return [=/this=]'s [=screen/screen position=]'s x-coordinate.
 
-The <dfn attribute for=ScreenDetailed>top</dfn> getter steps are to return [=/this=]'s [=connected screen/screen position=]'s y-coordinate.
+The <dfn attribute for=ScreenDetailed>top</dfn> getter steps are to return [=/this=]'s [=screen/screen position=]'s y-coordinate.
 
 The <dfn attribute for=ScreenDetailed>isPrimary</dfn> getter steps are to return true if [=/this=] is the [=/primary screen=], or false otherwise.
 
 The <dfn attribute for=ScreenDetailed>isInternal</dfn> getter steps are to return true if [=/this=] is [=/internal=], or false otherwise.
 
-The <dfn attribute for=ScreenDetailed>devicePixelRatio</dfn> getter steps are to return [=/this=]'s [=connected screen/device pixel ratio=].
+The <dfn attribute for=ScreenDetailed>devicePixelRatio</dfn> getter steps are to return [=/this=]'s [=screen/device pixel ratio=].
 
-The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return [=/this=]'s [=connected screen/label=].
+The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return [=/this=]'s [=screen/label=].
 
 <!-- ====================================================================== -->
 ### {{ScreenDetailed}} events ### {#api-screenadvanced-events}
 <!-- ====================================================================== -->
 
-When any [=connected screen/basic observable property=] or [=connected screen/advanced observable property=] of a {{ScreenDetailed}}'s associated [=/connected screen=] changes, [=/fire an event=] with type <dfn event for=ScreenDetailed>`change`</dfn> at the {{ScreenDetailed}} object.
+When any attribute [=screen/basic observable property=] or [=screen/advanced observable property=] of a {{ScreenDetailed}}'s associated [=/screen=] changes, [=/fire an event=] with type <dfn event for=ScreenDetailed>`change`</dfn> at the {{ScreenDetailed}} object.
 
 <!-- ====================================================================== -->
 ## Extensions to {{FullscreenOptions}} ## {#api-extensions-to-fullscreen-options}

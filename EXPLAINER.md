@@ -655,7 +655,6 @@ Some other notes:
   create additional clickjacking risk for users, since the user's cursor or
   finger is likely to be co-located with the current screen and window, not on
   the separate target screen.
-- ScreenDetailed IDs generally follow patterns of other device information APIs.
 - A new affordance for fullscreen requests on `ScreenDetails.onscreenschange` events follows
   the precedent of `ScreenOrientation.onchange`, which is not permission gated.
 

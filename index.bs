@@ -216,7 +216,7 @@ function openCenteredWindow(url, screenDetailed, w, h) {
 # Concepts # {#concepts}
 <!-- ====================================================================== -->
 
-Concepts in this specification build upon those in [[CSSOM-View]], the latest [CSSOM-View Editor's draft](https://drafts.csswg.org/cssom-view/), [[HTML]], and [[Fullscreen]].
+Concepts in this specification build upon those in [[CSSOM-VIEW]], the latest [CSSOM-View Editor's draft](https://drafts.csswg.org/cssom-view/), [[HTML]], and [[Fullscreen]].
 
 <!-- ====================================================================== -->
 ## Screen ## {#concept-screen}

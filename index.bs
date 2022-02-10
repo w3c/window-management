@@ -127,7 +127,7 @@ if (window.screen.isExtended) {
 ### Detect the presence of multiple screens ### {#usage-overview-screen-extended}
 <!-- ====================================================================== -->
 
-A principal question for supporting multi-screen experiences is whether the device has multiple screens that may be used when placing content. This is provided by the {{Screen/isExtended}} boolean, exposed to secure contexts without a permission prompt.
+A principal question for supporting multi-screen experiences is whether the device has multiple screens that may be used when placing content. These screens may be built-in to the device (like a laptop display panel), attached to the device by wire (like a computer and monitor attached by an HDMI cable), connected to the device by other means (like Mac and iPad Sidecar functionality), or through display device virtualization. This is provided by the {{Screen/isExtended}} boolean, exposed to secure contexts without a permission prompt.
 
 ```js
 if (screen.isExtended) {
@@ -151,7 +151,7 @@ screen.addEventListener('change') e => {
 ### Request detailed screen information ### {#usage-overview-screen-details}
 <!-- ====================================================================== -->
 
-After determining that the device has multiple screens, detailed screen information can be requested using the {{Window/getScreenDetails()}} method. This method may prompt the user for permission. The resulting {{ScreenDetails}} object lets developers enumerate screens, inspect their attributes, and listen for changes.
+Detailed information about screens used by the device can be requested through the {{Window/getScreenDetails()}} method. This method may prompt the user for permission. The resulting {{ScreenDetails}} object lets developers enumerate screens, inspect their attributes, and listen for changes.
 
 ```js
 try {
@@ -163,7 +163,8 @@ try {
   screenDetails.onscreenschange = () => {
     processScreenDetails(screenDetails);
   };
-} catch () {
+} catch (err) {
+  console.error(err);
   // Handle denied permission and other errors.
 }
 
@@ -216,7 +217,7 @@ function openCenteredWindow(url, screenDetailed, w, h) {
 # Concepts # {#concepts}
 <!-- ====================================================================== -->
 
-Concepts in this specification build upon those in [[CSSOM-VIEW]], the latest [CSSOM-View Editor's draft](https://drafts.csswg.org/cssom-view/), [[HTML]], and [[Fullscreen]].
+Concepts in this specification build upon those in [[CSSOM-VIEW]], the [CSSOM-View Editor's draft](https://drafts.csswg.org/cssom-view/) dated "15 November 2021", [[HTML]], and [[Fullscreen]].
 
 <!-- ====================================================================== -->
 ## Screen ## {#concept-screen}

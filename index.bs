@@ -236,7 +236,7 @@ A [=/screen=] has a <dfn>device pixel ratio</dfn>, similar to {{Window}}'s {{Win
 
 1. Let |CSS pixel size| be the size of a [=/CSS pixel=].
 
-1. Let |device pixel size| be the vertical size of a [=/screen pixel=].
+1. Let |device pixel size| be the vertical size of a [=screen/pixel=].
 
 1. Return the result of dividing |CSS pixel size| by |device pixel size|.
 
@@ -250,7 +250,7 @@ Note: The [=screen/label=] can be an arbitrary string selected by the user agent
 
 Advisement: While many screen atrtibutes could be used for [=/active fingerprinting=], the strings used as [=screen/labels=] in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.
 
-Issue: Should [=screen/device pixel ratio=] include the [=/page-zoom=]?
+Issue: Should [=screen/device pixel ratio=] include the [page-zoom](https://drafts.csswg.org/cssom-view-1/#page-zoom)?
 
 </div>
 
@@ -264,6 +264,8 @@ A [=/screen=] has <dfn>pixels</dfn>, which are the smallest screen components th
 
 Note: On a liquid-crystal display (LCD), each pixel is made up of three components. Each component is a (red, green, blue) light with variable intensity. Reasoning about pixel components (subpixel rendering) is out of scope for this specification.
 
+Note: Some screens can be configured to display content at a resolution that differs from the physical hardware's inherent composition; e.g. a monitor with hardware resolution of 2560×1440 may be configured by the device to operate with a display resolution of 1920x1080.
+
 A [=screen/pixel=] has a <dfn for="pixel">color depth</dfn>, which is the number of bits used to represent the colors it can display.
 
 Note: Some popular rendering systems model [=screen/pixels=] as having a [=pixel/color depth=] of 24. These 3 groups of 8 bits represent the intensity of the (red, green, blue) subpixels of an LCD [=screen/pixel=].
@@ -276,11 +278,11 @@ Note: Some popular rendering systems model [=screen/pixels=] as having a [=pixel
 
 <div dfn-for="screen">
 
-A [=/screen=] has a <dfn>screen area</dfn>, which is a rectangular two-dimensional grid of [=/screen pixels=], used to present visual content from the operating system and client applications to the user. This corresponds to the [=/Web-exposed screen area=] of a particular [=/screen=].
+A [=/screen=] has a <dfn>screen area</dfn>, which is a rectangular two-dimensional grid of [=screen/pixels=], used to present visual content from the operating system and client applications to the user. This corresponds to the [=/Web-exposed screen area=] of a particular [=/screen=].
 
-A [=screen/screen area=] has a <dfn>width</dfn>, which is the number of [=/screen pixels=] along the horizontal dimension of the [=screen/screen area=]'s rectangular pixel grid.
+A [=screen/screen area=] has a <dfn>width</dfn>, which is the number of [=screen/pixels=] along the horizontal dimension of the [=screen/screen area=]'s rectangular pixel grid.
 
-A [=screen/screen area=] has a <dfn>height</dfn>, which is the number of [=/screen pixels=] along the vertical dimension of the [=screen/screen area=]'s rectangular pixel grid.
+A [=screen/screen area=] has a <dfn>height</dfn>, which is the number of [=screen/pixels=] along the vertical dimension of the [=screen/screen area=]'s rectangular pixel grid.
 
 </div>
 
@@ -296,9 +298,9 @@ Note: As specified in [[CSSOM-VIEW#web-exposed-screen-information]], user agents
 
 A [=/screen=] has an <dfn>available screen area</dfn>, which is a rectangular subset of the [=screen/screen area=] where the operating system permits web application window placements. The rectangle's edges are parallel to the [=screen/screen area=] edges. This region does not include any portions of the [=screen/screen area=] that are reserved by the operating system for its own user interface elements, such as taskbars and menu bars. This equates to the [=/Web-exposed available screen area=] of a particular [=/screen=].
 
-The <dfn>available width</dfn> of a [=/screen=] is the number of [=/screen pixels=] along the horizontal dimension of the [=/available screen area=]'s rectangular pixel grid.
+The <dfn>available width</dfn> of a [=/screen=] is the number of [=screen/pixels=] along the horizontal dimension of the [=screen/available screen area=]'s rectangular pixel grid.
 
-The <dfn>available height</dfn> of a [=/screen=] is the number of [=/screen pixels=] along the vertical dimension of the [=/available screen area=]'s rectangular pixel grid.
+The <dfn>available height</dfn> of a [=/screen=] is the number of [=screen/pixels=] along the vertical dimension of the [=screen/available screen area=]'s rectangular pixel grid.
 
 </div>
 
@@ -326,7 +328,7 @@ A [=/screen=] has a <dfn for="screen">screen position</dfn> which is the [=scree
 ## Available screen position ## {#concept-available-screen-position}
 <!-- ====================================================================== -->
 
-A [=/screen=] has an <dfn for="screen">available screen position</dfn> which is the [=/available screen area=]'s (x, y)-coordinates in the [=/virtual screen arrangement=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
+A [=/screen=] has an <dfn for="screen">available screen position</dfn> which is the [=screen/available screen area=]'s (x, y)-coordinates in the [=/virtual screen arrangement=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
 
 <!-- ====================================================================== -->
 ## Primary screen ## {#concept-primary-screen}
@@ -505,7 +507,7 @@ The following {{Window}} attributes and method definitions are updated to return
     :: Returns an array of {{ScreenDetailed}} objects that describe each of the screens.
 
     : |screenDetails| . {{ScreenDetails/currentScreen}}
-    :: Returns a {{ScreenDetailed}} object that describes the [=/current=] screen. This object describes the same [=/screen=] as {{Window}}.{{Window/screen}}, but provides a superset of the information.
+    :: Returns a {{ScreenDetailed}} object that describes the [=/current screen=]. This object describes the same [=/screen=] as {{Window}}.{{Window/screen}}, but provides a superset of the information.
 
     : |screenDetails| . {{ScreenDetails/onscreenschange}}
     :: Fired when the set of [=/screens=] changes; i.e. when a [=/screen=] is added or removed.

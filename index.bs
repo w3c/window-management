@@ -1,7 +1,7 @@
 <pre class=metadata>
 Title: Multi-Screen Window Placement
 Shortname: multi-screen
-Abstract: This document defines a web platform API that allows script to query the device for information about its screens, and additional APIs to place content on specific screens.
+Abstract: This document defines a web platform API that allows script to query the device for information about its screens, and place content on specific screens.
 Status: CG-DRAFT
 URL: https://webscreens.github.io/window-placement
 Level: 1
@@ -54,11 +54,11 @@ spec: fingerprinting-guidance; urlPrefix: https://www.w3.org/TR/fingerprinting-g
 
 Operating systems generally allow users to connect multiple screens to a single device and arrange them virtually to extend the overall visual workspace.
 
-A variety of applications use platform tools to place windows in such multi-screen environments, but web application developers are limited by existing APIs, which were generally designed around the use of a single screen.
+A variety of applications use platform tools to place their content in such multi-screen environments, but web application developers are limited by existing APIs, which were generally designed around the use of a single screen.
 
 As multi-screen devices and applications become a more common and critical part of user experiences, it becomes more important to give web developers information and tools to leverage that expanded visual environment.
 
-This document extends existing {{Window}}, {{Screen}}, and {{FullscreenOptions}} concepts, and offers new {{ScreenDetails}} and {{ScreenDetailed}} interfaces to place content on specific screens.
+This specification incrementally extends {{Window}}, {{Screen}}, and {{FullscreenOptions}} APIs, and introduces new {{ScreenDetails}} and {{ScreenDetailed}} interfaces. These changes allow web applications to offer compelling multi-screen experiences by placing content on specific screens.
 
 <!-- ====================================================================== -->
 ## Motivating Use Cases ## {#motivations}
@@ -100,7 +100,7 @@ if (window.screen.isExtended) {
   // Detect when a screen is added or removed.
   screenDetails.addEventListener('screenschange', onScreensChange);
 
-  // Detect when the current {{ScreenDetailed}} or an attribute thereof changes.
+  // Detect when the current `ScreenDetailed` or an attribute thereof changes.
   screenDetails.addEventListener('currentscreenchange', onCurrentScreenChange);
 
   // Find the primary screen, show some content fullscreen there.
@@ -114,7 +114,7 @@ if (window.screen.isExtended) {
                              \`width=${otherScreen.availWidth},\` +
                              \`height=${otherScreen.availHeight}\`);
 } else {
-  // Detect when the current {{Screen}} or an attribute thereof changes.
+  // Detect when an attribute of the legacy `Screen` interface changes.
   window.screen.addEventListener('change', onScreenChange);
 
   // Arrange content within the traditional single-screen environment...
@@ -124,7 +124,7 @@ if (window.screen.isExtended) {
 </aside>
 
 <!-- ====================================================================== -->
-### Detecting the presence of multiple screens ### {#usage-overview-extended}
+### Detect the presence of multiple screens ### {#usage-overview-screen-extended}
 <!-- ====================================================================== -->
 
 A principal question for supporting multi-screen experiences is whether the device has multiple screens that may be used when placing content. This is provided by the {{Screen/isExtended}} boolean, exposed to secure contexts without a permission prompt.
@@ -136,22 +136,22 @@ if (screen.isExtended) {
 ```
 
 <!-- ====================================================================== -->
-### Detecting when {{Screen}} attributes change ### {#usage-overview-property-changes}
+### Detect {{Screen}} attribute changes ### {#usage-overview-screen-changes}
 <!-- ====================================================================== -->
 
-Observing {{Screen}} attribute changes is useful for adapting content, even on single-screen devices. Further, observing {{Screen/isExtended}} is useful for detecting transitions between single-screen and multi-screen configurations. To avoid polling, {{Screen/change}} events are fired at the {{Screen}} object:
+Observing legacy {{Screen}} attribute changes is useful for adapting content, even on single-screen devices. Furthermore, observing {{Screen/isExtended}} is useful for detecting transitions between single-screen and multi-screen configurations. To avoid polling, {{Screen/change}} events are fired at the {{Screen}} object:
 
 ```js
 screen.addEventListener('change') e => {
-  // The window's current screen or an attribute thereof has changed.
+  // An attribute of the legacy `Screen` interface has changed.
 });
 ```
 
 <!-- ====================================================================== -->
-### Requesting extended screen information ### {#usage-overview-screen-information}
+### Request detailed screen information ### {#usage-overview-screen-details}
 <!-- ====================================================================== -->
 
-After determining that the device has multiple screens, information can be requested about them using the {{Window/getScreenDetails()}} method. This method may prompt the user for permission. The resulting {{ScreenDetailed}} object lets developers enumerate screens, inspect screen attributes, and listen for changes.
+After determining that the device has multiple screens, detailed screen information can be requested using the {{Window/getScreenDetails()}} method. This method may prompt the user for permission. The resulting {{ScreenDetails}} object lets developers enumerate screens, inspect their attributes, and listen for changes.
 
 ```js
 try {
@@ -172,16 +172,20 @@ function processScreenDetails(screenDetails) {
   clearScreenList();
   screenDetails.screens.forEach(screen => {
     addToScreenList({name: screen.label, screen: screen});
+    // Process updated screen details when a particular screen's details change.
+    screen.onchange = () => {
+      processScreenDetails(screenDetails);
+    };
   });
   selectCurrentInScreenList(screenDetails.currentScreen);
 }
 ```
 
 <!-- ====================================================================== -->
-### Showing elements fullscreen on a specific screen ### {#usage-overview-fullscreen-on-specific-screen}
+### Place fullscreen on a specific screen ### {#usage-overview-place-fullscreen-on-a-specific-screen}
 <!-- ====================================================================== -->
 
-A common multi-screen use case is to present some content fullscreen on a specific screen. The screen may be selected interactively, or automatically selected based on prior user selections or screen attributes. A screen, once selected, can be passed to the {{Element/requestFullscreen()}} method.
+A common multi-screen use case is to present some content fullscreen on a specific screen. The screen may be selected interactively, or automatically selected based on screen attributes or prior user selections. A screen, once selected, can be passed to the {{Element/requestFullscreen()}} method.
 
 ```js
 // Call an assumed helper that returns a selected ScreenDetailed instance.
@@ -192,16 +196,16 @@ slideshowElement.requestFullscreen({ screen: screenDetailed });
 ```
 
 <!-- ====================================================================== -->
-### Placing windows on a specific screen ### {#usage-overview-place-windows-on-specific-screen}
+### Place windows on a specific screen ### {#usage-overview-place-windows-on-a-specific-screen}
 <!-- ====================================================================== -->
 
 Another common multi-screen use cases is to place a window on a specific screen. This can be accomplished by using coordinates provided in the {{ScreenDetailed}} interface with existing {{Window/open()}} and {{Window/moveTo()}} methods.
 
 ```js
-function openCenteredWindow(url, screen, w, h) {
-  // Compute coordinates relative to the target screen's coordinates.
-  const l = screen.availLeft + Math.round(screen.availWidth - width) / 2;
-  const t = screen.availTop + Math.round(screen.availHeight - height) / 2;
+function openCenteredWindow(url, screenDetailed, w, h) {
+  // Compute coordinates centering the window on the target screen.
+  const l = screenDetailed.left + Math.round(screenDetailed.width - w) / 2;
+  const t = screenDetailed.top + Math.round(screenDetailed.height - h) / 2;
 
   // Open the window with the requested dimensions.
   return window.open(url, '_blank', \`left=${l},top=${t},width=${w},height=${h}\`);
@@ -242,53 +246,55 @@ A [=/screen=] has an <dfn>orientation</dfn>, which is described in [[screen-orie
 
 A [=/screen=] has a <dfn>label</dfn>, which is a string that meaningfully describes the screen to a user.
 
-Note: The [=screen/label=] can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. `"internal"` vs. `"external"`, it could include the dimensions, e.g. `"640x480"`, it could include a distinguishing number, e.g. `"screen 1"` vs. `"screen 2"`, or all of the preceeding.
+Note: The [=screen/label=] can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. `"internal"` vs. `"external"`, it could include the dimensions, e.g. `"640x480"`, it could include hardware model information, e.g. `"Acme Telletube 1000x"`, it could include a distinguishing number, e.g. `"screen 1"` vs. `"screen 2"`, or all of the preceeding.
 
 Advisement: While many screen atrtibutes could be used for [=/active fingerprinting=], the strings used as [=screen/labels=] in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.
 
+Issue: Should [=screen/device pixel ratio=] include the [=/page-zoom=]?
+
 </div>
 
 <!-- ====================================================================== -->
-### Screen pixel ### {#concept-screen-pixel}
+## Screen pixel ## {#concept-screen-pixel}
 <!-- ====================================================================== -->
 
 <div dfn-for="screen">
 
-A [=/screen=] has <dfn>pixels</dfn>, which are the smallest screen components that can be programmed directly. Each pixel shows one color.
+A [=/screen=] has <dfn>pixels</dfn>, which are the smallest screen components that can be programmed directly. Each [=screen/pixel=] shows one color.
 
 Note: On a liquid-crystal display (LCD), each pixel is made up of three components. Each component is a (red, green, blue) light with variable intensity. Reasoning about pixel components (subpixel rendering) is out of scope for this specification.
 
-A [=/pixel=] has a <dfn for=pixel>color depth</dfn>, which is the number of bits used to represent the colors it can display.
+A [=screen/pixel=] has a <dfn for="pixel">color depth</dfn>, which is the number of bits used to represent the colors it can display.
 
-Note: Some popular rendering systems model [=pixels=] as having a [=pixel/color depth=] of 24. These 3 groups of 8 bits represent the intensity of the (red, green, blue) subpixels of an LCD [=pixel=].
+Note: Some popular rendering systems model [=screen/pixels=] as having a [=pixel/color depth=] of 24. These 3 groups of 8 bits represent the intensity of the (red, green, blue) subpixels of an LCD [=screen/pixel=].
 
 </div>
 
 <!-- ====================================================================== -->
-### Screen area ### {#concept-screen-area}
+## Screen area ## {#concept-screen-area}
 <!-- ====================================================================== -->
 
 <div dfn-for="screen">
 
-A [=/screen=] has a <dfn>screen area</dfn>, which is a rectangular two-dimensional grid of [=/screen pixels=], used to present visual content from the operating system and client applications to the user. This equates to the [=/Web-exposed screen area=] of a particular [=/screen=].
+A [=/screen=] has a <dfn>screen area</dfn>, which is a rectangular two-dimensional grid of [=/screen pixels=], used to present visual content from the operating system and client applications to the user. This corresponds to the [=/Web-exposed screen area=] of a particular [=/screen=].
 
-A [=/screen area=] has a <dfn>width</dfn>, which is the number of [=/screen pixels=] along the horizontal dimension of the [=/screen area=]'s rectangular pixel grid.
+A [=screen/screen area=] has a <dfn>width</dfn>, which is the number of [=/screen pixels=] along the horizontal dimension of the [=screen/screen area=]'s rectangular pixel grid.
 
-A [=/screen area=] has a <dfn>height</dfn>, which is the number of [=/screen pixels=] along the vertical dimension of the [=/screen area=]'s rectangular pixel grid.
+A [=screen/screen area=] has a <dfn>height</dfn>, which is the number of [=/screen pixels=] along the vertical dimension of the [=screen/screen area=]'s rectangular pixel grid.
 
 </div>
 
-Note: The grid size is usually expressed as [=screen/width=] x [=screen/height=]. For example, a 1920x1080 screen area has a grid with a [=screen/width=] of 1920 pixels and a [=screen/height=] of 1080 pixels.
+Note: The grid size is usually expressed as <[=screen/width=]>x<[=screen/height=]>. For example, a 1920x1080 screen area has a grid with a [=screen/width=] of 1920 pixels and a [=screen/height=] of 1080 pixels.
 
-Note: As specified in [[CSSOM-VIEW#web-exposed-screen-information]], user agents may choose to hide information about the screen of the output device, in order to protect the user’s privacy. In this case, the screen area 
+Note: As specified in [[CSSOM-VIEW#web-exposed-screen-information]], user agents may choose to hide information about the screen of the output device, in order to protect the user’s privacy. In this case, the [=screen/screen area=] may be equal to that of the [viewport](https://drafts.csswg.org/css2/#viewport).
 
 <!-- ====================================================================== -->
-### Available screen area ### {#concept-available-screen-area}
+## Available screen area ## {#concept-available-screen-area}
 <!-- ====================================================================== -->
 
 <div dfn-for="screen">
 
-A [=/screen=] has an <dfn>available screen area</dfn>, which is a rectangular subset of the [=/screen area=] where the operating system permits web application window placements. The rectangle's edges are parallel to the [=/screen area=] edges.This region does not include any portions of the [=/screen area=] that are reserved by the operating system for its own user interface elements, such as taskbars and menu bars. This equates to the [=/Web-exposed available screen area=] of a particular [=/screen=].
+A [=/screen=] has an <dfn>available screen area</dfn>, which is a rectangular subset of the [=screen/screen area=] where the operating system permits web application window placements. The rectangle's edges are parallel to the [=screen/screen area=] edges. This region does not include any portions of the [=screen/screen area=] that are reserved by the operating system for its own user interface elements, such as taskbars and menu bars. This equates to the [=/Web-exposed available screen area=] of a particular [=/screen=].
 
 The <dfn>available width</dfn> of a [=/screen=] is the number of [=/screen pixels=] along the horizontal dimension of the [=/available screen area=]'s rectangular pixel grid.
 
@@ -297,28 +303,30 @@ The <dfn>available height</dfn> of a [=/screen=] is the number of [=/screen pixe
 </div>
 
 <!-- ====================================================================== -->
-### Virtual screen area ### {#concept-virtual-screen-area}
+## Virtual screen arrangement ## {#concept-virtual-screen-arrangement}
 <!-- ====================================================================== -->
 
-A device has a two-dimensional <dfn>virtual screen area</dfn> that extends in all directions. It has x- and y-coordinates that increase rightwards and downwards respectively from the <dfn>multi-screen origin</dfn>. The [=/multi-screen origin=] is an implementation-defined point that defines the (0, 0) coordinate of the [=/virtual screen area=].
+A device has a <dfn>virtual screen arrangement</dfn> that defines the relative placement of [=/screens=] that comprise the overall visual environment of the device. The arrangement is commonly composed on a two-dimensional plane extending in all directions, with (x, y)-coordinates that increase rightwards and downwards respectively from the <dfn>multi-screen origin</dfn>. The [=/multi-screen origin=] is an implementation-defined point that defines the (0, 0) coordinate of the [=/virtual screen arrangement=].
 
-A common convention is to set the [=/multi-screen origin=] to the top-left of the [=/primary=] [=/screen=], but can be any arbitrary point within the [=/virtual screen area=]. Every [=/screen=]'s [=/screen area=] is a view onto a rectangular subset of the [=/virtual screen area=].
+A common convention is to set the [=/multi-screen origin=] to the top-left of the [=/primary=] [=/screen=], but can be any arbitrary point within the [=/virtual screen arrangement=]. Every [=/screen=]'s [=screen/screen area=] is a view onto a rectangular subset of the [=/virtual screen arrangement=].
 
-This diagram shows some examples of how multiple [=/screens=] might be arranged within a [=/virtual screen area=], along with some potential [=/multi-screen origins=]:
+This diagram shows some examples of how multiple [=/screens=] might be arranged within a [=/virtual screen arrangement=], along with some potential [=/multi-screen origins=]:
 
 <img src="multi_screen_origin.svg" alt="Diagram showing various examples of screens and multi-screen origins">
 
-<!-- ====================================================================== -->
-### Screen position ### {#concept-screen-position}
-<!-- ====================================================================== -->
-
-A [=/screen=] has a <dfn for="screen">screen position</dfn> which is the [=/screen area=]'s (x, y)-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
+Note: The [Second Screen Community Group](https://www.w3.org/community/webscreens/)'s [Form Factors Explained](https://webscreens.github.io/form-factors) draft report explores related terminology and conceptual models.
 
 <!-- ====================================================================== -->
-### Available screen position ### {#concept-available-screen-position}
+## Screen position ## {#concept-screen-position}
 <!-- ====================================================================== -->
 
-A [=/screen=] has an <dfn for="screen">available screen position</dfn> which is the [=/available screen area=]'s (x, y)-coordinates in the [=/virtual screen area=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
+A [=/screen=] has a <dfn for="screen">screen position</dfn> which is the [=screen/screen area=]'s (x, y)-coordinates in the [=/virtual screen arrangement=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
+
+<!-- ====================================================================== -->
+## Available screen position ## {#concept-available-screen-position}
+<!-- ====================================================================== -->
+
+A [=/screen=] has an <dfn for="screen">available screen position</dfn> which is the [=/available screen area=]'s (x, y)-coordinates in the [=/virtual screen arrangement=] relative to the [=/multi-screen origin=]. Coordinates may be negative, and are typically expressed as (<var ignore>x</var>, <var ignore>y</var>).
 
 <!-- ====================================================================== -->
 ## Primary screen ## {#concept-primary-screen}
@@ -326,17 +334,11 @@ A [=/screen=] has an <dfn for="screen">available screen position</dfn> which is 
 
 The device hosting the user agent has exactly one <dfn>primary</dfn> [=/screen=]. All the other [=/screens=] are considered <dfn>secondary</dfn>.
 
-Note: The primary screen typically hosts the operating system's user interface for task management, such as the Windows task bar and the macOS Dock.
+Note: The primary screen typically hosts the operating system's user interface for task management, such as the Windows taskbar and the macOS Dock.
 
 A [=/screen=]'s designation as [=primary=] or [=secondary=] may change while the user agent is running.
 
-The <dfn>primary screen</dfn> is the [=/screen=] that is currently [=/primary=].
-
 Note: Most operating systems let the user choose the primary screen using a management user interface, such as the Windows Control Panel and the macOS Preferences application.
-
-By convention, the [=/primary screen=]'s [=screen/screen position=] is (0,0).
-
-Note: As an example, consider a device with three 1920x1080 screens arranged horizontally. If the middle screen is the [=/primary screen=], then the left screen's [=screen/screen position=] (-1920,0). The middle screen's [=screen/screen position=] (0,0). The right screen's [=screen/screen position=] is (3840,0).
 
 <!-- ====================================================================== -->
 ## Internal screen ## {#concept-internal-screen}
@@ -344,7 +346,9 @@ Note: As an example, consider a device with three 1920x1080 screens arranged hor
 
 Each [=/screen=] may be designated as <dfn>internal</dfn> or <dfn>external</dfn>.
 
-[=External=] screens are manufactured separately from the devices they are connected to. It is not unusual for an [=external=] screen to be disconnected from one device and connected to a different device.
+[=External=] screens are manufactured separately from devices that provide their visual output. It is not unusual for an [=external=] screen to be disconnected from one device and connected to a different device.
+
+Note: As an example, a desktop computer might display its visual output on an [=external=] screen connected by an HDMI cable. The HDMI cable can be connected or disconnected while the computer is in use, and the computer will adapt its visual environment to that hardware configuration change.
 
 [=Internal=] screens are usually attached to a device at manufacturing time. [=Internal=] screens are not intended to be detached by users. However an [=internal=] [=/screen=] may still be enabled or disabled while the user agent is running.
 
@@ -354,12 +358,12 @@ Note: As an example, a laptop might disable its [=internal=] screen and input de
 ## Current screen ## {#concept-current-screen}
 <!-- ====================================================================== -->
 
-Scripts executing in a {{Window}} context can access the {{Window/screen}} property. This {{Screen}} object reflects the properties of the <dfn>current screen</dfn>, which is a [=/screen=] that presents the window.
+Scripts executing in a {{Window}} context can access the {{Window/screen}} attribute. That {{Screen}} object reflects properties of the <dfn>current screen</dfn>, which is the [=/screen=] that is currently presenting the window.
 
-Note: On many operating systems, a window can be presented across multiple screens with different properties, or can be in a "hidden" state and not presented on any screen. Operating systems and user agents are assumed to define a canonical screen for a given {{Window}}, for example the screen with the largest intersection area with the window.
+Note: On many operating systems, a window can be presented across multiple screens with different properties, or can be in a "hidden" state and not presented on any screen. Operating systems and user agents are assumed to define a canonical screen for a given {{Window}}, for example the screen with the largest area intersecting the window.
 
 <!-- ====================================================================== -->
-### Observable properties ### {#concept-observable-properties}
+## Observable screen properties ## {#concept-observable-screen-properties}
 <!-- ====================================================================== -->
 
 The <dfn for="screen">basic observable properties</dfn> of a [=/screen=] are:
@@ -388,6 +392,16 @@ The <dfn for="screen">advanced observable properties</dfn> of a [=/screen=] are:
 
 The [[CSSOM-VIEW|CSSOM View Module]] specification defines the {{Screen}} interface, which this specification extends:
 
+<div class="domintro note">
+
+    : |window| . |screen| . {{Screen/isExtended}}
+    :: Returns `true` if the device's visual output extends over multiple screens.
+
+    : |window| . |screen| . {{Screen/onchange}}
+    :: Fired when the window's screen or attributes thereof change.
+
+</div>
+
 <xmp class=idl>
 partial interface Screen /* : EventTarget */ {
   [SecureContext]
@@ -398,19 +412,11 @@ partial interface Screen /* : EventTarget */ {
 };
 </xmp>
 
-Issue: {{Screen}} needs to derive from {{EventTarget}}. This will require changes to [[CSSOM-VIEW#the-screen-interface]].
+Issue: Make {{Screen}} derive from {{EventTarget}} in [[CSSOM-VIEW#the-screen-interface]].
 
 <!-- ====================================================================== -->
 ### {{Screen/isExtended}} attribute ### {#api-screen-isExtended-attribute}
 <!-- ====================================================================== -->
-
-<div class="domintro note">
-
-    : window . screen . {{Screen/isExtended}}
-
-    :: Returns `true` if the device's display is extended across multiple screens.
-
-</div>
 
 <div algorithm>
 
@@ -424,17 +430,9 @@ The <dfn attribute for=Screen>isExtended</dfn> getter steps are:
 ### {{Screen/onchange}} attribute ### {#api-screen-onchange-attribute}
 <!-- ====================================================================== -->
 
-<div class="domintro note">
-
-    : window . screen . {{Screen/onchange}}
-
-    :: Fired when the window's screen or attributes thereof change.
-
-</div>
-
 The <dfn attribute for=Screen>onchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=Screen>`change`</a>.
 
-When any [=screen/basic observable property=] of a {{Window}}'s [=/current screen=] changes, [=/fire an event=] with type <dfn event for=Screen>`change`</dfn> at the {{Window}}'s associated {{Screen}} object.
+When any [=screen/basic observable property=] of the {{Window}}'s [=/current screen=] changes, [=/fire an event=] with type <dfn event for=Screen>`change`</dfn> at the {{Screen}} object referenced by {{Window}}'s {{Window/screen}} attribute.
 
 <!-- ====================================================================== -->
 ## Extensions to the {{Window}} interface ## {#api-extensions-to-window}
@@ -442,15 +440,10 @@ When any [=screen/basic observable property=] of a {{Window}}'s [=/current scree
 
 The [[HTML]] standard defines the {{Window}} interface, which this specification extends:
 
-<!-- ====================================================================== -->
-## {{Window/getScreenDetails()}} method ## {#api-window-getScreenDetails-method}
-<!-- ====================================================================== -->
-
 <div class="domintro note">
 
-    : await window . {{Window/getScreenDetails()}}
-
-    :: Returns a promise that fulfills with a {{ScreenDetails}} object with information about all screens. The promise will be rejected if permission is denied.
+    : |window| . {{Window/getScreenDetails()}}
+    :: Returns a promise that fulfills with a {{ScreenDetails}} object with information about the device's screens. The promise will be rejected if permission is denied.
 
 </div>
 
@@ -461,9 +454,13 @@ partial interface Window {
 };
 </xmp>
 
-Each {{Window}} object has an associated {{ScreenDetails}} object.
+<!-- ====================================================================== -->
+### {{Window/getScreenDetails()}} method ### {#api-window-getScreenDetails-method}
+<!-- ====================================================================== -->
 
-Each {{Window}} object also has an associated {{ScreenDetailed}} object which reflects the properties of the window's [=/current screen=].
+The {{Window/getScreenDetails()}} method completes asynchronously, queuing work on the <dfn>window placement task source</dfn>.
+
+Instances of {{Window}} are created with an [internal slot](https://tc39.github.io/ecma262/#sec-object-internal-methods-and-internal-slots) named <dfn attribute for="Window">\[[screenDetails]]</dfn>, which is created with an initial value of `undefined`.
 
 <div algorithm>
 
@@ -473,27 +470,33 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 1. Run the following steps [=/in parallel=]:
 
-    1. Let |permissionState| be [=/request permission to use=] `"window-placement"`.
+    1. Let |permissionState| be [=/request permission to use=] the {{PermissionName}} `"window-placement"`.
 
     1. If |permissionState| is "{{PermissionState/denied}}" then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
-    1. [=/Resolve=] |promise| with [=/this=]'s associated {{ScreenDetails}} object.
+    1. If |permissionState| is "{{PermissionState/prompt}}" and the [=/relevant global object=] of [=/this=] does not have [=/transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+    1. If [=/this=].{{Window/[[screenDetails]]}} is `undefined`, then set [=/this=].{{Window/[[screenDetails]]}} to a new {{ScreenDetails}} object.
+
+    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/resolve=] |promise| with [=/this=].{{Window/[[screenDetails]]}}.
 
 1. Return |promise|.
 
 </div>
 
-In addition to the partial interface additions defined above, the {{Window}} interface described in [[CSSOM-VIEW#extensions-to-the-window-interface]] are modified:
+<!-- ====================================================================== -->
+### {{Window}} attribute and method definition changes ### {#api-window-attribute-and-method-definition-changes}
+<!-- ====================================================================== -->
 
-* The {{Window/screenX}} and {{Window/screenLeft}} attributes must return the x-coordinate, relative to the top left corner of the [=/primary screen=]'s Web-exposed screen area, of the left of the client window as number of [=/CSS pixels=], or zero if there is no such thing.
-* The {{Window/screenY}} and {{Window/screenTop}} attributes must return the y-coordinate, relative to the top left corner of the of the [=/primary screen=]'s Web-exposed screen area, of the top of the client window as number of [=/CSS pixels=], or zero if there is no such thing.
-* The {{Window/moveTo()}} steps move the target window relative to the top left corner of the [=/primary screen=]'s Web-exposed screen area.
-* Handling of `"left"` and `"top"` for {{Window/open()}} move the target window relative to the top or left edge (respectively) of the [=/primary screen=]'s Web-exposed screen area.
+The following {{Window}} attributes and method definitions are updated to return and interpret values relative to the [=/multi-screen origin=]:
 
-Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
+* {{Window/screenX}} and {{Window/screenLeft}} attributes must return the x-coordinate, relative to the [=/multi-screen origin=], of the left of the client window as number of [=/CSS pixels=], or zero if there is no such thing.
+* {{Window/screenY}} and {{Window/screenTop}} attributes must return the y-coordinate, relative to the [=/multi-screen origin=], of the top of the client window as number of [=/CSS pixels=], or zero if there is no such thing.
+* {{Window/moveTo()}} steps must interpret `x` and `y` arguments to be specified relative to the [=/multi-screen origin=].
+* {{Window/open()}} steps must interpret `"left"` and `"top"` feature values to be specified relative to the [=/multi-screen origin=].
 
 <!-- ====================================================================== -->
-## The {{ScreenDetails}} interface ## {#api-screendetails-interface}
+## {{ScreenDetails}} interface ## {#api-screendetails-interface}
 <!-- ====================================================================== -->
 
 <div class="domintro note">
@@ -502,7 +505,13 @@ Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
     :: Returns an array of {{ScreenDetailed}} objects that describe each of the screens.
 
     : |screenDetails| . {{ScreenDetails/currentScreen}}
-    :: Returns a {{ScreenDetailed}} object that describes the current screen. This object describes the same object that the {{Window/screen}} property of {{Window}} describes, but provides a superset of the information.
+    :: Returns a {{ScreenDetailed}} object that describes the [=/current=] screen. This object describes the same [=/screen=] as {{Window}}.{{Window/screen}}, but provides a superset of the information.
+
+    : |screenDetails| . {{ScreenDetails/onscreenschange}}
+    :: Fired when the set of [=/screens=] changes; i.e. when a [=/screen=] is added or removed.
+
+    : |screenDetails| . {{ScreenDetails/oncurrentscreenchange}}
+    :: Fired when the [=/current screen=] or an attribute thereof changes; i.e. when the window moves to another [=/screen=], or a property of the [=/current screen=] changes.
 
 </div>
 
@@ -510,7 +519,6 @@ Issue: Merge the above with [[CSSOM-VIEW#extensions-to-the-window-interface]].
 [Exposed=Window, SecureContext]
 interface ScreenDetails {
   readonly attribute FrozenArray<ScreenDetailed> screens;
-
   readonly attribute ScreenDetailed currentScreen;
 
   attribute EventHandler onscreenschange;
@@ -518,13 +526,17 @@ interface ScreenDetails {
 };
 </xmp>
 
+<!-- ====================================================================== -->
+### {{ScreenDetails/screens}} attribute ### {#api-screendetails-screens-attribute}
+<!-- ====================================================================== -->
+
 <div algorithm>
 
 The <dfn attribute for=ScreenDetails>screens</dfn> getter steps are:
 
 1. Let |screens| be a new [=/list=].
 
-1. For each |screen| of [=/screens=]:
+1. For each |screen| of the device's [=/screens=]:
 
     1. Let |a| be the {{ScreenDetailed}} object describing |screen|.
 
@@ -533,7 +545,6 @@ The <dfn attribute for=ScreenDetails>screens</dfn> getter steps are:
 1. Return the result of [=list/sorting=] |screens| in ascending order with the [=/screen ordering=] algorithm.
 
 </div>
-
 
 <div algorithm>
 
@@ -546,26 +557,34 @@ The <dfn>screen ordering</dfn> algorithm defines a [=/screen=] |a| as less than 
 
 </div>
 
-The <dfn attribute for=ScreenDetails>currentScreen</dfn> getter steps are to return the {{ScreenDetailed}} object representing the current screen of the {{Window}} object associated with [=/this=].
+<!-- ====================================================================== -->
+### {{ScreenDetails/currentScreen}} attribute ### {#api-screendetails-currentscreen-attribute}
+<!-- ====================================================================== -->
 
-Issue: define the getter steps explicitl, using internal slots to hold the exact object instances which should be returned by each accessor's getter steps. See https://github.com/webscreens/window-placement/issues/81 and https://webbluetoothcg.github.io/web-bluetooth/#bluetoothdevice-interface
+The <dfn attribute for=ScreenDetails>currentScreen</dfn> getter steps are to return the {{ScreenDetailed}} object in {{ScreenDetails/screens}} representing the [=/current screen=] of the {{Window}} object associated with [=/this=].
 
-Note: The {{ScreenDetails/currentScreen}} is not marked [SameObject], in order to allow comparisons with objects in {{ScreenDetails/screens}}, e.g. `screenDetails.screens.find(s => s !== screenDetails.currentScreen);`
+Note: Which exact {{ScreenDetailed}} object in {{ScreenDetails/screens}} represents the [=/current screen=] of a {{Window}} is assumed to be defined by operating systems and user agents. This corresponds with {{Window}}.{{Window/screen}}, the canonical screen for a given Window, for example the screen with the largest area intersecting the window.
+
+Note: {{ScreenDetails/currentScreen}} is not marked `[SameObject]`, in order to facilitate comparisons with objects in {{ScreenDetails/screens}}, without having to rely on heuristics, like comparing the screen geometry or labels. For example: `screenDetails.screens.find(s => s !== screenDetails.currentScreen);`
 
 <!-- ====================================================================== -->
-### {{ScreenDetails}} events ### {#api-screendetails-events}
+### {{ScreenDetails/onscreenschange}} attribute ### {#api-screendetails-onscreenschange-attribute}
 <!-- ====================================================================== -->
 
 The <dfn attribute for=ScreenDetails>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`screenschange`</a>.
 
-The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`currentscreenchange`</a>.
-
-When the set of [=/screens=] changes, [=/fire an event=] with type <dfn event for=ScreenDetails>`screenschange`</dfn> at every {{ScreenDetails}} object.
-
-When the [=/current screen=] of a {{Window}} changes from one [=/screen=] to another (e.g. the {{Window}} has been moved to a different display), [=/fire an event=] with type <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{Window}}'s associated {{ScreenDetails}} object.
+When the set of {{ScreenDetails/screens}} changes, [=/fire an event=] with type <dfn event for=ScreenDetails>`screenschange`</dfn> at the {{ScreenDetails}} object stored in the {{Window}}'s internal slot {{Window/[[screenDetails]]}}.
 
 <!-- ====================================================================== -->
-## The {{ScreenDetailed}} interface ## {#api-screenadvanced-interface}
+### {{ScreenDetails/oncurrentscreenchange}} attribute ### {#api-screendetails-oncurrentscreenchange-attribute}
+<!-- ====================================================================== -->
+
+The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`currentscreenchange`</a>.
+
+When the [=/current screen=] of a {{Window}} changes from one [=/screen=] to another (e.g. the {{Window}} has been moved to a different display), or when any [=screen/basic observable property=] or [=screen/advanced observable property=] of the [=/current screen=] of a {{Window}} changes, [=/fire an event=] with type <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{ScreenDetails}} object stored in the {{Window}}'s internal slot {{Window/[[screenDetails]]}}.
+
+<!-- ====================================================================== -->
+## The {{ScreenDetailed}} interface ## {#api-screendetailed-interface}
 <!-- ====================================================================== -->
 
 A {{ScreenDetailed}} object represents a [=/screen=].
@@ -573,16 +592,16 @@ A {{ScreenDetailed}} object represents a [=/screen=].
 <div class="domintro note">
 
   : |screenDetailed| . {{ScreenDetailed/availLeft}}
-  :: Returns the distance from the left edge of the primary screen to the left edge of the available screen area.
+  :: Returns the distance from the [=/multi-screen origin=] to the left edge of the available screen area.
 
   : |screenDetailed| . {{ScreenDetailed/availTop}}
-  :: Returns the distance from the top edge of the primary screen to the top edge of the available screen area.
+  :: Returns the distance from the [=/multi-screen origin=] to the top edge of the available screen area.
 
   : |screenDetailed| . {{ScreenDetailed/left}}
-  :: Returns the distance from the left edge of the primary screen to the left edge of the screen area.
+  :: Returns the distance from the [=/multi-screen origin=] to the left edge of the screen area.
 
   : |screenDetailed| . {{ScreenDetailed/top}}
-  :: Returns the distance from the top edge of the primary screen to the top edge of the screen area.
+  :: Returns the distance from the [=/multi-screen origin=] to the top edge of the screen area.
 
   : |screenDetailed| . {{ScreenDetailed/isPrimary}}
   :: Returns whether this screen is designated as the 'primary' screen by the OS (otherwise it is a 'secondary' screen).
@@ -612,77 +631,129 @@ interface ScreenDetailed : Screen {
 };
 </xmp>
 
-The <dfn attribute for=ScreenDetailed>availLeft</dfn> getter steps are to return [=/this=]'s [=screen/available screen position=]'s x-coordinate.
+The <dfn attribute for=ScreenDetailed>availLeft</dfn> getter steps are to return the x-coordinate of the [=screen/available screen position=] of [=/this=] [=screen=].
 
-The <dfn attribute for=ScreenDetailed>availTop</dfn> getter steps are to return [=/this=]'s [=screen/available screen position=]'s y-coordinate.
+The <dfn attribute for=ScreenDetailed>availTop</dfn> getter steps are to return the y-coordinate of the [=screen/available screen position=] of [=/this=] [=screen=].
 
-The <dfn attribute for=ScreenDetailed>left</dfn> getter steps are to return [=/this=]'s [=screen/screen position=]'s x-coordinate.
+The <dfn attribute for=ScreenDetailed>left</dfn> getter steps are to return the x-coordinate of the [=screen/screen position=] of [=/this=] [=screen=].
 
-The <dfn attribute for=ScreenDetailed>top</dfn> getter steps are to return [=/this=]'s [=screen/screen position=]'s y-coordinate.
+The <dfn attribute for=ScreenDetailed>top</dfn> getter steps are to return the y-coordinate of the [=screen/screen position=] of [=/this=] [=screen=].
 
-The <dfn attribute for=ScreenDetailed>isPrimary</dfn> getter steps are to return true if [=/this=] is the [=/primary screen=], or false otherwise.
+The <dfn attribute for=ScreenDetailed>isPrimary</dfn> getter steps are to return true if [=/this=] [=/screen=] is the [=/primary=] [=/screen=], or false otherwise.
 
-The <dfn attribute for=ScreenDetailed>isInternal</dfn> getter steps are to return true if [=/this=] is [=/internal=], or false otherwise.
+The <dfn attribute for=ScreenDetailed>isInternal</dfn> getter steps are to return true if [=/this=] [=/screen=] is [=/internal=], or false otherwise.
 
-The <dfn attribute for=ScreenDetailed>devicePixelRatio</dfn> getter steps are to return [=/this=]'s [=screen/device pixel ratio=].
+The <dfn attribute for=ScreenDetailed>devicePixelRatio</dfn> getter steps are to return the [=screen/device pixel ratio=] of [=/this=] [=/screen=].
 
-The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return [=/this=]'s [=screen/label=].
+The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return the [=screen/label=] of [=/this=] [=/screen=].
 
 <!-- ====================================================================== -->
-### {{ScreenDetailed}} events ### {#api-screenadvanced-events}
+### {{ScreenDetailed/onchange}} attribute ### {#api-screendetailed-onchange-attribute}
 <!-- ====================================================================== -->
 
-When any attribute [=screen/basic observable property=] or [=screen/advanced observable property=] of a {{ScreenDetailed}}'s associated [=/screen=] changes, [=/fire an event=] with type <dfn event for=ScreenDetailed>`change`</dfn> at the {{ScreenDetailed}} object.
+The <dfn attribute for=ScreenDetailed>onchange</dfn> attribute is the {{Screen/onchange}} attribute inherited from {{Screen}}.
+
+When any [=screen/basic observable property=] or [=screen/advanced observable property=] of a {{ScreenDetailed}}'s associated [=/screen=] changes, [=/fire an event=] with type <dfn event for=ScreenDetailed>`change`</dfn> at the {{ScreenDetailed}} object.
 
 <!-- ====================================================================== -->
 ## Extensions to {{FullscreenOptions}} ## {#api-extensions-to-fullscreen-options}
 <!-- ====================================================================== -->
 
+<div class="domintro note">
+
+    : |fullscreenOptions| . {{FullscreenOptions/screen}}
+    :: Specifies a [=/screen=] for element fullscreen requests.
+
+</div>
+
 <xmp class=idl>
 partial dictionary FullscreenOptions {
-  // An optional way to request a specific screen for element fullscreen.
   ScreenDetailed screen;
 };
 </xmp>
 
-Issue: Write me.
+The optional {{FullscreenOptions}} <dfn attribute for=FullscreenOptions>screen</dfn> member indicates an application preference to display the element fullscreen on a particular [=/screen=]. User agents are always free to honor user preference over that of the application. The default value `undefined` indicates no application preference.
 
 <!-- ====================================================================== -->
-## Permissions ## {#api-permissions}
+### {{Element/requestFullscreen}} method definition changes ### {#api-element-requestfullscreen-method-definition-changes}
 <!-- ====================================================================== -->
 
-The Multi-Screen Window Placement API is a [=/default powerful feature=] that is identified by the [=powerful feature/name=] <dfn for=PermissionName export enum-value>"window-placement"</dfn>.
+The {{Element/requestFullscreen}} method steps are updated to optionally take `options`["screen"] into account when moving and resizing  `pendingDoc`’s [=/top-level browsing context=]’s [=/active document=]’s viewport. The viewport may be moved to the specified [=/screen=] as part of this modified method step.
 
-Issue: File bug against [[permissions]], to add to the registry.
+<!-- ====================================================================== -->
+## Permission API Integration ## {#api-permission-api-integration}
+<!-- ====================================================================== -->
 
-Issue: Talk about permissions policy integration.
-<!--
-The Multi-Screen Window Placement API defines a [=/policy-controlled feature=] named "window-placement" which has a [=/default allowlist=] of `"self"`.
--->
+This specification defines a [=/default powerful feature=] that is identified by the [=powerful feature/name=] "<dfn for="PermissionName" export enum-value>window-placement</dfn>".
+
+The [[permissions]] API provides a uniform way for websites to query the state of their permissions.
+
+Issue: Add {{PermissionName/window-placement}} to {{PermissionName}} in [[permissions]].
+
+Issue: Define behavior of cached objects and method steps when the permission is revoked. (See [#80](https://github.com/webscreens/window-placement/issues/80))
+
+<!-- ====================================================================== -->
+## Permission Policy integration ## {#api-permission-policy-integration}
+<!-- ====================================================================== -->
+
+This specification defines a [=/policy-controlled feature=] identified by the string "<dfn for="permission-policy">window-placement</dfn>". Its [=/default allowlist=] is `"self"`. See [[permissions-policy]] and its list of [Experimental Features](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features).
+
+Note: A [=/document=]’s permissions policy determines whether any content in that document is allowed to obtain {{ScreenDetails}} or place content on specific screens. If disabled, promises returned by {{Window/getScreenDetails}} will be rejected, and requests to place content on specific screens will be clamped to the [=/current screen=].
+
+Issue: Move [=permission-policy/window-placement=] to [Proposed](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) or [Standardized](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) feature lists when appropriate.
 
 <!-- ====================================================================== -->
 # Security Considerations # {#security}
 <!-- ====================================================================== -->
 
-Issue: Write this section.
+This specification enables sites to place content on specific screens, which may pose limited new security risks. Sites may attempt to prominently display sensitive content on unexpected screens, surreptitiously display undesirable content on less conspicuous screens, or otherwise place content on specific screens to act in deceptive, abusive, or annoying manners.
+
+To help mitigate such risks, cross-screen placement capabilities are restricted to secure contexts, require explicit user permission (where prompting is only possible with transient user activation), and are subject to permission policy. If any of these requirements are not met, placement requests may be denied or clamped to the [=/current screen=], matching pre-existing behavior of some user agents. User agents can generally measure and otherwise intervene when sites request any new capabilities.
+
+To enable this new functionality in a nested browsing context, it needs to be specifically allowed via [[permissions-policy]], either through an appropriate declaration in the `allow` attribute of the HTML `iframe` element, or through a `Permissions-Policy` HTTP header delivered with the document through which it is nested. This prevents e.g. content from third parties to place content on specific screens without explicit permission.
+
+Other points to note: 
+- Some user agents already do not constrain window placement requests to the [=/current screen=]; they interpret {{Window/open()}} and {{Window/moveTo()}} coordinates as relative to the [=/multi-screen origin=], and honor requests to place windows on screens other than the [=/current screen=].
+- Transient user activation is typically already required for {{Element/requestFullscreen()}} and {{Window/open()}}, but not for {{Window/moveTo()}}, {{Window/moveBy()}}, {{Window/resizeTo()}}, nor {{Window/resizeBy()}}.
+- Placing content on a screen other than the [=/current screen=] is unlikely to create additional clickjacking risk for users, since the user's cursor or finger is likely to be co-located with the [=/current screen=], not on a separate screen.
+- Gating pre-existing placement capabilities on the specified permission may be reasonable.
+
+See [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md) for additional explorations of security concerns.
 
 <!-- ====================================================================== -->
 # Privacy Considerations # {#privacy}
 <!-- ====================================================================== -->
 
-Issue: Write this section.
+This specification exposes new information to sites about screens connected to the device, which may pose limited new privacy risks. This additional information increases the [fingerprinting](https://w3c.github.io/fingerprinting-guidance) surface of devices, especially those with atypical screen configurations.
+
+To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, restricted to secure contexts, most new information requires explicit user permission (where prompting is only possible with transient user activation), and permission-gated information is also subject to permission policy. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.
+
+The `Screen.isExtended` boolean is exposed without explicit permission checks, as this minimal single bit of information supports some critical features for which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI entry points like “Show on another screen”), and helps avoid unnecessarily prompting single-screen users for inapplicable information and capabilities. This generally follows a TAG design principle for [device enumeration](https://w3ctag.github.io/design-principles/#device-enumeration).
+
+Many user agents already effectively expose the presence of multiple screens to windows located on secondary screens, where `window.screen.availLeft|Top` >> 0. Script access of this bit is a detectable [active fingerprinting](https://w3c.github.io/fingerprinting-guidance/#active) signal, which may be observed and blocked by the user agent. Additionally, user agents that do not constrain unpermissioned window placement requests to the [=/current screen=] allow adversaries to attempt programatic placement on other screens, at which point information about that `window.screen` is exposed.
+
+The new `Screen.onchange` events pose a slight risk by making [ephemeral fingerprinting](https://github.com/asankah/ephemeral-fingerprinting) easier, but scripts can already achieve the same result by polling for changes to `window.screen`. This risk could be partially mitigated by delaying event dispatch for hidden documents until such documents are no longer hidden.
+
+Alternative API shapes giving less power to sites were considered, but offer poor experiences for users and developers (e.g. prompting users to pick a screen, requiring declarative screen rankings from developers). Few, if any, alternatives exist for non-fullscreen placement of app windows on any connected screen. The specified API shape seems like the most natural extension of existing APIs to support a more complete multi-screen environment. Future work may include ways to query more limited multi-screen information, to let sites voluntarily minimize their information exposure.
+
+Other points to note:
+- Gating pre-existing information exposure on the specified permission may be reasonable.
+
+See [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md) for additional explorations of privacy concerns.
 
 <!-- ====================================================================== -->
 # Accessibility Considerations # {#a11y}
 <!-- ====================================================================== -->
 
-Issue: Write this section.
+This specification enables sites to place content on specific screens, which may pose limited new accessibility risks. The visual presentation, non-visual rendering, and effect of assistive technologies on the content itself is not commonly substantially influenced by the placement of content on one screen or another. Still, existing accessibility risks of programatic content placement may be exacerbated by the expanded areas over which content may be placed. Existing accessibility considerations regarding [=/default powerful feature=] permission models, prompting methods, and permission-related UIs, are equally pertinent to this particular sepcification's permission.
+
+There are no documented accessibility considerations pertaining to the structured screen information (and accessibility features thereof) exposed by the API at this time.
 
 <!-- ====================================================================== -->
 # Internationalization Considerations # {#i18n}
 <!-- ====================================================================== -->
 
-Issue: Write this section.
+There are no documented internationalization considerations at this time.
 
 <!-- ====================================================================== -->
 # Acknowledgements # {#acknowledgements}
@@ -701,7 +772,6 @@ Lukasz Olejnik,
 Marijn Kruisselbrink,
 Matt Giuca,
 Michael Ketting,
-Michael Wasserman,
 Nadav Sinai,
 Peter Linss,
 Staphany Park,

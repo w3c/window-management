@@ -58,7 +58,7 @@ A variety of applications use platform tools to place their content in such mult
 
 As multi-screen devices and applications become a more common and critical part of user experiences, it becomes more important to give web developers information and tools to leverage that expanded visual environment.
 
-This specification incrementally extends {{Window}}, {{Screen}}, and {{FullscreenOptions}} APIs, and introduces new {{ScreenDetails}} and {{ScreenDetailed}} interfaces. These changes allow web applications to offer compelling multi-screen experiences by placing content on specific screens.
+This specification incrementally extends the {{Window}}, {{Screen}}, and {{FullscreenOptions}} APIs, and introduces new {{ScreenDetails}} and {{ScreenDetailed}} interfaces. These changes allow web applications to offer compelling multi-screen experiences by placing content on specific screens.
 
 <!-- ====================================================================== -->
 ## Motivating Use Cases ## {#motivations}
@@ -182,13 +182,13 @@ function processScreenDetails(screenDetails) {
 ```
 
 <!-- ====================================================================== -->
-### Place fullscreen on a specific screen ### {#usage-overview-place-fullscreen-on-a-specific-screen}
+### Place fullscreen content on a specific screen ### {#usage-overview-place-fullscreen-content-on-a-specific-screen}
 <!-- ====================================================================== -->
 
 A common multi-screen use case is to present some content fullscreen on a specific screen. The screen may be selected interactively, or automatically selected based on screen attributes or prior user selections. A screen, once selected, can be passed to the {{Element/requestFullscreen()}} method.
 
 ```js
-// Call an assumed helper that returns a selected ScreenDetailed instance.
+// Call an assumed helper that returns a selected `ScreenDetailed` instance.
 const screenDetailed = getScreenForSlideshow();
 
 // Request that a particular element be shown fullscreen on the selected screen.
@@ -222,9 +222,9 @@ Concepts in this specification build upon those in [[CSSOM-VIEW]], the latest [C
 ## Screen ## {#concept-screen}
 <!-- ====================================================================== -->
 
-A device hosting the user agent has a single <dfn>screen</dfn> or multiple [=/screens=], which are used to display visual content. The set of [=/screens=] used by a device may change while a user agent is running, reflecting changes in the hardware or software configutation of the device.
+A device hosting the user agent has a single <dfn>screen</dfn> or multiple [=/screens=], which are used to display visual content. The set of [=/screens=] used by a device may change while a user agent is running, reflecting changes in the hardware or software configuration of the device.
 
-Note: Some basic examples of screen configuration change include connecting a television or projector to a laptop with an HDMI cable, closing the lid of a laptop to disable its built-in LCD panel, and changing the display resolution of a connected LCD computer monitor.
+Note: Some basic examples of screen configuration changes include connecting a television or projector to a laptop with an HDMI cable, closing the lid of a laptop to disable its built-in LCD panel, and changing the display resolution of a connected LCD computer monitor.
 
 <div dfn-for="screen">
 
@@ -246,9 +246,9 @@ A [=/screen=] has an <dfn>orientation</dfn>, which is described in [[screen-orie
 
 A [=/screen=] has a <dfn>label</dfn>, which is a string that meaningfully describes the screen to a user.
 
-Note: The [=screen/label=] can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. `"internal"` vs. `"external"`, it could include the dimensions, e.g. `"640x480"`, it could include hardware model information, e.g. `"Acme Telletube 1000x"`, it could include a distinguishing number, e.g. `"screen 1"` vs. `"screen 2"`, or all of the preceeding.
+Note: The [=screen/label=] can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. `"internal"` vs. `"external"`, it could include the dimensions, e.g. `"640×480"`, it could include hardware model information, e.g. `"Acme Telletube 1000x"`, it could include a distinguishing number, e.g. `"screen 1"` vs. `"screen 2"`, or all of the preceding.
 
-Advisement: While many screen atrtibutes could be used for [=/active fingerprinting=], the strings used as [=screen/labels=] in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.
+Advisement: While many screen attributes could be used for [=/active fingerprinting=], the strings used as [=screen/labels=] in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.
 
 Issue: Should [=screen/device pixel ratio=] include the [page-zoom](https://drafts.csswg.org/cssom-view-1/#page-zoom)?
 
@@ -264,7 +264,7 @@ A [=/screen=] has <dfn>pixels</dfn>, which are the smallest screen components th
 
 Note: On a liquid-crystal display (LCD), each pixel is made up of three components. Each component is a (red, green, blue) light with variable intensity. Reasoning about pixel components (subpixel rendering) is out of scope for this specification.
 
-Note: Some screens can be configured to display content at a resolution that differs from the physical hardware's inherent composition; e.g. a monitor with hardware resolution of 2560×1440 may be configured by the device to operate with a display resolution of 1920x1080.
+Note: Some screens can be configured to display content at a resolution that differs from the physical hardware's inherent composition; e.g. a monitor with a hardware resolution of 2560×1440 may be configured by the device to operate with a display resolution of 1920×1080.
 
 A [=screen/pixel=] has a <dfn for="pixel">color depth</dfn>, which is the number of bits used to represent the colors it can display.
 
@@ -286,9 +286,9 @@ A [=screen/screen area=] has a <dfn>height</dfn>, which is the number of [=scree
 
 </div>
 
-Note: The grid size is usually expressed as <[=screen/width=]>x<[=screen/height=]>. For example, a 1920x1080 screen area has a grid with a [=screen/width=] of 1920 pixels and a [=screen/height=] of 1080 pixels.
+Note: The grid size is usually expressed as <[=screen/width=]>×<[=screen/height=]>. For example, a 1920×1080 screen area has a grid with a [=screen/width=] of 1920 pixels and a [=screen/height=] of 1080 pixels.
 
-Note: As specified in [[CSSOM-VIEW#web-exposed-screen-information]], user agents may choose to hide information about the screen of the output device, in order to protect the user’s privacy. In this case, the [=screen/screen area=] may be equal to that of the [viewport](https://drafts.csswg.org/css2/#viewport).
+Note: As specified in [[CSSOM-VIEW#web-exposed-screen-information]], user agents may choose to hide information about the screen of the output device in order to protect the user’s privacy. In this case, the [=screen/screen area=] may be equal to that of the [viewport](https://drafts.csswg.org/css2/#viewport).
 
 <!-- ====================================================================== -->
 ## Available screen area ## {#concept-available-screen-area}
@@ -310,7 +310,7 @@ The <dfn>available height</dfn> of a [=/screen=] is the number of [=screen/pixel
 
 A device has a <dfn>virtual screen arrangement</dfn> that defines the relative placement of [=/screens=] that comprise the overall visual environment of the device. The arrangement is commonly composed on a two-dimensional plane extending in all directions, with (x, y)-coordinates that increase rightwards and downwards respectively from the <dfn>multi-screen origin</dfn>. The [=/multi-screen origin=] is an implementation-defined point that defines the (0, 0) coordinate of the [=/virtual screen arrangement=].
 
-A common convention is to set the [=/multi-screen origin=] to the top-left of the [=/primary=] [=/screen=], but can be any arbitrary point within the [=/virtual screen arrangement=]. Every [=/screen=]'s [=screen/screen area=] is a view onto a rectangular subset of the [=/virtual screen arrangement=].
+A common convention is to set the [=/multi-screen origin=] to the top-left of the [=/primary=] [=/screen=], but it can be any arbitrary point within the [=/virtual screen arrangement=]. Every [=/screen=]'s [=screen/screen area=] is a view onto a rectangular subset of the [=/virtual screen arrangement=].
 
 This diagram shows some examples of how multiple [=/screens=] might be arranged within a [=/virtual screen arrangement=], along with some potential [=/multi-screen origins=]:
 
@@ -381,8 +381,8 @@ The <dfn for="screen">advanced observable properties</dfn> of a [=/screen=] are:
 * [=screen/available screen position=]
 * [=screen/device pixel ratio=]
 * [=screen/label=]
-* The [=screen=]'s desgination as [=primary=] or [=secondary=]
-* The [=screen=]'s desgination as [=internal=] or [=external=]
+* The [=screen=]'s designation as [=primary=] or [=secondary=]
+* The [=screen=]'s designation as [=internal=] or [=external=]
 
 <!-- ====================================================================== -->
 # API # {#api}
@@ -565,7 +565,7 @@ The <dfn>screen ordering</dfn> algorithm defines a [=/screen=] |a| as less than 
 
 The <dfn attribute for=ScreenDetails>currentScreen</dfn> getter steps are to return the {{ScreenDetailed}} object in {{ScreenDetails/screens}} representing the [=/current screen=] of the {{Window}} object associated with [=/this=].
 
-Note: Which exact {{ScreenDetailed}} object in {{ScreenDetails/screens}} represents the [=/current screen=] of a {{Window}} is assumed to be defined by operating systems and user agents. This corresponds with {{Window}}.{{Window/screen}}, the canonical screen for a given Window, for example the screen with the largest area intersecting the window.
+Note: Which exact {{ScreenDetailed}} object in {{ScreenDetails/screens}} represents the [=/current screen=] of a {{Window}} is assumed to be defined by operating systems and user agents. This corresponds with {{Window}}.{{Window/screen}}, the canonical screen for a given window, for example the screen with the largest area intersecting the window.
 
 Note: {{ScreenDetails/currentScreen}} is not marked `[SameObject]`, in order to facilitate comparisons with objects in {{ScreenDetails/screens}}, without having to rely on heuristics, like comparing the screen geometry or labels. For example: `screenDetails.screens.find(s => s !== screenDetails.currentScreen);`
 
@@ -732,7 +732,7 @@ To help mitigate such risks, the new information is reduced to the minimum neede
 
 The `Screen.isExtended` boolean is exposed without explicit permission checks, as this minimal single bit of information supports some critical features for which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI entry points like “Show on another screen”), and helps avoid unnecessarily prompting single-screen users for inapplicable information and capabilities. This generally follows a TAG design principle for [device enumeration](https://w3ctag.github.io/design-principles/#device-enumeration).
 
-Many user agents already effectively expose the presence of multiple screens to windows located on secondary screens, where `window.screen.availLeft|Top` >> 0. Script access of this bit is a detectable [active fingerprinting](https://w3c.github.io/fingerprinting-guidance/#active) signal, which may be observed and blocked by the user agent. Additionally, user agents that do not constrain unpermissioned window placement requests to the [=/current screen=] allow adversaries to attempt programatic placement on other screens, at which point information about that `window.screen` is exposed.
+Many user agents already effectively expose the presence of multiple screens to windows located on secondary screens, where `window.screen.availLeft|Top` >> 0. Script access of this bit is a detectable [active fingerprinting](https://w3c.github.io/fingerprinting-guidance/#active) signal, which may be observed and blocked by the user agent. Additionally, user agents that do not constrain unpermissioned window placement requests to the [=/current screen=] allow adversaries to attempt programmatic placement on other screens, at which point information about that `window.screen` is exposed.
 
 The new `Screen.onchange` events pose a slight risk by making [ephemeral fingerprinting](https://github.com/asankah/ephemeral-fingerprinting) easier, but scripts can already achieve the same result by polling for changes to `window.screen`. This risk could be partially mitigated by delaying event dispatch for hidden documents until such documents are no longer hidden.
 
@@ -747,7 +747,7 @@ See [security_and_privacy.md](https://github.com/webscreens/window-placement/blo
 # Accessibility Considerations # {#a11y}
 <!-- ====================================================================== -->
 
-This specification enables sites to place content on specific screens, which may pose limited new accessibility risks. The visual presentation, non-visual rendering, and effect of assistive technologies on the content itself is not commonly substantially influenced by the placement of content on one screen or another. Still, existing accessibility risks of programatic content placement may be exacerbated by the expanded areas over which content may be placed. Existing accessibility considerations regarding [=/default powerful feature=] permission models, prompting methods, and permission-related UIs, are equally pertinent to this particular sepcification's permission.
+This specification enables sites to place content on specific screens, which may pose limited new accessibility risks. The visual presentation, non-visual rendering, and effect of assistive technologies on the content itself is not commonly substantially influenced by the placement of content on one screen or another. Still, existing accessibility risks of programmatic content placement may be exacerbated by the expanded areas over which content may be placed. Existing accessibility considerations regarding [=/default powerful feature=] permission models, prompting methods, and permission-related UIs, are equally pertinent to this particular specification's permission.
 
 There are no documented accessibility considerations pertaining to the structured screen information (and accessibility features thereof) exposed by the API at this time.
 

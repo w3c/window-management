@@ -142,7 +142,7 @@ if (screen.isExtended) {
 Observing legacy {{Screen}} attribute changes is useful for adapting content, even on single-screen devices. Furthermore, observing {{Screen/isExtended}} is useful for detecting transitions between single-screen and multi-screen configurations. To avoid polling, {{Screen/change}} events are fired at the {{Screen}} object:
 
 ```js
-screen.addEventListener('change') e => {
+screen.addEventListener('change', e => {
   // An attribute of the legacy `Screen` interface has changed.
 });
 ```
@@ -721,7 +721,7 @@ Other points to note:
 - Placing content on a screen other than the [=/current screen=] is unlikely to create additional clickjacking risk for users, since the user's cursor or finger is likely to be co-located with the [=/current screen=], not on a separate screen.
 - Gating pre-existing placement capabilities on the specified permission may be reasonable.
 
-See [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md) for additional explorations of security concerns.
+See [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/main/security_and_privacy.md) for additional explorations of security concerns.
 
 <!-- ====================================================================== -->
 # Privacy Considerations # {#privacy}
@@ -742,7 +742,7 @@ Alternative API shapes giving less power to sites were considered, but offer poo
 Other points to note:
 - Gating pre-existing information exposure on the specified permission may be reasonable.
 
-See [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/master/security_and_privacy.md) for additional explorations of privacy concerns.
+See [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/main/security_and_privacy.md) for additional explorations of privacy concerns.
 
 <!-- ====================================================================== -->
 # Accessibility Considerations # {#a11y}

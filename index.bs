@@ -435,7 +435,7 @@ The <dfn attribute for=Screen>isExtended</dfn> getter steps are:
 
 The <dfn attribute for=Screen>onchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=Screen>`change`</a>.
 
-When any [=screen/basic observable property=] of the {{Window}}'s [=/current screen=] changes, [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/fire an event=] with type <dfn event for=Screen>`change`</dfn> at the {{Screen}} object referenced by {{Window}}'s {{Window/screen}} attribute.
+When any [=screen/basic observable property=] of a {{Window}} |window|'s [=/current screen=] changes, [=/queue a global task=] on the [=/relevant global object=] of |window| using the [=/window placement task source=] to [=/fire an event=] with type <dfn event for=Screen>`change`</dfn> at the {{Screen}} object referenced by |window|'s {{Window/screen}} attribute.
 
 <!-- ====================================================================== -->
 ## Extensions to the {{Window}} interface ## {#api-extensions-to-window}
@@ -576,7 +576,7 @@ Note: {{ScreenDetails/currentScreen}} is guaranteed to be `===` comparable with 
 
 The <dfn attribute for=ScreenDetails>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`screenschange`</a>.
 
-When the set of {{ScreenDetails/screens}} changes, [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/fire an event=] with type <dfn event for=ScreenDetails>`screenschange`</dfn> at the {{ScreenDetails}} object stored in the {{Window}}'s internal slot {{Window/[[screenDetails]]}}.
+When the set of {{ScreenDetails/screens}} of a {{ScreenDetails}} object |screenDetails| changes, [=/queue a global task=] on the [=/relevant global object=] of |screenDetails| using the [=/window placement task source=] to [=/fire an event=] with type <dfn event for=ScreenDetails>`screenschange`</dfn> at |screenDetails|.
 
 <!-- ====================================================================== -->
 ### {{ScreenDetails/oncurrentscreenchange}} attribute ### {#api-screendetails-oncurrentscreenchange-attribute}
@@ -584,7 +584,7 @@ When the set of {{ScreenDetails/screens}} changes, [=/Queue a global task=] on t
 
 The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`currentscreenchange`</a>.
 
-When the [=/current screen=] of a {{Window}} changes from one [=/screen=] to another (e.g. the {{Window}} has been moved to a different display), or when any [=screen/basic observable property=] or [=screen/advanced observable property=] of the [=/current screen=] of a {{Window}} changes, [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/fire an event=] with type <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{ScreenDetails}} object stored in the {{Window}}'s internal slot {{Window/[[screenDetails]]}}.
+When the [=/current screen=] of a {{Window}} |window| changes from one [=/screen=] to another (e.g. the {{Window}} has been moved to a different display), or when any [=screen/basic observable property=] or [=screen/advanced observable property=] of the [=/current screen=] of |window| changes, [=/queue a global task=] on the [=/relevant global object=] of |window| using the [=/window placement task source=] to [=/fire an event=] with type <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{ScreenDetails}} object stored in |window|'s internal slot {{Window/[[screenDetails]]}}.
 
 <!-- ====================================================================== -->
 ## The {{ScreenDetailed}} interface ## {#api-screendetailed-interface}
@@ -656,7 +656,7 @@ The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return the
 
 The <dfn attribute for=ScreenDetailed>onchange</dfn> attribute is the {{Screen/onchange}} attribute inherited from {{Screen}}.
 
-When any [=screen/basic observable property=] or [=screen/advanced observable property=] of a {{ScreenDetailed}}'s associated [=/screen=] changes, [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/fire an event=] with type <dfn event for=ScreenDetailed>`change`</dfn> at the {{ScreenDetailed}} object.
+When any [=screen/basic observable property=] or [=screen/advanced observable property=] of a [=/screen=] represented by a {{ScreenDetailed}} object |screenDetailed| changes, [=/queue a global task=] on the [=/relevant global object=] of |screenDetailed| using the [=/window placement task source=] to [=/fire an event=] with type <dfn event for=ScreenDetailed>`change`</dfn> at |screenDetailed|.
 
 <!-- ====================================================================== -->
 ## Extensions to {{FullscreenOptions}} ## {#api-extensions-to-fullscreen-options}

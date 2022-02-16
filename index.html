@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 2e3c4c68b, updated Fri Jan 14 14:49:00 2022 -0800" name="generator">
   <link href="https://webscreens.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="4d36c2149af9c622248284972ea820a5c8d5020c" name="document-revision">
+  <meta content="bf5e05a9d94ad61e7b24f1284f255b8c01371f6f" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -609,7 +609,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://w3.org/community/webscreens/"> <img alt="Logo" height="100" src="logo.svg" width="100"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2022-02-11">11 February 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2022-02-16">16 February 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -617,7 +617,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <dt>This version:
       <dd><a class="u-url" href="https://webscreens.github.io/window-placement">https://webscreens.github.io/window-placement</a>
       <dt>Test Suite:
-      <dd><a href="https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration">https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration</a>
+      <dd><a href="https://github.com/web-platform-tests/wpt/tree/master/screen-details">https://github.com/web-platform-tests/wpt/tree/master/screen-details</a>
       <dt>Issue Tracking:
       <dd><a href="https://github.com/webscreens/window-placement/issues/">GitHub</a>
       <dd><a href="#issues-index">Inline In Spec</a>
@@ -1032,7 +1032,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel">in parallel</a>:</p>
       <ol>
        <li data-md>
-        <p>Let <var>permissionState</var> be <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">request permission to use</a> the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionname" id="ref-for-dom-permissionname">PermissionName</a></code> <code>"window-placement"</code>.</p>
+        <p>Let <var>permissionState</var> be <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">request permission to use</a> the <code class="idl"><a data-link-type="idl">PermissionName</a></code> <code>"window-placement"</code>.</p>
        <li data-md>
         <p>If <var>permissionState</var> is "<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-denied" id="ref-for-dom-permissionstate-denied">denied</a></code>" then <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject">reject</a> <var>promise</var> with a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code> and abort these steps.</p>
        <li data-md>
@@ -1196,7 +1196,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
    <h3 class="heading settled" data-level="3.6" id="api-permission-api-integration"><span class="secno">3.6. </span><span class="content">Permission API Integration</span><a class="self-link" href="#api-permission-api-integration"></a></h3>
    <p>This specification defines a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-default-powerful-feature" id="ref-for-dfn-default-powerful-feature">default powerful feature</a> that is identified by the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-name" id="ref-for-dfn-name">name</a> "<dfn class="dfn-paneled idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export id="dom-permissionname-window-placement"><code>window-placement</code></dfn>".</p>
    <p>The <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a> API provides a uniform way for websites to query the state of their permissions.</p>
-   <p class="issue" id="issue-2d3ea4d4"><a class="self-link" href="#issue-2d3ea4d4"></a> Add <code class="idl"><a data-link-type="idl" href="#dom-permissionname-window-placement" id="ref-for-dom-permissionname-window-placement">window-placement</a></code> to <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionname" id="ref-for-dom-permissionname①">PermissionName</a></code> in <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>.</p>
+   <p class="issue" id="issue-2d3ea4d4"><a class="self-link" href="#issue-2d3ea4d4"></a> Add <code class="idl"><a data-link-type="idl" href="#dom-permissionname-window-placement" id="ref-for-dom-permissionname-window-placement">window-placement</a></code> to <code class="idl"><a data-link-type="idl">PermissionName</a></code> in <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>.</p>
    <p class="issue" id="issue-dc61ea20"><a class="self-link" href="#issue-dc61ea20"></a> Define behavior of cached objects and method steps when the permission is revoked. (See <a href="https://github.com/webscreens/window-placement/issues/80">#80</a>)</p>
    <h3 class="heading settled" data-level="3.7" id="api-permission-policy-integration"><span class="secno">3.7. </span><span class="content">Permission Policy integration</span><a class="self-link" href="#api-permission-policy-integration"></a></h3>
    <p>This specification defines a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature" id="ref-for-policy-controlled-feature">policy-controlled feature</a> identified by the string "<dfn class="dfn-paneled" data-dfn-for="permission-policy" data-dfn-type="dfn" data-noexport id="permission-policy-window-placement">window-placement</dfn>". Its <a data-link-type="dfn" href="https://w3c.github.io/webappsec-permissions-policy/#default-allowlist" id="ref-for-default-allowlist">default allowlist</a> is <code>"self"</code>. See <a data-link-type="biblio" href="#biblio-permissions-policy">[permissions-policy]</a> and its list of <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features">Experimental Features</a>.</p>
@@ -1629,13 +1629,6 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-list-sort-in-ascending-order">3.3.1. screens attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-permissionname">
-   <a href="https://w3c.github.io/permissions/#dom-permissionname">https://w3c.github.io/permissions/#dom-permissionname</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-permissionname">3.2.1. getScreenDetails() method</a>
-    <li><a href="#ref-for-dom-permissionname①">3.6. Permission API Integration</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-default-powerful-feature">
    <a href="https://w3c.github.io/permissions/#dfn-default-powerful-feature">https://w3c.github.io/permissions/#dfn-default-powerful-feature</a><b>Referenced in:</b>
    <ul>
@@ -1837,7 +1830,6 @@ for helping craft this specification.</p>
    <li>
     <a data-link-type="biblio">[permissions]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dom-permissionname">PermissionName</span>
      <li><span class="dfn-paneled" id="term-for-dfn-default-powerful-feature">default powerful feature</span>
      <li><span class="dfn-paneled" id="term-for-dom-permissionstate-denied">denied</span>
      <li><span class="dfn-paneled" id="term-for-dfn-name">name</span>
@@ -1887,7 +1879,7 @@ for helping craft this specification.</p>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
-   <dd>Marcos Caceres; Mike Taylor. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 10 February 2022. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
+   <dd>Marcos Caceres; Mike Taylor. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 15 February 2022. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-permissions-policy">[PERMISSIONS-POLICY]
    <dd>Ian Clelland. <a href="https://www.w3.org/TR/permissions-policy-1/"><cite>Permissions Policy</cite></a>. 16 July 2020. WD. URL: <a href="https://www.w3.org/TR/permissions-policy-1/">https://www.w3.org/TR/permissions-policy-1/</a>
    <dt id="biblio-rfc2119">[RFC2119]
@@ -1944,7 +1936,7 @@ for helping craft this specification.</p>
   <div style="counter-reset:issue">
    <div class="issue"> Should <a data-link-type="dfn" href="#screen-device-pixel-ratio">device pixel ratio</a> include the <a href="https://drafts.csswg.org/cssom-view-1/#page-zoom">page-zoom</a>? <a class="issue-return" href="#issue-702b01cb" title="Jump to section">↵</a></div>
    <div class="issue"> Make <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen">Screen</a></code> derive from <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a></code> in <a href="https://www.w3.org/TR/cssom-view/#the-screen-interface"><cite>CSSOM View Module 1</cite> § 4.3 The Screen Interface</a>. <a class="issue-return" href="#issue-288178db" title="Jump to section">↵</a></div>
-   <div class="issue"> Add <code class="idl"><a data-link-type="idl" href="#dom-permissionname-window-placement">window-placement</a></code> to <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionname">PermissionName</a></code> in <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>. <a class="issue-return" href="#issue-2d3ea4d4" title="Jump to section">↵</a></div>
+   <div class="issue"> Add <code class="idl"><a data-link-type="idl" href="#dom-permissionname-window-placement">window-placement</a></code> to <code class="idl"><a data-link-type="idl">PermissionName</a></code> in <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>. <a class="issue-return" href="#issue-2d3ea4d4" title="Jump to section">↵</a></div>
    <div class="issue"> Define behavior of cached objects and method steps when the permission is revoked. (See <a href="https://github.com/webscreens/window-placement/issues/80">#80</a>) <a class="issue-return" href="#issue-dc61ea20" title="Jump to section">↵</a></div>
    <div class="issue"> Move <a data-link-type="dfn" href="#permission-policy-window-placement">window-placement</a> to <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Proposed</a> or <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Standardized</a> feature lists when appropriate. <a class="issue-return" href="#issue-bee77a11" title="Jump to section">↵</a></div>
    <div class="issue"> Ensure we didn’t forget anyone! <a class="issue-return" href="#issue-e9601204" title="Jump to section">↵</a></div>

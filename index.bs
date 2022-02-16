@@ -10,7 +10,7 @@ Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com
 Editor: Mike Wasserman, Google Inc. https://google.com, msw@google.com
 Repository: webscreens/window-placement
 Group: secondscreencg
-Test Suite: https://github.com/web-platform-tests/wpt/tree/master/screen_enumeration
+Test Suite: https://github.com/web-platform-tests/wpt/tree/master/screen-details
 Logo: logo.svg
 Favicon: logo.svg
 Complain About: accidental-2119 yes, missing-example-ids yes

@@ -520,7 +520,7 @@ The following {{Window}} attributes and method definitions are updated to return
 
 <xmp class=idl>
 [Exposed=Window, SecureContext]
-interface ScreenDetails {
+interface ScreenDetails : EventTarget {
   readonly attribute FrozenArray<ScreenDetailed> screens;
   readonly attribute ScreenDetailed currentScreen;
 

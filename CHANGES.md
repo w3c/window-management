@@ -2,13 +2,13 @@
 
 This file describes API surface changes made during experimentation. These
 changes were made to address some feedback and requests:
-- Github issue [30](https://github.com/webscreens/window-placement/issues/30)
+- Github issue [30](https://github.com/w3c/window-placement/issues/30)
 presented compelling API design advice from @jakearchibald and @kenchris:
   - Permission-gate access to EventTarget for screen array changes
   - Ensure data is updated (& sync accessible...) when change events are fired
   - Resolve unclear permission-gating of isMultiScreen()
-- GitHub issues [35](https://github.com/webscreens/window-placement/issues/35)
-and [21](https://github.com/webscreens/window-placement/issues/21) suggest
+- GitHub issues [35](https://github.com/w3c/window-placement/issues/35)
+and [21](https://github.com/w3c/window-placement/issues/21) suggest
 aligning related proposals, partly motivating a new Screens interface.
   - See the proposed [Screen Fold API](https://w3c.github.io/screen-fold/) and
   [Window Segments Enumeration API](https://github.com/webscreens/window-segments)
@@ -27,7 +27,7 @@ aligning related proposals, partly motivating a new Screens interface.
 
 **Before (1st Origin Trial, Chrome M86-M88)**
 
-[This explainer snapshot](https://github.com/webscreens/window-placement/blob/a1e6c7cbf6e60ca04483ef817c5ea0ff069beecd/EXPLAINER.md)
+[This explainer snapshot](https://github.com/w3c/window-placement/blob/a1e6c7cbf6e60ca04483ef817c5ea0ff069beecd/EXPLAINER.md)
 captures our older vision for the API, implemented in early experimentation.
 
 ```javascript
@@ -56,7 +56,7 @@ window.addEventListener('screenschange', async function() {
 
 **After (2nd Origin Trial, Chrome M93-M96)**
 
-The [explainer](https://github.com/webscreens/window-placement/blob/master/EXPLAINER.md)
+The [explainer](https://github.com/w3c/window-placement/blob/master/EXPLAINER.md)
 and [draft spec](https://webscreens.github.io/window-placement/) capture our
 latest vision for the API, implemented in later experimentation.
 

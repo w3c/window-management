@@ -2,7 +2,7 @@
 
 This document explores alternatives, possible supplements, other considerations,
 and examples that have helped shape the current proposal, which is described in
-[EXPLAINER.md](https://github.com/webscreens/window-placement/blob/master/explainer.md).
+[EXPLAINER.md](https://github.com/w3c/window-placement/blob/master/explainer.md).
 Some explorations here may be included in future iterations of the proposal, or
 in separate proposals, but they are **not** part of the current proposal.
 
@@ -408,7 +408,7 @@ Here are some possible use cases for the extended window state and display APIs:
   * Doctor minimizes patient case window, app minimizes associated image windows
   * Doctor selects patient case entry in a list, app restores minimized windows
 * Web application offers settings to show or hide minimal-ui native controls
-* Video conferencing window wishes to be [always-on-top](https://github.com/webscreens/window-placement/issues/10)
+* Video conferencing window wishes to be [always-on-top](https://github.com/w3c/window-placement/issues/10)
 
 There are open questions around the value and uses cases here:
 * Need additional attestation of compelling use cases from developers
@@ -560,7 +560,7 @@ window.addEventListener("move", e => { palette.moveBy(e.deltaX, e.deltaY); });
   * May be useful for choosing a suitable HDR display or adapting content.
   * May also be expressed as minimum luminance, maximum SDR luminance,
     maximum HDR luminance, and maximum full frame HDR luminance (see
-    [#20](https://github.com/webscreens/window-placement/issues/20#issuecomment-847451686))
+    [#20](https://github.com/w3c/window-placement/issues/20#issuecomment-847451686))
   * Similar information is exposed or proposed - see
     [High Dynamic Range and Wide Gamut Color on the Web](https://w3c.github.io/ColorWeb-CG)
     and [Media Capabilities](https://www.w3.org/TR/media-capabilities)
@@ -568,7 +568,7 @@ window.addEventListener("move", e => { palette.moveBy(e.deltaX, e.deltaY); });
   * May be useful for choosing a suitable WCG display or adapting content.
   * May also be expressed with red, green, blue, and white point chromaticity
     coordinates (see
-    [#20](https://github.com/webscreens/window-placement/issues/20#issuecomment-847451686))
+    [#20](https://github.com/w3c/window-placement/issues/20#issuecomment-847451686))
   * Similar information is exposed or proposed - see
     [High Dynamic Range and Wide Gamut Color on the Web](https://w3c.github.io/ColorWeb-CG)
     and [Media Capabilities](https://www.w3.org/TR/media-capabilities)

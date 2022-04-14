@@ -2,14 +2,14 @@
 Title: Multi-Screen Window Placement
 Shortname: multi-screen
 Abstract: This document defines a web platform API that allows script to query the device for information about its screens, and place content on specific screens.
-Status: CG-DRAFT
-URL: https://webscreens.github.io/window-placement
+Status: ED
+URL: https://w3c.github.io/window-placement
 Level: 1
 Editor: Victor Costan, Google Inc. https://google.com, costan@google.com
 Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com
 Editor: Mike Wasserman, Google Inc. https://google.com, msw@google.com
-Repository: webscreens/window-placement
-Group: secondscreencg
+Repository: w3c/window-placement
+Group: secondscreenwg
 Test Suite: https://github.com/web-platform-tests/wpt/tree/master/screen-details
 Logo: logo.svg
 Favicon: logo.svg
@@ -693,7 +693,7 @@ The [[permissions]] API provides a uniform way for websites to query the state o
 
 Issue: Add {{PermissionName/window-placement}} to {{PermissionName}} in [[permissions]].
 
-Issue: Define behavior of cached objects and method steps when the permission is revoked. (See [#80](https://github.com/webscreens/window-placement/issues/80))
+Issue: Define behavior of cached objects and method steps when the permission is revoked. (See [#80](https://github.com/w3c/window-placement/issues/80))
 
 <!-- ====================================================================== -->
 ## Permission Policy integration ## {#api-permission-policy-integration}
@@ -721,7 +721,7 @@ Other points to note:
 - Placing content on a screen other than the [=/current screen=] is unlikely to create additional clickjacking risk for users, since the user's cursor or finger is likely to be co-located with the [=/current screen=], not on a separate screen.
 - Gating pre-existing placement capabilities on the specified permission may be reasonable.
 
-See [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/main/security_and_privacy.md) for additional explorations of security concerns.
+See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md) for additional explorations of security concerns.
 
 <!-- ====================================================================== -->
 # Privacy Considerations # {#privacy}
@@ -742,7 +742,7 @@ Alternative API shapes giving less power to sites were considered, but offer poo
 Other points to note:
 - Gating pre-existing information exposure on the specified permission may be reasonable.
 
-See [security_and_privacy.md](https://github.com/webscreens/window-placement/blob/main/security_and_privacy.md) for additional explorations of privacy concerns.
+See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md) for additional explorations of privacy concerns.
 
 <!-- ====================================================================== -->
 # Accessibility Considerations # {#a11y}

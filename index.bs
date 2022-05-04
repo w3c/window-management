@@ -5,7 +5,6 @@ Abstract: This document defines a web platform API that allows script to query t
 Status: ED
 URL: https://w3c.github.io/window-placement
 Level: 1
-Editor: Victor Costan, Google Inc. https://google.com, costan@google.com
 Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com
 Editor: Mike Wasserman, Google Inc. https://google.com, msw@google.com
 Repository: w3c/window-placement
@@ -780,8 +779,9 @@ Peter Linss,
 Reilly Grant,
 Staphany Park,
 Theresa O'Connor,
-Thomas Nattestad, and
-Thomas Steiner
+Thomas Nattestad,
+Thomas Steiner, and
+Victor Costan
 <!--
 -->for helping craft this specification.
 

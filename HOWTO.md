@@ -1,11 +1,14 @@
 # How to use the Multi-Screen Window Placement API
 
-The Multi-Screen Window Placement API is currently available in Chrome 93 and later behind a flag.
+The Multi-Screen Window Placement API is currently available in Chrome:
+- Chrome 100+ enables Multi-Screen Window Placement APIs by default.
+- Chrome 93+ supports Multi-Screen Window Placement APIs with either one of these flags enabled:
+  - chrome://flags#enable-experimental-web-platform-features
+  - `chrome --enable-blink-features=WindowPlacement`
 
-1) Download Chrome [Desktop](https://www.google.com/chrome/).
-2) Navigate to `chrome://flags` and enable `Experimental Web Platform features`.
-3) Navigate to a test page, e.g. https://michaelwasserman.github.io/window-placement-demo
-4) Interact with the test page, which requests permission to use info about your screens to open and place windows.
+Try these basic API demos, which request permission to use info about your screens to open and place windows:
+- https://michaelwasserman.github.io/window-placement-demo
+- https://web.dev/multi-screen-window-placement has a demo: https://window-placement.glitch.me
 
 Here is an example of how to use the API:
 
@@ -36,3 +39,10 @@ async function main() {
   }
 };
 ```
+
+## How to use API enhancements
+
+[Fullscreen Companion Window](https://chromestatus.com/feature/5173162437246976) permits sites with the window-placement permission to open a companion popup window when requesting fullscreen on multi-screen devices. Test this by invoking "Fullscreen slide and open notes" in the [window-placement-demo]( https://michaelwasserman.github.io/window-placement-demo).
+  - Chrome 102+ supports this enhancement with either one of these flags enabled:
+    - chrome://flags#enable-experimental-web-platform-features
+    - `chrome --enable-features=WindowPlacementFullscreenCompanionWindow`

@@ -43,6 +43,5 @@ async function main() {
 ## How to use API enhancements
 
 [Fullscreen Companion Window](https://chromestatus.com/feature/5173162437246976) permits sites with the window-placement permission to open a companion popup window when requesting fullscreen on multi-screen devices. Test this by invoking "Fullscreen slide and open notes" in the [window-placement-demo]( https://michaelwasserman.github.io/window-placement-demo).
-  - Chrome 102+ supports this enhancement with either one of these flags enabled:
-    - chrome://flags#enable-experimental-web-platform-features
+  - Chrome 102+ supports this enhancement with this flags enabled:
     - `chrome --enable-features=WindowPlacementFullscreenCompanionWindow`

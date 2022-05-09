@@ -42,6 +42,6 @@ async function main() {
 
 ## How to use API enhancements
 
-[Fullscreen Companion Window](https://chromestatus.com/feature/5173162437246976) permits sites with the window-placement permission to open a companion popup window when requesting fullscreen on multi-screen devices. Test this by invoking "Fullscreen slide and open notes" in the [window-placement-demo]( https://michaelwasserman.github.io/window-placement-demo).
+[Fullscreen Companion Window](https://chromestatus.com/feature/5173162437246976) permits sites with the window-placement permission to [initiate a multi-screen experience](https://github.com/w3c/window-placement/blob/main/EXPLAINER_initiating_multi_screen_experiences.md) from a single user activation. Specifically, this proposed enhancement allows scripts to open a popup window when requesting fullscreen on a specific screen of a multi-screen device. Test this by invoking "Fullscreen slide and open notes" in the [window-placement-demo]( https://michaelwasserman.github.io/window-placement-demo).
   - Chrome 102+ supports this enhancement with this flags enabled:
     - `chrome --enable-features=WindowPlacementFullscreenCompanionWindow`

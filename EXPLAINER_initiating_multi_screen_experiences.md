@@ -58,6 +58,11 @@ to support initiating a multi-screen experience from a single user gesture.
 `Tracking User Activation` algorithms and concepts to conditionally permit a
 fullscreen request and a popup window request from a single user-activation.
 
+An eventual end-goal (that is not explored here) is to enable scripts to enter
+fullscreen on N screens and open M popup windows on M screens from a single user
+activation, where N and M are disjoint and potentially empty sets, as long as
+the site has the multi-screen `window-placement` permission.
+
 ## Proposal
 
 Allow sites with the `window-placement` permission to
@@ -92,6 +97,11 @@ defining standardized algorithms. It is partly inspired by existing standardized
 precedent: requestFullscreen()
 [waives its activation requirement](https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen)
 on user generated orientation changes.
+
+Note: the `window-placement` permission is requested earlier, as needed, by
+[`Window.getScreenDetiails()`](https://w3c.github.io/window-placement/#dom-window-getscreendetails),
+before scripts can request fullscreen (or open a popup) on a specific screen.
+So it is expected that scripts making these requests already have permission.
 
 ### Spec Changes
 

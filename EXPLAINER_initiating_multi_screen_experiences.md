@@ -99,13 +99,13 @@ precedent: requestFullscreen()
 on user generated orientation changes.
 
 Note: the `window-placement` permission is requested earlier, as needed, by
-[`Window.getScreenDetiails()`](https://w3c.github.io/window-placement/#dom-window-getscreendetails),
+[`Window.getScreenDetails()`](https://w3c.github.io/window-placement/#dom-window-getscreendetails),
 before scripts can request fullscreen (or open a popup) on a specific screen.
 So it is expected that scripts making these requests already have permission.
 
 ### Spec Changes
 
-This proposal can be brought about as alogorithmic changes to existing specs:
+This proposal can be brought about as algorithmic changes to existing specs:
 - [Tracking User Activation](https://html.spec.whatwg.org/multipage/interaction.html#tracking-user-activation)
 - [`Element.requestFullscreen()`](https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen)
 - [The rules for choosing a browsing context](https://html.spec.whatwg.org/multipage/browsers.html#the-rules-for-choosing-a-browsing-context-given-a-browsing-context-name)

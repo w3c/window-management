@@ -217,7 +217,7 @@ function openCenteredWindow(url, screenDetailed, w, h) {
 ### Initiate multi-screen experiences ### {#usage-overview-initiate-multi-screen-experiences}
 <!-- ====================================================================== -->
 
-A commonly requested multi-screen use case is to initiate a compelling multi-screen experience from a single user activation. One specific proposed form is permitting a site to [[#usage-overview-place-fullscreen-content-on-a-specific-screen]] and [[#usage-overview-place-windows-on-a-specific-screen]] from a single user gesture. This can be accomplished by first requesting fullscreen on a specific screen of a multi-screen device, and then opening a popup window on a another screen of the device, in a single event listener.
+A commonly requested multi-screen use case is to initiate a compelling multi-screen experience from a single user activation. One specific proposed form is permitting a site to [[#usage-overview-place-fullscreen-content-on-a-specific-screen]] and [[#usage-overview-place-windows-on-a-specific-screen]] from a single user gesture. This can be accomplished by first requesting fullscreen on a specific screen of a multi-screen device, and then opening a popup window on another screen of the device, in a single event listener.
 
 ```js
 initiateMultiScreenExperienceButton.addEventListener('click', async () => {

@@ -708,9 +708,13 @@ Issue: Move [=permission-policy/window-placement=] to [Proposed](https://github.
 # Security Considerations # {#security}
 <!-- ====================================================================== -->
 
-This specification enables sites to place content on specific screens, which may pose limited new security risks. Sites may attempt to prominently display sensitive content on unexpected screens, surreptitiously display undesirable content on less conspicuous screens, or otherwise place content on specific screens to act in deceptive, abusive, or annoying manners.
+This specification enables sites to place content on specific screens, which may pose limited new security risks:
+1. Sites may attempt to prominently display sensitive content on unexpected screens
+1. Sites may attempt to surreptitiously display undesirable content on less conspicuous screens, for example:
+  1. Sites may attempt to spoof the OS, browser, or other sites for phishing attacks, by drawing the user's attention to a particular screen, and use interaction signals there to show deceptive content on another screen that is less closely observed
+1. Sites may attempt to otherwise place content on specific screens to act in deceptive, abusive, or annoying manners 
 
-To help mitigate such risks, cross-screen placement capabilities are restricted to secure contexts, require explicit user permission (where prompting is only possible with transient user activation), and are subject to permission policy. If any of these requirements are not met, placement requests may be denied or clamped to the [=/current screen=], matching pre-existing behavior of some user agents. User agents can generally measure and otherwise intervene when sites request any new capabilities.
+To help mitigate such risks, cross-screen placement capabilities require explicit user permission (where prompting is only possible with transient user activation), are restricted to secure contexts, and are subject to permission policy. If any of these requirements are not met, placement requests may be denied or clamped to the [=/current screen=], matching pre-existing behavior of some user agents. User agents can generally measure and otherwise intervene when sites request any new capabilities.
 
 To enable this new functionality in a nested browsing context, it needs to be specifically allowed via [[permissions-policy]], either through an appropriate declaration in the `allow` attribute of the HTML `iframe` element, or through a `Permissions-Policy` HTTP header delivered with the document through which it is nested. This prevents e.g. content from third parties to place content on specific screens without explicit permission.
 
@@ -719,6 +723,7 @@ Other points to note:
 - Transient user activation is typically already required for {{Element/requestFullscreen()}} and {{Window/open()}}, but not for {{Window/moveTo()}}, {{Window/moveBy()}}, {{Window/resizeTo()}}, nor {{Window/resizeBy()}}.
 - Placing content on a screen other than the [=/current screen=] is unlikely to create additional clickjacking risk for users, since the user's cursor or finger is likely to be co-located with the [=/current screen=], not on a separate screen.
 - Gating pre-existing placement capabilities on the specified permission may be reasonable.
+- User agents may choose to call user attention to window placement operations targeting specific screens. For example, requests to place fullscreen content or windows on a screen that does not contain the currently focused window may be cause for showing prominent security surfaces on all screens, or the screen with the active window, akin to pre-existing indicators shown by user agents when sites enter fullscreen.
 
 See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md) for additional explorations of security concerns.
 

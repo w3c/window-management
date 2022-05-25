@@ -6,10 +6,10 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
+  <meta content="Bikeshed version fdd5936bf, updated Tue May 24 14:57:39 2022 -0700" name="generator">
   <link href="https://w3c.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="c219ad2bfc77a8c9889e81eb10f35be5a4dcfb6e" name="document-revision">
+  <meta content="3e0c8cf2dbd010afbe86fdb74ce20f5e5b073e0d" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -609,7 +609,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-05-20">20 May 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-05-25">25 May 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1202,8 +1202,18 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
    <p class="note" role="note"><span>Note:</span> A <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document" id="ref-for-concept-document">document</a>’s permissions policy determines whether any content in that document is allowed to obtain <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑧">ScreenDetails</a></code> or place content on specific screens. If disabled, promises returned by <code class="idl"><a data-link-type="idl" href="#dom-window-getscreendetails" id="ref-for-dom-window-getscreendetails⑤">getScreenDetails</a></code> will be rejected, and requests to place content on specific screens will be clamped to the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen⑨">current screen</a>.</p>
    <p class="issue" id="issue-bee77a11"><a class="self-link" href="#issue-bee77a11"></a> Move <a data-link-type="dfn" href="#permission-policy-window-placement" id="ref-for-permission-policy-window-placement">window-placement</a> to <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Proposed</a> or <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Standardized</a> feature lists when appropriate.</p>
    <h2 class="heading settled" data-level="4" id="security"><span class="secno">4. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
-   <p>This specification enables sites to place content on specific screens, which may pose limited new security risks. Sites may attempt to prominently display sensitive content on unexpected screens, surreptitiously display undesirable content on less conspicuous screens, or otherwise place content on specific screens to act in deceptive, abusive, or annoying manners.</p>
-   <p>To help mitigate such risks, cross-screen placement capabilities are restricted to secure contexts, require explicit user permission (where prompting is only possible with transient user activation), and are subject to permission policy. If any of these requirements are not met, placement requests may be denied or clamped to the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①⓪">current screen</a>, matching pre-existing behavior of some user agents. User agents can generally measure and otherwise intervene when sites request any new capabilities.</p>
+   <p>This specification enables sites to place content on specific screens, which may pose limited new security risks:</p>
+   <ol>
+    <li data-md>
+     <p>Sites may attempt to prominently display sensitive content on unexpected screens</p>
+    <li data-md>
+     <p>Sites may attempt to surreptitiously display undesirable content on less conspicuous screens, for example:</p>
+    <li data-md>
+     <p>Sites may attempt to spoof the OS, browser, or other sites for phishing attacks, by drawing the user’s attention to a particular screen, and use interaction signals there to show deceptive content on another screen that is less closely observed</p>
+    <li data-md>
+     <p>Sites may attempt to otherwise place content on specific screens to act in deceptive, abusive, or annoying manners</p>
+   </ol>
+   <p>To help mitigate such risks, cross-screen placement capabilities require explicit user permission (where prompting is only possible with transient user activation), are restricted to secure contexts, and are subject to permission policy. If any of these requirements are not met, placement requests may be denied or clamped to the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①⓪">current screen</a>, matching pre-existing behavior of some user agents. User agents can generally measure and otherwise intervene when sites request any new capabilities.</p>
    <p>To enable this new functionality in a nested browsing context, it needs to be specifically allowed via <a data-link-type="biblio" href="#biblio-permissions-policy">[permissions-policy]</a>, either through an appropriate declaration in the <code>allow</code> attribute of the HTML <code>iframe</code> element, or through a <code>Permissions-Policy</code> HTTP header delivered with the document through which it is nested. This prevents e.g. content from third parties to place content on specific screens without explicit permission.</p>
    <p>Other points to note:</p>
    <ul>
@@ -1215,6 +1225,8 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
      <p>Placing content on a screen other than the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①③">current screen</a> is unlikely to create additional clickjacking risk for users, since the user’s cursor or finger is likely to be co-located with the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①④">current screen</a>, not on a separate screen.</p>
     <li data-md>
      <p>Gating pre-existing placement capabilities on the specified permission may be reasonable.</p>
+    <li data-md>
+     <p>User agents may choose to call user attention to window placement operations targeting specific screens. For example, requests to place fullscreen content or windows on a screen that does not contain the currently focused window may be cause for showing prominent security surfaces on all screens, or the screen with the active window, akin to pre-existing indicators shown by user agents when sites enter fullscreen.</p>
    </ul>
    <p>See <a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy.md">security_and_privacy.md</a> for additional explorations of security concerns.</p>
    <h2 class="heading settled" data-level="5" id="privacy"><span class="secno">5. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
@@ -1869,6 +1881,8 @@ for helping craft this specification.</p>
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. 16 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
    <dt id="biblio-cssom-view">[CSSOM-VIEW]
    <dd>Simon Pieters. <a href="https://www.w3.org/TR/cssom-view-1/"><cite>CSSOM View Module</cite></a>. 17 March 2016. WD. URL: <a href="https://www.w3.org/TR/cssom-view-1/">https://www.w3.org/TR/cssom-view-1/</a>
+   <dt id="biblio-cssom-view-1">[CSSOM-VIEW-1]
+   <dd>CSS Object Model View Module Level 1 URL: <a href="https://www.w3.org/TR/cssom-view/">https://www.w3.org/TR/cssom-view/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-fingerprinting-guidance">[FINGERPRINTING-GUIDANCE]
@@ -1890,6 +1904,14 @@ for helping craft this specification.</p>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
+   <dt id="biblio-cssom-view-1①">[CSSOM-VIEW-1]
+   <dd>CSS Object Model View Module Level 1 URL: <a href="https://www.w3.org/TR/cssom-view/">https://www.w3.org/TR/cssom-view/</a>
+   <dt id="biblio-fullscreen①">[Fullscreen]
+   <dd>Philip Jägenstedt. <a href="https://fullscreen.spec.whatwg.org/"><cite>Fullscreen API Standard</cite></a>. Living Standard. URL: <a href="https://fullscreen.spec.whatwg.org/">https://fullscreen.spec.whatwg.org/</a>
+   <dt id="biblio-permissions①">[PERMISSIONS]
+   <dd>Marcos Caceres; Mike Taylor. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 11 March 2022. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
+   <dt id="biblio-permissions-policy①">[PERMISSIONS-POLICY]
+   <dd>Ian Clelland. <a href="https://www.w3.org/TR/permissions-policy-1/"><cite>Permissions Policy</cite></a>. 16 July 2020. WD. URL: <a href="https://www.w3.org/TR/permissions-policy-1/">https://www.w3.org/TR/permissions-policy-1/</a>
    <dt id="biblio-screen-orientation">[SCREEN-ORIENTATION]
    <dd>Mounir Lamouri; Marcos Caceres; Johanna Herman. <a href="https://www.w3.org/TR/screen-orientation/"><cite>The Screen Orientation API</cite></a>. 6 September 2021. WD. URL: <a href="https://www.w3.org/TR/screen-orientation/">https://www.w3.org/TR/screen-orientation/</a>
   </dl>

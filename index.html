@@ -6,10 +6,10 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version fdd5936bf, updated Tue May 24 14:57:39 2022 -0700" name="generator">
+  <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://w3c.github.io/window-placement" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="3e0c8cf2dbd010afbe86fdb74ce20f5e5b073e0d" name="document-revision">
+  <meta content="8df8fb5dc098959109c41d88d4be01e9dbefe48e" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -609,7 +609,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-05-25">25 May 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-06-07">7 June 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -895,7 +895,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
     </div>
     <p>A <a data-link-type="dfn" href="#screen" id="ref-for-screen⑧">screen</a> has an <dfn class="dfn-paneled" data-dfn-for="screen" data-dfn-type="dfn" data-noexport id="screen-orientation">orientation</dfn>, which is described in <a data-link-type="biblio" href="#biblio-screen-orientation">[screen-orientation]</a>.</p>
     <p>A <a data-link-type="dfn" href="#screen" id="ref-for-screen⑨">screen</a> has a <dfn class="dfn-paneled" data-dfn-for="screen" data-dfn-type="dfn" data-noexport id="screen-label">label</dfn>, which is a string that meaningfully describes the screen to a user.</p>
-    <p class="note" role="note"><span>Note:</span> The <a data-link-type="dfn" href="#screen-label" id="ref-for-screen-label">label</a> can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. <code>"internal"</code> vs. <code>"external"</code>, it could include the dimensions, e.g. <code>"640×480"</code>, it could include hardware model information, e.g. <code>"Acme Telletube 1000x"</code>, it could include a distinguishing number, e.g. <code>"screen 1"</code> vs. <code>"screen 2"</code>, or all of the preceding.</p>
+    <p class="note" role="note"><span>Note:</span> The <a data-link-type="dfn" href="#screen-label" id="ref-for-screen-label">label</a> can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. <code>"internal"</code> vs. <code>"external"</code>, it could include the dimensions, e.g. <code>"640×480"</code>, it could include hardware model information, e.g. <code>"Acme Telletube 1000x"</code> from <a href="https://en.wikipedia.org/wiki/Extended_Display_Identification_Data">VESA E-EDID</a> data, it could include a distinguishing number, e.g. <code>"screen 1"</code> vs. <code>"screen 2"</code>, or all of the preceding. The label can be an empty string if underlying display details are unknown or the user agent chooses to hide that information.</p>
     <p><strong class="advisement"> While many screen attributes could be used for <a data-link-type="dfn" href="https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting" id="ref-for-dfn-active-fingerprinting">active fingerprinting</a>, the strings used as <a data-link-type="dfn" href="#screen-label" id="ref-for-screen-label①">labels</a> in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.</strong></p>
     <p class="issue" id="issue-702b01cb"><a class="self-link" href="#issue-702b01cb"></a> Should <a data-link-type="dfn" href="#screen-device-pixel-ratio" id="ref-for-screen-device-pixel-ratio">device pixel ratio</a> include the <a href="https://drafts.csswg.org/cssom-view-1/#page-zoom">page-zoom</a>?</p>
    </div>
@@ -1894,7 +1894,7 @@ for helping craft this specification.</p>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
-   <dd>Marcos Caceres; Mike Taylor. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 11 March 2022. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
+   <dd>Marcos Caceres; Mike Taylor. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 27 May 2022. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-permissions-policy">[PERMISSIONS-POLICY]
    <dd>Ian Clelland. <a href="https://www.w3.org/TR/permissions-policy-1/"><cite>Permissions Policy</cite></a>. 16 July 2020. WD. URL: <a href="https://www.w3.org/TR/permissions-policy-1/">https://www.w3.org/TR/permissions-policy-1/</a>
    <dt id="biblio-rfc2119">[RFC2119]
@@ -1904,14 +1904,6 @@ for helping craft this specification.</p>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
-   <dt id="biblio-cssom-view-1①">[CSSOM-VIEW-1]
-   <dd>CSS Object Model View Module Level 1 URL: <a href="https://www.w3.org/TR/cssom-view/">https://www.w3.org/TR/cssom-view/</a>
-   <dt id="biblio-fullscreen①">[Fullscreen]
-   <dd>Philip Jägenstedt. <a href="https://fullscreen.spec.whatwg.org/"><cite>Fullscreen API Standard</cite></a>. Living Standard. URL: <a href="https://fullscreen.spec.whatwg.org/">https://fullscreen.spec.whatwg.org/</a>
-   <dt id="biblio-permissions①">[PERMISSIONS]
-   <dd>Marcos Caceres; Mike Taylor. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 11 March 2022. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
-   <dt id="biblio-permissions-policy①">[PERMISSIONS-POLICY]
-   <dd>Ian Clelland. <a href="https://www.w3.org/TR/permissions-policy-1/"><cite>Permissions Policy</cite></a>. 16 July 2020. WD. URL: <a href="https://www.w3.org/TR/permissions-policy-1/">https://www.w3.org/TR/permissions-policy-1/</a>
    <dt id="biblio-screen-orientation">[SCREEN-ORIENTATION]
    <dd>Mounir Lamouri; Marcos Caceres; Johanna Herman. <a href="https://www.w3.org/TR/screen-orientation/"><cite>The Screen Orientation API</cite></a>. 6 September 2021. WD. URL: <a href="https://www.w3.org/TR/screen-orientation/">https://www.w3.org/TR/screen-orientation/</a>
   </dl>

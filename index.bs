@@ -85,6 +85,7 @@ To support multi-screen experiences, the API allows web applications to:
 1. Detect when the current screen or an attribute thereof changes
 1. Show an element fullscreen on a specific screen
 1. Place a window on a specific screen
+1. Initiate a multi-screen experience from a single transient user activation
 
 <aside class=example>
 
@@ -199,7 +200,7 @@ slideshowElement.requestFullscreen({ screen: screenDetailed });
 ### Place windows on a specific screen ### {#usage-overview-place-windows-on-a-specific-screen}
 <!-- ====================================================================== -->
 
-Another common multi-screen use cases is to place a window on a specific screen. This can be accomplished by using coordinates provided in the {{ScreenDetailed}} interface with existing {{Window/open()}} and {{Window/moveTo()}} methods.
+Another common multi-screen use case is to place a window on a specific screen. This can be accomplished by using coordinates provided in the {{ScreenDetailed}} interface with existing {{Window/open()}} and {{Window/moveTo()}} methods.
 
 ```js
 function openCenteredWindow(url, screenDetailed, w, h) {
@@ -210,6 +211,27 @@ function openCenteredWindow(url, screenDetailed, w, h) {
   // Open the window with the requested dimensions.
   return window.open(url, '_blank', \`left=${l},top=${t},width=${w},height=${h}\`);
 }
+```
+
+<!-- ====================================================================== -->
+### Initiate multi-screen experiences ### {#usage-overview-initiate-multi-screen-experiences}
+<!-- ====================================================================== -->
+
+A commonly requested multi-screen use case is to initiate a compelling multi-screen experience from a single user activation. One specific proposed form is permitting a site to [[#usage-overview-place-fullscreen-content-on-a-specific-screen]] and [[#usage-overview-place-windows-on-a-specific-screen]] from a single user gesture. This can be accomplished by first requesting fullscreen on a specific screen of a multi-screen device, and then opening a popup window on another screen of the device, in a single event listener.
+
+```js
+initiateMultiScreenExperienceButton.addEventListener('click', async () => {
+  // Find the primary screen, show some content fullscreen there.
+  const primaryScreen = screenDetails.screens.find(s => s.isPrimary);
+  await document.documentElement.requestFullscreen({screen : primaryScreen});
+
+  // Find a different screen, fill its available area with a new window.
+  const otherScreen = screenDetails.screens.find(s => s !== primaryScreen);
+  window.open(url, '_blank', \`left=${otherScreen.availLeft},\` +
+                             \`top=${otherScreen.availTop},\` +
+                             \`width=${otherScreen.availWidth},\` +
+                             \`height=${otherScreen.availHeight}\`);
+});
 ```
 
 <!-- ====================================================================== -->
@@ -497,6 +519,17 @@ The following {{Window}} attributes and method definitions are updated to return
 * {{Window/moveTo()}} steps must interpret `x` and `y` arguments to be specified relative to the [=/multi-screen origin=].
 * {{Window/open()}} steps must interpret `"left"` and `"top"` feature values to be specified relative to the [=/multi-screen origin=].
 
+
+<!-- ====================================================================== -->
+### {{Window/open()|Window.open()}} method definition changes ### {#api-window-open-method-definition-changes}
+<!-- ====================================================================== -->
+
+Instances of {{Window}} are created with an [internal slot](https://tc39.github.io/ecma262/#sec-object-internal-methods-and-internal-slots) named <dfn attribute for="Window">\[[targetScreenFullscreen]]</dfn>, which has a data model equivalent to [last-activation-timestamp](https://html.spec.whatwg.org/multipage/interaction.html#last-activation-timestamp). It corresponds to a {{DOMHighResTimeStamp}} value except for two cases: positive infinity indicates that the {{Window}} has never been activated, while negative infinity indicates that a [user activation-gated API](https://html.spec.whatwg.org/multipage/interaction.html#user-activation-gated-apis) has [consumed](https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation) the last user activation of the {{Window}}. The initial value is positive infinity.
+
+The {{Window/open()|Window.open()}} method steps, and the steps of methods invoked therein, are updated to optionally:
+1. Waive the [=/transient activation=] state requirement when the [current high resolution time](https://w3c.github.io/hr-time/#dfn-current-high-resolution-time) of the [=/relevant global object=] is greater than or equal to [=/this=].{{Window/[[targetScreenFullscreen]]}}, and less than [=/this=].{{Window/[[targetScreenFullscreen]]}} plus the [=/transient activation duration=].
+1. Set [=/this=].{{Window/[[targetScreenFullscreen]]}} to negative infinity immediately after following the steps to [consume user activation](https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation).
+
 <!-- ====================================================================== -->
 ## {{ScreenDetails}} interface ## {#api-screendetails-interface}
 <!-- ====================================================================== -->
@@ -677,10 +710,12 @@ partial dictionary FullscreenOptions {
 The optional {{FullscreenOptions}} <dfn attribute for=FullscreenOptions>screen</dfn> member indicates an application preference to display the element fullscreen on a particular [=/screen=]. User agents are always free to honor user preference over that of the application. The default value `undefined` indicates no application preference.
 
 <!-- ====================================================================== -->
-### {{Element/requestFullscreen}} method definition changes ### {#api-element-requestfullscreen-method-definition-changes}
+### {{Element/requestFullscreen|Element.requestFullscreen()}} method definition changes ### {#api-element-requestfullscreen-method-definition-changes}
 <!-- ====================================================================== -->
 
-The {{Element/requestFullscreen}} method steps are updated to optionally take `options`["screen"] into account when moving and resizing  `pendingDoc`’s [=/top-level browsing context=]’s [=/active document=]’s viewport. The viewport may be moved to the specified [=/screen=] as part of this modified method step.
+The {{Element/requestFullscreen|Element.requestFullscreen()}} method steps are updated to optionally:
+1. Take `options`["{{FullscreenOptions/screen}}"] into account when moving and resizing  `pendingDoc`’s [=/top-level browsing context=]’s [=/active document=]’s viewport. The viewport may be moved to the specified [=/screen=] as part of this modified method step.
+1. Set the [=/this=].{{Window/[[targetScreenFullscreen]]}} internal slot to the [current high resolution time](https://w3c.github.io/hr-time/#dfn-current-high-resolution-time) if `options`["{{FullscreenOptions/screen}}"] specifies a recognized {{ScreenDetailed}} object with a value of true for {{Screen/isExtended}}.
 
 <!-- ====================================================================== -->
 ## Permission API Integration ## {#api-permission-api-integration}

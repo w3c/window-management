@@ -10,7 +10,8 @@ Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com, w3cid 61
 Editor: Mike Wasserman, Google Inc. https://google.com, msw@google.com, w3cid 116970
 Repository: w3c/window-placement
 Group: secondscreenwg
-Test Suite: https://github.com/web-platform-tests/wpt/tree/master/window-placement
+!Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/window-placement">https://github.com/web-platform-tests/wpt/tree/master/window-placement</a>
+!Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/screen-details">https://github.com/web-platform-tests/wpt/tree/master/screen-details</a>
 Logo: logo.svg
 Favicon: logo.svg
 Complain About: accidental-2119 yes, missing-example-ids yes

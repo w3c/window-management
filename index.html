@@ -7,9 +7,9 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
-  <link href="https://w3c.github.io/window-placement" rel="canonical">
+  <link href="https://www.w3.org/TR/window-placement/" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="6ab37a53801629202658f220faf0c30857572338" name="document-revision">
+  <meta content="0308850f85743d5b9bc7e5a90866fb2eb5eae9c5" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -609,21 +609,24 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-06-17">17 June 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-06-21">21 June 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://w3c.github.io/window-placement">https://w3c.github.io/window-placement</a>
-      <dt>Test Suite:
-      <dd><a href="https://github.com/web-platform-tests/wpt/tree/master/screen-details">https://github.com/web-platform-tests/wpt/tree/master/screen-details</a>
-      <dt>Issue Tracking:
+      <dd><a class="u-url" href="https://w3c.github.io/window-placement/">https://w3c.github.io/window-placement/</a>
+      <dt>Latest published version:
+      <dd><a href="https://www.w3.org/TR/window-placement/">https://www.w3.org/TR/window-placement/</a>
+      <dt>Feedback:
       <dd><a href="https://github.com/w3c/window-placement/issues/">GitHub</a>
       <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editors:
-      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:jsbell@google.com">Joshua Bell</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
-      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:msw@google.com">Mike Wasserman</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
+      <dd class="editor p-author h-card vcard" data-editor-id="61302"><a class="p-name fn u-email email" href="mailto:jsbell@google.com">Joshua Bell</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
+      <dd class="editor p-author h-card vcard" data-editor-id="116970"><a class="p-name fn u-email email" href="mailto:msw@google.com">Mike Wasserman</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
+      <dt>Test Suites:
+      <dd><a href="https://github.com/web-platform-tests/wpt/tree/master/window-placement">https://github.com/web-platform-tests/wpt/tree/master/window-placement</a>
+      <dd><a href="https://github.com/web-platform-tests/wpt/tree/master/screen-details">https://github.com/web-platform-tests/wpt/tree/master/screen-details</a>
      </dl>
     </div>
    </details>
@@ -787,8 +790,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li data-md>
      <p>Initiate a multi-screen experience from a single transient user activation</p>
    </ol>
-   <aside class="example" id="example-a29c921a">
-    <a class="self-link" href="#example-a29c921a"></a> 
+   <aside class="example" id="basic-example">
+    <a class="self-link" href="#basic-example"></a> 
     <p>A basic example of the API usage is as follows:</p>
 <pre class="language-js highlight"><c- c1>// Detect if the device has more than one screen.</c->
 <c- k>if</c-> <c- p>(</c->window<c- p>.</c->screen<c- p>.</c->isExtended<c- p>)</c-> <c- p>{</c->
@@ -1050,7 +1053,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel">in parallel</a>:</p>
       <ol>
        <li data-md>
-        <p>Let <var>permissionState</var> be <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">request permission to use</a> the <code class="idl"><a data-link-type="idl">PermissionName</a></code> <code>"window-placement"</code>.</p>
+        <p>Let <var>permissionState</var> be <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">request permission to use</a> <code>"window-placement"</code>.</p>
        <li data-md>
         <p>If <var>permissionState</var> is "<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-denied" id="ref-for-dom-permissionstate-denied">denied</a></code>" then <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject">reject</a> <var>promise</var> with a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code> and abort these steps.</p>
        <li data-md>
@@ -1081,7 +1084,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
    <p>The <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#dom-open" id="ref-for-dom-open③">Window.open()</a></code> method steps, and the steps of methods invoked therein, are updated to optionally:</p>
    <ol>
     <li data-md>
-     <p>Waive the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation" id="ref-for-transient-activation①">transient activation</a> state requirement when the <a href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time">current high resolution time</a> of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global③">relevant global object</a> is greater than or equal to <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot">[[targetScreenFullscreen]]</a></code>, and less than <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot①">[[targetScreenFullscreen]]</a></code> plus the <a data-link-type="dfn">transient activation duration</a>.</p>
+     <p>Waive the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation" id="ref-for-transient-activation①">transient activation</a> state requirement when the <a href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time">current high resolution time</a> of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global③">relevant global object</a> is greater than or equal to <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot">[[targetScreenFullscreen]]</a></code>, and less than <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot①">[[targetScreenFullscreen]]</a></code> plus the <a data-link-type="dfn" href="https://https://html.spec.whatwg.org/multipage/#transient-activation-duration" id="ref-for-transient-activation-duration">transient activation duration</a>.</p>
     <li data-md>
      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot②">[[targetScreenFullscreen]]</a></code> to negative infinity immediately after following the steps to <a href="https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation">consume user activation</a>.</p>
    </ol>
@@ -1214,22 +1217,22 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
     </dl>
    </div>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions②"><c- g>FullscreenOptions</c-></a> {
-  <a data-link-type="idl-name" href="#screendetailed" id="ref-for-screendetailed①②"><c- n>ScreenDetailed</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="FullscreenOptions" data-dfn-type="dict-member" data-export data-type="ScreenDetailed " id="dom-fullscreenoptions-screen"><code><c- g>screen</c-></code></dfn>;
+  <a data-link-type="idl-name" href="#screendetailed" id="ref-for-screendetailed①②"><c- n>ScreenDetailed</c-></a> <a class="idl-code" data-link-type="dict-member" data-type="ScreenDetailed " href="#dom-fullscreenoptions-screen" id="ref-for-dom-fullscreenoptions-screen①"><c- g>screen</c-></a>;
 };
 </pre>
-   <p>The optional <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions③">FullscreenOptions</a></code> <dfn class="idl-code" data-dfn-for="FullscreenOptions" data-dfn-type="attribute" data-export id="dom-fullscreenoptions-screen①"><code>screen</code><a class="self-link" href="#dom-fullscreenoptions-screen①"></a></dfn> member indicates an application preference to display the element fullscreen on a particular <a data-link-type="dfn" href="#screen" id="ref-for-screen⑥⑥">screen</a>. User agents are always free to honor user preference over that of the application. The default value <code>undefined</code> indicates no application preference.</p>
+   <p>The optional <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions③">FullscreenOptions</a></code> <dfn class="dfn-paneled idl-code" data-dfn-for="FullscreenOptions" data-dfn-type="dict-member" data-export id="dom-fullscreenoptions-screen"><code>screen</code></dfn> member indicates an application preference to display the element fullscreen on a particular <a data-link-type="dfn" href="#screen" id="ref-for-screen⑥⑥">screen</a>. User agents are always free to honor user preference over that of the application. The default value <code>undefined</code> indicates no application preference.</p>
    <h4 class="heading settled" data-level="3.5.1" id="api-element-requestfullscreen-method-definition-changes"><span class="secno">3.5.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen" id="ref-for-dom-element-requestfullscreen①">Element.requestFullscreen()</a></code> method definition changes</span><a class="self-link" href="#api-element-requestfullscreen-method-definition-changes"></a></h4>
    <p>The <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen" id="ref-for-dom-element-requestfullscreen②">Element.requestFullscreen()</a></code> method steps are updated to optionally:</p>
    <ol>
     <li data-md>
-     <p>Take <code>options</code>["<code class="idl"><a data-link-type="idl" href="#dom-fullscreenoptions-screen" id="ref-for-dom-fullscreenoptions-screen①">screen</a></code>"] into account when moving and resizing <code>pendingDoc</code>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context" id="ref-for-top-level-browsing-context">top-level browsing context</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#active-document" id="ref-for-active-document">active document</a>’s viewport. The viewport may be moved to the specified <a data-link-type="dfn" href="#screen" id="ref-for-screen⑥⑦">screen</a> as part of this modified method step.</p>
+     <p>Take <code>options</code>["<code class="idl"><a data-link-type="idl" href="#dom-fullscreenoptions-screen" id="ref-for-dom-fullscreenoptions-screen②">screen</a></code>"] into account when moving and resizing <code>pendingDoc</code>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context" id="ref-for-top-level-browsing-context">top-level browsing context</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#active-document" id="ref-for-active-document">active document</a>’s viewport. The viewport may be moved to the specified <a data-link-type="dfn" href="#screen" id="ref-for-screen⑥⑦">screen</a> as part of this modified method step.</p>
     <li data-md>
-     <p>Set the <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot③">[[targetScreenFullscreen]]</a></code> internal slot to the <a href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time">current high resolution time</a> if <code>options</code>["<code class="idl"><a data-link-type="idl" href="#dom-fullscreenoptions-screen" id="ref-for-dom-fullscreenoptions-screen②">screen</a></code>"] specifies a recognized <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①③">ScreenDetailed</a></code> object with a value of true for <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended⑤">isExtended</a></code>.</p>
+     <p>Set the <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot③">[[targetScreenFullscreen]]</a></code> internal slot to the <a href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time">current high resolution time</a> if <code>options</code>["<code class="idl"><a data-link-type="idl" href="#dom-fullscreenoptions-screen" id="ref-for-dom-fullscreenoptions-screen③">screen</a></code>"] specifies a recognized <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①③">ScreenDetailed</a></code> object with a value of true for <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended⑤">isExtended</a></code>.</p>
    </ol>
    <h3 class="heading settled" data-level="3.6" id="api-permission-api-integration"><span class="secno">3.6. </span><span class="content">Permission API Integration</span><a class="self-link" href="#api-permission-api-integration"></a></h3>
-   <p>This specification defines a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-default-powerful-feature" id="ref-for-dfn-default-powerful-feature">default powerful feature</a> that is identified by the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-name" id="ref-for-dfn-name">name</a> "<dfn class="dfn-paneled idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export id="dom-permissionname-window-placement"><code>window-placement</code></dfn>".</p>
+   <p>This specification defines a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-default-powerful-feature" id="ref-for-dfn-default-powerful-feature">default powerful feature</a> that is identified by the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-name" id="ref-for-dfn-name">name</a> "<dfn class="dfn-paneled idl-code" data-dfn-type="permission" data-export id="permissiondef-window-placement"><code>window-placement</code></dfn>".</p>
    <p>The <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a> API provides a uniform way for websites to query the state of their permissions.</p>
-   <p class="issue" id="issue-2d3ea4d4"><a class="self-link" href="#issue-2d3ea4d4"></a> Add <code class="idl"><a data-link-type="idl" href="#dom-permissionname-window-placement" id="ref-for-dom-permissionname-window-placement">window-placement</a></code> to <code class="idl"><a data-link-type="idl">PermissionName</a></code> in <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>.</p>
+   <p class="issue" id="issue-503caed4"><a class="self-link" href="#issue-503caed4"></a> Add <code class="idl"><a data-link-type="idl" href="#permissiondef-window-placement" id="ref-for-permissiondef-window-placement">window-placement</a></code> to <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a> registry.</p>
    <p class="issue" id="issue-dc61ea20"><a class="self-link" href="#issue-dc61ea20"></a> Define behavior of cached objects and method steps when the permission is revoked. (See <a href="https://github.com/w3c/window-placement/issues/80">#80</a>)</p>
    <h3 class="heading settled" data-level="3.7" id="api-permission-policy-integration"><span class="secno">3.7. </span><span class="content">Permission Policy integration</span><a class="self-link" href="#api-permission-policy-integration"></a></h3>
    <p>This specification defines a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature" id="ref-for-policy-controlled-feature">policy-controlled feature</a> identified by the string "<dfn class="dfn-paneled" data-dfn-for="permission-policy" data-dfn-type="dfn" data-noexport id="permission-policy-window-placement">window-placement</dfn>". Its <a data-link-type="dfn" href="https://w3c.github.io/webappsec-permissions-policy/#default-allowlist" id="ref-for-default-allowlist">default allowlist</a> is <code>"self"</code>. See <a data-link-type="biblio" href="#biblio-permissions-policy">[permissions-policy]</a> and its list of <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features">Experimental Features</a>.</p>
@@ -1405,7 +1408,6 @@ for helping craft this specification.</p>
    <li>
     screen
     <ul>
-     <li><a href="#dom-fullscreenoptions-screen①">attribute for FullscreenOptions</a><span>, in § 3.5</span>
      <li><a href="#screen">definition of</a><span>, in § 2.1</span>
      <li><a href="#dom-fullscreenoptions-screen">dict-member for FullscreenOptions</a><span>, in § 3.5</span>
     </ul>
@@ -1425,8 +1427,8 @@ for helping craft this specification.</p>
    <li>
     window-placement
     <ul>
+     <li><a href="#permissiondef-window-placement">(permission)</a><span>, in § 3.6</span>
      <li><a href="#permission-policy-window-placement">dfn for permission-policy</a><span>, in § 3.7</span>
-     <li><a href="#dom-permissionname-window-placement">enum-value for PermissionName</a><span>, in § 3.6</span>
     </ul>
    <li><a href="#window-placement-task-source">window placement task source</a><span>, in § 3.2.1</span>
   </ul>
@@ -1669,6 +1671,12 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-transient-activation①">3.2.3. Window.open() method definition changes</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-transient-activation-duration">
+   <a href="https://https://html.spec.whatwg.org/multipage/#transient-activation-duration">https://https://html.spec.whatwg.org/multipage/#transient-activation-duration</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-transient-activation-duration">3.2.3. Window.open() method definition changes</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-list-append">
    <a href="https://infra.spec.whatwg.org/#list-append">https://infra.spec.whatwg.org/#list-append</a><b>Referenced in:</b>
    <ul>
@@ -1884,6 +1892,7 @@ for helping craft this specification.</p>
      <li><span class="dfn-paneled" id="term-for-concept-relevant-global">relevant global object</span>
      <li><span class="dfn-paneled" id="term-for-top-level-browsing-context">top-level browsing context</span>
      <li><span class="dfn-paneled" id="term-for-transient-activation">transient activation</span>
+     <li><span class="dfn-paneled" id="term-for-transient-activation-duration">transient activation duration</span>
     </ul>
    <li>
     <a data-link-type="biblio">[INFRA]</a> defines the following terms:
@@ -1997,7 +2006,7 @@ for helping craft this specification.</p>
 };
 
 <c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions"><c- g>FullscreenOptions</c-></a> {
-  <a data-link-type="idl-name" href="#screendetailed"><c- n>ScreenDetailed</c-></a> <a data-type="ScreenDetailed " href="#dom-fullscreenoptions-screen"><code><c- g>screen</c-></code></a>;
+  <a data-link-type="idl-name" href="#screendetailed"><c- n>ScreenDetailed</c-></a> <a class="idl-code" data-link-type="dict-member" data-type="ScreenDetailed " href="#dom-fullscreenoptions-screen"><c- g>screen</c-></a>;
 };
 
 </pre>
@@ -2005,7 +2014,7 @@ for helping craft this specification.</p>
   <div style="counter-reset:issue">
    <div class="issue"> Should <a data-link-type="dfn" href="#screen-device-pixel-ratio">device pixel ratio</a> include the <a href="https://drafts.csswg.org/cssom-view-1/#page-zoom">page-zoom</a>? <a class="issue-return" href="#issue-702b01cb" title="Jump to section">↵</a></div>
    <div class="issue"> Make <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen">Screen</a></code> derive from <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a></code> in <a href="https://www.w3.org/TR/cssom-view/#the-screen-interface"><cite>CSSOM View Module 1</cite> § 4.3 The Screen Interface</a>. <a class="issue-return" href="#issue-288178db" title="Jump to section">↵</a></div>
-   <div class="issue"> Add <code class="idl"><a data-link-type="idl" href="#dom-permissionname-window-placement">window-placement</a></code> to <code class="idl"><a data-link-type="idl">PermissionName</a></code> in <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a>. <a class="issue-return" href="#issue-2d3ea4d4" title="Jump to section">↵</a></div>
+   <div class="issue"> Add <code class="idl"><a data-link-type="idl" href="#permissiondef-window-placement">window-placement</a></code> to <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a> registry. <a class="issue-return" href="#issue-503caed4" title="Jump to section">↵</a></div>
    <div class="issue"> Define behavior of cached objects and method steps when the permission is revoked. (See <a href="https://github.com/w3c/window-placement/issues/80">#80</a>) <a class="issue-return" href="#issue-dc61ea20" title="Jump to section">↵</a></div>
    <div class="issue"> Move <a data-link-type="dfn" href="#permission-policy-window-placement">window-placement</a> to <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Proposed</a> or <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Standardized</a> feature lists when appropriate. <a class="issue-return" href="#issue-bee77a11" title="Jump to section">↵</a></div>
    <div class="issue"> Ensure we didn’t forget anyone! <a class="issue-return" href="#issue-e9601204" title="Jump to section">↵</a></div>
@@ -2412,14 +2421,14 @@ for helping craft this specification.</p>
   <aside class="dfn-panel" data-for="dom-fullscreenoptions-screen">
    <b><a href="#dom-fullscreenoptions-screen">#dom-fullscreenoptions-screen</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-fullscreenoptions-screen">3.5. Extensions to FullscreenOptions</a>
-    <li><a href="#ref-for-dom-fullscreenoptions-screen①">3.5.1. Element.requestFullscreen() method definition changes</a> <a href="#ref-for-dom-fullscreenoptions-screen②">(2)</a>
+    <li><a href="#ref-for-dom-fullscreenoptions-screen">3.5. Extensions to FullscreenOptions</a> <a href="#ref-for-dom-fullscreenoptions-screen①">(2)</a>
+    <li><a href="#ref-for-dom-fullscreenoptions-screen②">3.5.1. Element.requestFullscreen() method definition changes</a> <a href="#ref-for-dom-fullscreenoptions-screen③">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-permissionname-window-placement">
-   <b><a href="#dom-permissionname-window-placement">#dom-permissionname-window-placement</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="permissiondef-window-placement">
+   <b><a href="#permissiondef-window-placement">#permissiondef-window-placement</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-permissionname-window-placement">3.6. Permission API Integration</a>
+    <li><a href="#ref-for-permissiondef-window-placement">3.6. Permission API Integration</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="permission-policy-window-placement">

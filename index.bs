@@ -3,13 +3,15 @@ Title: Multi-Screen Window Placement
 Shortname: multi-screen
 Abstract: This document defines a web platform API that allows script to query the device for information about its screens, and place content on specific screens.
 Status: ED
-URL: https://w3c.github.io/window-placement
-Level: 1
-Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com
-Editor: Mike Wasserman, Google Inc. https://google.com, msw@google.com
+TR: https://www.w3.org/TR/window-placement/
+URL: https://w3c.github.io/window-placement/
+Level: None
+Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com, w3cid 61302
+Editor: Mike Wasserman, Google Inc. https://google.com, msw@google.com, w3cid 116970
 Repository: w3c/window-placement
 Group: secondscreenwg
-Test Suite: https://github.com/web-platform-tests/wpt/tree/master/screen-details
+!Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/window-placement">https://github.com/web-platform-tests/wpt/tree/master/window-placement</a>
+!Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/screen-details">https://github.com/web-platform-tests/wpt/tree/master/screen-details</a>
 Logo: logo.svg
 Favicon: logo.svg
 Complain About: accidental-2119 yes, missing-example-ids yes
@@ -43,6 +45,8 @@ spec: fingerprinting-guidance; urlPrefix: https://www.w3.org/TR/fingerprinting-g
     type: dfn; text: passive fingerprinting; url: dfn-passive-fingerprinting
     type: dfn; text: active fingerprinting; url: dfn-active-fingerprinting
     type: dfn; text: cookie-like fingerprinting; url: dfn-cookie-like-fingerprinting
+spec: html; urlPrefix: https://https://html.spec.whatwg.org/multipage/
+    type: dfn; text: transient activation duration; url: transient-activation-duration
 </pre>
 
 <!-- ====================================================================== -->
@@ -87,7 +91,7 @@ To support multi-screen experiences, the API allows web applications to:
 1. Place a window on a specific screen
 1. Initiate a multi-screen experience from a single transient user activation
 
-<aside class=example>
+<aside class=example id=basic-example>
 
 A basic example of the API usage is as follows:
 
@@ -336,7 +340,7 @@ A common convention is to set the [=/multi-screen origin=] to the top-left of th
 
 This diagram shows some examples of how multiple [=/screens=] might be arranged within a [=/virtual screen arrangement=], along with some potential [=/multi-screen origins=]:
 
-<img src="multi_screen_origin.svg" alt="Diagram showing various examples of screens and multi-screen origins">
+<img src="multi_screen_origin.svg" alt="Diagram showing various examples of screens and multi-screen origins" no-autosize>
 
 Note: The [Second Screen Community Group](https://www.w3.org/community/webscreens/)'s [Form Factors Explained](https://webscreens.github.io/form-factors) draft report explores related terminology and conceptual models.
 
@@ -494,7 +498,7 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 1. Run the following steps [=/in parallel=]:
 
-    1. Let |permissionState| be [=/request permission to use=] the {{PermissionName}} `"window-placement"`.
+    1. Let |permissionState| be [=/request permission to use=] `"window-placement"`.
 
     1. If |permissionState| is "{{PermissionState/denied}}" then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
@@ -707,7 +711,7 @@ partial dictionary FullscreenOptions {
 };
 </xmp>
 
-The optional {{FullscreenOptions}} <dfn attribute for=FullscreenOptions>screen</dfn> member indicates an application preference to display the element fullscreen on a particular [=/screen=]. User agents are always free to honor user preference over that of the application. The default value `undefined` indicates no application preference.
+The optional {{FullscreenOptions}} <dfn dict-member for=FullscreenOptions>screen</dfn> member indicates an application preference to display the element fullscreen on a particular [=/screen=]. User agents are always free to honor user preference over that of the application. The default value `undefined` indicates no application preference.
 
 <!-- ====================================================================== -->
 ### {{Element/requestFullscreen|Element.requestFullscreen()}} method definition changes ### {#api-element-requestfullscreen-method-definition-changes}
@@ -721,11 +725,11 @@ The {{Element/requestFullscreen|Element.requestFullscreen()}} method steps are u
 ## Permission API Integration ## {#api-permission-api-integration}
 <!-- ====================================================================== -->
 
-This specification defines a [=/default powerful feature=] that is identified by the [=powerful feature/name=] "<dfn for="PermissionName" export enum-value>window-placement</dfn>".
+This specification defines a [=/default powerful feature=] that is identified by the [=powerful feature/name=] "<dfn export permission>window-placement</dfn>".
 
 The [[permissions]] API provides a uniform way for websites to query the state of their permissions.
 
-Issue: Add {{PermissionName/window-placement}} to {{PermissionName}} in [[permissions]].
+Issue: Add {{window-placement}} to [[permissions]] registry.
 
 Issue: Define behavior of cached objects and method steps when the permission is revoked. (See [#80](https://github.com/w3c/window-placement/issues/80))
 

@@ -245,7 +245,7 @@ initiateMultiScreenExperienceButton.addEventListener('click', async () => {
 # Concepts # {#concepts}
 <!-- ====================================================================== -->
 
-Concepts in this specification build upon those in [[CSSOM-VIEW-1]], the [CSSOM-View-1 Editor's draft](https://drafts.csswg.org/cssom-view/) dated "15 November 2021", [[HTML]], and [[Fullscreen]].
+Concepts in this specification build upon those in the [CSSOM-View-1 Working Draft](https://www.w3.org/TR/cssom-view-1), and the [CSSOM-View-1 Editor's Draft](https://drafts.csswg.org/cssom-view/), [[HTML]], and [[Fullscreen]].
 
 <!-- ====================================================================== -->
 ## Screen ## {#concept-screen}

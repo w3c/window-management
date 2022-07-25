@@ -270,9 +270,10 @@ A [=/screen=] has a <dfn>device pixel ratio</dfn>, similar to {{Window}}'s {{Win
 
 A [=/screen=] has an <dfn>orientation</dfn>, which is described in [[screen-orientation]].
 
-A [=/screen=] has a <dfn>label</dfn>, which is a string that meaningfully describes the screen to a user.
+A [=/screen=] has a <dfn>label</dfn>, which is a string that meaningfully describes the screen to a user to help them identify and differentiate screens.
 
-Note: The [=screen/label=] can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. `"internal"` vs. `"external"`, it could include the dimensions, e.g. `"640×480"`, it could include hardware model information, e.g. `"Acme Telletube 1000x"` from [VESA E-EDID](https://en.wikipedia.org/wiki/Extended_Display_Identification_Data) data, it could include a distinguishing number, e.g. `"screen 1"` vs. `"screen 2"`, or all of the preceding. The label can be an empty string if underlying display details are unknown or the user agent chooses to hide that information.
+Note: The [=screen/label=] can be an arbitrary string selected by the user agent. It could describe the screen relative to the device, e.g. `"internal"` vs. `"external"`, it could include the dimensions, e.g. `"640×480"`, it could include hardware model information, e.g. `"Acme Telletube 1000x"` from [VESA E-EDID](https://en.wikipedia.org/wiki/Extended_Display_Identification_Data) data, it could include a distinguishing number, e.g. `"screen 1"` vs. `"screen 2"`, or all of the preceding. The label can be an empty string if underlying display details are unknown or the user agent chooses to hide that information. Applications can't assume that the label contains any specific information, such as the device type, model, dimensions, density, etc.
+
 
 Advisement: While many screen attributes could be used for [=/active fingerprinting=], the strings used as [=screen/labels=] in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.
 

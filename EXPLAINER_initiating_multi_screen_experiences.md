@@ -117,6 +117,11 @@ fullscreen request is made that targets a specific screen of a multi-screen
 device, checked and consumed in the rules for choosing a browsing context, when
 the document requests openining a new popup window.
 
+The Multi-Screen Window Placement Working Draft Spec incorporates these changes:
+- [Usage Overview: 1.2.6. Initiate multi-screen experiences](https://www.w3.org/TR/window-placement/#usage-overview-initiate-multi-screen-experiences)
+- [3.2.3. Window.open() method definition changes](https://www.w3.org/TR/window-placement/#api-window-open-method-definition-changes)
+- [3.5.1. Element.requestFullscreen() method definition changes](https://www.w3.org/TR/window-placement/#api-element-requestfullscreen-method-definition-changes)
+
 ### Open questions
 
 #### Feature detection
@@ -136,6 +141,16 @@ invoked from the
 which may permit or block popup window requests based on the
 [transient activation](https://html.spec.whatwg.org/multipage/interaction.html#transient-activation)
 signal, and the user agent’s configuration.
+
+## Security Considerations
+
+This feature enables sites to perform two facets of the Multi-Screen Window Placement API with a single user activation; i.e. [`1.2.4. Place fullscreen content on a specific screen`](https://www.w3.org/TR/window-placement/#usage-overview-place-fullscreen-content-on-a-specific-screen) and [`1.2.5. Place windows on a specific screen`](https://www.w3.org/TR/window-placement/#usage-overview-place-windows-on-a-specific-screen) are combined to [`1.2.6. Initiate multi-screen experiences`](https://www.w3.org/TR/window-placement/#usage-overview-initiate-multi-screen-experiences). This may exacerbate some documented Multi-Screen Window Placement [Security Considerations](https://www.w3.org/TR/window-placement/#security).
+
+A user agent's fullscreen message (e.g. Firefox's "<origin> is now full screen [Exit Full Screen (Esc)]" or Chrome's "Press [Esc] to exit full screen") might go unnoticed when the site first [places fullscreen content on a less keenly observed screen](https://www.w3.org/TR/window-placement/#usage-overview-place-fullscreen-content-on-a-specific-screen), especially if the site simultaneously [places a companion popup window on a more keenly observed screen](https://www.w3.org/TR/window-placement/#usage-overview-place-windows-on-a-specific-screen) with the same transient user activation signal. This exacerbates the ability for a malicious site to [spoof the OS, browser, or other sites for phishing attacks](https://www.w3.org/TR/window-placement/#security:~:text=spoof%20the%20OS%2C%20browser%2C%20or%20other%20sites%20for%20phishing%20attacks). To mitigate this, the user agent could show a similar message when the fullscreen window receives an input event (cursor hover, touch down, keyboard event), when the window is activated (or focused or becomes key), when the companion popup window is closed, and other events (perhaps only after a significant amount of time has passed since the window entered fullscreen on that display).
+
+## Privacy Considerations
+
+This feature does not expose any information to sites, and there are no privacy considerations to note beyond those already documented in the Multi-Screen Window Placement [Privacy Considerations](https://www.w3.org/TR/window-placement/#privacy) section.
 
 ## Alternatives Considered
 

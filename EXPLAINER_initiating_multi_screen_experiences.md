@@ -103,6 +103,25 @@ Note: the `window-placement` permission is requested earlier, as needed, by
 before scripts can request fullscreen (or open a popup) on a specific screen.
 So it is expected that scripts making these requests already have permission.
 
+### Example Code
+
+This feature can be used after the site successfully [requests detailed screen information](https://www.w3.org/TR/window-placement/#usage-overview-screen-details) by requesting fullscreen on a specific screen of a multi-screen device, and then opening a popup window on another screen of the device, in a single event listener:
+
+```js
+initiateMultiScreenExperienceButton.addEventListener('click', async () => {
+  // Find the primary screen, show some content fullscreen there.
+  const primaryScreen = screenDetails.screens.find(s => s.isPrimary);
+  await document.documentElement.requestFullscreen({screen : primaryScreen});
+
+  // Find a different screen, fill its available area with a new window.
+  const otherScreen = screenDetails.screens.find(s => s !== primaryScreen);
+  window.open(url, '_blank', `left=${otherScreen.availLeft},` +
+                             `top=${otherScreen.availTop},` +
+                             `width=${otherScreen.availWidth},` +
+                             `height=${otherScreen.availHeight}`);
+});
+```
+
 ### Spec Changes
 
 This proposal can be brought about as algorithmic changes to existing specs:

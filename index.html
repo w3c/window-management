@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 44af0bf3e, updated Fri Jul 29 17:05:16 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/window-placement/" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="b0a1aba37414a18590842b44a27ddac2a4bd40d2" name="document-revision">
+  <meta content="9ecedc029847bdb232be908a6b6c8b6a12947e87" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -609,7 +609,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-30">30 August 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-09-15">15 September 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -622,8 +622,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <dd><a href="https://github.com/w3c/window-placement/issues/">GitHub</a>
       <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editors:
-      <dd class="editor p-author h-card vcard" data-editor-id="61302"><a class="p-name fn u-email email" href="mailto:jsbell@google.com">Joshua Bell</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
-      <dd class="editor p-author h-card vcard" data-editor-id="116970"><a class="p-name fn u-email email" href="mailto:msw@google.com">Mike Wasserman</a> (<a class="p-org org" href="https://google.com">Google Inc.</a>)
+      <dd class="editor p-author h-card vcard" data-editor-id="61302"><a class="p-name fn u-email email" href="mailto:jsbell@google.com">Joshua Bell</a> (<a class="p-org org" href="https://www.google.com/">Google Inc.</a>)
+      <dd class="editor p-author h-card vcard" data-editor-id="116970"><a class="p-name fn u-email email" href="mailto:msw@google.com">Mike Wasserman</a> (<a class="p-org org" href="https://www.google.com/">Google Inc.</a>)
       <dt>Test Suites:
       <dd><a href="https://github.com/web-platform-tests/wpt/tree/master/window-placement">https://github.com/web-platform-tests/wpt/tree/master/window-placement</a>
       <dd><a href="https://github.com/web-platform-tests/wpt/tree/master/screen-details">https://github.com/web-platform-tests/wpt/tree/master/screen-details</a>
@@ -898,7 +898,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
 <c- p>});</c->
 </pre>
    <h2 class="heading settled" data-level="2" id="concepts"><span class="secno">2. </span><span class="content">Concepts</span><a class="self-link" href="#concepts"></a></h2>
-   <p>Concepts in this specification build upon those in <a data-link-type="biblio" href="#biblio-cssom-view">[CSSOM-VIEW]</a>, the <a href="https://drafts.csswg.org/cssom-view/">CSSOM-View Editor’s draft</a> dated "15 November 2021", <a data-link-type="biblio" href="#biblio-html">[HTML]</a>, and <a data-link-type="biblio" href="#biblio-fullscreen">[Fullscreen]</a>.</p>
+   <p>Concepts in this specification build upon those in the <a href="https://www.w3.org/TR/cssom-view-1">CSSOM-View-1 Working Draft</a>, and the <a href="https://drafts.csswg.org/cssom-view/">CSSOM-View-1 Editor’s Draft</a>, <a data-link-type="biblio" href="#biblio-html">[HTML]</a>, and <a data-link-type="biblio" href="#biblio-fullscreen">[Fullscreen]</a>.</p>
    <h3 class="heading settled" data-level="2.1" id="concept-screen"><span class="secno">2.1. </span><span class="content">Screen</span><a class="self-link" href="#concept-screen"></a></h3>
    <p>A device hosting the user agent has a single <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="screen">screen</dfn> or multiple <a data-link-type="dfn" href="#screen" id="ref-for-screen④">screens</a>, which are used to display visual content. The set of <a data-link-type="dfn" href="#screen" id="ref-for-screen⑤">screens</a> used by a device may change while a user agent is running, reflecting changes in the hardware or software configuration of the device.</p>
    <p class="note" role="note"><span>Note:</span> Some basic examples of screen configuration changes include connecting a television or projector to a laptop with an HDMI cable, closing the lid of a laptop to disable its built-in LCD panel, and changing the display resolution of a connected LCD computer monitor.</p>
@@ -948,7 +948,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
    <p>A common convention is to set the <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin①">multi-screen origin</a> to the top-left of the <a data-link-type="dfn" href="#primary" id="ref-for-primary">primary</a> <a data-link-type="dfn" href="#screen" id="ref-for-screen①⑧">screen</a>, but it can be any arbitrary point within the <a data-link-type="dfn" href="#virtual-screen-arrangement" id="ref-for-virtual-screen-arrangement①">virtual screen arrangement</a>. Every <a data-link-type="dfn" href="#screen" id="ref-for-screen①⑨">screen</a>'s <a data-link-type="dfn" href="#screen-screen-area" id="ref-for-screen-screen-area⑧">screen area</a> is a view onto a rectangular subset of the <a data-link-type="dfn" href="#virtual-screen-arrangement" id="ref-for-virtual-screen-arrangement②">virtual screen arrangement</a>.</p>
    <p>This diagram shows some examples of how multiple <a data-link-type="dfn" href="#screen" id="ref-for-screen②⓪">screens</a> might be arranged within a <a data-link-type="dfn" href="#virtual-screen-arrangement" id="ref-for-virtual-screen-arrangement③">virtual screen arrangement</a>, along with some potential <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin②">multi-screen origins</a>:</p>
    <p><img alt="Diagram showing various examples of screens and multi-screen origins" src="multi_screen_origin.svg"></p>
-   <p class="note" role="note"><span>Note:</span> The <a href="https://www.w3.org/community/webscreens/">Second Screen Community Group</a>'s <a href="https://webscreens.github.io/form-factors">Form Factors Explained</a> draft report explores related terminology and conceptual models.</p>
+   <p class="note" role="note"><span>Note:</span> The <a href="https://www.w3.org/community/webscreens/">Second Screen Community Group</a>'s <a href="https://webscreens.github.io/form-factors/">Form Factors Explained</a> draft report explores related terminology and conceptual models.</p>
    <h3 class="heading settled" data-level="2.6" id="concept-screen-position"><span class="secno">2.6. </span><span class="content">Screen position</span><a class="self-link" href="#concept-screen-position"></a></h3>
    <p>A <a data-link-type="dfn" href="#screen" id="ref-for-screen②①">screen</a> has a <dfn class="dfn-paneled" data-dfn-for="screen" data-dfn-type="dfn" data-noexport id="screen-screen-position">screen position</dfn> which is the <a data-link-type="dfn" href="#screen-screen-area" id="ref-for-screen-screen-area⑨">screen area</a>'s (x, y)-coordinates in the <a data-link-type="dfn" href="#virtual-screen-arrangement" id="ref-for-virtual-screen-arrangement④">virtual screen arrangement</a> relative to the <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin③">multi-screen origin</a>. Coordinates may be negative, and are typically expressed as (<var>x</var>, <var>y</var>).</p>
    <h3 class="heading settled" data-level="2.7" id="concept-available-screen-position"><span class="secno">2.7. </span><span class="content">Available screen position</span><a class="self-link" href="#concept-available-screen-position"></a></h3>
@@ -996,7 +996,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
    </ul>
    <h2 class="heading settled" data-level="3" id="api"><span class="secno">3. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
    <h3 class="heading settled" data-level="3.1" id="api-extensions-to-screen"><span class="secno">3.1. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen③⑤">Screen</a></code> interface</span><a class="self-link" href="#api-extensions-to-screen"></a></h3>
-   <p>The <a data-link-type="biblio" href="#biblio-cssom-view">CSSOM View Module</a> specification defines the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen③⑥">Screen</a></code> interface, which this specification extends:</p>
+   <p>The <a data-link-type="biblio" href="#biblio-cssom-view-1">CSSOM View Module</a> specification defines the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen③⑥">Screen</a></code> interface, which this specification extends:</p>
    <div class="domintro note" role="note">
     <dl>
      <dt data-md><var>window</var> . <var>screen</var> . <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended②">isExtended</a></code>
@@ -1043,7 +1043,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
 </pre>
    <h4 class="heading settled" data-level="3.2.1" id="api-window-getScreenDetails-method"><span class="secno">3.2.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#dom-window-getscreendetails" id="ref-for-dom-window-getscreendetails③">getScreenDetails()</a></code> method</span><a class="self-link" href="#api-window-getScreenDetails-method"></a></h4>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-window-getscreendetails" id="ref-for-dom-window-getscreendetails④">getScreenDetails()</a></code> method completes asynchronously, queuing work on the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="window-placement-task-source">window placement task source</dfn>.</p>
-   <p>Instances of <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑧">Window</a></code> are created with an <a href="https://tc39.github.io/ecma262/#sec-object-internal-methods-and-internal-slots">internal slot</a> named <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="attribute" data-export id="dom-window-screendetails-slot"><code>[[screenDetails]]</code></dfn>, which is created with an initial value of <code>undefined</code>.</p>
+   <p>Instances of <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window⑧">Window</a></code> are created with an <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots" id="ref-for-sec-object-internal-methods-and-internal-slots">internal slot</a> named <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="attribute" data-export id="dom-window-screendetails-slot"><code>[[screenDetails]]</code></dfn>, which is created with an initial value of <code>undefined</code>.</p>
    <div class="algorithm" data-algorithm="getScreenDetails()" data-algorithm-for="Window">
     <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="method" data-export id="dom-window-getscreendetails"><code>getScreenDetails()</code></dfn> method steps are:</p>
     <ol>
@@ -1080,13 +1080,13 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
      <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#dom-open" id="ref-for-dom-open①">open()</a></code> steps must interpret <code>"left"</code> and <code>"top"</code> feature values to be specified relative to the <a data-link-type="dfn" href="#multi-screen-origin" id="ref-for-multi-screen-origin⑨">multi-screen origin</a>.</p>
    </ul>
    <h4 class="heading settled" data-level="3.2.3" id="api-window-open-method-definition-changes"><span class="secno">3.2.3. </span><span class="content"><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#dom-open" id="ref-for-dom-open②">Window.open()</a></code> method definition changes</span><a class="self-link" href="#api-window-open-method-definition-changes"></a></h4>
-   <p>Instances of <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①①">Window</a></code> are created with an <a href="https://tc39.github.io/ecma262/#sec-object-internal-methods-and-internal-slots">internal slot</a> named <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="attribute" data-export id="dom-window-targetscreenfullscreen-slot"><code>[[targetScreenFullscreen]]</code></dfn>, which has a data model equivalent to <a href="https://html.spec.whatwg.org/multipage/interaction.html#last-activation-timestamp">last-activation-timestamp</a>. It corresponds to a <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/hr-time-2/#dom-domhighrestimestamp" id="ref-for-dom-domhighrestimestamp">DOMHighResTimeStamp</a></code> value except for two cases: positive infinity indicates that the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①②">Window</a></code> has never been activated, while negative infinity indicates that a <a href="https://html.spec.whatwg.org/multipage/interaction.html#user-activation-gated-apis">user activation-gated API</a> has <a href="https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation">consumed</a> the last user activation of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①③">Window</a></code>. The initial value is positive infinity.</p>
+   <p>Instances of <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①①">Window</a></code> are created with an <a data-link-type="dfn" href="https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots" id="ref-for-sec-object-internal-methods-and-internal-slots①">internal slot</a> named <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="attribute" data-export id="dom-window-targetscreenfullscreen-slot"><code>[[targetScreenFullscreen]]</code></dfn>, which has a data model equivalent to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#last-activation-timestamp" id="ref-for-last-activation-timestamp">last activation timestamp</a>. It corresponds to a <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/hr-time-2/#dom-domhighrestimestamp" id="ref-for-dom-domhighrestimestamp">DOMHighResTimeStamp</a></code> value except for two cases: positive infinity indicates that the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①②">Window</a></code> has never been activated, while negative infinity indicates that a user activation-gated API (see <a href="https://html.spec.whatwg.org/multipage/interaction.html#user-activation-gated-apis"><cite>HTML</cite> § 6.4.3 APIs gated by user activation</a>) has <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation" id="ref-for-consume-user-activation">consumed</a> the last user activation of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window①③">Window</a></code>. The initial value is positive infinity.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#dom-open" id="ref-for-dom-open③">Window.open()</a></code> method steps, and the steps of methods invoked therein, are updated to optionally:</p>
    <ol>
     <li data-md>
-     <p>Waive the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation" id="ref-for-transient-activation①">transient activation</a> state requirement when the <a href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time">current high resolution time</a> of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global③">relevant global object</a> is greater than or equal to <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot">[[targetScreenFullscreen]]</a></code>, and less than <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot①">[[targetScreenFullscreen]]</a></code> plus the <a data-link-type="dfn" href="https://https://html.spec.whatwg.org/multipage/#transient-activation-duration" id="ref-for-transient-activation-duration">transient activation duration</a>.</p>
+     <p>Waive the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation" id="ref-for-transient-activation①">transient activation</a> state requirement when the <a data-link-type="dfn" href="https://www.w3.org/TR/hr-time-2/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time">current high resolution time</a> of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global③">relevant global object</a> is greater than or equal to <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot">[[targetScreenFullscreen]]</a></code>, and less than <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot①">[[targetScreenFullscreen]]</a></code> plus the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#transient-activation-duration" id="ref-for-transient-activation-duration">transient activation duration</a>.</p>
     <li data-md>
-     <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot②">[[targetScreenFullscreen]]</a></code> to negative infinity immediately after following the steps to <a href="https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation">consume user activation</a>.</p>
+     <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot②">[[targetScreenFullscreen]]</a></code> to negative infinity immediately after following the steps to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation" id="ref-for-consume-user-activation①">consume user activation</a>.</p>
    </ol>
    <h3 class="heading settled" data-level="3.3" id="api-screendetails-interface"><span class="secno">3.3. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑤">ScreenDetails</a></code> interface</span><a class="self-link" href="#api-screendetails-interface"></a></h3>
    <div class="domintro note" role="note">
@@ -1227,7 +1227,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
     <li data-md>
      <p>Take <code>options</code>["<code class="idl"><a data-link-type="idl" href="#dom-fullscreenoptions-screen" id="ref-for-dom-fullscreenoptions-screen②">screen</a></code>"] into account when moving and resizing <code>pendingDoc</code>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context" id="ref-for-top-level-browsing-context">top-level browsing context</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#active-document" id="ref-for-active-document">active document</a>’s viewport. The viewport may be moved to the specified <a data-link-type="dfn" href="#screen" id="ref-for-screen⑥⑦">screen</a> as part of this modified method step.</p>
     <li data-md>
-     <p>Set the <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot③">[[targetScreenFullscreen]]</a></code> internal slot to the <a href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time">current high resolution time</a> if <code>options</code>["<code class="idl"><a data-link-type="idl" href="#dom-fullscreenoptions-screen" id="ref-for-dom-fullscreenoptions-screen③">screen</a></code>"] specifies a recognized <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①③">ScreenDetailed</a></code> object with a value of true for <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended⑤">isExtended</a></code>.</p>
+     <p>Set the <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a>.<code class="idl"><a data-link-type="idl" href="#dom-window-targetscreenfullscreen-slot" id="ref-for-dom-window-targetscreenfullscreen-slot③">[[targetScreenFullscreen]]</a></code> internal slot to the <a data-link-type="dfn" href="https://www.w3.org/TR/hr-time-2/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time①">current high resolution time</a> if <code>options</code>["<code class="idl"><a data-link-type="idl" href="#dom-fullscreenoptions-screen" id="ref-for-dom-fullscreenoptions-screen③">screen</a></code>"] specifies a recognized <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①③">ScreenDetailed</a></code> object with a value of true for <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended⑤">isExtended</a></code>.</p>
    </ol>
    <h3 class="heading settled" data-level="3.6" id="api-permission-api-integration"><span class="secno">3.6. </span><span class="content">Permission API Integration</span><a class="self-link" href="#api-permission-api-integration"></a></h3>
    <p>This specification defines a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-default-powerful-feature" id="ref-for-dfn-default-powerful-feature">default powerful feature</a> that is identified by the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-name" id="ref-for-dfn-name">name</a> "<dfn class="dfn-paneled idl-code" data-dfn-type="permission" data-export id="permissiondef-window-placement"><code>window-placement</code></dfn>".</p>
@@ -1267,10 +1267,10 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
    </ul>
    <p>See <a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy.md">security_and_privacy.md</a> for additional explorations of security concerns.</p>
    <h2 class="heading settled" data-level="5" id="privacy"><span class="secno">5. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
-   <p>This specification exposes new information to sites about screens connected to the device, which may pose limited new privacy risks. This additional information increases the <a href="https://w3c.github.io/fingerprinting-guidance">fingerprinting</a> surface of devices, especially those with atypical screen configurations.</p>
+   <p>This specification exposes new information to sites about screens connected to the device, which may pose limited new privacy risks. This additional information increases the <a href="https://w3c.github.io/fingerprinting-guidance/">fingerprinting</a> surface of devices, especially those with atypical screen configurations.</p>
    <p>To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, restricted to secure contexts, most new information requires explicit user permission (where prompting is only possible with transient user activation), and permission-gated information is also subject to permission policy. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.</p>
-   <p>The <code>Screen.isExtended</code> boolean is exposed without explicit permission checks, as this minimal single bit of information supports some critical features for which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI entry points like “Show on another screen”), and helps avoid unnecessarily prompting single-screen users for inapplicable information and capabilities. This generally follows a TAG design principle for <a href="https://w3ctag.github.io/design-principles/#device-enumeration">device enumeration</a>.</p>
-   <p>Many user agents already effectively expose the presence of multiple screens to windows located on secondary screens, where <code>window.screen.availLeft|Top</code> >> 0. Script access of this bit is a detectable <a href="https://w3c.github.io/fingerprinting-guidance/#active">active fingerprinting</a> signal, which may be observed and blocked by the user agent. Additionally, user agents that do not constrain unpermissioned window placement requests to the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①⑤">current screen</a> allow adversaries to attempt programmatic placement on other screens, at which point information about that <code>window.screen</code> is exposed.</p>
+   <p>The <code>Screen.isExtended</code> boolean is exposed without explicit permission checks, as this minimal single bit of information supports some critical features for which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI entry points like “Show on another screen”), and helps avoid unnecessarily prompting single-screen users for inapplicable information and capabilities. This generally follows a TAG design principle for device enumeration (see <a href="https://w3ctag.github.io/design-principles/#device-enumeration">Web Platform Design Principles § device-enumeration</a>).</p>
+   <p>Many user agents already effectively expose the presence of multiple screens to windows located on secondary screens, where <code>window.screen.availLeft|Top</code> >> 0. Script access of this bit is a detectable <a data-link-type="dfn" href="https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting" id="ref-for-dfn-active-fingerprinting①">active fingerprinting</a> signal, which may be observed and blocked by the user agent. Additionally, user agents that do not constrain unpermissioned window placement requests to the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①⑤">current screen</a> allow adversaries to attempt programmatic placement on other screens, at which point information about that <code>window.screen</code> is exposed.</p>
    <p>The new <code>Screen.onchange</code> events pose a slight risk by making <a href="https://github.com/asankah/ephemeral-fingerprinting">ephemeral fingerprinting</a> easier, but scripts can already achieve the same result by polling for changes to <code>window.screen</code>. This risk could be partially mitigated by delaying event dispatch for hidden documents until such documents are no longer hidden.</p>
    <p>Alternative API shapes giving less power to sites were considered, but offer poor experiences for users and developers (e.g. prompting users to pick a screen, requiring declarative screen rankings from developers). Few, if any, alternatives exist for non-fullscreen placement of app windows on any connected screen. The specified API shape seems like the most natural extension of existing APIs to support a more complete multi-screen environment. Future work may include ways to query more limited multi-screen information, to let sites voluntarily minimize their information exposure.</p>
    <p>Other points to note:</p>
@@ -1550,10 +1550,18 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-concept-event-fire③">3.4.1. onchange attribute</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-sec-object-internal-methods-and-internal-slots">
+   <a href="https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots">https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-sec-object-internal-methods-and-internal-slots">3.2.1. getScreenDetails() method</a>
+    <li><a href="#ref-for-sec-object-internal-methods-and-internal-slots①">3.2.3. Window.open() method definition changes</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-active-fingerprinting">
    <a href="https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting">https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-active-fingerprinting">2.1. Screen</a>
+    <li><a href="#ref-for-dfn-active-fingerprinting①">5. Privacy Considerations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dictdef-fullscreenoptions">
@@ -1575,6 +1583,13 @@ for helping craft this specification.</p>
    <a href="https://www.w3.org/TR/hr-time-2/#dom-domhighrestimestamp">https://www.w3.org/TR/hr-time-2/#dom-domhighrestimestamp</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-domhighrestimestamp">3.2.3. Window.open() method definition changes</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dfn-current-high-resolution-time">
+   <a href="https://www.w3.org/TR/hr-time-2/#dfn-current-high-resolution-time">https://www.w3.org/TR/hr-time-2/#dfn-current-high-resolution-time</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dfn-current-high-resolution-time">3.2.3. Window.open() method definition changes</a>
+    <li><a href="#ref-for-dfn-current-high-resolution-time①">3.5.1. Element.requestFullscreen() method definition changes</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-eventhandler">
@@ -1606,6 +1621,12 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-active-document">3.5.1. Element.requestFullscreen() method definition changes</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-consume-user-activation">
+   <a href="https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation">https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-consume-user-activation">3.2.3. Window.open() method definition changes</a> <a href="#ref-for-consume-user-activation①">(2)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-event-handler-event-type">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type">https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type</a><b>Referenced in:</b>
    <ul>
@@ -1626,6 +1647,12 @@ for helping craft this specification.</p>
    <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-in-parallel">3.2.1. getScreenDetails() method</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-last-activation-timestamp">
+   <a href="https://html.spec.whatwg.org/multipage/#last-activation-timestamp">https://html.spec.whatwg.org/multipage/#last-activation-timestamp</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-last-activation-timestamp">3.2.3. Window.open() method definition changes</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-open">
@@ -1672,7 +1699,7 @@ for helping craft this specification.</p>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-transient-activation-duration">
-   <a href="https://https://html.spec.whatwg.org/multipage/#transient-activation-duration">https://https://html.spec.whatwg.org/multipage/#transient-activation-duration</a><b>Referenced in:</b>
+   <a href="https://html.spec.whatwg.org/multipage/#transient-activation-duration">https://html.spec.whatwg.org/multipage/#transient-activation-duration</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-transient-activation-duration">3.2.3. Window.open() method definition changes</a>
    </ul>
@@ -1839,7 +1866,7 @@ for helping craft this specification.</p>
      <li><span class="dfn-paneled" id="term-for-px">css pixel</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSSOM-VIEW]</a> defines the following terms:
+    <a data-link-type="biblio">[CSSOM-VIEW-1]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-screen">Screen</span>
      <li><span class="dfn-paneled" id="term-for-dom-window-devicepixelratio">devicePixelRatio</span>
@@ -1863,6 +1890,11 @@ for helping craft this specification.</p>
      <li><span class="dfn-paneled" id="term-for-concept-event-fire">fire an event</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[ECMASCRIPT]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-sec-object-internal-methods-and-internal-slots">internal slot</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[FINGERPRINTING-GUIDANCE]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-dfn-active-fingerprinting">active fingerprinting</span>
@@ -1877,6 +1909,7 @@ for helping craft this specification.</p>
     <a data-link-type="biblio">[HR-TIME-2]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-dom-domhighrestimestamp">DOMHighResTimeStamp</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-current-high-resolution-time">current high resolution time</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
@@ -1884,9 +1917,11 @@ for helping craft this specification.</p>
      <li><span class="dfn-paneled" id="term-for-eventhandler">EventHandler</span>
      <li><span class="dfn-paneled" id="term-for-window">Window</span>
      <li><span class="dfn-paneled" id="term-for-active-document">active document</span>
+     <li><span class="dfn-paneled" id="term-for-consume-user-activation">consume user activation</span>
      <li><span class="dfn-paneled" id="term-for-event-handler-event-type">event handler event type</span>
      <li><span class="dfn-paneled" id="term-for-event-handler-idl-attributes">event handler idl attribute</span>
      <li><span class="dfn-paneled" id="term-for-in-parallel">in parallel</span>
+     <li><span class="dfn-paneled" id="term-for-last-activation-timestamp">last activation timestamp</span>
      <li><span class="dfn-paneled" id="term-for-dom-open">open(url, target, features)</span>
      <li><span class="dfn-paneled" id="term-for-queue-a-global-task">queue a global task</span>
      <li><span class="dfn-paneled" id="term-for-concept-relevant-global">relevant global object</span>
@@ -1940,12 +1975,14 @@ for helping craft this specification.</p>
   <dl>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-4/">https://drafts.csswg.org/css-values-4/</a>
-   <dt id="biblio-cssom-view">[CSSOM-VIEW]
-   <dd>Simon Pieters. <a href="https://drafts.csswg.org/cssom-view/"><cite>CSSOM View Module</cite></a>. URL: <a href="https://drafts.csswg.org/cssom-view/">https://drafts.csswg.org/cssom-view/</a>
    <dt id="biblio-cssom-view-1">[CSSOM-VIEW-1]
    <dd>CSS Object Model View Module Level 1 URL: <a href="https://www.w3.org/TR/cssom-view/">https://www.w3.org/TR/cssom-view/</a>
+   <dt id="biblio-design-principles">[DESIGN-PRINCIPLES]
+   <dd>Sangwhan Moon. <a href="https://w3ctag.github.io/design-principles/"><cite>Web Platform Design Principles</cite></a>. URL: <a href="https://w3ctag.github.io/design-principles/">https://w3ctag.github.io/design-principles/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
+   <dt id="biblio-ecmascript">[ECMASCRIPT]
+   <dd><a href="https://tc39.es/ecma262/multipage/"><cite>ECMAScript Language Specification</cite></a>. URL: <a href="https://tc39.es/ecma262/multipage/">https://tc39.es/ecma262/multipage/</a>
    <dt id="biblio-fingerprinting-guidance">[FINGERPRINTING-GUIDANCE]
    <dd>Nick Doty. <a href="https://w3c.github.io/fingerprinting-guidance/"><cite>Mitigating Browser Fingerprinting in Web Specifications</cite></a>. URL: <a href="https://w3c.github.io/fingerprinting-guidance/">https://w3c.github.io/fingerprinting-guidance/</a>
    <dt id="biblio-fullscreen">[Fullscreen]

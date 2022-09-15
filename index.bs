@@ -1,13 +1,13 @@
 <pre class=metadata>
 Title: Multi-Screen Window Placement
-Shortname: multi-screen
+Shortname: window-placement
 Abstract: This document defines a web platform API that allows script to query the device for information about its screens, and place content on specific screens.
 Status: ED
 TR: https://www.w3.org/TR/window-placement/
 URL: https://w3c.github.io/window-placement/
 Level: None
-Editor: Joshua Bell, Google Inc. https://google.com, jsbell@google.com, w3cid 61302
-Editor: Mike Wasserman, Google Inc. https://google.com, msw@google.com, w3cid 116970
+Editor: Joshua Bell, Google Inc. https://www.google.com/, jsbell@google.com, w3cid 61302
+Editor: Mike Wasserman, Google Inc. https://www.google.com/, msw@google.com, w3cid 116970
 Repository: w3c/window-placement
 Group: secondscreenwg
 !Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/window-placement">https://github.com/web-platform-tests/wpt/tree/master/window-placement</a>
@@ -45,8 +45,11 @@ spec: fingerprinting-guidance; urlPrefix: https://www.w3.org/TR/fingerprinting-g
     type: dfn; text: passive fingerprinting; url: dfn-passive-fingerprinting
     type: dfn; text: active fingerprinting; url: dfn-active-fingerprinting
     type: dfn; text: cookie-like fingerprinting; url: dfn-cookie-like-fingerprinting
-spec: html; urlPrefix: https://https://html.spec.whatwg.org/multipage/
+spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
     type: dfn; text: transient activation duration; url: transient-activation-duration
+    type: dfn; text: last activation timestamp; url: last-activation-timestamp
+spec: ecmascript; urlPrefix: https://tc39.es/ecma262/
+    type: dfn; text: internal slot; url: sec-object-internal-methods-and-internal-slots
 </pre>
 
 <!-- ====================================================================== -->
@@ -242,7 +245,7 @@ initiateMultiScreenExperienceButton.addEventListener('click', async () => {
 # Concepts # {#concepts}
 <!-- ====================================================================== -->
 
-Concepts in this specification build upon those in [[CSSOM-VIEW]], the [CSSOM-View Editor's draft](https://drafts.csswg.org/cssom-view/) dated "15 November 2021", [[HTML]], and [[Fullscreen]].
+Concepts in this specification build upon those in the [CSSOM-View-1 Working Draft](https://www.w3.org/TR/cssom-view-1), and the [CSSOM-View-1 Editor's Draft](https://drafts.csswg.org/cssom-view/), [[HTML]], and [[Fullscreen]].
 
 <!-- ====================================================================== -->
 ## Screen ## {#concept-screen}
@@ -315,7 +318,7 @@ A [=screen/screen area=] has a <dfn>height</dfn>, which is the number of [=scree
 
 Note: The grid size is usually expressed as <[=screen/width=]>×<[=screen/height=]>. For example, a 1920×1080 screen area has a grid with a [=screen/width=] of 1920 pixels and a [=screen/height=] of 1080 pixels.
 
-Note: As specified in [[CSSOM-VIEW#web-exposed-screen-information]], user agents may choose to hide information about the screen of the output device in order to protect the user’s privacy. In this case, the [=screen/screen area=] may be equal to that of the [viewport](https://drafts.csswg.org/css2/#viewport).
+Note: As specified in [[CSSOM-VIEW-1#web-exposed-screen-information]], user agents may choose to hide information about the screen of the output device in order to protect the user’s privacy. In this case, the [=screen/screen area=] may be equal to that of the [viewport](https://drafts.csswg.org/css2/#viewport).
 
 <!-- ====================================================================== -->
 ## Available screen area ## {#concept-available-screen-area}
@@ -343,7 +346,7 @@ This diagram shows some examples of how multiple [=/screens=] might be arranged 
 
 <img src="multi_screen_origin.svg" alt="Diagram showing various examples of screens and multi-screen origins" no-autosize>
 
-Note: The [Second Screen Community Group](https://www.w3.org/community/webscreens/)'s [Form Factors Explained](https://webscreens.github.io/form-factors) draft report explores related terminology and conceptual models.
+Note: The [Second Screen Community Group](https://www.w3.org/community/webscreens/)'s [Form Factors Explained](https://webscreens.github.io/form-factors/) draft report explores related terminology and conceptual models.
 
 <!-- ====================================================================== -->
 ## Screen position ## {#concept-screen-position}
@@ -365,7 +368,7 @@ The device hosting the user agent has exactly one <dfn>primary</dfn> [=/screen=]
 
 Note: The primary screen typically hosts the operating system's user interface for task management, such as the Windows taskbar and the macOS Dock.
 
-A [=/screen=]'s designation as [=primary=] or [=secondary=] may change while the user agent is running.
+A [=/screen=]'s designation as [=/primary=] or [=/secondary=] may change while the user agent is running.
 
 Note: Most operating systems let the user choose the primary screen using a management user interface, such as the Windows Control Panel and the macOS Preferences application.
 
@@ -375,13 +378,13 @@ Note: Most operating systems let the user choose the primary screen using a mana
 
 Each [=/screen=] may be designated as <dfn>internal</dfn> or <dfn>external</dfn>.
 
-[=External=] screens are manufactured separately from devices that provide their visual output. It is not unusual for an [=external=] screen to be disconnected from one device and connected to a different device.
+[=/External=] screens are manufactured separately from devices that provide their visual output. It is not unusual for an [=/external=] screen to be disconnected from one device and connected to a different device.
 
-Note: As an example, a desktop computer might display its visual output on an [=external=] screen connected by an HDMI cable. The HDMI cable can be connected or disconnected while the computer is in use, and the computer will adapt its visual environment to that hardware configuration change.
+Note: As an example, a desktop computer might display its visual output on an [=/external=] screen connected by an HDMI cable. The HDMI cable can be connected or disconnected while the computer is in use, and the computer will adapt its visual environment to that hardware configuration change.
 
-[=Internal=] screens are usually attached to a device at manufacturing time. [=Internal=] screens are not intended to be detached by users. However an [=internal=] [=/screen=] may still be enabled or disabled while the user agent is running.
+[=/Internal=] screens are usually attached to a device at manufacturing time. [=/Internal=] screens are not intended to be detached by users. However an [=/internal=] [=/screen=] may still be enabled or disabled while the user agent is running.
 
-Note: As an example, a laptop might disable its [=internal=] screen and input device when the lid is closed. The laptop may still be used in this configuration with an [=external=] screen and input device. The disabled [=internal=] screen may not be reported as a [=/screen=] used by the device while the lid is closed.
+Note: As an example, a laptop might disable its [=/internal=] screen and input device when the lid is closed. The laptop may still be used in this configuration with an [=/external=] screen and input device. The disabled [=/internal=] screen may not be reported as a [=/screen=] used by the device while the lid is closed.
 
 <!-- ====================================================================== -->
 ## Current screen ## {#concept-current-screen}
@@ -408,8 +411,8 @@ The <dfn for="screen">advanced observable properties</dfn> of a [=/screen=] are:
 * [=screen/available screen position=]
 * [=screen/device pixel ratio=]
 * [=screen/label=]
-* The [=screen=]'s designation as [=primary=] or [=secondary=]
-* The [=screen=]'s designation as [=internal=] or [=external=]
+* The [=/screen=]'s designation as [=/primary=] or [=/secondary=]
+* The [=/screen=]'s designation as [=/internal=] or [=/external=]
 
 <!-- ====================================================================== -->
 # API # {#api}
@@ -419,7 +422,7 @@ The <dfn for="screen">advanced observable properties</dfn> of a [=/screen=] are:
 ## Extensions to the {{Screen}} interface ## {#api-extensions-to-screen}
 <!-- ====================================================================== -->
 
-The [[CSSOM-VIEW|CSSOM View Module]] specification defines the {{Screen}} interface, which this specification extends:
+The [[CSSOM-VIEW-1|CSSOM View Module]] specification defines the {{Screen}} interface, which this specification extends:
 
 <div class="domintro note">
 
@@ -441,7 +444,7 @@ partial interface Screen /* : EventTarget */ {
 };
 </xmp>
 
-Issue: Make {{Screen}} derive from {{EventTarget}} in [[CSSOM-VIEW#the-screen-interface]].
+Issue: Make {{Screen}} derive from {{EventTarget}} in [[CSSOM-VIEW-1#the-screen-interface]].
 
 <!-- ====================================================================== -->
 ### {{Screen/isExtended}} attribute ### {#api-screen-isExtended-attribute}
@@ -489,7 +492,7 @@ partial interface Window {
 
 The {{Window/getScreenDetails()}} method completes asynchronously, queuing work on the <dfn>window placement task source</dfn>.
 
-Instances of {{Window}} are created with an [internal slot](https://tc39.github.io/ecma262/#sec-object-internal-methods-and-internal-slots) named <dfn attribute for="Window">\[[screenDetails]]</dfn>, which is created with an initial value of `undefined`.
+Instances of {{Window}} are created with an [=/internal slot=] named <dfn attribute for="Window">\[[screenDetails]]</dfn>, which is created with an initial value of `undefined`.
 
 <div algorithm>
 
@@ -529,11 +532,11 @@ The following {{Window}} attributes and method definitions are updated to return
 ### {{Window/open()|Window.open()}} method definition changes ### {#api-window-open-method-definition-changes}
 <!-- ====================================================================== -->
 
-Instances of {{Window}} are created with an [internal slot](https://tc39.github.io/ecma262/#sec-object-internal-methods-and-internal-slots) named <dfn attribute for="Window">\[[targetScreenFullscreen]]</dfn>, which has a data model equivalent to [last-activation-timestamp](https://html.spec.whatwg.org/multipage/interaction.html#last-activation-timestamp). It corresponds to a {{DOMHighResTimeStamp}} value except for two cases: positive infinity indicates that the {{Window}} has never been activated, while negative infinity indicates that a [user activation-gated API](https://html.spec.whatwg.org/multipage/interaction.html#user-activation-gated-apis) has [consumed](https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation) the last user activation of the {{Window}}. The initial value is positive infinity.
+Instances of {{Window}} are created with an [=/internal slot=] named <dfn attribute for="Window">\[[targetScreenFullscreen]]</dfn>, which has a data model equivalent to [=/last activation timestamp=]. It corresponds to a {{DOMHighResTimeStamp}} value except for two cases: positive infinity indicates that the {{Window}} has never been activated, while negative infinity indicates that a user activation-gated API (see [[HTML#user-activation-gated-apis]]) has [=/consume user activation|consumed=] the last user activation of the {{Window}}. The initial value is positive infinity.
 
 The {{Window/open()|Window.open()}} method steps, and the steps of methods invoked therein, are updated to optionally:
-1. Waive the [=/transient activation=] state requirement when the [current high resolution time](https://w3c.github.io/hr-time/#dfn-current-high-resolution-time) of the [=/relevant global object=] is greater than or equal to [=/this=].{{Window/[[targetScreenFullscreen]]}}, and less than [=/this=].{{Window/[[targetScreenFullscreen]]}} plus the [=/transient activation duration=].
-1. Set [=/this=].{{Window/[[targetScreenFullscreen]]}} to negative infinity immediately after following the steps to [consume user activation](https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation).
+1. Waive the [=/transient activation=] state requirement when the [=/current high resolution time=] of the [=/relevant global object=] is greater than or equal to [=/this=].{{Window/[[targetScreenFullscreen]]}}, and less than [=/this=].{{Window/[[targetScreenFullscreen]]}} plus the [=/transient activation duration=].
+1. Set [=/this=].{{Window/[[targetScreenFullscreen]]}} to negative infinity immediately after following the steps to [=/consume user activation=].
 
 <!-- ====================================================================== -->
 ## {{ScreenDetails}} interface ## {#api-screendetails-interface}
@@ -671,13 +674,13 @@ interface ScreenDetailed : Screen {
 };
 </xmp>
 
-The <dfn attribute for=ScreenDetailed>availLeft</dfn> getter steps are to return the x-coordinate of the [=screen/available screen position=] of [=/this=] [=screen=].
+The <dfn attribute for=ScreenDetailed>availLeft</dfn> getter steps are to return the x-coordinate of the [=screen/available screen position=] of [=/this=] [=/screen=].
 
-The <dfn attribute for=ScreenDetailed>availTop</dfn> getter steps are to return the y-coordinate of the [=screen/available screen position=] of [=/this=] [=screen=].
+The <dfn attribute for=ScreenDetailed>availTop</dfn> getter steps are to return the y-coordinate of the [=screen/available screen position=] of [=/this=] [=/screen=].
 
-The <dfn attribute for=ScreenDetailed>left</dfn> getter steps are to return the x-coordinate of the [=screen/screen position=] of [=/this=] [=screen=].
+The <dfn attribute for=ScreenDetailed>left</dfn> getter steps are to return the x-coordinate of the [=screen/screen position=] of [=/this=] [=/screen=].
 
-The <dfn attribute for=ScreenDetailed>top</dfn> getter steps are to return the y-coordinate of the [=screen/screen position=] of [=/this=] [=screen=].
+The <dfn attribute for=ScreenDetailed>top</dfn> getter steps are to return the y-coordinate of the [=screen/screen position=] of [=/this=] [=/screen=].
 
 The <dfn attribute for=ScreenDetailed>isPrimary</dfn> getter steps are to return true if [=/this=] [=/screen=] is the [=/primary=] [=/screen=], or false otherwise.
 
@@ -720,7 +723,7 @@ The optional {{FullscreenOptions}} <dfn dict-member for=FullscreenOptions>screen
 
 The {{Element/requestFullscreen|Element.requestFullscreen()}} method steps are updated to optionally:
 1. Take `options`["{{FullscreenOptions/screen}}"] into account when moving and resizing  `pendingDoc`’s [=/top-level browsing context=]’s [=/active document=]’s viewport. The viewport may be moved to the specified [=/screen=] as part of this modified method step.
-1. Set the [=/this=].{{Window/[[targetScreenFullscreen]]}} internal slot to the [current high resolution time](https://w3c.github.io/hr-time/#dfn-current-high-resolution-time) if `options`["{{FullscreenOptions/screen}}"] specifies a recognized {{ScreenDetailed}} object with a value of true for {{Screen/isExtended}}.
+1. Set the [=/this=].{{Window/[[targetScreenFullscreen]]}} internal slot to the [=/current high resolution time=] if `options`["{{FullscreenOptions/screen}}"] specifies a recognized {{ScreenDetailed}} object with a value of true for {{Screen/isExtended}}.
 
 <!-- ====================================================================== -->
 ## Permission API Integration ## {#api-permission-api-integration}
@@ -771,13 +774,13 @@ See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/
 # Privacy Considerations # {#privacy}
 <!-- ====================================================================== -->
 
-This specification exposes new information to sites about screens connected to the device, which may pose limited new privacy risks. This additional information increases the [fingerprinting](https://w3c.github.io/fingerprinting-guidance) surface of devices, especially those with atypical screen configurations.
+This specification exposes new information to sites about screens connected to the device, which may pose limited new privacy risks. This additional information increases the [fingerprinting](https://w3c.github.io/fingerprinting-guidance/) surface of devices, especially those with atypical screen configurations.
 
 To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, restricted to secure contexts, most new information requires explicit user permission (where prompting is only possible with transient user activation), and permission-gated information is also subject to permission policy. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.
 
-The `Screen.isExtended` boolean is exposed without explicit permission checks, as this minimal single bit of information supports some critical features for which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI entry points like “Show on another screen”), and helps avoid unnecessarily prompting single-screen users for inapplicable information and capabilities. This generally follows a TAG design principle for [device enumeration](https://w3ctag.github.io/design-principles/#device-enumeration).
+The `Screen.isExtended` boolean is exposed without explicit permission checks, as this minimal single bit of information supports some critical features for which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI entry points like “Show on another screen”), and helps avoid unnecessarily prompting single-screen users for inapplicable information and capabilities. This generally follows a TAG design principle for device enumeration (see [[DESIGN-PRINCIPLES#device-enumeration]]).
 
-Many user agents already effectively expose the presence of multiple screens to windows located on secondary screens, where `window.screen.availLeft|Top` >> 0. Script access of this bit is a detectable [active fingerprinting](https://w3c.github.io/fingerprinting-guidance/#active) signal, which may be observed and blocked by the user agent. Additionally, user agents that do not constrain unpermissioned window placement requests to the [=/current screen=] allow adversaries to attempt programmatic placement on other screens, at which point information about that `window.screen` is exposed.
+Many user agents already effectively expose the presence of multiple screens to windows located on secondary screens, where `window.screen.availLeft|Top` >> 0. Script access of this bit is a detectable [=/active fingerprinting=] signal, which may be observed and blocked by the user agent. Additionally, user agents that do not constrain unpermissioned window placement requests to the [=/current screen=] allow adversaries to attempt programmatic placement on other screens, at which point information about that `window.screen` is exposed.
 
 The new `Screen.onchange` events pose a slight risk by making [ephemeral fingerprinting](https://github.com/asankah/ephemeral-fingerprinting) easier, but scripts can already achieve the same result by polling for changes to `window.screen`. This risk could be partially mitigated by delaying event dispatch for hidden documents until such documents are no longer hidden.
 

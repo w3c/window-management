@@ -56,7 +56,7 @@ web application's window placement actions, and declarative arrangements
 specified by a site are unlikely to provide the requisite expressiveness for
 most use cases.
 
-All newly exposed information could be gated by the proposed `window-placement`
+All newly exposed information could be gated by the proposed `window-management`
 permission, limited to secure contexts, top-level frames, gated by user gesture,
 active window contexts, and other protections to help mitigate concerns around
 [fingerprinting](https://w3c.github.io/fingerprinting-guidance).
@@ -232,7 +232,7 @@ No.
 The questionnaire could ask if implementing the proposal would yield or enable
 any additional Security and Privacy protections.
 
-By adding the proposed `window-placement` permission, browsers could further
+By adding the proposed `window-management` permission, browsers could further
 limit unpermissioned access to existing information and capabilities.
 
 For example, without the permission, browsers could:

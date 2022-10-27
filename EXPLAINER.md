@@ -64,7 +64,7 @@ of existing window placement APIs to support extended multi-screen environments.
   * Add `Window.getScreenDetails()` to request additional permission-gated screen info
   * Add `ScreenDetails` and `ScreenDetailed` interfaces for additional screen info
   * Standardize common `Screen.availLeft` and `Screen.availTop` attributes
-  * Add Permission API support for a new `window-placement` entry
+  * Add Permission API support for a new `window-management` entry
 
 These allow web applications to make window placement requests optimized for the
 specific use case, characteristics of available screens, and user preferences.
@@ -524,7 +524,7 @@ window.moveTo(screen.availLeft + offsetX, screen.availTop + offsetY);
 See prior discussion regarding coordinates in the section titled
 "Support requests to place web app windows on a specific screen".
 
-### Add Permission API support for a new `window-placement` entry
+### Add Permission API support for a new `window-management` entry
 
 Sites may wish to know whether users have already granted or denied a requisite
 permission before attempting to access gated information and capabilities. The
@@ -534,7 +534,7 @@ the `query()` method of the [Permission API](https://w3c.github.io/permissions).
 ```webidl
 enum PermissionName {
   // ...
-  "window-placement",
+  "window-management",
   // ...
 };
 ```
@@ -544,7 +544,7 @@ cross-screen support for users that have already granted permission, and respect
 users that have already denied the permission.
 
 ```js
-navigator.permissions.query({name:'window-placement'}).then(function(status) {
+navigator.permissions.query({name:'window-management'}).then(function(status) {
   if (status.state === "prompt")
     showMultiScreenEducationalUI();
   else if (status.state === "granted")
@@ -561,7 +561,7 @@ If a cross-origin page wants an embedded page to have access to this API,
 then it needs to specify an `allow` attribute on the iframe, e.g.
 
 ```html
-<iframe src="some_page.html" allow="window-placement"></iframe>
+<iframe src="some_page.html" allow="window-management"></iframe>
 ```
 
 ### Open questions

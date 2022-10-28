@@ -16,8 +16,7 @@ aligning related proposals, partly motivating a new Screens interface.
 - Partner feedback requested access to:
   - User-friendly screen labels, which vastly improve custom multi-screen picker and configuration UIs for apps
   - Screen change events, including changes to the multi-screen bit, to obviate polling
-- Chrome Security requested that this feature be disabled by default on embedded pages via a [permissions policy](https://w3c.github.io/webappsec-permissions-policy/)
-  - In the second origin trial, cross origin iframes need to specify an `allow="window-management"` attribute.
+- Starting in the second origin trial, a [permissions policy](https://w3c.github.io/webappsec-permissions-policy/) was added, so embedders could control feature access of embedded iframes.
 - Some screen properties of reduced imperative were removed, at least for now.
   - `id`: A temporary generated per-origin unique ID; reset when cookies are deleted.
   - `touchSupport`: Whether the screen supports touch input; a predecessor of `pointerTypes`.

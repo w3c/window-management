@@ -22,6 +22,7 @@ aligning related proposals, partly motivating a new Screens interface.
   - `id`: A temporary generated per-origin unique ID; reset when cookies are deleted.
   - `touchSupport`: Whether the screen supports touch input; a predecessor of `pointerTypes`.
   - `pointerTypes`: The set of PointerTypes supported by the screen.
+- The `window-placement` permission and permission policy name were renamed to `window-management` as per GitHub issue [114](https://github.com/w3c/window-placement/issues/114)
 
 ## Examples of requesting additional screen information
 

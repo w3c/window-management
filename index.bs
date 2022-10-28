@@ -733,6 +733,8 @@ This specification defines a [=/default powerful feature=] that is identified by
 
 The [[permissions]] API provides a uniform way for websites to query the state of their permissions.
 
+Note: Previously published versions of this document used the permission name "{{window-placement}}". User agents should carefully migrate to the updated permission string: "{{window-management}}". See [#114](https://github.com/w3c/window-placement/issues/114).
+
 Issue: Add {{window-management}} to [[permissions]] registry.
 
 Issue: Define behavior of cached objects and method steps when the permission is revoked. (See [#80](https://github.com/w3c/window-placement/issues/80))

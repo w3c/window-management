@@ -502,7 +502,7 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 1. Run the following steps [=/in parallel=]:
 
-    1. Let |permissionState| be [=/request permission to use=] `"window-placement"`.
+    1. Let |permissionState| be [=/request permission to use=] `"window-management"`.
 
     1. If |permissionState| is "{{PermissionState/denied}}" then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
@@ -729,11 +729,13 @@ The {{Element/requestFullscreen|Element.requestFullscreen()}} method steps are u
 ## Permission API Integration ## {#api-permission-api-integration}
 <!-- ====================================================================== -->
 
-This specification defines a [=/default powerful feature=] that is identified by the [=powerful feature/name=] "<dfn export permission>window-placement</dfn>".
+This specification defines a [=/default powerful feature=] that is identified by the [=powerful feature/name=] "<dfn export permission>window-management</dfn>".
 
 The [[permissions]] API provides a uniform way for websites to query the state of their permissions.
 
-Issue: Add {{window-placement}} to [[permissions]] registry.
+Note: Previously published versions of this document used the permission name "{{window-placement}}". User agents should carefully migrate to the updated permission string: "{{window-management}}". See [#114](https://github.com/w3c/window-placement/issues/114).
+
+Issue: Add {{window-management}} to [[permissions]] registry.
 
 Issue: Define behavior of cached objects and method steps when the permission is revoked. (See [#80](https://github.com/w3c/window-placement/issues/80))
 
@@ -741,11 +743,11 @@ Issue: Define behavior of cached objects and method steps when the permission is
 ## Permission Policy integration ## {#api-permission-policy-integration}
 <!-- ====================================================================== -->
 
-This specification defines a [=/policy-controlled feature=] identified by the string "<dfn for="permission-policy">window-placement</dfn>". Its [=/default allowlist=] is `"self"`. See [[permissions-policy]] and its list of [Experimental Features](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features).
+This specification defines a [=/policy-controlled feature=] identified by the string "<dfn for="permission-policy">window-management</dfn>". Its [=/default allowlist=] is `"self"`. See [[permissions-policy]] and its list of [Experimental Features](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features).
 
 Note: A [=/document=]’s permissions policy determines whether any content in that document is allowed to obtain {{ScreenDetails}} or place content on specific screens. If disabled, promises returned by {{Window/getScreenDetails}} will be rejected, and requests to place content on specific screens will be clamped to the [=/current screen=].
 
-Issue: Move [=permission-policy/window-placement=] to [Proposed](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) or [Standardized](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) feature lists when appropriate.
+Issue: Move [=permission-policy/window-management=] to [Proposed](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) or [Standardized](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) feature lists when appropriate.
 
 <!-- ====================================================================== -->
 # Security Considerations # {#security}

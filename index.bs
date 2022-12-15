@@ -454,6 +454,8 @@ Issue: Make {{Screen}} derive from {{EventTarget}} in [[CSSOM-VIEW-1#the-screen-
 
 The <dfn attribute for=Screen>isExtended</dfn> getter steps are:
 
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=permission-policy/window-management=]", return false and abort these steps.
+
 1. Return true if the device has more than one [=/screen=], and false otherwise.
 
 </div>
@@ -502,9 +504,11 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 1. Run the following steps [=/in parallel=]:
 
+    1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=permission-policy/window-management=]", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
     1. Let |permissionState| be [=/request permission to use=] `"window-management"`.
 
-    1. If |permissionState| is "{{PermissionState/denied}}" then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+    1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
     1. If |permissionState| is "{{PermissionState/prompt}}" and the [=/relevant global object=] of [=/this=] does not have [=/transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
@@ -743,9 +747,9 @@ Issue: Define behavior of cached objects and method steps when the permission is
 ## Permission Policy integration ## {#api-permission-policy-integration}
 <!-- ====================================================================== -->
 
-This specification defines a [=/policy-controlled feature=] identified by the string "<dfn for="permission-policy">window-management</dfn>". Its [=/default allowlist=] is `"self"`. See [[permissions-policy]] and its list of [Experimental Features](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features).
+This specification defines a [=/policy-controlled feature=] identified by the string "<dfn for="policy-controlled feature"><code>window-management</code></dfn>", that controls whether {{Screen/isExtended}}, {{Window/getScreenDetails}}, and dependent functionality may be used. The [=/default allowlist=] for this feature is <code>["self"]</code>. See [[permissions-policy]] and its list of [Experimental Features](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features).
 
-Note: A [=/document=]’s permissions policy determines whether any content in that document is allowed to obtain {{ScreenDetails}} or place content on specific screens. If disabled, promises returned by {{Window/getScreenDetails}} will be rejected, and requests to place content on specific screens will be clamped to the [=/current screen=].
+Note: A [=/document=]’s permissions policy determines whether any content in that document is allowed to obtain a meaningful value from {{Screen/isExtended}}, access {{ScreenDetails}}, or place content on specific screens. If disabled, {{Screen/isExtended}} will return false, promises returned by {{Window/getScreenDetails}} will be rejected, and requests to place content on specific screens will be clamped to the [=/current screen=].
 
 Issue: Move [=permission-policy/window-management=] to [Proposed](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) or [Standardized](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) feature lists when appropriate.
 

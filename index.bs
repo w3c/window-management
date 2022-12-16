@@ -508,7 +508,7 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
     1. Let |permissionState| be [=/request permission to use=] `"window-management"`.
 
-    1. [=/queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
+    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
 
         1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 

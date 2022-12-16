@@ -508,13 +508,13 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
     1. Let |permissionState| be [=/request permission to use=] `"window-management"`.
 
-    1. If |permissionState| is "{{PermissionState/denied}}", then [=/queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+    1. [=/queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
 
-    1. If |permissionState| is "{{PermissionState/prompt}}" and the [=/relevant global object=] of [=/this=] does not have [=/transient activation=], then [=/queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+        1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
-    1. If [=/this=].{{Window/[[screenDetails]]}} is `undefined`, then set [=/this=].{{Window/[[screenDetails]]}} to a new {{ScreenDetails}} object.
+        1. If [=/this=].{{Window/[[screenDetails]]}} is `undefined`, then set [=/this=].{{Window/[[screenDetails]]}} to a new {{ScreenDetails}} object.
 
-    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/resolve=] |promise| with [=/this=].{{Window/[[screenDetails]]}}.
+        1. [=/Resolve=] |promise| with [=/this=].{{Window/[[screenDetails]]}}.
 
 1. Return |promise|.
 

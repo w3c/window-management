@@ -502,15 +502,15 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 1. Let |promise| be [=/a new promise=].
 
-1. Run the following steps [=/in parallel=]:
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=permission-policy/window-management=]", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
-    1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=permission-policy/window-management=]", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+1. Run the following steps [=/in parallel=]:
 
     1. Let |permissionState| be [=/request permission to use=] `"window-management"`.
 
-    1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+    1. If |permissionState| is "{{PermissionState/denied}}", then [=/queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
-    1. If |permissionState| is "{{PermissionState/prompt}}" and the [=/relevant global object=] of [=/this=] does not have [=/transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+    1. If |permissionState| is "{{PermissionState/prompt}}" and the [=/relevant global object=] of [=/this=] does not have [=/transient activation=], then [=/queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
     1. If [=/this=].{{Window/[[screenDetails]]}} is `undefined`, then set [=/this=].{{Window/[[screenDetails]]}} to a new {{ScreenDetails}} object.
 

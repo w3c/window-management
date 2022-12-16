@@ -454,6 +454,8 @@ Issue: Make {{Screen}} derive from {{EventTarget}} in [[CSSOM-VIEW-1#the-screen-
 
 The <dfn attribute for=Screen>isExtended</dfn> getter steps are:
 
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=permission-policy/window-management=]", return false and abort these steps.
+
 1. Return true if the device has more than one [=/screen=], and false otherwise.
 
 </div>
@@ -500,17 +502,19 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 1. Let |promise| be [=/a new promise=].
 
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "[=permission-policy/window-management=]", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
 1. Run the following steps [=/in parallel=]:
 
     1. Let |permissionState| be [=/request permission to use=] `"window-management"`.
 
-    1. If |permissionState| is "{{PermissionState/denied}}" then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
 
-    1. If |permissionState| is "{{PermissionState/prompt}}" and the [=/relevant global object=] of [=/this=] does not have [=/transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+        1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
-    1. If [=/this=].{{Window/[[screenDetails]]}} is `undefined`, then set [=/this=].{{Window/[[screenDetails]]}} to a new {{ScreenDetails}} object.
+        1. If [=/this=].{{Window/[[screenDetails]]}} is `undefined`, then set [=/this=].{{Window/[[screenDetails]]}} to a new {{ScreenDetails}} object.
 
-    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/resolve=] |promise| with [=/this=].{{Window/[[screenDetails]]}}.
+        1. [=/Resolve=] |promise| with [=/this=].{{Window/[[screenDetails]]}}.
 
 1. Return |promise|.
 
@@ -743,9 +747,9 @@ Issue: Define behavior of cached objects and method steps when the permission is
 ## Permission Policy integration ## {#api-permission-policy-integration}
 <!-- ====================================================================== -->
 
-This specification defines a [=/policy-controlled feature=] identified by the string "<dfn for="permission-policy">window-management</dfn>". Its [=/default allowlist=] is `"self"`. See [[permissions-policy]] and its list of [Experimental Features](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features).
+This specification defines a [=/policy-controlled feature=] identified by the string "<dfn for="policy-controlled feature"><code>window-management</code></dfn>", that controls whether {{Screen/isExtended}}, {{Window/getScreenDetails}}, and dependent functionality may be used. The [=/default allowlist=] for this feature is <code>["self"]</code>. See [[permissions-policy]] and its list of [Experimental Features](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features).
 
-Note: A [=/document=]’s permissions policy determines whether any content in that document is allowed to obtain {{ScreenDetails}} or place content on specific screens. If disabled, promises returned by {{Window/getScreenDetails}} will be rejected, and requests to place content on specific screens will be clamped to the [=/current screen=].
+Note: A [=/document=]’s permissions policy determines whether any content in that document is allowed to obtain a meaningful value from {{Screen/isExtended}}, access {{ScreenDetails}}, or place content on specific screens. If disabled, {{Screen/isExtended}} will return false, promises returned by {{Window/getScreenDetails}} will be rejected, and requests to place content on specific screens will be clamped to the [=/current screen=].
 
 Issue: Move [=permission-policy/window-management=] to [Proposed](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) or [Standardized](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) feature lists when appropriate.
 
@@ -778,7 +782,7 @@ See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/
 
 This specification exposes new information to sites about screens connected to the device, which may pose limited new privacy risks. This additional information increases the [fingerprinting](https://w3c.github.io/fingerprinting-guidance/) surface of devices, especially those with atypical screen configurations.
 
-To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, restricted to secure contexts, most new information requires explicit user permission (where prompting is only possible with transient user activation), and permission-gated information is also subject to permission policy. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.
+To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, restricted to secure contexts, most new information requires explicit user permission (where prompting is only possible with transient user activation), and subject to permission policy. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.
 
 The `Screen.isExtended` boolean is exposed without explicit permission checks, as this minimal single bit of information supports some critical features for which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI entry points like “Show on another screen”), and helps avoid unnecessarily prompting single-screen users for inapplicable information and capabilities. This generally follows a TAG design principle for device enumeration (see [[DESIGN-PRINCIPLES#device-enumeration]]).
 

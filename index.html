@@ -6,10 +6,10 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 859efb4bd, updated Fri Jan 27 16:04:01 2023 -0800" name="generator">
+  <meta content="Bikeshed version 077497365, updated Thu Mar 2 15:15:29 2023 -0800" name="generator">
   <link href="https://www.w3.org/TR/window-placement/" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="a52765503355ceb3bedfb79a601f198e1fb366ce" name="document-revision">
+  <meta content="9bc726751331fd4fd527e4a07abe093501ee9539" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -29,7 +29,6 @@
 }
 </style>
 <style>/* style-autolinks */
-
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
     font-size: inherit;
@@ -89,7 +88,8 @@ pre .property::before, pre .property::after {
 
 [data-link-type=biblio] {
     white-space: pre;
-}</style>
+}
+</style>
 <style>/* style-colors */
 
 /* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
@@ -198,9 +198,9 @@ pre .property::before, pre .property::after {
     --outdated-shadow: red;
 
     --editedrec-bg: darkorange;
-}</style>
+}
+</style>
 <style>/* style-counters */
-
 body {
     counter-reset: example figure issue;
 }
@@ -227,9 +227,9 @@ figcaption {
 }
 figcaption:not(.no-marker)::before {
     content: "Figure " counter(figure) " ";
-}</style>
+}
+</style>
 <style>/* style-dfn-panel */
-
 :root {
     --dfnpanel-bg: #ddd;
     --dfnpanel-text: var(--text);
@@ -237,10 +237,10 @@ figcaption:not(.no-marker)::before {
 .dfn-panel {
     position: absolute;
     z-index: 35;
-    height: auto;
-    width: -webkit-fit-content;
-    width: fit-content;
+    width: 20em;
+    min-width: min-content;
     max-width: 300px;
+    height: auto;
     max-height: 500px;
     overflow: auto;
     padding: 0.5em 0.75em;
@@ -248,6 +248,7 @@ figcaption:not(.no-marker)::before {
     background: var(--dfnpanel-bg);
     color: var(--dfnpanel-text);
     border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
 }
 .dfn-panel:not(.on) { display: none; }
 .dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
@@ -270,7 +271,6 @@ figcaption:not(.no-marker)::before {
 .dfn-paneled { cursor: pointer; }
 </style>
 <style>/* style-issues */
-
 a[href].issue-return {
     float: right;
     float: inline-end;
@@ -280,7 +280,6 @@ a[href].issue-return {
 }
 </style>
 <style>/* style-md-lists */
-
 /* This is a weird hack for me not yet following the commonmark spec
    regarding paragraph and lists. */
 [data-md] > :first-child {
@@ -288,7 +287,8 @@ a[href].issue-return {
 }
 [data-md] > :last-child {
     margin-bottom: 0;
-}</style>
+}
+</style>
 <style>/* style-selflinks */
 
 :root {
@@ -536,6 +536,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
        which is quite common in practice... */
     img { background: white; }
 }
+
 @media (prefers-color-scheme: dark) {
     :root {
         --selflink-text: black;
@@ -550,6 +551,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
         --dfnpanel-text: var(--text);
     }
 }
+
 @media (prefers-color-scheme: dark) {
     .highlight:not(.idl) { background: rgba(255, 255, 255, .05); }
 
@@ -617,7 +619,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-02-06">6 February 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-03-03">3 March 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1035,7 +1037,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
     </ol>
    </div>
    <h4 class="heading settled" data-level="3.1.2" id="api-screen-onchange-attribute"><span class="secno">3.1.2. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#dom-screen-onchange" id="ref-for-dom-screen-onchange②">onchange</a></code> attribute</span><a class="self-link" href="#api-screen-onchange-attribute"></a></h4>
-   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="attribute" data-export id="dom-screen-onchange"><code>onchange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screen-change" id="ref-for-eventdef-screen-change①"><code>change</code></a>.</p>
+   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="attribute" data-export id="dom-screen-onchange"><code>onchange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type">event handler event type</a> is <code class="idl"><a class="idl-code" data-link-type="event" href="#eventdef-screen-change" id="ref-for-eventdef-screen-change①">change</a></code>.</p>
    <p>When any <a data-link-type="dfn" href="#screen-basic-observable-properties" id="ref-for-screen-basic-observable-properties">basic observable property</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window④">Window</a></code> <var>window</var>’s <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen">current screen</a> changes, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task" id="ref-for-queue-a-global-task">queue a global task</a> on the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object</a> of <var>window</var> using the <a data-link-type="dfn" href="#window-placement-task-source" id="ref-for-window-placement-task-source">window placement task source</a> to <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire">fire an event</a> named <dfn class="dfn-paneled idl-code" data-dfn-for="Screen" data-dfn-type="event" data-export id="eventdef-screen-change"><code>change</code></dfn> at the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen④⓪">Screen</a></code> object referenced by <var>window</var>’s <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-screen" id="ref-for-dom-window-screen①">screen</a></code> attribute.</p>
    <h3 class="heading settled" data-level="3.2" id="api-extensions-to-window"><span class="secno">3.2. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window⑤">Window</a></code> interface</span><a class="self-link" href="#api-extensions-to-window"></a></h3>
    <p>The <a data-link-type="biblio" href="#biblio-html" title="HTML Standard">[HTML]</a> standard defines the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window⑥">Window</a></code> interface, which this specification extends:</p>
@@ -1162,12 +1164,12 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
    <h4 class="heading settled" data-level="3.3.2" id="api-screendetails-currentscreen-attribute"><span class="secno">3.3.2. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#dom-screendetails-currentscreen" id="ref-for-dom-screendetails-currentscreen②">currentScreen</a></code> attribute</span><a class="self-link" href="#api-screendetails-currentscreen-attribute"></a></h4>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-currentscreen"><code>currentScreen</code></dfn> getter steps are to return the <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑦">ScreenDetailed</a></code> object in <code class="idl"><a data-link-type="idl" href="#dom-screendetails-screens" id="ref-for-dom-screendetails-screens③">screens</a></code> representing the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen④">current screen</a> of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①⑤">Window</a></code> object associated with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> Which exact <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑧">ScreenDetailed</a></code> object in <code class="idl"><a data-link-type="idl" href="#dom-screendetails-screens" id="ref-for-dom-screendetails-screens④">screens</a></code> represents the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen⑤">current screen</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①⑥">Window</a></code> is assumed to be defined by operating systems and user agents. This corresponds with <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①⑦">Window</a></code>.<code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-screen" id="ref-for-dom-window-screen③">screen</a></code>, the canonical screen for a given window, for example the screen with the largest area intersecting the window.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> <code class="idl"><a data-link-type="idl" href="#dom-screendetails-currentscreen" id="ref-for-dom-screendetails-currentscreen③">currentScreen</a></code> is guaranteed to be <code>===</code> comparable with one of the entries in <code class="idl"><a data-link-type="idl" href="#dom-screendetails-screens" id="ref-for-dom-screendetails-screens⑤">screens</a></code>, to facilitate such comparisons, e.g. <code>screenDetails.screens.find(s => s !== screenDetails.currentScreen);</code>. That precludes <code class="idl"><a data-link-type="idl" href="#dom-screendetails-currentscreen" id="ref-for-dom-screendetails-currentscreen④">currentScreen</a></code> from being marked <code>[SameObject]</code>. Relatedly, <a class="idl-code" data-link-type="event" href="#eventdef-screendetailed-change" id="ref-for-eventdef-screendetailed-change"><code>change</code></a> event listeners added to <code class="idl"><a data-link-type="idl" href="#dom-screendetails-currentscreen" id="ref-for-dom-screendetails-currentscreen⑤">currentScreen</a></code> will only be notified of changes for that specific <a data-link-type="dfn" href="#screen" id="ref-for-screen④⑧">screen</a>, while <a class="idl-code" data-link-type="event" href="#eventdef-screendetails-currentscreenchange" id="ref-for-eventdef-screendetails-currentscreenchange"><code>currentscreenchange</code></a> event listeners will be notified of changes for whichever <a data-link-type="dfn" href="#screen" id="ref-for-screen④⑨">screen</a> happens to be the window’s <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen⑥">current screen</a>, i.e. after the window moves from one <a data-link-type="dfn" href="#screen" id="ref-for-screen⑤⓪">screen</a> to another.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> <code class="idl"><a data-link-type="idl" href="#dom-screendetails-currentscreen" id="ref-for-dom-screendetails-currentscreen③">currentScreen</a></code> is guaranteed to be <code>===</code> comparable with one of the entries in <code class="idl"><a data-link-type="idl" href="#dom-screendetails-screens" id="ref-for-dom-screendetails-screens⑤">screens</a></code>, to facilitate such comparisons, e.g. <code>screenDetails.screens.find(s => s !== screenDetails.currentScreen);</code>. That precludes <code class="idl"><a data-link-type="idl" href="#dom-screendetails-currentscreen" id="ref-for-dom-screendetails-currentscreen④">currentScreen</a></code> from being marked <code>[SameObject]</code>. Relatedly, <code class="idl"><a class="idl-code" data-link-type="event" href="#eventdef-screendetailed-change" id="ref-for-eventdef-screendetailed-change">change</a></code> event listeners added to <code class="idl"><a data-link-type="idl" href="#dom-screendetails-currentscreen" id="ref-for-dom-screendetails-currentscreen⑤">currentScreen</a></code> will only be notified of changes for that specific <a data-link-type="dfn" href="#screen" id="ref-for-screen④⑧">screen</a>, while <code class="idl"><a class="idl-code" data-link-type="event" href="#eventdef-screendetails-currentscreenchange" id="ref-for-eventdef-screendetails-currentscreenchange">currentscreenchange</a></code> event listeners will be notified of changes for whichever <a data-link-type="dfn" href="#screen" id="ref-for-screen④⑨">screen</a> happens to be the window’s <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen⑥">current screen</a>, i.e. after the window moves from one <a data-link-type="dfn" href="#screen" id="ref-for-screen⑤⓪">screen</a> to another.</p>
    <h4 class="heading settled" data-level="3.3.3" id="api-screendetails-onscreenschange-attribute"><span class="secno">3.3.3. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#dom-screendetails-onscreenschange" id="ref-for-dom-screendetails-onscreenschange②">onscreenschange</a></code> attribute</span><a class="self-link" href="#api-screendetails-onscreenschange-attribute"></a></h4>
-   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-onscreenschange"><code>onscreenschange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes①">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type①">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screendetails-screenschange" id="ref-for-eventdef-screendetails-screenschange"><code>screenschange</code></a>.</p>
+   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-onscreenschange"><code>onscreenschange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes①">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type①">event handler event type</a> is <code class="idl"><a class="idl-code" data-link-type="event" href="#eventdef-screendetails-screenschange" id="ref-for-eventdef-screendetails-screenschange">screenschange</a></code>.</p>
    <p>When the set of <code class="idl"><a data-link-type="idl" href="#dom-screendetails-screens" id="ref-for-dom-screendetails-screens⑥">screens</a></code> of a <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑥">ScreenDetails</a></code> object <var>screenDetails</var> changes, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task" id="ref-for-queue-a-global-task②">queue a global task</a> on the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑤">relevant global object</a> of <var>screenDetails</var> using the <a data-link-type="dfn" href="#window-placement-task-source" id="ref-for-window-placement-task-source②">window placement task source</a> to <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire①">fire an event</a> named <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="event" data-export id="eventdef-screendetails-screenschange"><code>screenschange</code></dfn> at <var>screenDetails</var>.</p>
    <h4 class="heading settled" data-level="3.3.4" id="api-screendetails-oncurrentscreenchange-attribute"><span class="secno">3.3.4. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#dom-screendetails-oncurrentscreenchange" id="ref-for-dom-screendetails-oncurrentscreenchange②">oncurrentscreenchange</a></code> attribute</span><a class="self-link" href="#api-screendetails-oncurrentscreenchange-attribute"></a></h4>
-   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-oncurrentscreenchange"><code>oncurrentscreenchange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes②">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type②">event handler event type</a> is <a class="idl-code" data-link-type="event" href="#eventdef-screendetails-currentscreenchange" id="ref-for-eventdef-screendetails-currentscreenchange①"><code>currentscreenchange</code></a>.</p>
+   <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="attribute" data-export id="dom-screendetails-oncurrentscreenchange"><code>oncurrentscreenchange</code></dfn> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes②">event handler IDL attribute</a> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type②">event handler event type</a> is <code class="idl"><a class="idl-code" data-link-type="event" href="#eventdef-screendetails-currentscreenchange" id="ref-for-eventdef-screendetails-currentscreenchange①">currentscreenchange</a></code>.</p>
    <p>When the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen⑦">current screen</a> of a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①⑧">Window</a></code> <var>window</var> changes from one <a data-link-type="dfn" href="#screen" id="ref-for-screen⑤①">screen</a> to another (e.g. the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①⑨">Window</a></code> has been moved to a different display), or when any <a data-link-type="dfn" href="#screen-basic-observable-properties" id="ref-for-screen-basic-observable-properties①">basic observable property</a> or <a data-link-type="dfn" href="#screen-advanced-observable-properties" id="ref-for-screen-advanced-observable-properties">advanced observable property</a> of the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen⑧">current screen</a> of <var>window</var> changes, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task" id="ref-for-queue-a-global-task③">queue a global task</a> on the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑥">relevant global object</a> of <var>window</var> using the <a data-link-type="dfn" href="#window-placement-task-source" id="ref-for-window-placement-task-source③">window placement task source</a> to <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-fire" id="ref-for-concept-event-fire②">fire an event</a> named <dfn class="dfn-paneled idl-code" data-dfn-for="ScreenDetails" data-dfn-type="event" data-export id="eventdef-screendetails-currentscreenchange"><code>currentscreenchange</code></dfn> at the <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑦">ScreenDetails</a></code> object stored in <var>window</var>’s internal slot <code class="idl"><a data-link-type="idl" href="#dom-window-screendetails-slot" id="ref-for-dom-window-screendetails-slot③">[[screenDetails]]</a></code>.</p>
    <h3 class="heading settled" data-level="3.4" id="api-screendetailed-interface"><span class="secno">3.4. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed⑨">ScreenDetailed</a></code> interface</span><a class="self-link" href="#api-screendetailed-interface"></a></h3>
    <p>A <code class="idl"><a data-link-type="idl" href="#screendetailed" id="ref-for-screendetailed①⓪">ScreenDetailed</a></code> object represents a <a data-link-type="dfn" href="#screen" id="ref-for-screen⑤②">screen</a>.</p>
@@ -1443,15 +1445,15 @@ for helping craft this specification.</p>
    <li><a href="#permissiondef-window-management">window-management</a><span>, in § 3.6</span>
    <li><a href="#window-placement-task-source">window placement task source</a><span>, in § 3.2.1</span>
   </ul>
-  <aside class="dfn-panel" data-for="term-for-px">
-   <a href="https://drafts.csswg.org/css-values-4/#px">https://drafts.csswg.org/css-values-4/#px</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-410b8791a225bd2a6fb146c400de6819" class="dfn-panel" data-for="410b8791a225bd2a6fb146c400de6819" id="infopanel-for-410b8791a225bd2a6fb146c400de6819">
+   <span id="infopaneltitle-for-410b8791a225bd2a6fb146c400de6819" style="display:none">Info about the 'css pixel' external reference.</span><a href="https://drafts.csswg.org/css-values-4/#px">https://drafts.csswg.org/css-values-4/#px</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-px">2.1. Screen</a>
     <li><a href="#ref-for-px①">3.2.2. Window attribute and method definition changes</a> <a href="#ref-for-px②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-screen">
-   <a href="https://drafts.csswg.org/cssom-view-1/#screen">https://drafts.csswg.org/cssom-view-1/#screen</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-7a895a5639e36be2a8d67430ca1d93ed" class="dfn-panel" data-for="7a895a5639e36be2a8d67430ca1d93ed" id="infopanel-for-7a895a5639e36be2a8d67430ca1d93ed">
+   <span id="infopaneltitle-for-7a895a5639e36be2a8d67430ca1d93ed" style="display:none">Info about the 'Screen' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#screen">https://drafts.csswg.org/cssom-view-1/#screen</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen">1. Introduction</a>
     <li><a href="#ref-for-screen①">1.2.2. Detect Screen attribute changes</a> <a href="#ref-for-screen②">(2)</a> <a href="#ref-for-screen③">(3)</a>
@@ -1462,40 +1464,40 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-screen⑥③">3.4.1. onchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-devicepixelratio">
-   <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio">https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-9179938e21c9c2bddba45a1c6a4a3c7e" class="dfn-panel" data-for="9179938e21c9c2bddba45a1c6a4a3c7e" id="infopanel-for-9179938e21c9c2bddba45a1c6a4a3c7e">
+   <span id="infopaneltitle-for-9179938e21c9c2bddba45a1c6a4a3c7e" style="display:none">Info about the 'devicePixelRatio' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio">https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-devicepixelratio">2.1. Screen</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-moveby">
-   <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-moveby">https://drafts.csswg.org/cssom-view-1/#dom-window-moveby</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-f52ef7eb6061a0b0ff35a934813dd955" class="dfn-panel" data-for="f52ef7eb6061a0b0ff35a934813dd955" id="infopanel-for-f52ef7eb6061a0b0ff35a934813dd955">
+   <span id="infopaneltitle-for-f52ef7eb6061a0b0ff35a934813dd955" style="display:none">Info about the 'moveBy(x, y)' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#dom-window-moveby">https://drafts.csswg.org/cssom-view-1/#dom-window-moveby</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-moveby">4. Security Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-moveto">
-   <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-moveto">https://drafts.csswg.org/cssom-view-1/#dom-window-moveto</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-339544b3e968cbb080516a03f67b169f" class="dfn-panel" data-for="339544b3e968cbb080516a03f67b169f" id="infopanel-for-339544b3e968cbb080516a03f67b169f">
+   <span id="infopaneltitle-for-339544b3e968cbb080516a03f67b169f" style="display:none">Info about the 'moveTo(x, y)' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#dom-window-moveto">https://drafts.csswg.org/cssom-view-1/#dom-window-moveto</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-moveto">1.2.5. Place windows on a specific screen</a>
     <li><a href="#ref-for-dom-window-moveto①">3.2.2. Window attribute and method definition changes</a>
     <li><a href="#ref-for-dom-window-moveto②">4. Security Considerations</a> <a href="#ref-for-dom-window-moveto③">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-resizeby">
-   <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-resizeby">https://drafts.csswg.org/cssom-view-1/#dom-window-resizeby</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-9de517ae95e2b900ff90995cf4b0eb7c" class="dfn-panel" data-for="9de517ae95e2b900ff90995cf4b0eb7c" id="infopanel-for-9de517ae95e2b900ff90995cf4b0eb7c">
+   <span id="infopaneltitle-for-9de517ae95e2b900ff90995cf4b0eb7c" style="display:none">Info about the 'resizeBy(x, y)' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#dom-window-resizeby">https://drafts.csswg.org/cssom-view-1/#dom-window-resizeby</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-resizeby">4. Security Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-resizeto">
-   <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-resizeto">https://drafts.csswg.org/cssom-view-1/#dom-window-resizeto</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-5397a4af2c64b7f417819886c5fe0f15" class="dfn-panel" data-for="5397a4af2c64b7f417819886c5fe0f15" id="infopanel-for-5397a4af2c64b7f417819886c5fe0f15">
+   <span id="infopaneltitle-for-5397a4af2c64b7f417819886c5fe0f15" style="display:none">Info about the 'resizeTo(width, height)' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#dom-window-resizeto">https://drafts.csswg.org/cssom-view-1/#dom-window-resizeto</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-resizeto">4. Security Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-screen">
-   <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screen">https://drafts.csswg.org/cssom-view-1/#dom-window-screen</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-3f3a668d2313f800d9cb21c35a730fe4" class="dfn-panel" data-for="3f3a668d2313f800d9cb21c35a730fe4" id="infopanel-for-3f3a668d2313f800d9cb21c35a730fe4">
+   <span id="infopaneltitle-for-3f3a668d2313f800d9cb21c35a730fe4" style="display:none">Info about the 'screen' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screen">https://drafts.csswg.org/cssom-view-1/#dom-window-screen</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-screen">2.10. Current screen</a>
     <li><a href="#ref-for-dom-window-screen①">3.1.2. onchange attribute</a>
@@ -1503,57 +1505,57 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-dom-window-screen③">3.3.2. currentScreen attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-screenleft">
-   <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screenleft">https://drafts.csswg.org/cssom-view-1/#dom-window-screenleft</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-bb56846dce44e54661c9ca7bc392bc9d" class="dfn-panel" data-for="bb56846dce44e54661c9ca7bc392bc9d" id="infopanel-for-bb56846dce44e54661c9ca7bc392bc9d">
+   <span id="infopaneltitle-for-bb56846dce44e54661c9ca7bc392bc9d" style="display:none">Info about the 'screenLeft' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screenleft">https://drafts.csswg.org/cssom-view-1/#dom-window-screenleft</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-screenleft">3.2.2. Window attribute and method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-screentop">
-   <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screentop">https://drafts.csswg.org/cssom-view-1/#dom-window-screentop</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-9f2b515e9e4e6f2dce55f88257df53b0" class="dfn-panel" data-for="9f2b515e9e4e6f2dce55f88257df53b0" id="infopanel-for-9f2b515e9e4e6f2dce55f88257df53b0">
+   <span id="infopaneltitle-for-9f2b515e9e4e6f2dce55f88257df53b0" style="display:none">Info about the 'screenTop' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screentop">https://drafts.csswg.org/cssom-view-1/#dom-window-screentop</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-screentop">3.2.2. Window attribute and method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-screenx">
-   <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screenx">https://drafts.csswg.org/cssom-view-1/#dom-window-screenx</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-4c87de1a30cfcf57b436d6a7aad3095c" class="dfn-panel" data-for="4c87de1a30cfcf57b436d6a7aad3095c" id="infopanel-for-4c87de1a30cfcf57b436d6a7aad3095c">
+   <span id="infopaneltitle-for-4c87de1a30cfcf57b436d6a7aad3095c" style="display:none">Info about the 'screenX' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screenx">https://drafts.csswg.org/cssom-view-1/#dom-window-screenx</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-screenx">3.2.2. Window attribute and method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-window-screeny">
-   <a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screeny">https://drafts.csswg.org/cssom-view-1/#dom-window-screeny</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-c7912acaabb40353dc871fdd075c81ac" class="dfn-panel" data-for="c7912acaabb40353dc871fdd075c81ac" id="infopanel-for-c7912acaabb40353dc871fdd075c81ac">
+   <span id="infopaneltitle-for-c7912acaabb40353dc871fdd075c81ac" style="display:none">Info about the 'screenY' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#dom-window-screeny">https://drafts.csswg.org/cssom-view-1/#dom-window-screeny</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-screeny">3.2.2. Window attribute and method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-web-exposed-available-screen-area">
-   <a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-available-screen-area">https://drafts.csswg.org/cssom-view-1/#web-exposed-available-screen-area</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-953c4d676991e8fd6ae1c6bc6d44b7fb" class="dfn-panel" data-for="953c4d676991e8fd6ae1c6bc6d44b7fb" id="infopanel-for-953c4d676991e8fd6ae1c6bc6d44b7fb">
+   <span id="infopaneltitle-for-953c4d676991e8fd6ae1c6bc6d44b7fb" style="display:none">Info about the 'web-exposed available screen area' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-available-screen-area">https://drafts.csswg.org/cssom-view-1/#web-exposed-available-screen-area</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-web-exposed-available-screen-area">2.4. Available screen area</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-web-exposed-screen-area">
-   <a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-area">https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-area</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-22ba40d53e7d7fe6859a450c3322a0fe" class="dfn-panel" data-for="22ba40d53e7d7fe6859a450c3322a0fe" id="infopanel-for-22ba40d53e7d7fe6859a450c3322a0fe">
+   <span id="infopaneltitle-for-22ba40d53e7d7fe6859a450c3322a0fe" style="display:none">Info about the 'web-exposed screen area' external reference.</span><a href="https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-area">https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-area</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-web-exposed-screen-area">2.3. Screen area</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-eventtarget">
-   <a href="https://dom.spec.whatwg.org/#eventtarget">https://dom.spec.whatwg.org/#eventtarget</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-a6aa66e0075314e8eefa4e662cb40fbb" class="dfn-panel" data-for="a6aa66e0075314e8eefa4e662cb40fbb" id="infopanel-for-a6aa66e0075314e8eefa4e662cb40fbb">
+   <span id="infopaneltitle-for-a6aa66e0075314e8eefa4e662cb40fbb" style="display:none">Info about the 'EventTarget' external reference.</span><a href="https://dom.spec.whatwg.org/#eventtarget">https://dom.spec.whatwg.org/#eventtarget</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-eventtarget">3.1. Extensions to the Screen interface</a>
     <li><a href="#ref-for-eventtarget①">3.3. ScreenDetails interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-concept-document">
-   <a href="https://dom.spec.whatwg.org/#concept-document">https://dom.spec.whatwg.org/#concept-document</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-985c42e2af63b3e74bd3b70d55668fd4" class="dfn-panel" data-for="985c42e2af63b3e74bd3b70d55668fd4" id="infopanel-for-985c42e2af63b3e74bd3b70d55668fd4">
+   <span id="infopaneltitle-for-985c42e2af63b3e74bd3b70d55668fd4" style="display:none">Info about the 'document' external reference.</span><a href="https://dom.spec.whatwg.org/#concept-document">https://dom.spec.whatwg.org/#concept-document</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-concept-document">3.7. Permission Policy integration</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-concept-event-fire">
-   <a href="https://dom.spec.whatwg.org/#concept-event-fire">https://dom.spec.whatwg.org/#concept-event-fire</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-15045c15505e025cd6b6d0f134b7c986" class="dfn-panel" data-for="15045c15505e025cd6b6d0f134b7c986" id="infopanel-for-15045c15505e025cd6b6d0f134b7c986">
+   <span id="infopaneltitle-for-15045c15505e025cd6b6d0f134b7c986" style="display:none">Info about the 'fire an event' external reference.</span><a href="https://dom.spec.whatwg.org/#concept-event-fire">https://dom.spec.whatwg.org/#concept-event-fire</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-concept-event-fire">3.1.2. onchange attribute</a>
     <li><a href="#ref-for-concept-event-fire①">3.3.3. onscreenschange attribute</a>
@@ -1561,57 +1563,57 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-concept-event-fire③">3.4.1. onchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-sec-object-internal-methods-and-internal-slots">
-   <a href="https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots">https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-b38c0514f9f3397f516d4fefd2fd346e" class="dfn-panel" data-for="b38c0514f9f3397f516d4fefd2fd346e" id="infopanel-for-b38c0514f9f3397f516d4fefd2fd346e">
+   <span id="infopaneltitle-for-b38c0514f9f3397f516d4fefd2fd346e" style="display:none">Info about the 'internal slot' external reference.</span><a href="https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots">https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-sec-object-internal-methods-and-internal-slots">3.2.1. getScreenDetails() method</a>
     <li><a href="#ref-for-sec-object-internal-methods-and-internal-slots①">3.2.3. Window.open() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-active-fingerprinting">
-   <a href="https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting">https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-440a3a8550f27dbef01b921622a2849f" class="dfn-panel" data-for="440a3a8550f27dbef01b921622a2849f" id="infopanel-for-440a3a8550f27dbef01b921622a2849f">
+   <span id="infopaneltitle-for-440a3a8550f27dbef01b921622a2849f" style="display:none">Info about the 'active fingerprinting' external reference.</span><a href="https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting">https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-active-fingerprinting">2.1. Screen</a>
     <li><a href="#ref-for-dfn-active-fingerprinting①">5. Privacy Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dictdef-fullscreenoptions">
-   <a href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions">https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-5d66818935d3b5b26fe1f12e414c37e6" class="dfn-panel" data-for="5d66818935d3b5b26fe1f12e414c37e6" id="infopanel-for-5d66818935d3b5b26fe1f12e414c37e6">
+   <span id="infopaneltitle-for-5d66818935d3b5b26fe1f12e414c37e6" style="display:none">Info about the 'FullscreenOptions' external reference.</span><a href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions">https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dictdef-fullscreenoptions">1. Introduction</a>
     <li><a href="#ref-for-dictdef-fullscreenoptions①">3.5. Extensions to FullscreenOptions</a> <a href="#ref-for-dictdef-fullscreenoptions②">(2)</a> <a href="#ref-for-dictdef-fullscreenoptions③">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-element-requestfullscreen">
-   <a href="https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen">https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-17f1422256aaa84ed73c3e82e27bec5c" class="dfn-panel" data-for="17f1422256aaa84ed73c3e82e27bec5c" id="infopanel-for-17f1422256aaa84ed73c3e82e27bec5c">
+   <span id="infopaneltitle-for-17f1422256aaa84ed73c3e82e27bec5c" style="display:none">Info about the 'requestFullscreen()' external reference.</span><a href="https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen">https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-element-requestfullscreen">1.2.4. Place fullscreen content on a specific screen</a>
     <li><a href="#ref-for-dom-element-requestfullscreen①">3.5.1. Element.requestFullscreen() method definition changes</a> <a href="#ref-for-dom-element-requestfullscreen②">(2)</a>
     <li><a href="#ref-for-dom-element-requestfullscreen③">4. Security Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-domhighrestimestamp">
-   <a href="https://w3c.github.io/hr-time/#dom-domhighrestimestamp">https://w3c.github.io/hr-time/#dom-domhighrestimestamp</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-0527034ee7070fda15ffa50c34dbbc63" class="dfn-panel" data-for="0527034ee7070fda15ffa50c34dbbc63" id="infopanel-for-0527034ee7070fda15ffa50c34dbbc63">
+   <span id="infopaneltitle-for-0527034ee7070fda15ffa50c34dbbc63" style="display:none">Info about the 'DOMHighResTimeStamp' external reference.</span><a href="https://w3c.github.io/hr-time/#dom-domhighrestimestamp">https://w3c.github.io/hr-time/#dom-domhighrestimestamp</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-domhighrestimestamp">3.2.3. Window.open() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-current-high-resolution-time">
-   <a href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time">https://w3c.github.io/hr-time/#dfn-current-high-resolution-time</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-e769081ceb9756df8377f07e45389780" class="dfn-panel" data-for="e769081ceb9756df8377f07e45389780" id="infopanel-for-e769081ceb9756df8377f07e45389780">
+   <span id="infopaneltitle-for-e769081ceb9756df8377f07e45389780" style="display:none">Info about the 'current high resolution time' external reference.</span><a href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time">https://w3c.github.io/hr-time/#dfn-current-high-resolution-time</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-current-high-resolution-time">3.2.3. Window.open() method definition changes</a>
     <li><a href="#ref-for-dfn-current-high-resolution-time①">3.5.1. Element.requestFullscreen() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-eventhandler">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler">https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-716703f1068cc638b4235f83154eff6c" class="dfn-panel" data-for="716703f1068cc638b4235f83154eff6c" id="infopanel-for-716703f1068cc638b4235f83154eff6c">
+   <span id="infopaneltitle-for-716703f1068cc638b4235f83154eff6c" style="display:none">Info about the 'EventHandler' external reference.</span><a href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler">https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-eventhandler">3.1. Extensions to the Screen interface</a>
     <li><a href="#ref-for-eventhandler①">3.3. ScreenDetails interface</a> <a href="#ref-for-eventhandler②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-window">
-   <a href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window">https://html.spec.whatwg.org/multipage/nav-history-apis.html#window</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-d1f0a86fd49be388d8b0159e241a1172" class="dfn-panel" data-for="d1f0a86fd49be388d8b0159e241a1172" id="infopanel-for-d1f0a86fd49be388d8b0159e241a1172">
+   <span id="infopaneltitle-for-d1f0a86fd49be388d8b0159e241a1172" style="display:none">Info about the 'Window' external reference.</span><a href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window">https://html.spec.whatwg.org/multipage/nav-history-apis.html#window</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-window">1. Introduction</a>
     <li><a href="#ref-for-window①">2.1. Screen</a>
@@ -1626,62 +1628,62 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-window①⑧">3.3.4. oncurrentscreenchange attribute</a> <a href="#ref-for-window①⑨">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-nav-document">
-   <a href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document">https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-de11cdc07a64c79878f1c3074e81554a" class="dfn-panel" data-for="de11cdc07a64c79878f1c3074e81554a" id="infopanel-for-de11cdc07a64c79878f1c3074e81554a">
+   <span id="infopaneltitle-for-de11cdc07a64c79878f1c3074e81554a" style="display:none">Info about the 'active document' external reference.</span><a href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document">https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-nav-document">3.5.1. Element.requestFullscreen() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-allowed-to-use">
-   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-3dc9eee4a6a1d169f561b6d87bd08573" class="dfn-panel" data-for="3dc9eee4a6a1d169f561b6d87bd08573" id="infopanel-for-3dc9eee4a6a1d169f561b6d87bd08573">
+   <span id="infopaneltitle-for-3dc9eee4a6a1d169f561b6d87bd08573" style="display:none">Info about the 'allowed to use' external reference.</span><a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-allowed-to-use">3.1.1. isExtended attribute</a>
     <li><a href="#ref-for-allowed-to-use①">3.2.1. getScreenDetails() method</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-concept-document-window">
-   <a href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window">https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-04e6c32034490f45e4757ead7871de18" class="dfn-panel" data-for="04e6c32034490f45e4757ead7871de18" id="infopanel-for-04e6c32034490f45e4757ead7871de18">
+   <span id="infopaneltitle-for-04e6c32034490f45e4757ead7871de18" style="display:none">Info about the 'associated document' external reference.</span><a href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window">https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-concept-document-window">3.1.1. isExtended attribute</a>
     <li><a href="#ref-for-concept-document-window①">3.2.1. getScreenDetails() method</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-consume-user-activation">
-   <a href="https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation">https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-293dcd27f7228c1698581dc6518812f9" class="dfn-panel" data-for="293dcd27f7228c1698581dc6518812f9" id="infopanel-for-293dcd27f7228c1698581dc6518812f9">
+   <span id="infopaneltitle-for-293dcd27f7228c1698581dc6518812f9" style="display:none">Info about the 'consume user activation' external reference.</span><a href="https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation">https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-consume-user-activation">3.2.3. Window.open() method definition changes</a> <a href="#ref-for-consume-user-activation①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-event-handler-event-type">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type">https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-63ae16e3c4cc120a678b317e8329b704" class="dfn-panel" data-for="63ae16e3c4cc120a678b317e8329b704" id="infopanel-for-63ae16e3c4cc120a678b317e8329b704">
+   <span id="infopaneltitle-for-63ae16e3c4cc120a678b317e8329b704" style="display:none">Info about the 'event handler event type' external reference.</span><a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type">https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-event-handler-event-type">3.1.2. onchange attribute</a>
     <li><a href="#ref-for-event-handler-event-type①">3.3.3. onscreenschange attribute</a>
     <li><a href="#ref-for-event-handler-event-type②">3.3.4. oncurrentscreenchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-event-handler-idl-attributes">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes">https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-e76cd636ec243fdd4a25330499736463" class="dfn-panel" data-for="e76cd636ec243fdd4a25330499736463" id="infopanel-for-e76cd636ec243fdd4a25330499736463">
+   <span id="infopaneltitle-for-e76cd636ec243fdd4a25330499736463" style="display:none">Info about the 'event handler idl attribute' external reference.</span><a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes">https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-event-handler-idl-attributes">3.1.2. onchange attribute</a>
     <li><a href="#ref-for-event-handler-idl-attributes①">3.3.3. onscreenschange attribute</a>
     <li><a href="#ref-for-event-handler-idl-attributes②">3.3.4. oncurrentscreenchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-in-parallel">
-   <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-3a2763fcaa6bc82693554cf36780c0dd" class="dfn-panel" data-for="3a2763fcaa6bc82693554cf36780c0dd" id="infopanel-for-3a2763fcaa6bc82693554cf36780c0dd">
+   <span id="infopaneltitle-for-3a2763fcaa6bc82693554cf36780c0dd" style="display:none">Info about the 'in parallel' external reference.</span><a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-in-parallel">3.2.1. getScreenDetails() method</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-last-activation-timestamp">
-   <a href="https://html.spec.whatwg.org/multipage/#last-activation-timestamp">https://html.spec.whatwg.org/multipage/#last-activation-timestamp</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-f53b33c52bcfb862f43253b82237b557" class="dfn-panel" data-for="f53b33c52bcfb862f43253b82237b557" id="infopanel-for-f53b33c52bcfb862f43253b82237b557">
+   <span id="infopaneltitle-for-f53b33c52bcfb862f43253b82237b557" style="display:none">Info about the 'last activation timestamp' external reference.</span><a href="https://html.spec.whatwg.org/multipage/#last-activation-timestamp">https://html.spec.whatwg.org/multipage/#last-activation-timestamp</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-last-activation-timestamp">3.2.3. Window.open() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-open">
-   <a href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-open">https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-open</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-3b26601cc89b91ada4c771e32284e4c9" class="dfn-panel" data-for="3b26601cc89b91ada4c771e32284e4c9" id="infopanel-for-3b26601cc89b91ada4c771e32284e4c9">
+   <span id="infopaneltitle-for-3b26601cc89b91ada4c771e32284e4c9" style="display:none">Info about the 'open(url, target, features)' external reference.</span><a href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-open">https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-open</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-open">1.2.5. Place windows on a specific screen</a>
     <li><a href="#ref-for-dom-open①">3.2.2. Window attribute and method definition changes</a>
@@ -1689,8 +1691,8 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-dom-open④">4. Security Considerations</a> <a href="#ref-for-dom-open⑤">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-queue-a-global-task">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task">https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-a8756513b792b8f203588906035a13bb" class="dfn-panel" data-for="a8756513b792b8f203588906035a13bb" id="infopanel-for-a8756513b792b8f203588906035a13bb">
+   <span id="infopaneltitle-for-a8756513b792b8f203588906035a13bb" style="display:none">Info about the 'queue a global task' external reference.</span><a href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task">https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-queue-a-global-task">3.1.2. onchange attribute</a>
     <li><a href="#ref-for-queue-a-global-task①">3.2.1. getScreenDetails() method</a>
@@ -1699,8 +1701,8 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-queue-a-global-task④">3.4.1. onchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-concept-relevant-global">
-   <a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-2233058c8f0998915af8393ee2abbc1d" class="dfn-panel" data-for="2233058c8f0998915af8393ee2abbc1d" id="infopanel-for-2233058c8f0998915af8393ee2abbc1d">
+   <span id="infopaneltitle-for-2233058c8f0998915af8393ee2abbc1d" style="display:none">Info about the 'relevant global object' external reference.</span><a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-concept-relevant-global">3.1.1. isExtended attribute</a>
     <li><a href="#ref-for-concept-relevant-global①">3.1.2. onchange attribute</a>
@@ -1711,120 +1713,120 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-concept-relevant-global⑦">3.4.1. onchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-top-level-browsing-context">
-   <a href="https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context">https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-c104b697744f6f246969dcc26b898f11" class="dfn-panel" data-for="c104b697744f6f246969dcc26b898f11" id="infopanel-for-c104b697744f6f246969dcc26b898f11">
+   <span id="infopaneltitle-for-c104b697744f6f246969dcc26b898f11" style="display:none">Info about the 'top-level browsing context' external reference.</span><a href="https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context">https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-top-level-browsing-context">3.5.1. Element.requestFullscreen() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-transient-activation">
-   <a href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation">https://html.spec.whatwg.org/multipage/interaction.html#transient-activation</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-5b762d09d78e8674458b84982b3cb3c9" class="dfn-panel" data-for="5b762d09d78e8674458b84982b3cb3c9" id="infopanel-for-5b762d09d78e8674458b84982b3cb3c9">
+   <span id="infopaneltitle-for-5b762d09d78e8674458b84982b3cb3c9" style="display:none">Info about the 'transient activation' external reference.</span><a href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation">https://html.spec.whatwg.org/multipage/interaction.html#transient-activation</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-transient-activation">3.2.3. Window.open() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-transient-activation-duration">
-   <a href="https://html.spec.whatwg.org/multipage/#transient-activation-duration">https://html.spec.whatwg.org/multipage/#transient-activation-duration</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-757d809d5f605c1da66cef19adfb3cfc" class="dfn-panel" data-for="757d809d5f605c1da66cef19adfb3cfc" id="infopanel-for-757d809d5f605c1da66cef19adfb3cfc">
+   <span id="infopaneltitle-for-757d809d5f605c1da66cef19adfb3cfc" style="display:none">Info about the 'transient activation duration' external reference.</span><a href="https://html.spec.whatwg.org/multipage/#transient-activation-duration">https://html.spec.whatwg.org/multipage/#transient-activation-duration</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-transient-activation-duration">3.2.3. Window.open() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-list-append">
-   <a href="https://infra.spec.whatwg.org/#list-append">https://infra.spec.whatwg.org/#list-append</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-fcfc8b0ed220faa237969aed00e2586d" class="dfn-panel" data-for="fcfc8b0ed220faa237969aed00e2586d" id="infopanel-for-fcfc8b0ed220faa237969aed00e2586d">
+   <span id="infopaneltitle-for-fcfc8b0ed220faa237969aed00e2586d" style="display:none">Info about the 'append' external reference.</span><a href="https://infra.spec.whatwg.org/#list-append">https://infra.spec.whatwg.org/#list-append</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-list-append">3.3.1. screens attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-list">
-   <a href="https://infra.spec.whatwg.org/#list">https://infra.spec.whatwg.org/#list</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-fafd38d2108e357bcc9a6fd7f3cd04a7" class="dfn-panel" data-for="fafd38d2108e357bcc9a6fd7f3cd04a7" id="infopanel-for-fafd38d2108e357bcc9a6fd7f3cd04a7">
+   <span id="infopaneltitle-for-fafd38d2108e357bcc9a6fd7f3cd04a7" style="display:none">Info about the 'list' external reference.</span><a href="https://infra.spec.whatwg.org/#list">https://infra.spec.whatwg.org/#list</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-list">3.3.1. screens attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-list-sort-in-ascending-order">
-   <a href="https://infra.spec.whatwg.org/#list-sort-in-ascending-order">https://infra.spec.whatwg.org/#list-sort-in-ascending-order</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-3a95d754838487f36737b7755feb571d" class="dfn-panel" data-for="3a95d754838487f36737b7755feb571d" id="infopanel-for-3a95d754838487f36737b7755feb571d">
+   <span id="infopaneltitle-for-3a95d754838487f36737b7755feb571d" style="display:none">Info about the 'sorting' external reference.</span><a href="https://infra.spec.whatwg.org/#list-sort-in-ascending-order">https://infra.spec.whatwg.org/#list-sort-in-ascending-order</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-list-sort-in-ascending-order">3.3.1. screens attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-default-powerful-feature">
-   <a href="https://w3c.github.io/permissions/#dfn-default-powerful-feature">https://w3c.github.io/permissions/#dfn-default-powerful-feature</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-e08ed1ae1ffd81317f2a7766c4febe2e" class="dfn-panel" data-for="e08ed1ae1ffd81317f2a7766c4febe2e" id="infopanel-for-e08ed1ae1ffd81317f2a7766c4febe2e">
+   <span id="infopaneltitle-for-e08ed1ae1ffd81317f2a7766c4febe2e" style="display:none">Info about the 'default powerful feature' external reference.</span><a href="https://w3c.github.io/permissions/#dfn-default-powerful-feature">https://w3c.github.io/permissions/#dfn-default-powerful-feature</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-default-powerful-feature">3.6. Permission API Integration</a>
     <li><a href="#ref-for-dfn-default-powerful-feature①">6. Accessibility Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-permissionstate-denied">
-   <a href="https://w3c.github.io/permissions/#dom-permissionstate-denied">https://w3c.github.io/permissions/#dom-permissionstate-denied</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-e0774c44301354d17a379b02016bbc62" class="dfn-panel" data-for="e0774c44301354d17a379b02016bbc62" id="infopanel-for-e0774c44301354d17a379b02016bbc62">
+   <span id="infopaneltitle-for-e0774c44301354d17a379b02016bbc62" style="display:none">Info about the 'denied' external reference.</span><a href="https://w3c.github.io/permissions/#dom-permissionstate-denied">https://w3c.github.io/permissions/#dom-permissionstate-denied</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-permissionstate-denied">3.2.1. getScreenDetails() method</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-name">
-   <a href="https://w3c.github.io/permissions/#dfn-name">https://w3c.github.io/permissions/#dfn-name</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-72b3319b6b09527dc28c520f687017f6" class="dfn-panel" data-for="72b3319b6b09527dc28c520f687017f6" id="infopanel-for-72b3319b6b09527dc28c520f687017f6">
+   <span id="infopaneltitle-for-72b3319b6b09527dc28c520f687017f6" style="display:none">Info about the 'name' external reference.</span><a href="https://w3c.github.io/permissions/#dfn-name">https://w3c.github.io/permissions/#dfn-name</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-name">3.6. Permission API Integration</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dfn-request-permission-to-use">
-   <a href="https://w3c.github.io/permissions/#dfn-request-permission-to-use">https://w3c.github.io/permissions/#dfn-request-permission-to-use</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-d043d7b7a730e84f11e7c740ee946288" class="dfn-panel" data-for="d043d7b7a730e84f11e7c740ee946288" id="infopanel-for-d043d7b7a730e84f11e7c740ee946288">
+   <span id="infopaneltitle-for-d043d7b7a730e84f11e7c740ee946288" style="display:none">Info about the 'request permission to use' external reference.</span><a href="https://w3c.github.io/permissions/#dfn-request-permission-to-use">https://w3c.github.io/permissions/#dfn-request-permission-to-use</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dfn-request-permission-to-use">3.2.1. getScreenDetails() method</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-policy-controlled-feature-default-allowlist">
-   <a href="https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist">https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-23e803a7c7cace37e75c5045c4c7fff3" class="dfn-panel" data-for="23e803a7c7cace37e75c5045c4c7fff3" id="infopanel-for-23e803a7c7cace37e75c5045c4c7fff3">
+   <span id="infopaneltitle-for-23e803a7c7cace37e75c5045c4c7fff3" style="display:none">Info about the 'default allowlist' external reference.</span><a href="https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist">https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-policy-controlled-feature-default-allowlist">3.7. Permission Policy integration</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-policy-controlled-feature">
-   <a href="https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature">https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-cbc4165961071efad91900c4c7b2fe8b" class="dfn-panel" data-for="cbc4165961071efad91900c4c7b2fe8b" id="infopanel-for-cbc4165961071efad91900c4c7b2fe8b">
+   <span id="infopaneltitle-for-cbc4165961071efad91900c4c7b2fe8b" style="display:none">Info about the 'policy-controlled feature' external reference.</span><a href="https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature">https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-policy-controlled-feature">3.1.1. isExtended attribute</a>
     <li><a href="#ref-for-policy-controlled-feature①">3.2.1. getScreenDetails() method</a>
     <li><a href="#ref-for-policy-controlled-feature②">3.7. Permission Policy integration</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-idl-DOMException">
-   <a href="https://webidl.spec.whatwg.org/#idl-DOMException">https://webidl.spec.whatwg.org/#idl-DOMException</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-0ab204fb9cc9a746edaff83c0db0740a" class="dfn-panel" data-for="0ab204fb9cc9a746edaff83c0db0740a" id="infopanel-for-0ab204fb9cc9a746edaff83c0db0740a">
+   <span id="infopaneltitle-for-0ab204fb9cc9a746edaff83c0db0740a" style="display:none">Info about the 'DOMException' external reference.</span><a href="https://webidl.spec.whatwg.org/#idl-DOMException">https://webidl.spec.whatwg.org/#idl-DOMException</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-DOMException">3.2.1. getScreenDetails() method</a> <a href="#ref-for-idl-DOMException①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-idl-DOMString">
-   <a href="https://webidl.spec.whatwg.org/#idl-DOMString">https://webidl.spec.whatwg.org/#idl-DOMString</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-d0f238a61de9310f1738a214749fab18" class="dfn-panel" data-for="d0f238a61de9310f1738a214749fab18" id="infopanel-for-d0f238a61de9310f1738a214749fab18">
+   <span id="infopaneltitle-for-d0f238a61de9310f1738a214749fab18" style="display:none">Info about the 'DOMString' external reference.</span><a href="https://webidl.spec.whatwg.org/#idl-DOMString">https://webidl.spec.whatwg.org/#idl-DOMString</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-DOMString">3.4. The ScreenDetailed interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-Exposed">
-   <a href="https://webidl.spec.whatwg.org/#Exposed">https://webidl.spec.whatwg.org/#Exposed</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dde049eb112f043fc45407ec0d4cb457" class="dfn-panel" data-for="dde049eb112f043fc45407ec0d4cb457" id="infopanel-for-dde049eb112f043fc45407ec0d4cb457">
+   <span id="infopaneltitle-for-dde049eb112f043fc45407ec0d4cb457" style="display:none">Info about the 'Exposed' external reference.</span><a href="https://webidl.spec.whatwg.org/#Exposed">https://webidl.spec.whatwg.org/#Exposed</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-Exposed">3.3. ScreenDetails interface</a>
     <li><a href="#ref-for-Exposed①">3.4. The ScreenDetailed interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-idl-frozen-array">
-   <a href="https://webidl.spec.whatwg.org/#idl-frozen-array">https://webidl.spec.whatwg.org/#idl-frozen-array</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-30e8367dc9a547b9096d98ba691987d9" class="dfn-panel" data-for="30e8367dc9a547b9096d98ba691987d9" id="infopanel-for-30e8367dc9a547b9096d98ba691987d9">
+   <span id="infopaneltitle-for-30e8367dc9a547b9096d98ba691987d9" style="display:none">Info about the 'FrozenArray' external reference.</span><a href="https://webidl.spec.whatwg.org/#idl-frozen-array">https://webidl.spec.whatwg.org/#idl-frozen-array</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-frozen-array">3.3. ScreenDetails interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-notallowederror">
-   <a href="https://webidl.spec.whatwg.org/#notallowederror">https://webidl.spec.whatwg.org/#notallowederror</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-aa43258e2b51dc6ebe6268a36e6fd733" class="dfn-panel" data-for="aa43258e2b51dc6ebe6268a36e6fd733" id="infopanel-for-aa43258e2b51dc6ebe6268a36e6fd733">
+   <span id="infopaneltitle-for-aa43258e2b51dc6ebe6268a36e6fd733" style="display:none">Info about the 'NotAllowedError' external reference.</span><a href="https://webidl.spec.whatwg.org/#notallowederror">https://webidl.spec.whatwg.org/#notallowederror</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-notallowederror">3.2.1. getScreenDetails() method</a> <a href="#ref-for-notallowederror①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-idl-promise">
-   <a href="https://webidl.spec.whatwg.org/#idl-promise">https://webidl.spec.whatwg.org/#idl-promise</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-93669c631ec1ef8e696b4c083bdbe12c" class="dfn-panel" data-for="93669c631ec1ef8e696b4c083bdbe12c" id="infopanel-for-93669c631ec1ef8e696b4c083bdbe12c">
+   <span id="infopaneltitle-for-93669c631ec1ef8e696b4c083bdbe12c" style="display:none">Info about the 'Promise' external reference.</span><a href="https://webidl.spec.whatwg.org/#idl-promise">https://webidl.spec.whatwg.org/#idl-promise</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-promise">3.2. Extensions to the Window interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-SecureContext">
-   <a href="https://webidl.spec.whatwg.org/#SecureContext">https://webidl.spec.whatwg.org/#SecureContext</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-cdf224ec60dc3b08449a2fbdf3a90406" class="dfn-panel" data-for="cdf224ec60dc3b08449a2fbdf3a90406" id="infopanel-for-cdf224ec60dc3b08449a2fbdf3a90406">
+   <span id="infopaneltitle-for-cdf224ec60dc3b08449a2fbdf3a90406" style="display:none">Info about the 'SecureContext' external reference.</span><a href="https://webidl.spec.whatwg.org/#SecureContext">https://webidl.spec.whatwg.org/#SecureContext</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-SecureContext">3.1. Extensions to the Screen interface</a> <a href="#ref-for-SecureContext①">(2)</a>
     <li><a href="#ref-for-SecureContext②">3.2. Extensions to the Window interface</a>
@@ -1832,45 +1834,45 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-SecureContext④">3.4. The ScreenDetailed interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-a-new-promise">
-   <a href="https://webidl.spec.whatwg.org/#a-new-promise">https://webidl.spec.whatwg.org/#a-new-promise</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-bbe33fc7ac016834e4aaddbfd1b084a1" class="dfn-panel" data-for="bbe33fc7ac016834e4aaddbfd1b084a1" id="infopanel-for-bbe33fc7ac016834e4aaddbfd1b084a1">
+   <span id="infopaneltitle-for-bbe33fc7ac016834e4aaddbfd1b084a1" style="display:none">Info about the 'a new promise' external reference.</span><a href="https://webidl.spec.whatwg.org/#a-new-promise">https://webidl.spec.whatwg.org/#a-new-promise</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-a-new-promise">3.2.1. getScreenDetails() method</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-idl-boolean">
-   <a href="https://webidl.spec.whatwg.org/#idl-boolean">https://webidl.spec.whatwg.org/#idl-boolean</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-f8062b07e25ed0281f5cbfb9a54070b4" class="dfn-panel" data-for="f8062b07e25ed0281f5cbfb9a54070b4" id="infopanel-for-f8062b07e25ed0281f5cbfb9a54070b4">
+   <span id="infopaneltitle-for-f8062b07e25ed0281f5cbfb9a54070b4" style="display:none">Info about the 'boolean' external reference.</span><a href="https://webidl.spec.whatwg.org/#idl-boolean">https://webidl.spec.whatwg.org/#idl-boolean</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-boolean">3.1. Extensions to the Screen interface</a>
     <li><a href="#ref-for-idl-boolean①">3.4. The ScreenDetailed interface</a> <a href="#ref-for-idl-boolean②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-idl-float">
-   <a href="https://webidl.spec.whatwg.org/#idl-float">https://webidl.spec.whatwg.org/#idl-float</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-ab1ce4d78629825192d60fdbb0c63834" class="dfn-panel" data-for="ab1ce4d78629825192d60fdbb0c63834" id="infopanel-for-ab1ce4d78629825192d60fdbb0c63834">
+   <span id="infopaneltitle-for-ab1ce4d78629825192d60fdbb0c63834" style="display:none">Info about the 'float' external reference.</span><a href="https://webidl.spec.whatwg.org/#idl-float">https://webidl.spec.whatwg.org/#idl-float</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-float">3.4. The ScreenDetailed interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-idl-long">
-   <a href="https://webidl.spec.whatwg.org/#idl-long">https://webidl.spec.whatwg.org/#idl-long</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-a189a0d7ce5bc36522126b11ca418f0a" class="dfn-panel" data-for="a189a0d7ce5bc36522126b11ca418f0a" id="infopanel-for-a189a0d7ce5bc36522126b11ca418f0a">
+   <span id="infopaneltitle-for-a189a0d7ce5bc36522126b11ca418f0a" style="display:none">Info about the 'long' external reference.</span><a href="https://webidl.spec.whatwg.org/#idl-long">https://webidl.spec.whatwg.org/#idl-long</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-long">3.4. The ScreenDetailed interface</a> <a href="#ref-for-idl-long①">(2)</a> <a href="#ref-for-idl-long②">(3)</a> <a href="#ref-for-idl-long③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-reject">
-   <a href="https://webidl.spec.whatwg.org/#reject">https://webidl.spec.whatwg.org/#reject</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-f7204c0306e7ffcb24c31adf6e629e1d" class="dfn-panel" data-for="f7204c0306e7ffcb24c31adf6e629e1d" id="infopanel-for-f7204c0306e7ffcb24c31adf6e629e1d">
+   <span id="infopaneltitle-for-f7204c0306e7ffcb24c31adf6e629e1d" style="display:none">Info about the 'reject' external reference.</span><a href="https://webidl.spec.whatwg.org/#reject">https://webidl.spec.whatwg.org/#reject</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-reject">3.2.1. getScreenDetails() method</a> <a href="#ref-for-reject①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-resolve">
-   <a href="https://webidl.spec.whatwg.org/#resolve">https://webidl.spec.whatwg.org/#resolve</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-f4f973f92274819781816b033aea1f11" class="dfn-panel" data-for="f4f973f92274819781816b033aea1f11" id="infopanel-for-f4f973f92274819781816b033aea1f11">
+   <span id="infopaneltitle-for-f4f973f92274819781816b033aea1f11" style="display:none">Info about the 'resolve' external reference.</span><a href="https://webidl.spec.whatwg.org/#resolve">https://webidl.spec.whatwg.org/#resolve</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-resolve">3.2.1. getScreenDetails() method</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-this">
-   <a href="https://webidl.spec.whatwg.org/#this">https://webidl.spec.whatwg.org/#this</a><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-be0933df03cd63338f98de217c4158c7" class="dfn-panel" data-for="be0933df03cd63338f98de217c4158c7" id="infopanel-for-be0933df03cd63338f98de217c4158c7">
+   <span id="infopaneltitle-for-be0933df03cd63338f98de217c4158c7" style="display:none">Info about the 'this' external reference.</span><a href="https://webidl.spec.whatwg.org/#this">https://webidl.spec.whatwg.org/#this</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-this">3.1.1. isExtended attribute</a>
     <li><a href="#ref-for-this①">3.2.1. getScreenDetails() method</a> <a href="#ref-for-this②">(2)</a> <a href="#ref-for-this③">(3)</a> <a href="#ref-for-this④">(4)</a> <a href="#ref-for-this⑤">(5)</a>
@@ -1885,112 +1887,112 @@ for helping craft this specification.</p>
    <li>
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-px">css pixel</span>
+     <li><span class="dfn-paneled" id="410b8791a225bd2a6fb146c400de6819">css pixel</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSSOM-VIEW-1]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-screen">Screen</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-devicepixelratio">devicePixelRatio</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-moveby">moveBy(x, y)</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-moveto">moveTo(x, y)</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-resizeby">resizeBy(x, y)</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-resizeto">resizeTo(width, height)</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-screen">screen</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-screenleft">screenLeft</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-screentop">screenTop</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-screenx">screenX</span>
-     <li><span class="dfn-paneled" id="term-for-dom-window-screeny">screenY</span>
-     <li><span class="dfn-paneled" id="term-for-web-exposed-available-screen-area">web-exposed available screen area</span>
-     <li><span class="dfn-paneled" id="term-for-web-exposed-screen-area">web-exposed screen area</span>
+     <li><span class="dfn-paneled" id="7a895a5639e36be2a8d67430ca1d93ed">Screen</span>
+     <li><span class="dfn-paneled" id="9179938e21c9c2bddba45a1c6a4a3c7e">devicePixelRatio</span>
+     <li><span class="dfn-paneled" id="f52ef7eb6061a0b0ff35a934813dd955">moveBy(x, y)</span>
+     <li><span class="dfn-paneled" id="339544b3e968cbb080516a03f67b169f">moveTo(x, y)</span>
+     <li><span class="dfn-paneled" id="9de517ae95e2b900ff90995cf4b0eb7c">resizeBy(x, y)</span>
+     <li><span class="dfn-paneled" id="5397a4af2c64b7f417819886c5fe0f15">resizeTo(width, height)</span>
+     <li><span class="dfn-paneled" id="3f3a668d2313f800d9cb21c35a730fe4">screen</span>
+     <li><span class="dfn-paneled" id="bb56846dce44e54661c9ca7bc392bc9d">screenLeft</span>
+     <li><span class="dfn-paneled" id="9f2b515e9e4e6f2dce55f88257df53b0">screenTop</span>
+     <li><span class="dfn-paneled" id="4c87de1a30cfcf57b436d6a7aad3095c">screenX</span>
+     <li><span class="dfn-paneled" id="c7912acaabb40353dc871fdd075c81ac">screenY</span>
+     <li><span class="dfn-paneled" id="953c4d676991e8fd6ae1c6bc6d44b7fb">web-exposed available screen area</span>
+     <li><span class="dfn-paneled" id="22ba40d53e7d7fe6859a450c3322a0fe">web-exposed screen area</span>
     </ul>
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-eventtarget">EventTarget</span>
-     <li><span class="dfn-paneled" id="term-for-concept-document">document</span>
-     <li><span class="dfn-paneled" id="term-for-concept-event-fire">fire an event</span>
+     <li><span class="dfn-paneled" id="a6aa66e0075314e8eefa4e662cb40fbb">EventTarget</span>
+     <li><span class="dfn-paneled" id="985c42e2af63b3e74bd3b70d55668fd4">document</span>
+     <li><span class="dfn-paneled" id="15045c15505e025cd6b6d0f134b7c986">fire an event</span>
     </ul>
    <li>
     <a data-link-type="biblio">[ECMASCRIPT]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-sec-object-internal-methods-and-internal-slots">internal slot</span>
+     <li><span class="dfn-paneled" id="b38c0514f9f3397f516d4fefd2fd346e">internal slot</span>
     </ul>
    <li>
     <a data-link-type="biblio">[FINGERPRINTING-GUIDANCE]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dfn-active-fingerprinting">active fingerprinting</span>
+     <li><span class="dfn-paneled" id="440a3a8550f27dbef01b921622a2849f">active fingerprinting</span>
     </ul>
    <li>
     <a data-link-type="biblio">[Fullscreen]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dictdef-fullscreenoptions">FullscreenOptions</span>
-     <li><span class="dfn-paneled" id="term-for-dom-element-requestfullscreen">requestFullscreen()</span>
+     <li><span class="dfn-paneled" id="5d66818935d3b5b26fe1f12e414c37e6">FullscreenOptions</span>
+     <li><span class="dfn-paneled" id="17f1422256aaa84ed73c3e82e27bec5c">requestFullscreen()</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HR-TIME-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dom-domhighrestimestamp">DOMHighResTimeStamp</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-current-high-resolution-time">current high resolution time</span>
+     <li><span class="dfn-paneled" id="0527034ee7070fda15ffa50c34dbbc63">DOMHighResTimeStamp</span>
+     <li><span class="dfn-paneled" id="e769081ceb9756df8377f07e45389780">current high resolution time</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-eventhandler">EventHandler</span>
-     <li><span class="dfn-paneled" id="term-for-window">Window</span>
-     <li><span class="dfn-paneled" id="term-for-nav-document">active document</span>
-     <li><span class="dfn-paneled" id="term-for-allowed-to-use">allowed to use</span>
-     <li><span class="dfn-paneled" id="term-for-concept-document-window">associated document</span>
-     <li><span class="dfn-paneled" id="term-for-consume-user-activation">consume user activation</span>
-     <li><span class="dfn-paneled" id="term-for-event-handler-event-type">event handler event type</span>
-     <li><span class="dfn-paneled" id="term-for-event-handler-idl-attributes">event handler idl attribute</span>
-     <li><span class="dfn-paneled" id="term-for-in-parallel">in parallel</span>
-     <li><span class="dfn-paneled" id="term-for-last-activation-timestamp">last activation timestamp</span>
-     <li><span class="dfn-paneled" id="term-for-dom-open">open(url, target, features)</span>
-     <li><span class="dfn-paneled" id="term-for-queue-a-global-task">queue a global task</span>
-     <li><span class="dfn-paneled" id="term-for-concept-relevant-global">relevant global object</span>
-     <li><span class="dfn-paneled" id="term-for-top-level-browsing-context">top-level browsing context</span>
-     <li><span class="dfn-paneled" id="term-for-transient-activation">transient activation</span>
-     <li><span class="dfn-paneled" id="term-for-transient-activation-duration">transient activation duration</span>
+     <li><span class="dfn-paneled" id="716703f1068cc638b4235f83154eff6c">EventHandler</span>
+     <li><span class="dfn-paneled" id="d1f0a86fd49be388d8b0159e241a1172">Window</span>
+     <li><span class="dfn-paneled" id="de11cdc07a64c79878f1c3074e81554a">active document</span>
+     <li><span class="dfn-paneled" id="3dc9eee4a6a1d169f561b6d87bd08573">allowed to use</span>
+     <li><span class="dfn-paneled" id="04e6c32034490f45e4757ead7871de18">associated document</span>
+     <li><span class="dfn-paneled" id="293dcd27f7228c1698581dc6518812f9">consume user activation</span>
+     <li><span class="dfn-paneled" id="63ae16e3c4cc120a678b317e8329b704">event handler event type</span>
+     <li><span class="dfn-paneled" id="e76cd636ec243fdd4a25330499736463">event handler idl attribute</span>
+     <li><span class="dfn-paneled" id="3a2763fcaa6bc82693554cf36780c0dd">in parallel</span>
+     <li><span class="dfn-paneled" id="f53b33c52bcfb862f43253b82237b557">last activation timestamp</span>
+     <li><span class="dfn-paneled" id="3b26601cc89b91ada4c771e32284e4c9">open(url, target, features)</span>
+     <li><span class="dfn-paneled" id="a8756513b792b8f203588906035a13bb">queue a global task</span>
+     <li><span class="dfn-paneled" id="2233058c8f0998915af8393ee2abbc1d">relevant global object</span>
+     <li><span class="dfn-paneled" id="c104b697744f6f246969dcc26b898f11">top-level browsing context</span>
+     <li><span class="dfn-paneled" id="5b762d09d78e8674458b84982b3cb3c9">transient activation</span>
+     <li><span class="dfn-paneled" id="757d809d5f605c1da66cef19adfb3cfc">transient activation duration</span>
     </ul>
    <li>
     <a data-link-type="biblio">[INFRA]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-list-append">append</span>
-     <li><span class="dfn-paneled" id="term-for-list">list</span>
-     <li><span class="dfn-paneled" id="term-for-list-sort-in-ascending-order">sorting</span>
+     <li><span class="dfn-paneled" id="fcfc8b0ed220faa237969aed00e2586d">append</span>
+     <li><span class="dfn-paneled" id="fafd38d2108e357bcc9a6fd7f3cd04a7">list</span>
+     <li><span class="dfn-paneled" id="3a95d754838487f36737b7755feb571d">sorting</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PERMISSIONS]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dfn-default-powerful-feature">default powerful feature</span>
-     <li><span class="dfn-paneled" id="term-for-dom-permissionstate-denied">denied</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-name">name</span>
-     <li><span class="dfn-paneled" id="term-for-dfn-request-permission-to-use">request permission to use</span>
+     <li><span class="dfn-paneled" id="e08ed1ae1ffd81317f2a7766c4febe2e">default powerful feature</span>
+     <li><span class="dfn-paneled" id="e0774c44301354d17a379b02016bbc62">denied</span>
+     <li><span class="dfn-paneled" id="72b3319b6b09527dc28c520f687017f6">name</span>
+     <li><span class="dfn-paneled" id="d043d7b7a730e84f11e7c740ee946288">request permission to use</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PERMISSIONS-POLICY]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-policy-controlled-feature-default-allowlist">default allowlist</span>
-     <li><span class="dfn-paneled" id="term-for-policy-controlled-feature">policy-controlled feature</span>
+     <li><span class="dfn-paneled" id="23e803a7c7cace37e75c5045c4c7fff3">default allowlist</span>
+     <li><span class="dfn-paneled" id="cbc4165961071efad91900c4c7b2fe8b">policy-controlled feature</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-idl-DOMException">DOMException</span>
-     <li><span class="dfn-paneled" id="term-for-idl-DOMString">DOMString</span>
-     <li><span class="dfn-paneled" id="term-for-Exposed">Exposed</span>
-     <li><span class="dfn-paneled" id="term-for-idl-frozen-array">FrozenArray</span>
-     <li><span class="dfn-paneled" id="term-for-notallowederror">NotAllowedError</span>
-     <li><span class="dfn-paneled" id="term-for-idl-promise">Promise</span>
-     <li><span class="dfn-paneled" id="term-for-SecureContext">SecureContext</span>
-     <li><span class="dfn-paneled" id="term-for-a-new-promise">a new promise</span>
-     <li><span class="dfn-paneled" id="term-for-idl-boolean">boolean</span>
-     <li><span class="dfn-paneled" id="term-for-idl-float">float</span>
-     <li><span class="dfn-paneled" id="term-for-idl-long">long</span>
-     <li><span class="dfn-paneled" id="term-for-reject">reject</span>
-     <li><span class="dfn-paneled" id="term-for-resolve">resolve</span>
-     <li><span class="dfn-paneled" id="term-for-this">this</span>
+     <li><span class="dfn-paneled" id="0ab204fb9cc9a746edaff83c0db0740a">DOMException</span>
+     <li><span class="dfn-paneled" id="d0f238a61de9310f1738a214749fab18">DOMString</span>
+     <li><span class="dfn-paneled" id="dde049eb112f043fc45407ec0d4cb457">Exposed</span>
+     <li><span class="dfn-paneled" id="30e8367dc9a547b9096d98ba691987d9">FrozenArray</span>
+     <li><span class="dfn-paneled" id="aa43258e2b51dc6ebe6268a36e6fd733">NotAllowedError</span>
+     <li><span class="dfn-paneled" id="93669c631ec1ef8e696b4c083bdbe12c">Promise</span>
+     <li><span class="dfn-paneled" id="cdf224ec60dc3b08449a2fbdf3a90406">SecureContext</span>
+     <li><span class="dfn-paneled" id="bbe33fc7ac016834e4aaddbfd1b084a1">a new promise</span>
+     <li><span class="dfn-paneled" id="f8062b07e25ed0281f5cbfb9a54070b4">boolean</span>
+     <li><span class="dfn-paneled" id="ab1ce4d78629825192d60fdbb0c63834">float</span>
+     <li><span class="dfn-paneled" id="a189a0d7ce5bc36522126b11ca418f0a">long</span>
+     <li><span class="dfn-paneled" id="f7204c0306e7ffcb24c31adf6e629e1d">reject</span>
+     <li><span class="dfn-paneled" id="f4f973f92274819781816b033aea1f11">resolve</span>
+     <li><span class="dfn-paneled" id="be0933df03cd63338f98de217c4158c7">this</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -2079,8 +2081,8 @@ for helping craft this specification.</p>
    <div class="issue"> Move <code class="idl"><a data-link-type="idl" href="#dom-permissionpolicy-window-management">window-management</a></code> to <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Proposed</a> or <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Standardized</a> feature lists when appropriate. <a class="issue-return" href="#issue-10618e39" title="Jump to section">↵</a></div>
    <div class="issue"> Ensure we didn’t forget anyone! <a class="issue-return" href="#issue-e9601204" title="Jump to section">↵</a></div>
   </div>
-  <aside class="dfn-panel" data-for="screen">
-   <b><a href="#screen">#screen</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen" class="dfn-panel" data-for="screen" id="infopanel-for-screen">
+   <span id="infopaneltitle-for-screen" style="display:none">Info about the 'screen' definition.</span><b><a href="#screen">#screen</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen④">2.1. Screen</a> <a href="#ref-for-screen⑤">(2)</a> <a href="#ref-for-screen⑥">(3)</a> <a href="#ref-for-screen⑦">(4)</a> <a href="#ref-for-screen⑧">(5)</a> <a href="#ref-for-screen⑨">(6)</a>
     <li><a href="#ref-for-screen①⓪">2.2. Screen pixel</a>
@@ -2104,36 +2106,36 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-screen⑥⑦">3.5.1. Element.requestFullscreen() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-color-depth">
-   <b><a href="#screen-color-depth">#screen-color-depth</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-color-depth" class="dfn-panel" data-for="screen-color-depth" id="infopanel-for-screen-color-depth">
+   <span id="infopaneltitle-for-screen-color-depth" style="display:none">Info about the 'color depth' definition.</span><b><a href="#screen-color-depth">#screen-color-depth</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-color-depth">2.11. Observable screen properties</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-device-pixel-ratio">
-   <b><a href="#screen-device-pixel-ratio">#screen-device-pixel-ratio</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-device-pixel-ratio" class="dfn-panel" data-for="screen-device-pixel-ratio" id="infopanel-for-screen-device-pixel-ratio">
+   <span id="infopaneltitle-for-screen-device-pixel-ratio" style="display:none">Info about the 'device pixel ratio' definition.</span><b><a href="#screen-device-pixel-ratio">#screen-device-pixel-ratio</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-device-pixel-ratio">2.1. Screen</a>
     <li><a href="#ref-for-screen-device-pixel-ratio①">2.11. Observable screen properties</a>
     <li><a href="#ref-for-screen-device-pixel-ratio②">3.4. The ScreenDetailed interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-orientation">
-   <b><a href="#screen-orientation">#screen-orientation</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-orientation" class="dfn-panel" data-for="screen-orientation" id="infopanel-for-screen-orientation">
+   <span id="infopaneltitle-for-screen-orientation" style="display:none">Info about the 'orientation' definition.</span><b><a href="#screen-orientation">#screen-orientation</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-orientation">2.11. Observable screen properties</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-label">
-   <b><a href="#screen-label">#screen-label</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-label" class="dfn-panel" data-for="screen-label" id="infopanel-for-screen-label">
+   <span id="infopaneltitle-for-screen-label" style="display:none">Info about the 'label' definition.</span><b><a href="#screen-label">#screen-label</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-label">2.1. Screen</a> <a href="#ref-for-screen-label①">(2)</a>
     <li><a href="#ref-for-screen-label②">2.11. Observable screen properties</a>
     <li><a href="#ref-for-screen-label③">3.4. The ScreenDetailed interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-pixels">
-   <b><a href="#screen-pixels">#screen-pixels</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-pixels" class="dfn-panel" data-for="screen-pixels" id="infopanel-for-screen-pixels">
+   <span id="infopaneltitle-for-screen-pixels" style="display:none">Info about the 'pixels' definition.</span><b><a href="#screen-pixels">#screen-pixels</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-pixels">2.1. Screen</a>
     <li><a href="#ref-for-screen-pixels①">2.2. Screen pixel</a> <a href="#ref-for-screen-pixels②">(2)</a> <a href="#ref-for-screen-pixels③">(3)</a> <a href="#ref-for-screen-pixels④">(4)</a>
@@ -2141,15 +2143,15 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-screen-pixels⑧">2.4. Available screen area</a> <a href="#ref-for-screen-pixels⑨">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="pixel-color-depth">
-   <b><a href="#pixel-color-depth">#pixel-color-depth</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-pixel-color-depth" class="dfn-panel" data-for="pixel-color-depth" id="infopanel-for-pixel-color-depth">
+   <span id="infopaneltitle-for-pixel-color-depth" style="display:none">Info about the 'color depth' definition.</span><b><a href="#pixel-color-depth">#pixel-color-depth</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-pixel-color-depth">2.1. Screen</a>
     <li><a href="#ref-for-pixel-color-depth①">2.2. Screen pixel</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-screen-area">
-   <b><a href="#screen-screen-area">#screen-screen-area</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-screen-area" class="dfn-panel" data-for="screen-screen-area" id="infopanel-for-screen-screen-area">
+   <span id="infopaneltitle-for-screen-screen-area" style="display:none">Info about the 'screen area' definition.</span><b><a href="#screen-screen-area">#screen-screen-area</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-screen-area">2.3. Screen area</a> <a href="#ref-for-screen-screen-area①">(2)</a> <a href="#ref-for-screen-screen-area②">(3)</a> <a href="#ref-for-screen-screen-area③">(4)</a> <a href="#ref-for-screen-screen-area④">(5)</a>
     <li><a href="#ref-for-screen-screen-area⑤">2.4. Available screen area</a> <a href="#ref-for-screen-screen-area⑥">(2)</a> <a href="#ref-for-screen-screen-area⑦">(3)</a>
@@ -2158,50 +2160,50 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-screen-screen-area①⓪">2.11. Observable screen properties</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-width">
-   <b><a href="#screen-width">#screen-width</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-width" class="dfn-panel" data-for="screen-width" id="infopanel-for-screen-width">
+   <span id="infopaneltitle-for-screen-width" style="display:none">Info about the 'width' definition.</span><b><a href="#screen-width">#screen-width</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-width">2.3. Screen area</a> <a href="#ref-for-screen-width①">(2)</a>
     <li><a href="#ref-for-screen-width②">2.11. Observable screen properties</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-height">
-   <b><a href="#screen-height">#screen-height</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-height" class="dfn-panel" data-for="screen-height" id="infopanel-for-screen-height">
+   <span id="infopaneltitle-for-screen-height" style="display:none">Info about the 'height' definition.</span><b><a href="#screen-height">#screen-height</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-height">2.3. Screen area</a> <a href="#ref-for-screen-height①">(2)</a>
     <li><a href="#ref-for-screen-height②">2.11. Observable screen properties</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-available-screen-area">
-   <b><a href="#screen-available-screen-area">#screen-available-screen-area</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-available-screen-area" class="dfn-panel" data-for="screen-available-screen-area" id="infopanel-for-screen-available-screen-area">
+   <span id="infopaneltitle-for-screen-available-screen-area" style="display:none">Info about the 'available screen area' definition.</span><b><a href="#screen-available-screen-area">#screen-available-screen-area</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-available-screen-area">2.4. Available screen area</a> <a href="#ref-for-screen-available-screen-area①">(2)</a>
     <li><a href="#ref-for-screen-available-screen-area②">2.7. Available screen position</a>
     <li><a href="#ref-for-screen-available-screen-area③">2.11. Observable screen properties</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-available-width">
-   <b><a href="#screen-available-width">#screen-available-width</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-available-width" class="dfn-panel" data-for="screen-available-width" id="infopanel-for-screen-available-width">
+   <span id="infopaneltitle-for-screen-available-width" style="display:none">Info about the 'available width' definition.</span><b><a href="#screen-available-width">#screen-available-width</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-available-width">2.11. Observable screen properties</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-available-height">
-   <b><a href="#screen-available-height">#screen-available-height</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-available-height" class="dfn-panel" data-for="screen-available-height" id="infopanel-for-screen-available-height">
+   <span id="infopaneltitle-for-screen-available-height" style="display:none">Info about the 'available height' definition.</span><b><a href="#screen-available-height">#screen-available-height</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-available-height">2.11. Observable screen properties</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="virtual-screen-arrangement">
-   <b><a href="#virtual-screen-arrangement">#virtual-screen-arrangement</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-virtual-screen-arrangement" class="dfn-panel" data-for="virtual-screen-arrangement" id="infopanel-for-virtual-screen-arrangement">
+   <span id="infopaneltitle-for-virtual-screen-arrangement" style="display:none">Info about the 'virtual screen arrangement' definition.</span><b><a href="#virtual-screen-arrangement">#virtual-screen-arrangement</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-virtual-screen-arrangement">2.5. Virtual screen arrangement</a> <a href="#ref-for-virtual-screen-arrangement①">(2)</a> <a href="#ref-for-virtual-screen-arrangement②">(3)</a> <a href="#ref-for-virtual-screen-arrangement③">(4)</a>
     <li><a href="#ref-for-virtual-screen-arrangement④">2.6. Screen position</a>
     <li><a href="#ref-for-virtual-screen-arrangement⑤">2.7. Available screen position</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="multi-screen-origin">
-   <b><a href="#multi-screen-origin">#multi-screen-origin</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-multi-screen-origin" class="dfn-panel" data-for="multi-screen-origin" id="infopanel-for-multi-screen-origin">
+   <span id="infopaneltitle-for-multi-screen-origin" style="display:none">Info about the 'multi-screen origin' definition.</span><b><a href="#multi-screen-origin">#multi-screen-origin</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-multi-screen-origin">2.5. Virtual screen arrangement</a> <a href="#ref-for-multi-screen-origin①">(2)</a> <a href="#ref-for-multi-screen-origin②">(3)</a>
     <li><a href="#ref-for-multi-screen-origin③">2.6. Screen position</a>
@@ -2211,23 +2213,23 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-multi-screen-origin①④">4. Security Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-screen-position">
-   <b><a href="#screen-screen-position">#screen-screen-position</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-screen-position" class="dfn-panel" data-for="screen-screen-position" id="infopanel-for-screen-screen-position">
+   <span id="infopaneltitle-for-screen-screen-position" style="display:none">Info about the 'screen position' definition.</span><b><a href="#screen-screen-position">#screen-screen-position</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-screen-position">2.11. Observable screen properties</a>
     <li><a href="#ref-for-screen-screen-position①">3.3.1. screens attribute</a> <a href="#ref-for-screen-screen-position②">(2)</a> <a href="#ref-for-screen-screen-position③">(3)</a> <a href="#ref-for-screen-screen-position④">(4)</a> <a href="#ref-for-screen-screen-position⑤">(5)</a> <a href="#ref-for-screen-screen-position⑥">(6)</a>
     <li><a href="#ref-for-screen-screen-position⑦">3.4. The ScreenDetailed interface</a> <a href="#ref-for-screen-screen-position⑧">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-available-screen-position">
-   <b><a href="#screen-available-screen-position">#screen-available-screen-position</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-available-screen-position" class="dfn-panel" data-for="screen-available-screen-position" id="infopanel-for-screen-available-screen-position">
+   <span id="infopaneltitle-for-screen-available-screen-position" style="display:none">Info about the 'available screen position' definition.</span><b><a href="#screen-available-screen-position">#screen-available-screen-position</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-available-screen-position">2.11. Observable screen properties</a>
     <li><a href="#ref-for-screen-available-screen-position①">3.4. The ScreenDetailed interface</a> <a href="#ref-for-screen-available-screen-position②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="primary">
-   <b><a href="#primary">#primary</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-primary" class="dfn-panel" data-for="primary" id="infopanel-for-primary">
+   <span id="infopaneltitle-for-primary" style="display:none">Info about the 'primary' definition.</span><b><a href="#primary">#primary</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-primary">2.5. Virtual screen arrangement</a>
     <li><a href="#ref-for-primary①">2.8. Primary screen</a>
@@ -2235,30 +2237,30 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-primary③">3.4. The ScreenDetailed interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="secondary">
-   <b><a href="#secondary">#secondary</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-secondary" class="dfn-panel" data-for="secondary" id="infopanel-for-secondary">
+   <span id="infopaneltitle-for-secondary" style="display:none">Info about the 'secondary' definition.</span><b><a href="#secondary">#secondary</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-secondary">2.8. Primary screen</a>
     <li><a href="#ref-for-secondary①">2.11. Observable screen properties</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="internal">
-   <b><a href="#internal">#internal</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-internal" class="dfn-panel" data-for="internal" id="infopanel-for-internal">
+   <span id="infopaneltitle-for-internal" style="display:none">Info about the 'internal' definition.</span><b><a href="#internal">#internal</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-internal">2.9. Internal screen</a> <a href="#ref-for-internal①">(2)</a> <a href="#ref-for-internal②">(3)</a> <a href="#ref-for-internal③">(4)</a> <a href="#ref-for-internal④">(5)</a>
     <li><a href="#ref-for-internal⑤">2.11. Observable screen properties</a>
     <li><a href="#ref-for-internal⑥">3.4. The ScreenDetailed interface</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="external">
-   <b><a href="#external">#external</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-external" class="dfn-panel" data-for="external" id="infopanel-for-external">
+   <span id="infopaneltitle-for-external" style="display:none">Info about the 'external' definition.</span><b><a href="#external">#external</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-external">2.9. Internal screen</a> <a href="#ref-for-external①">(2)</a> <a href="#ref-for-external②">(3)</a> <a href="#ref-for-external③">(4)</a>
     <li><a href="#ref-for-external④">2.11. Observable screen properties</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="current-screen">
-   <b><a href="#current-screen">#current-screen</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-current-screen" class="dfn-panel" data-for="current-screen" id="infopanel-for-current-screen">
+   <span id="infopaneltitle-for-current-screen" style="display:none">Info about the 'current screen' definition.</span><b><a href="#current-screen">#current-screen</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-current-screen">3.1.2. onchange attribute</a>
     <li><a href="#ref-for-current-screen①">3.3. ScreenDetails interface</a> <a href="#ref-for-current-screen②">(2)</a> <a href="#ref-for-current-screen③">(3)</a>
@@ -2269,23 +2271,23 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-current-screen①⑤">5. Privacy Considerations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-basic-observable-properties">
-   <b><a href="#screen-basic-observable-properties">#screen-basic-observable-properties</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-basic-observable-properties" class="dfn-panel" data-for="screen-basic-observable-properties" id="infopanel-for-screen-basic-observable-properties">
+   <span id="infopaneltitle-for-screen-basic-observable-properties" style="display:none">Info about the 'basic observable properties' definition.</span><b><a href="#screen-basic-observable-properties">#screen-basic-observable-properties</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-basic-observable-properties">3.1.2. onchange attribute</a>
     <li><a href="#ref-for-screen-basic-observable-properties①">3.3.4. oncurrentscreenchange attribute</a>
     <li><a href="#ref-for-screen-basic-observable-properties②">3.4.1. onchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-advanced-observable-properties">
-   <b><a href="#screen-advanced-observable-properties">#screen-advanced-observable-properties</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-advanced-observable-properties" class="dfn-panel" data-for="screen-advanced-observable-properties" id="infopanel-for-screen-advanced-observable-properties">
+   <span id="infopaneltitle-for-screen-advanced-observable-properties" style="display:none">Info about the 'advanced observable properties' definition.</span><b><a href="#screen-advanced-observable-properties">#screen-advanced-observable-properties</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-advanced-observable-properties">3.3.4. oncurrentscreenchange attribute</a>
     <li><a href="#ref-for-screen-advanced-observable-properties①">3.4.1. onchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screen-isextended">
-   <b><a href="#dom-screen-isextended">#dom-screen-isextended</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screen-isextended" class="dfn-panel" data-for="dom-screen-isextended" id="infopanel-for-dom-screen-isextended">
+   <span id="infopaneltitle-for-dom-screen-isextended" style="display:none">Info about the 'isExtended' definition.</span><b><a href="#dom-screen-isextended">#dom-screen-isextended</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screen-isextended">1.2.1. Detect the presence of multiple screens</a>
     <li><a href="#ref-for-dom-screen-isextended①">1.2.2. Detect Screen attribute changes</a>
@@ -2295,23 +2297,23 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-dom-screen-isextended⑥">3.7. Permission Policy integration</a> <a href="#ref-for-dom-screen-isextended⑦">(2)</a> <a href="#ref-for-dom-screen-isextended⑧">(3)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screen-onchange">
-   <b><a href="#dom-screen-onchange">#dom-screen-onchange</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screen-onchange" class="dfn-panel" data-for="dom-screen-onchange" id="infopanel-for-dom-screen-onchange">
+   <span id="infopaneltitle-for-dom-screen-onchange" style="display:none">Info about the 'onchange' definition.</span><b><a href="#dom-screen-onchange">#dom-screen-onchange</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screen-onchange">3.1. Extensions to the Screen interface</a> <a href="#ref-for-dom-screen-onchange①">(2)</a>
     <li><a href="#ref-for-dom-screen-onchange②">3.1.2. onchange attribute</a>
     <li><a href="#ref-for-dom-screen-onchange③">3.4.1. onchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="eventdef-screen-change">
-   <b><a href="#eventdef-screen-change">#eventdef-screen-change</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-eventdef-screen-change" class="dfn-panel" data-for="eventdef-screen-change" id="infopanel-for-eventdef-screen-change">
+   <span id="infopaneltitle-for-eventdef-screen-change" style="display:none">Info about the 'change' definition.</span><b><a href="#eventdef-screen-change">#eventdef-screen-change</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-eventdef-screen-change">1.2.2. Detect Screen attribute changes</a>
     <li><a href="#ref-for-eventdef-screen-change①">3.1.2. onchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="window-placement-task-source">
-   <b><a href="#window-placement-task-source">#window-placement-task-source</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-window-placement-task-source" class="dfn-panel" data-for="window-placement-task-source" id="infopanel-for-window-placement-task-source">
+   <span id="infopaneltitle-for-window-placement-task-source" style="display:none">Info about the 'window placement task source' definition.</span><b><a href="#window-placement-task-source">#window-placement-task-source</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-window-placement-task-source">3.1.2. onchange attribute</a>
     <li><a href="#ref-for-window-placement-task-source①">3.2.1. getScreenDetails() method</a>
@@ -2320,15 +2322,15 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-window-placement-task-source④">3.4.1. onchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-window-screendetails-slot">
-   <b><a href="#dom-window-screendetails-slot">#dom-window-screendetails-slot</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-window-screendetails-slot" class="dfn-panel" data-for="dom-window-screendetails-slot" id="infopanel-for-dom-window-screendetails-slot">
+   <span id="infopaneltitle-for-dom-window-screendetails-slot" style="display:none">Info about the '[[screenDetails]]' definition.</span><b><a href="#dom-window-screendetails-slot">#dom-window-screendetails-slot</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-screendetails-slot">3.2.1. getScreenDetails() method</a> <a href="#ref-for-dom-window-screendetails-slot①">(2)</a> <a href="#ref-for-dom-window-screendetails-slot②">(3)</a>
     <li><a href="#ref-for-dom-window-screendetails-slot③">3.3.4. oncurrentscreenchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-window-getscreendetails">
-   <b><a href="#dom-window-getscreendetails">#dom-window-getscreendetails</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-window-getscreendetails" class="dfn-panel" data-for="dom-window-getscreendetails" id="infopanel-for-dom-window-getscreendetails">
+   <span id="infopaneltitle-for-dom-window-getscreendetails" style="display:none">Info about the 'getScreenDetails()' definition.</span><b><a href="#dom-window-getscreendetails">#dom-window-getscreendetails</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-getscreendetails">1.2.3. Request detailed screen information</a>
     <li><a href="#ref-for-dom-window-getscreendetails①">3.2. Extensions to the Window interface</a> <a href="#ref-for-dom-window-getscreendetails②">(2)</a>
@@ -2336,15 +2338,15 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-dom-window-getscreendetails⑤">3.7. Permission Policy integration</a> <a href="#ref-for-dom-window-getscreendetails⑥">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-window-targetscreenfullscreen-slot">
-   <b><a href="#dom-window-targetscreenfullscreen-slot">#dom-window-targetscreenfullscreen-slot</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-window-targetscreenfullscreen-slot" class="dfn-panel" data-for="dom-window-targetscreenfullscreen-slot" id="infopanel-for-dom-window-targetscreenfullscreen-slot">
+   <span id="infopaneltitle-for-dom-window-targetscreenfullscreen-slot" style="display:none">Info about the '[[targetScreenFullscreen]]' definition.</span><b><a href="#dom-window-targetscreenfullscreen-slot">#dom-window-targetscreenfullscreen-slot</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-window-targetscreenfullscreen-slot">3.2.3. Window.open() method definition changes</a> <a href="#ref-for-dom-window-targetscreenfullscreen-slot①">(2)</a> <a href="#ref-for-dom-window-targetscreenfullscreen-slot②">(3)</a>
     <li><a href="#ref-for-dom-window-targetscreenfullscreen-slot③">3.5.1. Element.requestFullscreen() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screendetails">
-   <b><a href="#screendetails">#screendetails</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screendetails" class="dfn-panel" data-for="screendetails" id="infopanel-for-screendetails">
+   <span id="infopaneltitle-for-screendetails" style="display:none">Info about the 'ScreenDetails' definition.</span><b><a href="#screendetails">#screendetails</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screendetails">1. Introduction</a>
     <li><a href="#ref-for-screendetails①">1.2.3. Request detailed screen information</a>
@@ -2356,8 +2358,8 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-screendetails⑧">3.7. Permission Policy integration</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetails-screens">
-   <b><a href="#dom-screendetails-screens">#dom-screendetails-screens</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetails-screens" class="dfn-panel" data-for="dom-screendetails-screens" id="infopanel-for-dom-screendetails-screens">
+   <span id="infopaneltitle-for-dom-screendetails-screens" style="display:none">Info about the 'screens' definition.</span><b><a href="#dom-screendetails-screens">#dom-screendetails-screens</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetails-screens">3.3. ScreenDetails interface</a> <a href="#ref-for-dom-screendetails-screens①">(2)</a>
     <li><a href="#ref-for-dom-screendetails-screens②">3.3.1. screens attribute</a>
@@ -2365,48 +2367,48 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-dom-screendetails-screens⑥">3.3.3. onscreenschange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screen-ordering">
-   <b><a href="#screen-ordering">#screen-ordering</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screen-ordering" class="dfn-panel" data-for="screen-ordering" id="infopanel-for-screen-ordering">
+   <span id="infopaneltitle-for-screen-ordering" style="display:none">Info about the 'screen ordering' definition.</span><b><a href="#screen-ordering">#screen-ordering</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screen-ordering">3.3.1. screens attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetails-currentscreen">
-   <b><a href="#dom-screendetails-currentscreen">#dom-screendetails-currentscreen</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetails-currentscreen" class="dfn-panel" data-for="dom-screendetails-currentscreen" id="infopanel-for-dom-screendetails-currentscreen">
+   <span id="infopaneltitle-for-dom-screendetails-currentscreen" style="display:none">Info about the 'currentScreen' definition.</span><b><a href="#dom-screendetails-currentscreen">#dom-screendetails-currentscreen</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetails-currentscreen">3.3. ScreenDetails interface</a> <a href="#ref-for-dom-screendetails-currentscreen①">(2)</a>
     <li><a href="#ref-for-dom-screendetails-currentscreen②">3.3.2. currentScreen attribute</a> <a href="#ref-for-dom-screendetails-currentscreen③">(2)</a> <a href="#ref-for-dom-screendetails-currentscreen④">(3)</a> <a href="#ref-for-dom-screendetails-currentscreen⑤">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetails-onscreenschange">
-   <b><a href="#dom-screendetails-onscreenschange">#dom-screendetails-onscreenschange</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetails-onscreenschange" class="dfn-panel" data-for="dom-screendetails-onscreenschange" id="infopanel-for-dom-screendetails-onscreenschange">
+   <span id="infopaneltitle-for-dom-screendetails-onscreenschange" style="display:none">Info about the 'onscreenschange' definition.</span><b><a href="#dom-screendetails-onscreenschange">#dom-screendetails-onscreenschange</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetails-onscreenschange">3.3. ScreenDetails interface</a> <a href="#ref-for-dom-screendetails-onscreenschange①">(2)</a>
     <li><a href="#ref-for-dom-screendetails-onscreenschange②">3.3.3. onscreenschange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="eventdef-screendetails-screenschange">
-   <b><a href="#eventdef-screendetails-screenschange">#eventdef-screendetails-screenschange</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-eventdef-screendetails-screenschange" class="dfn-panel" data-for="eventdef-screendetails-screenschange" id="infopanel-for-eventdef-screendetails-screenschange">
+   <span id="infopaneltitle-for-eventdef-screendetails-screenschange" style="display:none">Info about the 'screenschange' definition.</span><b><a href="#eventdef-screendetails-screenschange">#eventdef-screendetails-screenschange</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-eventdef-screendetails-screenschange">3.3.3. onscreenschange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetails-oncurrentscreenchange">
-   <b><a href="#dom-screendetails-oncurrentscreenchange">#dom-screendetails-oncurrentscreenchange</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetails-oncurrentscreenchange" class="dfn-panel" data-for="dom-screendetails-oncurrentscreenchange" id="infopanel-for-dom-screendetails-oncurrentscreenchange">
+   <span id="infopaneltitle-for-dom-screendetails-oncurrentscreenchange" style="display:none">Info about the 'oncurrentscreenchange' definition.</span><b><a href="#dom-screendetails-oncurrentscreenchange">#dom-screendetails-oncurrentscreenchange</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetails-oncurrentscreenchange">3.3. ScreenDetails interface</a> <a href="#ref-for-dom-screendetails-oncurrentscreenchange①">(2)</a>
     <li><a href="#ref-for-dom-screendetails-oncurrentscreenchange②">3.3.4. oncurrentscreenchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="eventdef-screendetails-currentscreenchange">
-   <b><a href="#eventdef-screendetails-currentscreenchange">#eventdef-screendetails-currentscreenchange</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-eventdef-screendetails-currentscreenchange" class="dfn-panel" data-for="eventdef-screendetails-currentscreenchange" id="infopanel-for-eventdef-screendetails-currentscreenchange">
+   <span id="infopaneltitle-for-eventdef-screendetails-currentscreenchange" style="display:none">Info about the 'currentscreenchange' definition.</span><b><a href="#eventdef-screendetails-currentscreenchange">#eventdef-screendetails-currentscreenchange</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-eventdef-screendetails-currentscreenchange">3.3.2. currentScreen attribute</a>
     <li><a href="#ref-for-eventdef-screendetails-currentscreenchange①">3.3.4. oncurrentscreenchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="screendetailed">
-   <b><a href="#screendetailed">#screendetailed</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-screendetailed" class="dfn-panel" data-for="screendetailed" id="infopanel-for-screendetailed">
+   <span id="infopaneltitle-for-screendetailed" style="display:none">Info about the 'ScreenDetailed' definition.</span><b><a href="#screendetailed">#screendetailed</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-screendetailed">1. Introduction</a>
     <li><a href="#ref-for-screendetailed①">1.2.5. Place windows on a specific screen</a>
@@ -2419,82 +2421,82 @@ for helping craft this specification.</p>
     <li><a href="#ref-for-screendetailed①③">3.5.1. Element.requestFullscreen() method definition changes</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetailed-availleft">
-   <b><a href="#dom-screendetailed-availleft">#dom-screendetailed-availleft</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetailed-availleft" class="dfn-panel" data-for="dom-screendetailed-availleft" id="infopanel-for-dom-screendetailed-availleft">
+   <span id="infopaneltitle-for-dom-screendetailed-availleft" style="display:none">Info about the 'availLeft' definition.</span><b><a href="#dom-screendetailed-availleft">#dom-screendetailed-availleft</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetailed-availleft">3.4. The ScreenDetailed interface</a> <a href="#ref-for-dom-screendetailed-availleft①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetailed-availtop">
-   <b><a href="#dom-screendetailed-availtop">#dom-screendetailed-availtop</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetailed-availtop" class="dfn-panel" data-for="dom-screendetailed-availtop" id="infopanel-for-dom-screendetailed-availtop">
+   <span id="infopaneltitle-for-dom-screendetailed-availtop" style="display:none">Info about the 'availTop' definition.</span><b><a href="#dom-screendetailed-availtop">#dom-screendetailed-availtop</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetailed-availtop">3.4. The ScreenDetailed interface</a> <a href="#ref-for-dom-screendetailed-availtop①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetailed-left">
-   <b><a href="#dom-screendetailed-left">#dom-screendetailed-left</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetailed-left" class="dfn-panel" data-for="dom-screendetailed-left" id="infopanel-for-dom-screendetailed-left">
+   <span id="infopaneltitle-for-dom-screendetailed-left" style="display:none">Info about the 'left' definition.</span><b><a href="#dom-screendetailed-left">#dom-screendetailed-left</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetailed-left">3.4. The ScreenDetailed interface</a> <a href="#ref-for-dom-screendetailed-left①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetailed-top">
-   <b><a href="#dom-screendetailed-top">#dom-screendetailed-top</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetailed-top" class="dfn-panel" data-for="dom-screendetailed-top" id="infopanel-for-dom-screendetailed-top">
+   <span id="infopaneltitle-for-dom-screendetailed-top" style="display:none">Info about the 'top' definition.</span><b><a href="#dom-screendetailed-top">#dom-screendetailed-top</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetailed-top">3.4. The ScreenDetailed interface</a> <a href="#ref-for-dom-screendetailed-top①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetailed-isprimary">
-   <b><a href="#dom-screendetailed-isprimary">#dom-screendetailed-isprimary</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetailed-isprimary" class="dfn-panel" data-for="dom-screendetailed-isprimary" id="infopanel-for-dom-screendetailed-isprimary">
+   <span id="infopaneltitle-for-dom-screendetailed-isprimary" style="display:none">Info about the 'isPrimary' definition.</span><b><a href="#dom-screendetailed-isprimary">#dom-screendetailed-isprimary</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetailed-isprimary">3.4. The ScreenDetailed interface</a> <a href="#ref-for-dom-screendetailed-isprimary①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetailed-isinternal">
-   <b><a href="#dom-screendetailed-isinternal">#dom-screendetailed-isinternal</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetailed-isinternal" class="dfn-panel" data-for="dom-screendetailed-isinternal" id="infopanel-for-dom-screendetailed-isinternal">
+   <span id="infopaneltitle-for-dom-screendetailed-isinternal" style="display:none">Info about the 'isInternal' definition.</span><b><a href="#dom-screendetailed-isinternal">#dom-screendetailed-isinternal</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetailed-isinternal">3.4. The ScreenDetailed interface</a> <a href="#ref-for-dom-screendetailed-isinternal①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetailed-devicepixelratio">
-   <b><a href="#dom-screendetailed-devicepixelratio">#dom-screendetailed-devicepixelratio</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetailed-devicepixelratio" class="dfn-panel" data-for="dom-screendetailed-devicepixelratio" id="infopanel-for-dom-screendetailed-devicepixelratio">
+   <span id="infopaneltitle-for-dom-screendetailed-devicepixelratio" style="display:none">Info about the 'devicePixelRatio' definition.</span><b><a href="#dom-screendetailed-devicepixelratio">#dom-screendetailed-devicepixelratio</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetailed-devicepixelratio">3.4. The ScreenDetailed interface</a> <a href="#ref-for-dom-screendetailed-devicepixelratio①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetailed-label">
-   <b><a href="#dom-screendetailed-label">#dom-screendetailed-label</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetailed-label" class="dfn-panel" data-for="dom-screendetailed-label" id="infopanel-for-dom-screendetailed-label">
+   <span id="infopaneltitle-for-dom-screendetailed-label" style="display:none">Info about the 'label' definition.</span><b><a href="#dom-screendetailed-label">#dom-screendetailed-label</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetailed-label">3.4. The ScreenDetailed interface</a> <a href="#ref-for-dom-screendetailed-label①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-screendetailed-onchange">
-   <b><a href="#dom-screendetailed-onchange">#dom-screendetailed-onchange</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-screendetailed-onchange" class="dfn-panel" data-for="dom-screendetailed-onchange" id="infopanel-for-dom-screendetailed-onchange">
+   <span id="infopaneltitle-for-dom-screendetailed-onchange" style="display:none">Info about the 'onchange' definition.</span><b><a href="#dom-screendetailed-onchange">#dom-screendetailed-onchange</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-screendetailed-onchange">3.4.1. onchange attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="eventdef-screendetailed-change">
-   <b><a href="#eventdef-screendetailed-change">#eventdef-screendetailed-change</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-eventdef-screendetailed-change" class="dfn-panel" data-for="eventdef-screendetailed-change" id="infopanel-for-eventdef-screendetailed-change">
+   <span id="infopaneltitle-for-eventdef-screendetailed-change" style="display:none">Info about the 'change' definition.</span><b><a href="#eventdef-screendetailed-change">#eventdef-screendetailed-change</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-eventdef-screendetailed-change">3.3.2. currentScreen attribute</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-fullscreenoptions-screen">
-   <b><a href="#dom-fullscreenoptions-screen">#dom-fullscreenoptions-screen</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-fullscreenoptions-screen" class="dfn-panel" data-for="dom-fullscreenoptions-screen" id="infopanel-for-dom-fullscreenoptions-screen">
+   <span id="infopaneltitle-for-dom-fullscreenoptions-screen" style="display:none">Info about the 'screen' definition.</span><b><a href="#dom-fullscreenoptions-screen">#dom-fullscreenoptions-screen</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-fullscreenoptions-screen">3.5. Extensions to FullscreenOptions</a> <a href="#ref-for-dom-fullscreenoptions-screen①">(2)</a>
     <li><a href="#ref-for-dom-fullscreenoptions-screen②">3.5.1. Element.requestFullscreen() method definition changes</a> <a href="#ref-for-dom-fullscreenoptions-screen③">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="permissiondef-window-management">
-   <b><a href="#permissiondef-window-management">#permissiondef-window-management</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-permissiondef-window-management" class="dfn-panel" data-for="permissiondef-window-management" id="infopanel-for-permissiondef-window-management">
+   <span id="infopaneltitle-for-permissiondef-window-management" style="display:none">Info about the 'window-management' definition.</span><b><a href="#permissiondef-window-management">#permissiondef-window-management</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-permissiondef-window-management">3.2.1. getScreenDetails() method</a>
     <li><a href="#ref-for-permissiondef-window-management①">3.6. Permission API Integration</a> <a href="#ref-for-permissiondef-window-management②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-permissionpolicy-window-management">
-   <b><a href="#dom-permissionpolicy-window-management">#dom-permissionpolicy-window-management</a></b><b>Referenced in:</b>
+  <aside aria-labelledby="infopaneltitle-for-dom-permissionpolicy-window-management" class="dfn-panel" data-for="dom-permissionpolicy-window-management" id="infopanel-for-dom-permissionpolicy-window-management">
+   <span id="infopaneltitle-for-dom-permissionpolicy-window-management" style="display:none">Info about the '"window-management"' definition.</span><b><a href="#dom-permissionpolicy-window-management">#dom-permissionpolicy-window-management</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-permissionpolicy-window-management">3.1.1. isExtended attribute</a>
     <li><a href="#ref-for-dom-permissionpolicy-window-management①">3.2.1. getScreenDetails() method</a>
@@ -2502,60 +2504,114 @@ for helping craft this specification.</p>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
-
-document.body.addEventListener("click", function(e) {
-    var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
-    // Find the dfn element or panel, if any, that was clicked on.
-    var el = e.target;
-    var target;
-    var hitALink = false;
-    while(el.parentElement) {
-        if(el.tagName == "A") {
-            // Clicking on a link in a <dfn> shouldn't summon the panel
-            hitALink = true;
-        }
-        if(el.classList.contains("dfn-paneled")) {
-            target = "dfn";
-            break;
-        }
-        if(el.classList.contains("dfn-panel")) {
-            target = "dfn-panel";
-            break;
-        }
-        el = el.parentElement;
+"use strict";
+{
+    function queryAll(sel) {
+        return [].slice.call(document.querySelectorAll(sel));
     }
-    if(target != "dfn-panel") {
+
+    // Add popup behavior to all dfns to show the corresponding dfn-panel.
+    var dfns = document.querySelectorAll('.dfn-paneled');
+    for (let dfn of dfns) { insertDfnPopupAction(dfn); }
+
+    document.body.addEventListener("click", (e) => {
+        // If not handled already, just hide all dfn panels.
+        hideAllDfnPanels();
+    });
+
+    function hideAllDfnPanels() {
         // Turn off any currently "on" or "activated" panels.
-        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
-            el.classList.remove("on");
-            el.classList.remove("activated");
-        });
-    }
-    if(target == "dfn" && !hitALink) {
-        // open the panel
-        var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
-        if(dfnPanel) {
-            dfnPanel.classList.add("on");
-            var rect = el.getBoundingClientRect();
-            dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
-            dfnPanel.style.top = window.scrollY + rect.top + "px";
-            var panelRect = dfnPanel.getBoundingClientRect();
-            var panelWidth = panelRect.right - panelRect.left;
-            if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
-                // Reposition, because the panel is overflowing
-                dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
-            }
-        } else {
-            console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
-        }
-    } else if(target == "dfn-panel") {
-        // Switch it to "activated" state, which pins it.
-        el.classList.add("activated");
-        el.style.left = null;
-        el.style.top = null;
+        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>hideDfnPanel(el));
     }
 
-});
+    function showDfnPanel(dfnPanel, dfn) {
+        hideAllDfnPanels(); // Only display one at this time.
+        dfn.setAttribute("aria-expanded", "true");
+        dfnPanel.classList.add("on");
+        dfnPanel.style.left = "5px";
+        dfnPanel.style.top = "0px";
+        const panelRect = dfnPanel.getBoundingClientRect();
+        const panelWidth = panelRect.right - panelRect.left;
+        if (panelRect.right > document.body.scrollWidth) {
+            // Panel's overflowing the screen.
+            // Just drop it below the dfn and flip it rightward instead.
+            // This still wont' fix things if the screen is *really* wide,
+            // but fixing that's a lot harder without 'anchor()'.
+            dfnPanel.style.top = "1.5em";
+            dfnPanel.style.left = "auto";
+            dfnPanel.style.right = "0px";
+        }
+    }
+
+    function pinDfnPanel(dfnPanel) {
+        // Switch it to "activated" state, which pins it.
+        dfnPanel.classList.add("activated");
+        dfnPanel.style.left = null;
+        dfnPanel.style.top = null;
+    }
+
+    function hideDfnPanel(dfnPanel, dfn) {
+        if(!dfn) {
+            dfn = document.getElementById(dfnPanel.getAttribute("data-for"));
+        }
+        dfn.setAttribute("aria-expanded", "false")
+        dfnPanel.classList.remove("on");
+        dfnPanel.classList.remove("activated");
+    }
+
+    function toggleDfnPanel(dfnPanel, dfn) {
+        if(dfnPanel.classList.contains("on")) {
+            hideDfnPanel(dfnPanel, dfn);
+        } else {
+            showDfnPanel(dfnPanel, dfn);
+        }
+    }
+
+    function insertDfnPopupAction(dfn) {
+        // Find dfn panel
+        const dfnPanel = document.querySelector(`.dfn-panel[data-for='${dfn.id}']`);
+        if (dfnPanel) {
+            const panelWrapper = document.createElement('span');
+            panelWrapper.appendChild(dfnPanel);
+            panelWrapper.style.position = "relative";
+            panelWrapper.style.height = "0px";
+            dfn.insertAdjacentElement("afterend", panelWrapper);
+            dfn.setAttribute('role', 'button');
+            dfn.setAttribute('aria-expanded', 'false')
+            dfn.tabIndex = 0;
+            dfn.classList.add('has-dfn-panel');
+            dfn.addEventListener('click', (event) => {
+                showDfnPanel(dfnPanel, dfn);
+                event.stopPropagation();
+            });
+            dfn.addEventListener('keypress', (event) => {
+                const kc = event.keyCode;
+                // 32->Space, 13->Enter
+                if(kc == 32 || kc == 13) {
+                    toggleDfnPanel(dfnPanel, dfn);
+                    event.stopPropagation();
+                    event.preventDefault();
+                }
+            });
+
+            dfnPanel.addEventListener('click', (event) => {
+                pinDfnPanel(dfnPanel);
+                event.stopPropagation();
+            });
+
+            dfnPanel.addEventListener('keydown', (event) => {
+                if(event.keyCode == 27) { // Escape key
+                    hideDfnPanel(dfnPanel, dfn);
+                    event.stopPropagation();
+                    event.preventDefault();
+                }
+            })
+
+        } else {
+            console.log("Couldn't find .dfn-panel[data-for='" + dfn.id + "']");
+        }
+    }
+}
 </script>
 <script>/* script-var-click-highlighting */
 

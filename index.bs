@@ -464,7 +464,7 @@ The <dfn attribute for=Screen>isExtended</dfn> getter steps are:
 ### {{Screen/onchange}} attribute ### {#api-screen-onchange-attribute}
 <!-- ====================================================================== -->
 
-The <dfn attribute for=Screen>onchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=Screen>`change`</a>.
+The <dfn attribute for=Screen>onchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is {{Screen/change!!event}}.
 
 When any [=screen/basic observable property=] of a {{Window}} |window|'s [=/current screen=] changes, [=/queue a global task=] on the [=/relevant global object=] of |window| using the [=/window placement task source=] to [=/fire an event=] named <dfn event for=Screen>`change`</dfn> at the {{Screen}} object referenced by |window|'s {{Window/screen}} attribute.
 
@@ -612,13 +612,13 @@ The <dfn attribute for=ScreenDetails>currentScreen</dfn> getter steps are to ret
 
 Note: Which exact {{ScreenDetailed}} object in {{ScreenDetails/screens}} represents the [=/current screen=] of a {{Window}} is assumed to be defined by operating systems and user agents. This corresponds with {{Window}}.{{Window/screen}}, the canonical screen for a given window, for example the screen with the largest area intersecting the window.
 
-Note: {{ScreenDetails/currentScreen}} is guaranteed to be `===` comparable with one of the entries in {{ScreenDetails/screens}}, to facilitate such comparisons, e.g. `screenDetails.screens.find(s => s !== screenDetails.currentScreen);`. That precludes {{ScreenDetails/currentScreen}} from being marked `[SameObject]`. Relatedly, <a event for=ScreenDetailed>`change`</a> event listeners added to {{ScreenDetails/currentScreen}} will only be notified of changes for that specific [=/screen=], while <a event for=ScreenDetails>`currentscreenchange`</a> event listeners will be notified of changes for whichever [=/screen=] happens to be the window's [=/current screen=], i.e. after the window moves from one [=/screen=] to another.
+Note: {{ScreenDetails/currentScreen}} is guaranteed to be `===` comparable with one of the entries in {{ScreenDetails/screens}}, to facilitate such comparisons, e.g. `screenDetails.screens.find(s => s !== screenDetails.currentScreen);`. That precludes {{ScreenDetails/currentScreen}} from being marked `[SameObject]`. Relatedly, {{ScreenDetailed/change!!event}} event listeners added to {{ScreenDetails/currentScreen}} will only be notified of changes for that specific [=/screen=], while {{ScreenDetails/currentscreenchange!!event}} event listeners will be notified of changes for whichever [=/screen=] happens to be the window's [=/current screen=], i.e. after the window moves from one [=/screen=] to another.
 
 <!-- ====================================================================== -->
 ### {{ScreenDetails/onscreenschange}} attribute ### {#api-screendetails-onscreenschange-attribute}
 <!-- ====================================================================== -->
 
-The <dfn attribute for=ScreenDetails>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`screenschange`</a>.
+The <dfn attribute for=ScreenDetails>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is {{ScreenDetails/screenschange!!event}}.
 
 When the set of {{ScreenDetails/screens}} of a {{ScreenDetails}} object |screenDetails| changes, [=/queue a global task=] on the [=/relevant global object=] of |screenDetails| using the [=/window placement task source=] to [=/fire an event=] named <dfn event for=ScreenDetails>`screenschange`</dfn> at |screenDetails|.
 
@@ -626,7 +626,7 @@ When the set of {{ScreenDetails/screens}} of a {{ScreenDetails}} object |screenD
 ### {{ScreenDetails/oncurrentscreenchange}} attribute ### {#api-screendetails-oncurrentscreenchange-attribute}
 <!-- ====================================================================== -->
 
-The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`currentscreenchange`</a>.
+The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is {{ScreenDetails/currentscreenchange!!event}}.
 
 When the [=/current screen=] of a {{Window}} |window| changes from one [=/screen=] to another (e.g. the {{Window}} has been moved to a different display), or when any [=screen/basic observable property=] or [=screen/advanced observable property=] of the [=/current screen=] of |window| changes, [=/queue a global task=] on the [=/relevant global object=] of |window| using the [=/window placement task source=] to [=/fire an event=] named <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{ScreenDetails}} object stored in |window|'s internal slot {{Window/[[screenDetails]]}}.
 

@@ -773,11 +773,11 @@ Other points to note:
 - Placing content on a screen other than the [=/current screen=] is unlikely to create additional clickjacking risk for users, since the user's cursor or finger is likely to be co-located with the [=/current screen=], not on a separate screen.
 - Gating legacy placement capabilities on the specified permission may be feasible.
 
-See the following documents, for additional explorations of security considerations:
+See the following additional explorations of security considerations:
 - [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md)
 - ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-placement/blob/main/EXPLAINER.md#privacy--security)
 - [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-placement/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
-- ["Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"]https://github.com/w3c/window-placement/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations
+- ["Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-placement/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations)
 
 <!-- ====================================================================== -->
 # Privacy Considerations # {#privacy}
@@ -800,7 +800,10 @@ The specified API design enables user agents to selectively expose screens using
 Other points to note:
 - Gating legacy screen and window information on the specified permission may be feasible.
 
-See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md) for additional explorations of privacy considerations.
+See the following additional explorations of privacy considerations:
+- [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md)
+- ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-placement/blob/main/EXPLAINER.md#privacy--security)
+- [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-placement/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
 
 <!-- ====================================================================== -->
 # Accessibility Considerations # {#a11y}

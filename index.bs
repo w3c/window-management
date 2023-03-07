@@ -763,18 +763,21 @@ This specification enables sites to place content on specific screens, which may
   1. Sites may attempt to spoof the OS, browser, or other sites for phishing attacks, by drawing the user's attention to a particular screen, and use interaction signals there to show deceptive content on another screen that is less closely observed
 1. Sites may attempt to otherwise place content on specific screens to act in deceptive, abusive, or annoying manners
 
-To help mitigate such risks, cross-screen placement capabilities require explicit user permission (where prompting is only possible with transient user activation), are restricted to secure contexts, and are subject to permission policy. If any of these requirements are not met, placement requests may be denied or clamped to the [=/current screen=], matching pre-existing behavior of some user agents. User agents can generally measure and otherwise intervene when sites request any new capabilities.
+To help mitigate such risks, cross-screen placement capabilities require express permission in secure contexts, and are subject to [[permissions-policy]], which prevent third-party access by default.
 
-To enable this new functionality in a nested browsing context, it needs to be specifically allowed via [[permissions-policy]], either through an appropriate declaration in the `allow` attribute of the HTML `iframe` element, or through a `Permissions-Policy` HTTP header delivered with the document through which it is nested. This prevents e.g. content from third parties to place content on specific screens without explicit permission.
+User agents can detect cross-screen placement requests, and intervene to protect users from potential abuse. For example, user agents may present prominent security surfaces when sites place content on another screen, or when windows gain user attention after cross-screen placement. Additionally, cross-screen placement requests may be denied or clamped to the [=/current screen=], matching pre-existing behavior of some user agents.
 
 Other points to note:
 - Some user agents already do not constrain window placement requests to the [=/current screen=]; they interpret {{Window/open()}} and {{Window/moveTo()}} coordinates as relative to the [=/multi-screen origin=], and honor requests to place windows on screens other than the [=/current screen=].
 - Transient user activation is typically already required for {{Element/requestFullscreen()}} and {{Window/open()}}, but not for {{Window/moveTo()}}, {{Window/moveBy()}}, {{Window/resizeTo()}}, nor {{Window/resizeBy()}}.
 - Placing content on a screen other than the [=/current screen=] is unlikely to create additional clickjacking risk for users, since the user's cursor or finger is likely to be co-located with the [=/current screen=], not on a separate screen.
-- Gating pre-existing placement capabilities on the specified permission may be reasonable.
-- User agents may choose to call user attention to window placement operations targeting specific screens. For example, requests to place fullscreen content or windows on a screen that does not contain the currently focused window may be cause for showing prominent security surfaces on all screens, or the screen with the active window, akin to pre-existing indicators shown by user agents when sites enter fullscreen.
+- Gating legacy placement capabilities on the specified permission may be feasible.
 
-See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md) for additional explorations of security concerns.
+See the following additional explorations of security considerations:
+- [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md)
+- ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-placement/blob/main/EXPLAINER.md#privacy--security)
+- [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-placement/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
+- ["Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-placement/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations)
 
 <!-- ====================================================================== -->
 # Privacy Considerations # {#privacy}
@@ -782,7 +785,7 @@ See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/
 
 This specification exposes new information to sites about screens connected to the device, which may pose limited new privacy risks. This additional information increases the [fingerprinting](https://w3c.github.io/fingerprinting-guidance/) surface of devices, especially those with atypical screen configurations.
 
-To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, restricted to secure contexts, most new information requires explicit user permission (where prompting is only possible with transient user activation), and subject to permission policy. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.
+To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, most access requires express permission in secure contexts, and is subject to [[permissions-policy]], which prevents third-party access by default. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.
 
 The `Screen.isExtended` boolean is exposed without explicit permission checks, as this minimal single bit of information supports some critical features for which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI entry points like “Show on another screen”), and helps avoid unnecessarily prompting single-screen users for inapplicable information and capabilities. This generally follows a TAG design principle for device enumeration (see [[DESIGN-PRINCIPLES#device-enumeration]]).
 
@@ -792,10 +795,15 @@ The new `Screen.onchange` events pose a slight risk by making [ephemeral fingerp
 
 Alternative API shapes giving less power to sites were considered, but offer poor experiences for users and developers (e.g. prompting users to pick a screen, requiring declarative screen rankings from developers). Few, if any, alternatives exist for non-fullscreen placement of app windows on any connected screen. The specified API shape seems like the most natural extension of existing APIs to support a more complete multi-screen environment. Future work may include ways to query more limited multi-screen information, to let sites voluntarily minimize their information exposure.
 
-Other points to note:
-- Gating pre-existing information exposure on the specified permission may be reasonable.
+The specified API design enables user agents to selectively expose screens using novel access models, for example limiting screen information and placement capabilities pertaining to screens indicated by the user.
 
-See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md) for additional explorations of privacy concerns.
+Other points to note:
+- Gating legacy screen and window information on the specified permission may be feasible.
+
+See the following additional explorations of privacy considerations:
+- [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md)
+- ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-placement/blob/main/EXPLAINER.md#privacy--security)
+- [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-placement/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
 
 <!-- ====================================================================== -->
 # Accessibility Considerations # {#a11y}

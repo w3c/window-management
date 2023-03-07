@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 077497365, updated Thu Mar 2 15:15:29 2023 -0800" name="generator">
   <link href="https://www.w3.org/TR/window-placement/" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="9bc726751331fd4fd527e4a07abe093501ee9539" name="document-revision">
+  <meta content="3d098e15e77134f568cc7427888b2eb4a16c633a" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -619,7 +619,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-03-03">3 March 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-03-07">7 March 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1267,8 +1267,8 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
     <li data-md>
      <p>Sites may attempt to otherwise place content on specific screens to act in deceptive, abusive, or annoying manners</p>
    </ol>
-   <p>To help mitigate such risks, cross-screen placement capabilities require explicit user permission (where prompting is only possible with transient user activation), are restricted to secure contexts, and are subject to permission policy. If any of these requirements are not met, placement requests may be denied or clamped to the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①⓪">current screen</a>, matching pre-existing behavior of some user agents. User agents can generally measure and otherwise intervene when sites request any new capabilities.</p>
-   <p>To enable this new functionality in a nested browsing context, it needs to be specifically allowed via <a data-link-type="biblio" href="#biblio-permissions-policy" title="Permissions Policy">[permissions-policy]</a>, either through an appropriate declaration in the <code>allow</code> attribute of the HTML <code>iframe</code> element, or through a <code>Permissions-Policy</code> HTTP header delivered with the document through which it is nested. This prevents e.g. content from third parties to place content on specific screens without explicit permission.</p>
+   <p>To help mitigate such risks, cross-screen placement capabilities require express permission in secure contexts, and are subject to <a data-link-type="biblio" href="#biblio-permissions-policy" title="Permissions Policy">[permissions-policy]</a>, which prevent third-party access by default.</p>
+   <p>User agents can detect cross-screen placement requests, and intervene to protect users from potential abuse. For example, user agents may present prominent security surfaces when sites place content on another screen, or when windows gain user attention after cross-screen placement. Additionally, cross-screen placement requests may be denied or clamped to the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①⓪">current screen</a>, matching pre-existing behavior of some user agents.</p>
    <p>Other points to note:</p>
    <ul>
     <li data-md>
@@ -1278,24 +1278,41 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
     <li data-md>
      <p>Placing content on a screen other than the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①③">current screen</a> is unlikely to create additional clickjacking risk for users, since the user’s cursor or finger is likely to be co-located with the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①④">current screen</a>, not on a separate screen.</p>
     <li data-md>
-     <p>Gating pre-existing placement capabilities on the specified permission may be reasonable.</p>
-    <li data-md>
-     <p>User agents may choose to call user attention to window placement operations targeting specific screens. For example, requests to place fullscreen content or windows on a screen that does not contain the currently focused window may be cause for showing prominent security surfaces on all screens, or the screen with the active window, akin to pre-existing indicators shown by user agents when sites enter fullscreen.</p>
+     <p>Gating legacy placement capabilities on the specified permission may be feasible.</p>
    </ul>
-   <p>See <a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy.md">security_and_privacy.md</a> for additional explorations of security concerns.</p>
+   <p>See the following additional explorations of security considerations:</p>
+   <ul>
+    <li data-md>
+     <p><a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy.md">W3C Security and Privacy Self-Review Questionnaire for the overall API</a></p>
+    <li data-md>
+     <p><a href="https://github.com/w3c/window-placement/blob/main/EXPLAINER.md#privacy--security">"Privacy &amp; Security" in the Explainer for the overall API</a></p>
+    <li data-md>
+     <p><a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy_initiating_multi_screen_experiences.md">W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"</a></p>
+    <li data-md>
+     <p><a href="https://github.com/w3c/window-placement/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations">"Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"</a></p>
+   </ul>
    <h2 class="heading settled" data-level="5" id="privacy"><span class="secno">5. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
    <p>This specification exposes new information to sites about screens connected to the device, which may pose limited new privacy risks. This additional information increases the <a href="https://w3c.github.io/fingerprinting-guidance/">fingerprinting</a> surface of devices, especially those with atypical screen configurations.</p>
-   <p>To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, restricted to secure contexts, most new information requires explicit user permission (where prompting is only possible with transient user activation), and subject to permission policy. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.</p>
+   <p>To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, most access requires express permission in secure contexts, and is subject to <a data-link-type="biblio" href="#biblio-permissions-policy" title="Permissions Policy">[permissions-policy]</a>, which prevents third-party access by default. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.</p>
    <p>The <code>Screen.isExtended</code> boolean is exposed without explicit permission checks, as this minimal single bit of information supports some critical features for which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI entry points like “Show on another screen”), and helps avoid unnecessarily prompting single-screen users for inapplicable information and capabilities. This generally follows a TAG design principle for device enumeration (see <a href="https://w3ctag.github.io/design-principles/#device-enumeration">Web Platform Design Principles § device-enumeration</a>).</p>
    <p>Many user agents already effectively expose the presence of multiple screens to windows located on secondary screens, where <code>window.screen.availLeft|Top</code> >> 0. Script access of this bit is a detectable <a data-link-type="dfn" href="https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting" id="ref-for-dfn-active-fingerprinting①">active fingerprinting</a> signal, which may be observed and blocked by the user agent. Additionally, user agents that do not constrain unpermissioned window placement requests to the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen①⑤">current screen</a> allow adversaries to attempt programmatic placement on other screens, at which point information about that <code>window.screen</code> is exposed.</p>
    <p>The new <code>Screen.onchange</code> events pose a slight risk by making <a href="https://github.com/asankah/ephemeral-fingerprinting">ephemeral fingerprinting</a> easier, but scripts can already achieve the same result by polling for changes to <code>window.screen</code>. This risk could be partially mitigated by delaying event dispatch for hidden documents until such documents are no longer hidden.</p>
    <p>Alternative API shapes giving less power to sites were considered, but offer poor experiences for users and developers (e.g. prompting users to pick a screen, requiring declarative screen rankings from developers). Few, if any, alternatives exist for non-fullscreen placement of app windows on any connected screen. The specified API shape seems like the most natural extension of existing APIs to support a more complete multi-screen environment. Future work may include ways to query more limited multi-screen information, to let sites voluntarily minimize their information exposure.</p>
+   <p>The specified API design enables user agents to selectively expose screens using novel access models, for example limiting screen information and placement capabilities pertaining to screens indicated by the user.</p>
    <p>Other points to note:</p>
    <ul>
     <li data-md>
-     <p>Gating pre-existing information exposure on the specified permission may be reasonable.</p>
+     <p>Gating legacy screen and window information on the specified permission may be feasible.</p>
    </ul>
-   <p>See <a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy.md">security_and_privacy.md</a> for additional explorations of privacy concerns.</p>
+   <p>See the following additional explorations of privacy considerations:</p>
+   <ul>
+    <li data-md>
+     <p><a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy.md">W3C Security and Privacy Self-Review Questionnaire for the overall API</a></p>
+    <li data-md>
+     <p><a href="https://github.com/w3c/window-placement/blob/main/EXPLAINER.md#privacy--security">"Privacy &amp; Security" in the Explainer for the overall API</a></p>
+    <li data-md>
+     <p><a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy_initiating_multi_screen_experiences.md">W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"</a></p>
+   </ul>
    <h2 class="heading settled" data-level="6" id="a11y"><span class="secno">6. </span><span class="content">Accessibility Considerations</span><a class="self-link" href="#a11y"></a></h2>
    <p>This specification enables sites to place content on specific screens, which may pose limited new accessibility risks. The visual presentation, non-visual rendering, and effect of assistive technologies on the content itself is not commonly substantially influenced by the placement of content on one screen or another. Still, existing accessibility risks of programmatic content placement may be exacerbated by the expanded areas over which content may be placed. Existing accessibility considerations regarding <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-default-powerful-feature" id="ref-for-dfn-default-powerful-feature①">default powerful feature</a> permission models, prompting methods, and permission-related UIs, are equally pertinent to this particular specification’s permission.</p>
    <p>There are no documented accessibility considerations pertaining to the structured screen information (and accessibility features thereof) exposed by the API at this time.</p>

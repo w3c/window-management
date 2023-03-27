@@ -1,14 +1,14 @@
 <pre class=metadata>
 Title: Multi-Screen Window Placement
-Shortname: window-placement
+Shortname: window-management
 Abstract: This document defines a web platform API that allows script to query the device for information about its screens, and place content on specific screens.
 Status: ED
-TR: https://www.w3.org/TR/window-placement/
-URL: https://w3c.github.io/window-placement/
+TR: https://www.w3.org/TR/window-management/
+URL: https://w3c.github.io/window-management/
 Level: None
 Editor: Joshua Bell, Google Inc. https://www.google.com/, jsbell@google.com, w3cid 61302
 Editor: Mike Wasserman, Google Inc. https://www.google.com/, msw@google.com, w3cid 116970
-Repository: w3c/window-placement
+Repository: w3c/window-management
 Group: secondscreenwg
 !Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/window-placement">https://github.com/web-platform-tests/wpt/tree/master/window-placement</a>
 !Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/screen-details">https://github.com/web-platform-tests/wpt/tree/master/screen-details</a>
@@ -737,11 +737,11 @@ This specification defines a [=/default powerful feature=] that is identified by
 
 The [[permissions]] API provides a uniform way for websites to query the state of their permissions.
 
-Note: Previously published versions of this document used the permission name `"window-placement"`. User agents should carefully migrate to the updated permission string: "{{window-management}}". See [#114](https://github.com/w3c/window-placement/issues/114).
+Note: Previously published versions of this document used the permission name `"window-placement"`. User agents should carefully migrate to the updated permission string: "{{window-management}}". See [#114](https://github.com/w3c/window-management/issues/114).
 
 Issue: Add {{window-management}} to [[permissions]] registry.
 
-Issue: Define behavior of cached objects and method steps when the permission is revoked. (See [#80](https://github.com/w3c/window-placement/issues/80))
+Issue: Define behavior of cached objects and method steps when the permission is revoked. (See [#80](https://github.com/w3c/window-management/issues/80))
 
 <!-- ====================================================================== -->
 ## Permission Policy integration ## {#api-permission-policy-integration}
@@ -774,10 +774,10 @@ Other points to note:
 - Gating legacy placement capabilities on the specified permission may be feasible.
 
 See the following additional explorations of security considerations:
-- [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md)
-- ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-placement/blob/main/EXPLAINER.md#privacy--security)
-- [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-placement/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
-- ["Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-placement/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations)
+- [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-management/blob/main/security_and_privacy.md)
+- ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-management/blob/main/EXPLAINER.md#privacy--security)
+- [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
+- ["Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations)
 
 <!-- ====================================================================== -->
 # Privacy Considerations # {#privacy}
@@ -801,9 +801,9 @@ Other points to note:
 - Gating legacy screen and window information on the specified permission may be feasible.
 
 See the following additional explorations of privacy considerations:
-- [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md)
-- ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-placement/blob/main/EXPLAINER.md#privacy--security)
-- [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-placement/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
+- [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-management/blob/main/security_and_privacy.md)
+- ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-management/blob/main/EXPLAINER.md#privacy--security)
+- [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
 
 <!-- ====================================================================== -->
 # Accessibility Considerations # {#a11y}

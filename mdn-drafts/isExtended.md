@@ -2,7 +2,7 @@
 recipe: api-interface
 title: 'Screen.isExtended'
 mdn_url: /en-US/docs/Web/API/Screen/isExtended
-specifications: https://webscreens.github.io/window-placement/#dom-screen-isextended
+specifications: https://w3c.github.io/window-management/#dom-screen-isextended
 browser_compatibility: api.Screen.isExtended
 ---
 

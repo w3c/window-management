@@ -2,7 +2,7 @@
 recipe: api-interface
 title: 'ScreenDetails.currentScreen'
 mdn_url: /en-US/docs/Web/API/ScreenDetails/currentScreen
-specifications: https://webscreens.github.io/window-placement/#dom-screendetails-currentscreen
+specifications: https://w3c.github.io/window-management/#dom-screendetails-currentscreen
 browser_compatibility: api.ScreenDetails.currentScreen
 ---
 

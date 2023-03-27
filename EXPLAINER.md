@@ -70,7 +70,7 @@ These allow web applications to make window placement requests optimized for the
 specific use case, characteristics of available screens, and user preferences.
 
 See explorations of alternative and supplemental proposals in
-[additional_explorations.md](https://github.com/w3c/window-placement/blob/master/additional_explorations.md).
+[additional_explorations.md](https://github.com/w3c/window-management/blob/main/additional_explorations.md).
 
 ### Non-goals
 
@@ -192,7 +192,7 @@ permissions.
 This aspect of the proposal matches the existing behavior of some browsers,
 requires no API shape changes, and seems like the simplest option available, but
 it has some challenges. See alternatives, considerations, and more examples in
-[additional_explorations.md](https://github.com/w3c/window-placement/blob/master/additional_explorations.md).
+[additional_explorations.md](https://github.com/w3c/window-management/blob/main/additional_explorations.md).
 
 In the media editing application example, the user might save and close their
 current project, later selecting an option to open that saved project, which
@@ -659,7 +659,7 @@ Some other notes:
   the precedent of `ScreenOrientation.onchange`, which is not permission gated.
 
 See
-[security_and_privacy.md](https://github.com/w3c/window-placement/blob/master/security_and_privacy.md)
+[security_and_privacy.md](https://github.com/w3c/window-management/blob/main/security_and_privacy.md)
 for additional explorations of privacy and security concerns.
 
 ## Related explainers:

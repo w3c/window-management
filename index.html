@@ -6,10 +6,10 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 077497365, updated Thu Mar 2 15:15:29 2023 -0800" name="generator">
-  <link href="https://www.w3.org/TR/window-placement/" rel="canonical">
+  <meta content="Bikeshed version d9bd89757, updated Thu Mar 23 10:06:53 2023 -0700" name="generator">
+  <link href="https://www.w3.org/TR/window-management/" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="3d098e15e77134f568cc7427888b2eb4a16c633a" name="document-revision">
+  <meta content="0d4be26be6626d944f2e864c1f1102aa044e0727" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -619,17 +619,17 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Multi-Screen Window Placement</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-03-07">7 March 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-03-27">27 March 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://w3c.github.io/window-placement/">https://w3c.github.io/window-placement/</a>
+      <dd><a class="u-url" href="https://w3c.github.io/window-management/">https://w3c.github.io/window-management/</a>
       <dt>Latest published version:
-      <dd><a href="https://www.w3.org/TR/window-placement/">https://www.w3.org/TR/window-placement/</a>
+      <dd><a href="https://www.w3.org/TR/window-management/">https://www.w3.org/TR/window-management/</a>
       <dt>Feedback:
-      <dd><a href="https://github.com/w3c/window-placement/issues/">GitHub</a>
+      <dd><a href="https://github.com/w3c/window-management/issues/">GitHub</a>
       <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editors:
       <dd class="editor p-author h-card vcard" data-editor-id="61302"><a class="p-name fn u-email email" href="mailto:jsbell@google.com">Joshua Bell</a> (<a class="p-org org" href="https://www.google.com/">Google Inc.</a>)
@@ -652,7 +652,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div data-fill-with="status">
    <p> <em>This section describes the status of this document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
    <p> This document was published by the <a href="https://www.w3.org/groups/wg/secondscreen">Second Screen Working Group</a> as an Editor’s Draft. This document is intended to become a W3C Recommendation. </p>
-   <p> Feedback and comments on this specification are welcome. Please use <a href="https://github.com/w3c/window-placement/issues">Github issues</a>. </p>
+   <p> Feedback and comments on this specification are welcome. Please use <a href="https://github.com/w3c/window-management/issues">Github issues</a>. </p>
    <p> Publication as an Editor’s Draft does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress. </p>
    <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy-20200915/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/74168/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#def-essential">Essential
     Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
@@ -1248,9 +1248,9 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
    <h3 class="heading settled" data-level="3.6" id="api-permission-api-integration"><span class="secno">3.6. </span><span class="content">Permission API Integration</span><a class="self-link" href="#api-permission-api-integration"></a></h3>
    <p>This specification defines a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-default-powerful-feature" id="ref-for-dfn-default-powerful-feature">default powerful feature</a> that is identified by the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-name" id="ref-for-dfn-name">name</a> "<dfn class="dfn-paneled idl-code" data-dfn-type="permission" data-export id="permissiondef-window-management"><code>window-management</code></dfn>".</p>
    <p>The <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[permissions]</a> API provides a uniform way for websites to query the state of their permissions.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> Previously published versions of this document used the permission name <code>"window-placement"</code>. User agents should carefully migrate to the updated permission string: "<code class="idl"><a data-link-type="idl" href="#permissiondef-window-management" id="ref-for-permissiondef-window-management①">window-management</a></code>". See <a href="https://github.com/w3c/window-placement/issues/114">#114</a>.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> Previously published versions of this document used the permission name <code>"window-placement"</code>. User agents should carefully migrate to the updated permission string: "<code class="idl"><a data-link-type="idl" href="#permissiondef-window-management" id="ref-for-permissiondef-window-management①">window-management</a></code>". See <a href="https://github.com/w3c/window-management/issues/114">#114</a>.</p>
    <p class="issue" id="issue-0a4a425c"><a class="self-link" href="#issue-0a4a425c"></a> Add <code class="idl"><a data-link-type="idl" href="#permissiondef-window-management" id="ref-for-permissiondef-window-management②">window-management</a></code> to <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[permissions]</a> registry.</p>
-   <p class="issue" id="issue-dc61ea20"><a class="self-link" href="#issue-dc61ea20"></a> Define behavior of cached objects and method steps when the permission is revoked. (See <a href="https://github.com/w3c/window-placement/issues/80">#80</a>)</p>
+   <p class="issue" id="issue-dc61ea20"><a class="self-link" href="#issue-dc61ea20"></a> Define behavior of cached objects and method steps when the permission is revoked. (See <a href="https://github.com/w3c/window-management/issues/80">#80</a>)</p>
    <h3 class="heading settled" data-level="3.7" id="api-permission-policy-integration"><span class="secno">3.7. </span><span class="content">Permission Policy integration</span><a class="self-link" href="#api-permission-policy-integration"></a></h3>
    <p>This specification defines a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature" id="ref-for-policy-controlled-feature②">policy-controlled feature</a> identified by the string <dfn class="dfn-paneled idl-code" data-dfn-for="PermissionPolicy" data-dfn-type="enum-value" data-export id="dom-permissionpolicy-window-management"><code>"window-management"</code></dfn>, that controls whether <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended⑥">isExtended</a></code>, <code class="idl"><a data-link-type="idl" href="#dom-window-getscreendetails" id="ref-for-dom-window-getscreendetails⑤">getScreenDetails</a></code>, and dependent functionality may be used. The <a data-link-type="dfn" href="https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist" id="ref-for-policy-controlled-feature-default-allowlist">default allowlist</a> for this feature is <code>'self'</code>. See <a data-link-type="biblio" href="#biblio-permissions-policy" title="Permissions Policy">[permissions-policy]</a> and its list of <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features">Experimental Features</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> A <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document" id="ref-for-concept-document">document</a>’s permissions policy determines whether any content in that document is allowed to obtain a meaningful value from <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended⑦">isExtended</a></code>, access <code class="idl"><a data-link-type="idl" href="#screendetails" id="ref-for-screendetails⑧">ScreenDetails</a></code>, or place content on specific screens. If disabled, <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended⑧">isExtended</a></code> will return false, promises returned by <code class="idl"><a data-link-type="idl" href="#dom-window-getscreendetails" id="ref-for-dom-window-getscreendetails⑥">getScreenDetails</a></code> will be rejected, and requests to place content on specific screens will be clamped to the <a data-link-type="dfn" href="#current-screen" id="ref-for-current-screen⑨">current screen</a>.</p>
@@ -1283,13 +1283,13 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
    <p>See the following additional explorations of security considerations:</p>
    <ul>
     <li data-md>
-     <p><a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy.md">W3C Security and Privacy Self-Review Questionnaire for the overall API</a></p>
+     <p><a href="https://github.com/w3c/window-management/blob/main/security_and_privacy.md">W3C Security and Privacy Self-Review Questionnaire for the overall API</a></p>
     <li data-md>
-     <p><a href="https://github.com/w3c/window-placement/blob/main/EXPLAINER.md#privacy--security">"Privacy &amp; Security" in the Explainer for the overall API</a></p>
+     <p><a href="https://github.com/w3c/window-management/blob/main/EXPLAINER.md#privacy--security">"Privacy &amp; Security" in the Explainer for the overall API</a></p>
     <li data-md>
-     <p><a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy_initiating_multi_screen_experiences.md">W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"</a></p>
+     <p><a href="https://github.com/w3c/window-management/blob/main/security_and_privacy_initiating_multi_screen_experiences.md">W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"</a></p>
     <li data-md>
-     <p><a href="https://github.com/w3c/window-placement/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations">"Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"</a></p>
+     <p><a href="https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations">"Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"</a></p>
    </ul>
    <h2 class="heading settled" data-level="5" id="privacy"><span class="secno">5. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
    <p>This specification exposes new information to sites about screens connected to the device, which may pose limited new privacy risks. This additional information increases the <a href="https://w3c.github.io/fingerprinting-guidance/">fingerprinting</a> surface of devices, especially those with atypical screen configurations.</p>
@@ -1307,11 +1307,11 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
    <p>See the following additional explorations of privacy considerations:</p>
    <ul>
     <li data-md>
-     <p><a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy.md">W3C Security and Privacy Self-Review Questionnaire for the overall API</a></p>
+     <p><a href="https://github.com/w3c/window-management/blob/main/security_and_privacy.md">W3C Security and Privacy Self-Review Questionnaire for the overall API</a></p>
     <li data-md>
-     <p><a href="https://github.com/w3c/window-placement/blob/main/EXPLAINER.md#privacy--security">"Privacy &amp; Security" in the Explainer for the overall API</a></p>
+     <p><a href="https://github.com/w3c/window-management/blob/main/EXPLAINER.md#privacy--security">"Privacy &amp; Security" in the Explainer for the overall API</a></p>
     <li data-md>
-     <p><a href="https://github.com/w3c/window-placement/blob/main/security_and_privacy_initiating_multi_screen_experiences.md">W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"</a></p>
+     <p><a href="https://github.com/w3c/window-management/blob/main/security_and_privacy_initiating_multi_screen_experiences.md">W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"</a></p>
    </ul>
    <h2 class="heading settled" data-level="6" id="a11y"><span class="secno">6. </span><span class="content">Accessibility Considerations</span><a class="self-link" href="#a11y"></a></h2>
    <p>This specification enables sites to place content on specific screens, which may pose limited new accessibility risks. The visual presentation, non-visual rendering, and effect of assistive technologies on the content itself is not commonly substantially influenced by the placement of content on one screen or another. Still, existing accessibility risks of programmatic content placement may be exacerbated by the expanded areas over which content may be placed. Existing accessibility considerations regarding <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-default-powerful-feature" id="ref-for-dfn-default-powerful-feature①">default powerful feature</a> permission models, prompting methods, and permission-related UIs, are equally pertinent to this particular specification’s permission.</p>
@@ -2094,7 +2094,7 @@ for helping craft this specification.</p>
    <div class="issue"> Should <a data-link-type="dfn" href="#screen-device-pixel-ratio">device pixel ratio</a> include the <a href="https://drafts.csswg.org/cssom-view-1/#page-zoom">page-zoom</a>? <a class="issue-return" href="#issue-702b01cb" title="Jump to section">↵</a></div>
    <div class="issue"> Make <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen">Screen</a></code> derive from <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a></code> in <a href="https://drafts.csswg.org/cssom-view-1/#the-screen-interface"><cite>CSSOM View</cite> § 4.3 The Screen Interface</a>. <a class="issue-return" href="#issue-288178db" title="Jump to section">↵</a></div>
    <div class="issue"> Add <code class="idl"><a data-link-type="idl" href="#permissiondef-window-management">window-management</a></code> to <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[permissions]</a> registry. <a class="issue-return" href="#issue-0a4a425c" title="Jump to section">↵</a></div>
-   <div class="issue"> Define behavior of cached objects and method steps when the permission is revoked. (See <a href="https://github.com/w3c/window-placement/issues/80">#80</a>) <a class="issue-return" href="#issue-dc61ea20" title="Jump to section">↵</a></div>
+   <div class="issue"> Define behavior of cached objects and method steps when the permission is revoked. (See <a href="https://github.com/w3c/window-management/issues/80">#80</a>) <a class="issue-return" href="#issue-dc61ea20" title="Jump to section">↵</a></div>
    <div class="issue"> Move <code class="idl"><a data-link-type="idl" href="#dom-permissionpolicy-window-management">window-management</a></code> to <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Proposed</a> or <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Standardized</a> feature lists when appropriate. <a class="issue-return" href="#issue-10618e39" title="Jump to section">↵</a></div>
    <div class="issue"> Ensure we didn’t forget anyone! <a class="issue-return" href="#issue-e9601204" title="Jump to section">↵</a></div>
   </div>

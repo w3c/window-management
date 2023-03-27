@@ -2,7 +2,7 @@
 recipe: api-interface
 title: 'ScreenDetails.screens'
 mdn_url: /en-US/docs/Web/API/ScreenDetails/screens
-specifications: https://webscreens.github.io/window-placement/#dom-screendetails-screens
+specifications: https://w3c.github.io/window-management/#dom-screendetails-screens
 browser_compatibility: api.ScreenDetails.screens
 ---
 

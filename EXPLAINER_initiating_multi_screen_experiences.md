@@ -8,7 +8,7 @@ user activation.
 
 ## Background
 
-[Multi-Screen Window Placement](https://github.com/webscreens/window-placement)
+[Multi-Screen Window Placement](https://github.com/w3c/window-management)
 is a new permission-gated web platform API that provides web applications with
 information about the device's connected screens, allows them to open and
 position windows or request fullscreen on any of those screens.
@@ -31,9 +31,9 @@ multi-screen content when the user clicks a button. See
 [Issue 1233970: Window Placement: Pop-ups are blocked when fullscreen is requested](http://crbug.com/1233970).
 
 Specifically, they would like to
-[place fullscreen content on a specific screen](https://webscreens.github.io/window-placement/#usage-overview-place-fullscreen-content-on-a-specific-screen)
+[place fullscreen content on a specific screen](https://w3c.github.io/window-management/#usage-overview-place-fullscreen-content-on-a-specific-screen)
 *and*
-[place a new popup window on a separate specific screen](https://webscreens.github.io/window-placement/#usage-overview-place-windows-on-a-specific-screen),
+[place a new popup window on a separate specific screen](https://w3c.github.io/window-management/#usage-overview-place-windows-on-a-specific-screen),
 but each of these consume the click’s activation signal, and the second script
 request is blocked (unless the user grants popups without gestures via a broad
 ‘Popups and Redirects’ content setting).
@@ -66,9 +66,9 @@ the site has the multi-screen `window-management` permission.
 ## Proposal
 
 Allow sites with the `window-management` permission to
-[place fullscreen content on a specific screen](https://webscreens.github.io/window-placement/#usage-overview-place-fullscreen-content-on-a-specific-screen)
+[place fullscreen content on a specific screen](https://w3c.github.io/window-management/#usage-overview-place-fullscreen-content-on-a-specific-screen)
 *and*
-[place a new popup window on a separate specific screen](https://webscreens.github.io/window-placement/#usage-overview-place-windows-on-a-specific-screen),
+[place a new popup window on a separate specific screen](https://w3c.github.io/window-management/#usage-overview-place-windows-on-a-specific-screen),
 from a single user gesture, when the device has multiple screens and fullscreen
 targets a specific screen.
 
@@ -99,13 +99,13 @@ precedent: requestFullscreen()
 on user generated orientation changes.
 
 Note: the `window-management` permission is requested earlier, as needed, by
-[`Window.getScreenDetails()`](https://w3c.github.io/window-placement/#dom-window-getscreendetails),
+[`Window.getScreenDetails()`](https://w3c.github.io/window-management/#dom-window-getscreendetails),
 before scripts can request fullscreen (or open a popup) on a specific screen.
 So it is expected that scripts making these requests already have permission.
 
 ### Example Code
 
-This feature can be used after the site successfully [requests detailed screen information](https://www.w3.org/TR/window-placement/#usage-overview-screen-details) by requesting fullscreen on a specific screen of a multi-screen device, and then opening a popup window on another screen of the device, in a single event listener:
+This feature can be used after the site successfully [requests detailed screen information](https://www.w3.org/TR/window-management/#usage-overview-screen-details) by requesting fullscreen on a specific screen of a multi-screen device, and then opening a popup window on another screen of the device, in a single event listener:
 
 ```js
 initiateMultiScreenExperienceButton.addEventListener('click', async () => {
@@ -137,9 +137,9 @@ device, checked and consumed in the rules for choosing a browsing context, when
 the document requests openining a new popup window.
 
 The Multi-Screen Window Placement Working Draft Spec incorporates these changes:
-- [Usage Overview: 1.2.6. Initiate multi-screen experiences](https://www.w3.org/TR/window-placement/#usage-overview-initiate-multi-screen-experiences)
-- [3.2.3. Window.open() method definition changes](https://www.w3.org/TR/window-placement/#api-window-open-method-definition-changes)
-- [3.5.1. Element.requestFullscreen() method definition changes](https://www.w3.org/TR/window-placement/#api-element-requestfullscreen-method-definition-changes)
+- [Usage Overview: 1.2.6. Initiate multi-screen experiences](https://www.w3.org/TR/window-management/#usage-overview-initiate-multi-screen-experiences)
+- [3.2.3. Window.open() method definition changes](https://www.w3.org/TR/window-management/#api-window-open-method-definition-changes)
+- [3.5.1. Element.requestFullscreen() method definition changes](https://www.w3.org/TR/window-management/#api-element-requestfullscreen-method-definition-changes)
 
 ### Open questions
 
@@ -163,17 +163,17 @@ signal, and the user agent’s configuration.
 
 ## Security Considerations
 
-This feature enables sites to perform two facets of the Multi-Screen Window Placement API with a single user activation; i.e. [`1.2.4. Place fullscreen content on a specific screen`](https://www.w3.org/TR/window-placement/#usage-overview-place-fullscreen-content-on-a-specific-screen) and [`1.2.5. Place windows on a specific screen`](https://www.w3.org/TR/window-placement/#usage-overview-place-windows-on-a-specific-screen) are combined to [`1.2.6. Initiate multi-screen experiences`](https://www.w3.org/TR/window-placement/#usage-overview-initiate-multi-screen-experiences). This may exacerbate some documented Multi-Screen Window Placement [Security Considerations](https://www.w3.org/TR/window-placement/#security).
+This feature enables sites to perform two facets of the Multi-Screen Window Placement API with a single user activation; i.e. [`1.2.4. Place fullscreen content on a specific screen`](https://www.w3.org/TR/window-management/#usage-overview-place-fullscreen-content-on-a-specific-screen) and [`1.2.5. Place windows on a specific screen`](https://www.w3.org/TR/window-management/#usage-overview-place-windows-on-a-specific-screen) are combined to [`1.2.6. Initiate multi-screen experiences`](https://www.w3.org/TR/window-management/#usage-overview-initiate-multi-screen-experiences). This may exacerbate some documented Multi-Screen Window Placement [Security Considerations](https://www.w3.org/TR/window-management/#security).
 
-A notable security consideration is the placement of the popup window in front of, or behind, the fullscreen window, which could be abused by malicious sites to place content in a deceptive or surreptitious fashion. This was a foremost consideration during development of the current [proposal](https://github.com/w3c/window-placement/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#proposal), which documents the inherent and added mitigations against accidental misuse or abuse.
+A notable security consideration is the placement of the popup window in front of, or behind, the fullscreen window, which could be abused by malicious sites to place content in a deceptive or surreptitious fashion. This was a foremost consideration during development of the current [proposal](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#proposal), which documents the inherent and added mitigations against accidental misuse or abuse.
 
-Another notable concern is that the user agent's fullscreen message (e.g. Firefox's "<origin> is now full screen [Exit Full Screen (Esc)]" or Chrome's "Press [Esc] to exit full screen") might go unnoticed when the site first [places fullscreen content on a less keenly observed screen](https://www.w3.org/TR/window-placement/#usage-overview-place-fullscreen-content-on-a-specific-screen), especially if the site simultaneously [places a companion popup window on a more keenly observed screen](https://www.w3.org/TR/window-placement/#usage-overview-place-windows-on-a-specific-screen) with the same transient user activation signal. This exacerbates the ability for a malicious site to [spoof the OS, browser, or other sites for phishing attacks](https://www.w3.org/TR/window-placement/#security:~:text=spoof%20the%20OS%2C%20browser%2C%20or%20other%20sites%20for%20phishing%20attacks). To mitigate this, the user agent could show a similar message when the fullscreen window seems to regain the user's attention; i.e. when it receives an input event (cursor hover, touch down, keyboard event), when the window is activated (or focused or becomes key), when the companion popup window is closed, and/or other events (perhaps only after some time has passed since the window entered fullscreen on that display).
+Another notable concern is that the user agent's fullscreen message (e.g. Firefox's "\<origin\> is now full screen [Exit Full Screen (Esc)]" or Chrome's "Press [Esc] to exit full screen") might go unnoticed when the site first [places fullscreen content on a less keenly observed screen](https://www.w3.org/TR/window-management/#usage-overview-place-fullscreen-content-on-a-specific-screen), especially if the site simultaneously [places a companion popup window on a more keenly observed screen](https://www.w3.org/TR/window-management/#usage-overview-place-windows-on-a-specific-screen) with the same transient user activation signal. This exacerbates the ability for a malicious site to [spoof the OS, browser, or other sites for phishing attacks](https://www.w3.org/TR/window-management/#security:~:text=spoof%20the%20OS%2C%20browser%2C%20or%20other%20sites%20for%20phishing%20attacks). To mitigate this, the user agent could show a similar message when the fullscreen window seems to regain the user's attention; i.e. when it receives an input event (cursor hover, touch down, keyboard event), when the window is activated (or focused or becomes key), when the companion popup window is closed, and/or other events (perhaps only after some time has passed since the window entered fullscreen on that display).
 
 User agents already offer controls to permit any number of script-initiated popups without any transient user activation requirement whatsoever (e.g. Chrome's "chrome://settings/content/popups" and Firefox's "Block pop-up windows" setting). This proposal fulfills web developer requirements to initiate multi-screen experiences, without asking users to grant those existing overly-permissive controls, by introducing a tightly scoped capability enhancement.
 
 ## Privacy Considerations
 
-This feature does not expose any information to sites, and there are no privacy considerations to note beyond those already documented in the Multi-Screen Window Placement [Privacy Considerations](https://www.w3.org/TR/window-placement/#privacy) section.
+This feature does not expose any information to sites, and there are no privacy considerations to note beyond those already documented in the Multi-Screen Window Placement [Privacy Considerations](https://www.w3.org/TR/window-management/#privacy) section.
 
 ## Alternatives Considered
 

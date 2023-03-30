@@ -1,15 +1,15 @@
 ## Window Placement Spec & Permission Rename
 ## Background
-The Multi-Screen Window Placement [spec](https://w3c.github.io/window-placement/) has primarily utilized the terminology "Window Placement" ever since it was initially drafted in 2020. This includes the title of the spec, the spec short name (`window-placement`), and user-facing API components like [permission](https://w3c.github.io/window-placement/#api-permission-api-integration) and permission [policy](https://w3c.github.io/window-placement/#api-permission-policy-integration) descriptors which gate the API.
+The Multi-Screen Window Placement [spec](https://w3c.github.io/window-management/) has primarily utilized the terminology "Window Placement" ever since it was initially drafted in 2020. This includes the title of the spec, the spec short name (`window-placement`), and user-facing API components like [permission](https://w3c.github.io/window-management/#api-permission-api-integration) and permission [policy](https://w3c.github.io/window-management/#api-permission-policy-integration) descriptors which gate the API.
 
 ## Problem
-The existing "Window Placement" terminology only describes one specific component of the API that allows web applications to [place browser windows on target displays](https://w3c.github.io/window-placement/#api-window-attribute-and-method-definition-changes). It doesn't encompass the entire surface of the API described in the spec, nor will it adequately describe potential future additions to the API.
+The existing "Window Placement" terminology only describes one specific component of the API that allows web applications to [place browser windows on target displays](https://w3c.github.io/window-management/#api-window-attribute-and-method-definition-changes). It doesn't encompass the entire surface of the API described in the spec, nor will it adequately describe potential future additions to the API.
 
 ## Goals
 Use more generalized wording that encapsulates more of the current API functionality and provides better futureproofing of the API. Specifically, rename all instances of "Window Placement" terminology with "Window Management". This includes:
-*   Repository names and [URLs](https://github.com/w3c/window-placement)
-*   [Spec](https://w3c.github.io/window-placement) titles, short names and URLs
-*   Spec definitions: [permission](https://w3c.github.io/window-placement/#api-permission-api-integration) and permission [policy](https://w3c.github.io/window-placement/#api-permission-policy-integration) descriptors
+*   Repository names and [URLs](https://github.com/w3c/window-management)
+*   [Spec](https://w3c.github.io/window-management/) titles, short names and URLs
+*   Spec definitions: [permission](https://w3c.github.io/window-management/#api-permission-api-integration) and permission [policy](https://w3c.github.io/window-management/#api-permission-policy-integration) descriptors
     *   Specifically "`window-placement`" will become "`window-management`"
 *   Other spec text and descriptions
 *   [Web Platform Tests](https://github.com/web-platform-tests/wpt/tree/master/window-placement) and resulting [URLs](https://wpt.live/window-placement/)
@@ -54,7 +54,7 @@ Permission-Policy: window-management 'self'
 ```
 
 ## Migration Plan
-More details on the migration efforts shall be posted and tracked in [Issue #114](https://github.com/w3c/window-placement/issues/114). The following sections provide a high level overview of the migration plan.
+More details on the migration efforts shall be posted and tracked in [Issue #114](https://github.com/w3c/window-management/issues/114). The following sections provide a high level overview of the migration plan.
 
 
 ### User Agent API Migration

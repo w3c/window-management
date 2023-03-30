@@ -1,14 +1,14 @@
 <pre class=metadata>
 Title: Multi-Screen Window Placement
-Shortname: window-placement
+Shortname: window-management
 Abstract: This document defines a web platform API that allows script to query the device for information about its screens, and place content on specific screens.
 Status: ED
-TR: https://www.w3.org/TR/window-placement/
-URL: https://w3c.github.io/window-placement/
+TR: https://www.w3.org/TR/window-management/
+URL: https://w3c.github.io/window-management/
 Level: None
 Editor: Joshua Bell, Google Inc. https://www.google.com/, jsbell@google.com, w3cid 61302
 Editor: Mike Wasserman, Google Inc. https://www.google.com/, msw@google.com, w3cid 116970
-Repository: w3c/window-placement
+Repository: w3c/window-management
 Group: secondscreenwg
 !Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/window-placement">https://github.com/web-platform-tests/wpt/tree/master/window-placement</a>
 !Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/screen-details">https://github.com/web-platform-tests/wpt/tree/master/screen-details</a>
@@ -134,7 +134,7 @@ if (window.screen.isExtended) {
 ### Detect the presence of multiple screens ### {#usage-overview-screen-extended}
 <!-- ====================================================================== -->
 
-A principal question for supporting multi-screen experiences is whether the device has multiple screens that may be used when placing content. These screens may be built-in to the device (like a laptop display panel), attached to the device by wire (like a computer and monitor attached by an HDMI cable), connected to the device by other means (like Mac and iPad Sidecar functionality), or through display device virtualization. This is provided by the {{Screen/isExtended}} boolean, exposed to secure contexts without a permission prompt.
+A principal question for supporting multi-screen experiences is whether the device has multiple screens that can be used when placing content. These screens can be built-in to the device (like a laptop display panel), attached to the device by wire (like a computer and monitor attached by an HDMI cable), connected to the device by other means (like Mac and iPad Sidecar functionality), or through display device virtualization. This is provided by the {{Screen/isExtended}} boolean, exposed to secure contexts without a permission prompt.
 
 ```js
 if (screen.isExtended) {
@@ -294,7 +294,7 @@ A [=/screen=] has <dfn>pixels</dfn>, which are the smallest screen components th
 
 Note: On a liquid-crystal display (LCD), each pixel is made up of three components. Each component is a (red, green, blue) light with variable intensity. Reasoning about pixel components (subpixel rendering) is out of scope for this specification.
 
-Note: Some screens can be configured to display content at a resolution that differs from the physical hardware's inherent composition; e.g. a monitor with a hardware resolution of 2560×1440 may be configured by the device to operate with a display resolution of 1920×1080.
+Note: Some screens can be configured to display content at a resolution that differs from the physical hardware's inherent composition; e.g. a monitor with a hardware resolution of 2560×1440 can be configured by the device to operate with a display resolution of 1920×1080.
 
 A [=screen/pixel=] has a <dfn for="pixel">color depth</dfn>, which is the number of bits used to represent the colors it can display.
 
@@ -382,9 +382,9 @@ Each [=/screen=] may be designated as <dfn>internal</dfn> or <dfn>external</dfn>
 
 Note: As an example, a desktop computer might display its visual output on an [=/external=] screen connected by an HDMI cable. The HDMI cable can be connected or disconnected while the computer is in use, and the computer will adapt its visual environment to that hardware configuration change.
 
-[=/Internal=] screens are usually attached to a device at manufacturing time. [=/Internal=] screens are not intended to be detached by users. However an [=/internal=] [=/screen=] may still be enabled or disabled while the user agent is running.
+[=/Internal=] screens are usually attached to a device at manufacturing time. [=/Internal=] screens are not intended to be detached by users. However an [=/internal=] [=/screen=] can still be enabled or disabled while the user agent is running.
 
-Note: As an example, a laptop might disable its [=/internal=] screen and input device when the lid is closed. The laptop may still be used in this configuration with an [=/external=] screen and input device. The disabled [=/internal=] screen may not be reported as a [=/screen=] used by the device while the lid is closed.
+Note: As an example, a laptop might disable its [=/internal=] screen and input device when the lid is closed. The laptop can still be used in this configuration with an [=/external=] screen and input device. The disabled [=/internal=] screen can not be reported as a [=/screen=] used by the device while the lid is closed.
 
 <!-- ====================================================================== -->
 ## Current screen ## {#concept-current-screen}
@@ -454,6 +454,8 @@ Issue: Make {{Screen}} derive from {{EventTarget}} in [[CSSOM-VIEW-1#the-screen-
 
 The <dfn attribute for=Screen>isExtended</dfn> getter steps are:
 
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", return false and abort these steps.
+
 1. Return true if the device has more than one [=/screen=], and false otherwise.
 
 </div>
@@ -462,7 +464,7 @@ The <dfn attribute for=Screen>isExtended</dfn> getter steps are:
 ### {{Screen/onchange}} attribute ### {#api-screen-onchange-attribute}
 <!-- ====================================================================== -->
 
-The <dfn attribute for=Screen>onchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=Screen>`change`</a>.
+The <dfn attribute for=Screen>onchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is {{Screen/change!!event}}.
 
 When any [=screen/basic observable property=] of a {{Window}} |window|'s [=/current screen=] changes, [=/queue a global task=] on the [=/relevant global object=] of |window| using the [=/window placement task source=] to [=/fire an event=] named <dfn event for=Screen>`change`</dfn> at the {{Screen}} object referenced by |window|'s {{Window/screen}} attribute.
 
@@ -500,17 +502,19 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 1. Let |promise| be [=/a new promise=].
 
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
 1. Run the following steps [=/in parallel=]:
 
-    1. Let |permissionState| be [=/request permission to use=] `"window-management"`.
+    1. Let |permissionState| be [=/request permission to use=] "{{window-management}}".
 
-    1. If |permissionState| is "{{PermissionState/denied}}" then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
 
-    1. If |permissionState| is "{{PermissionState/prompt}}" and the [=/relevant global object=] of [=/this=] does not have [=/transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+        1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
-    1. If [=/this=].{{Window/[[screenDetails]]}} is `undefined`, then set [=/this=].{{Window/[[screenDetails]]}} to a new {{ScreenDetails}} object.
+        1. If [=/this=].{{Window/[[screenDetails]]}} is `undefined`, then set [=/this=].{{Window/[[screenDetails]]}} to a new {{ScreenDetails}} object.
 
-    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to [=/resolve=] |promise| with [=/this=].{{Window/[[screenDetails]]}}.
+        1. [=/Resolve=] |promise| with [=/this=].{{Window/[[screenDetails]]}}.
 
 1. Return |promise|.
 
@@ -608,13 +612,13 @@ The <dfn attribute for=ScreenDetails>currentScreen</dfn> getter steps are to ret
 
 Note: Which exact {{ScreenDetailed}} object in {{ScreenDetails/screens}} represents the [=/current screen=] of a {{Window}} is assumed to be defined by operating systems and user agents. This corresponds with {{Window}}.{{Window/screen}}, the canonical screen for a given window, for example the screen with the largest area intersecting the window.
 
-Note: {{ScreenDetails/currentScreen}} is guaranteed to be `===` comparable with one of the entries in {{ScreenDetails/screens}}, to facilitate such comparisons, e.g. `screenDetails.screens.find(s => s !== screenDetails.currentScreen);`. That precludes {{ScreenDetails/currentScreen}} from being marked `[SameObject]`. Relatedly, <a event for=ScreenDetailed>`change`</a> event listeners added to {{ScreenDetails/currentScreen}} will only be notified of changes for that specific [=/screen=], while <a event for=ScreenDetails>`currentscreenchange`</a> event listeners will be notified of changes for whichever [=/screen=] happens to be the window's [=/current screen=], i.e. after the window moves from one [=/screen=] to another.
+Note: {{ScreenDetails/currentScreen}} is guaranteed to be `===` comparable with one of the entries in {{ScreenDetails/screens}}, to facilitate such comparisons, e.g. `screenDetails.screens.find(s => s !== screenDetails.currentScreen);`. That precludes {{ScreenDetails/currentScreen}} from being marked `[SameObject]`. Relatedly, {{ScreenDetailed/change!!event}} event listeners added to {{ScreenDetails/currentScreen}} will only be notified of changes for that specific [=/screen=], while {{ScreenDetails/currentscreenchange!!event}} event listeners will be notified of changes for whichever [=/screen=] happens to be the window's [=/current screen=], i.e. after the window moves from one [=/screen=] to another.
 
 <!-- ====================================================================== -->
 ### {{ScreenDetails/onscreenschange}} attribute ### {#api-screendetails-onscreenschange-attribute}
 <!-- ====================================================================== -->
 
-The <dfn attribute for=ScreenDetails>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`screenschange`</a>.
+The <dfn attribute for=ScreenDetails>onscreenschange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is {{ScreenDetails/screenschange!!event}}.
 
 When the set of {{ScreenDetails/screens}} of a {{ScreenDetails}} object |screenDetails| changes, [=/queue a global task=] on the [=/relevant global object=] of |screenDetails| using the [=/window placement task source=] to [=/fire an event=] named <dfn event for=ScreenDetails>`screenschange`</dfn> at |screenDetails|.
 
@@ -622,7 +626,7 @@ When the set of {{ScreenDetails/screens}} of a {{ScreenDetails}} object |screenD
 ### {{ScreenDetails/oncurrentscreenchange}} attribute ### {#api-screendetails-oncurrentscreenchange-attribute}
 <!-- ====================================================================== -->
 
-The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is <a event for=ScreenDetails>`currentscreenchange`</a>.
+The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is {{ScreenDetails/currentscreenchange!!event}}.
 
 When the [=/current screen=] of a {{Window}} |window| changes from one [=/screen=] to another (e.g. the {{Window}} has been moved to a different display), or when any [=screen/basic observable property=] or [=screen/advanced observable property=] of the [=/current screen=] of |window| changes, [=/queue a global task=] on the [=/relevant global object=] of |window| using the [=/window placement task source=] to [=/fire an event=] named <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{ScreenDetails}} object stored in |window|'s internal slot {{Window/[[screenDetails]]}}.
 
@@ -704,7 +708,7 @@ When any [=screen/basic observable property=] or [=screen/advanced observable pr
 
 <div class="domintro note">
 
-    : |fullscreenOptions| . {{FullscreenOptions/screen}}
+    : <var ignore>fullscreenOptions</var> . {{FullscreenOptions/screen}}
     :: Specifies a [=/screen=] for element fullscreen requests.
 
 </div>
@@ -722,7 +726,7 @@ The optional {{FullscreenOptions}} <dfn dict-member for=FullscreenOptions>screen
 <!-- ====================================================================== -->
 
 The {{Element/requestFullscreen|Element.requestFullscreen()}} method steps are updated to optionally:
-1. Take `options`["{{FullscreenOptions/screen}}"] into account when moving and resizing  `pendingDoc`’s [=/top-level browsing context=]’s [=/active document=]’s viewport. The viewport may be moved to the specified [=/screen=] as part of this modified method step.
+1. Take `options`["{{FullscreenOptions/screen}}"] into account when moving and resizing  `pendingDoc`’s [=/top-level browsing context=]’s [=navigable/active document=]’s viewport. The viewport may be moved to the specified [=/screen=] as part of this modified method step.
 1. Set the [=/this=].{{Window/[[targetScreenFullscreen]]}} internal slot to the [=/current high resolution time=] if `options`["{{FullscreenOptions/screen}}"] specifies a recognized {{ScreenDetailed}} object with a value of true for {{Screen/isExtended}}.
 
 <!-- ====================================================================== -->
@@ -733,21 +737,21 @@ This specification defines a [=/default powerful feature=] that is identified by
 
 The [[permissions]] API provides a uniform way for websites to query the state of their permissions.
 
-Note: Previously published versions of this document used the permission name "<code>window-placement</code>". User agents should carefully migrate to the updated permission string: "{{window-management}}". See [#114](https://github.com/w3c/window-placement/issues/114).
+Note: Previously published versions of this document used the permission name `"window-placement"`. User agents should carefully migrate to the updated permission string: "{{window-management}}". See [#114](https://github.com/w3c/window-management/issues/114).
 
 Issue: Add {{window-management}} to [[permissions]] registry.
 
-Issue: Define behavior of cached objects and method steps when the permission is revoked. (See [#80](https://github.com/w3c/window-placement/issues/80))
+Issue: Define behavior of cached objects and method steps when the permission is revoked. (See [#80](https://github.com/w3c/window-management/issues/80))
 
 <!-- ====================================================================== -->
 ## Permission Policy integration ## {#api-permission-policy-integration}
 <!-- ====================================================================== -->
 
-This specification defines a [=/policy-controlled feature=] identified by the string "<dfn for="permission-policy">window-management</dfn>". Its [=/default allowlist=] is `"self"`. See [[permissions-policy]] and its list of [Experimental Features](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features).
+This specification defines a [=/policy-controlled feature=] identified by the string <dfn for=PermissionPolicy enum-value>"window-management"</dfn>, that controls whether {{Screen/isExtended}}, {{Window/getScreenDetails}}, and dependent functionality may be used. The [=policy-controlled feature/default allowlist=] for this feature is `'self'`. See [[permissions-policy]] and its list of [Experimental Features](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#experimental-features).
 
-Note: A [=/document=]’s permissions policy determines whether any content in that document is allowed to obtain {{ScreenDetails}} or place content on specific screens. If disabled, promises returned by {{Window/getScreenDetails}} will be rejected, and requests to place content on specific screens will be clamped to the [=/current screen=].
+Note: A [=/document=]’s permissions policy determines whether any content in that document is allowed to obtain a meaningful value from {{Screen/isExtended}}, access {{ScreenDetails}}, or place content on specific screens. If disabled, {{Screen/isExtended}} will return false, promises returned by {{Window/getScreenDetails}} will be rejected, and requests to place content on specific screens will be clamped to the [=/current screen=].
 
-Issue: Move [=permission-policy/window-management=] to [Proposed](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) or [Standardized](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) feature lists when appropriate.
+Issue: Move {{PermissionPolicy/window-management}} to [Proposed](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) or [Standardized](https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features) feature lists when appropriate.
 
 <!-- ====================================================================== -->
 # Security Considerations # {#security}
@@ -757,20 +761,23 @@ This specification enables sites to place content on specific screens, which may
 1. Sites may attempt to prominently display sensitive content on unexpected screens
 1. Sites may attempt to surreptitiously display undesirable content on less conspicuous screens, for example:
   1. Sites may attempt to spoof the OS, browser, or other sites for phishing attacks, by drawing the user's attention to a particular screen, and use interaction signals there to show deceptive content on another screen that is less closely observed
-1. Sites may attempt to otherwise place content on specific screens to act in deceptive, abusive, or annoying manners 
+1. Sites may attempt to otherwise place content on specific screens to act in deceptive, abusive, or annoying manners
 
-To help mitigate such risks, cross-screen placement capabilities require explicit user permission (where prompting is only possible with transient user activation), are restricted to secure contexts, and are subject to permission policy. If any of these requirements are not met, placement requests may be denied or clamped to the [=/current screen=], matching pre-existing behavior of some user agents. User agents can generally measure and otherwise intervene when sites request any new capabilities.
+To help mitigate such risks, cross-screen placement capabilities require express permission in secure contexts, and are subject to [[permissions-policy]], which prevent third-party access by default.
 
-To enable this new functionality in a nested browsing context, it needs to be specifically allowed via [[permissions-policy]], either through an appropriate declaration in the `allow` attribute of the HTML `iframe` element, or through a `Permissions-Policy` HTTP header delivered with the document through which it is nested. This prevents e.g. content from third parties to place content on specific screens without explicit permission.
+User agents can detect cross-screen placement requests, and intervene to protect users from potential abuse. For example, user agents may present prominent security surfaces when sites place content on another screen, or when windows gain user attention after cross-screen placement. Additionally, cross-screen placement requests may be denied or clamped to the [=/current screen=], matching pre-existing behavior of some user agents.
 
-Other points to note: 
+Other points to note:
 - Some user agents already do not constrain window placement requests to the [=/current screen=]; they interpret {{Window/open()}} and {{Window/moveTo()}} coordinates as relative to the [=/multi-screen origin=], and honor requests to place windows on screens other than the [=/current screen=].
 - Transient user activation is typically already required for {{Element/requestFullscreen()}} and {{Window/open()}}, but not for {{Window/moveTo()}}, {{Window/moveBy()}}, {{Window/resizeTo()}}, nor {{Window/resizeBy()}}.
 - Placing content on a screen other than the [=/current screen=] is unlikely to create additional clickjacking risk for users, since the user's cursor or finger is likely to be co-located with the [=/current screen=], not on a separate screen.
-- Gating pre-existing placement capabilities on the specified permission may be reasonable.
-- User agents may choose to call user attention to window placement operations targeting specific screens. For example, requests to place fullscreen content or windows on a screen that does not contain the currently focused window may be cause for showing prominent security surfaces on all screens, or the screen with the active window, akin to pre-existing indicators shown by user agents when sites enter fullscreen.
+- Gating legacy placement capabilities on the specified permission may be feasible.
 
-See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md) for additional explorations of security concerns.
+See the following additional explorations of security considerations:
+- [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-management/blob/main/security_and_privacy.md)
+- ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-management/blob/main/EXPLAINER.md#privacy--security)
+- [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
+- ["Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations)
 
 <!-- ====================================================================== -->
 # Privacy Considerations # {#privacy}
@@ -778,7 +785,7 @@ See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/
 
 This specification exposes new information to sites about screens connected to the device, which may pose limited new privacy risks. This additional information increases the [fingerprinting](https://w3c.github.io/fingerprinting-guidance/) surface of devices, especially those with atypical screen configurations.
 
-To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, restricted to secure contexts, most new information requires explicit user permission (where prompting is only possible with transient user activation), and permission-gated information is also subject to permission policy. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.
+To help mitigate such risks, the new information is reduced to the minimum needed for common placement use cases, most access requires express permission in secure contexts, and is subject to [[permissions-policy]], which prevents third-party access by default. The list of screens exposed has a defined order to reduce interoperability issues and mitigate fingerprinting. User agents can generally measure and otherwise intervene when sites request any new information.
 
 The `Screen.isExtended` boolean is exposed without explicit permission checks, as this minimal single bit of information supports some critical features for which a permission prompt would be obtrusive (e.g. show/hide multi-screen UI entry points like “Show on another screen”), and helps avoid unnecessarily prompting single-screen users for inapplicable information and capabilities. This generally follows a TAG design principle for device enumeration (see [[DESIGN-PRINCIPLES#device-enumeration]]).
 
@@ -788,10 +795,15 @@ The new `Screen.onchange` events pose a slight risk by making [ephemeral fingerp
 
 Alternative API shapes giving less power to sites were considered, but offer poor experiences for users and developers (e.g. prompting users to pick a screen, requiring declarative screen rankings from developers). Few, if any, alternatives exist for non-fullscreen placement of app windows on any connected screen. The specified API shape seems like the most natural extension of existing APIs to support a more complete multi-screen environment. Future work may include ways to query more limited multi-screen information, to let sites voluntarily minimize their information exposure.
 
-Other points to note:
-- Gating pre-existing information exposure on the specified permission may be reasonable.
+The specified API design enables user agents to selectively expose screens using novel access models, for example limiting screen information and placement capabilities pertaining to screens indicated by the user.
 
-See [security_and_privacy.md](https://github.com/w3c/window-placement/blob/main/security_and_privacy.md) for additional explorations of privacy concerns.
+Other points to note:
+- Gating legacy screen and window information on the specified permission may be feasible.
+
+See the following additional explorations of privacy considerations:
+- [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-management/blob/main/security_and_privacy.md)
+- ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-management/blob/main/EXPLAINER.md#privacy--security)
+- [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
 
 <!-- ====================================================================== -->
 # Accessibility Considerations # {#a11y}

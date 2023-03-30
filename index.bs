@@ -1,5 +1,5 @@
 <pre class=metadata>
-Title: Multi-Screen Window Placement
+Title: Window Management
 Shortname: window-management
 Abstract: This document defines a web platform API that allows script to query the device for information about its screens, and place content on specific screens.
 Status: ED

@@ -245,7 +245,7 @@ initiateMultiScreenExperienceButton.addEventListener('click', async () => {
 # Concepts # {#concepts}
 <!-- ====================================================================== -->
 
-Concepts in this specification build upon those in the [CSSOM-View-1 Working Draft](https://www.w3.org/TR/cssom-view-1), and the [CSSOM-View-1 Editor's Draft](https://drafts.csswg.org/cssom-view/), [[HTML]], and [[Fullscreen]].
+Concepts in this specification build upon those in the [CSSOM-View-1 Working Draft](https://www.w3.org/TR/cssom-view-1/), and the [CSSOM-View-1 Editor's Draft](https://drafts.csswg.org/cssom-view/), [[HTML]], and [[Fullscreen]].
 
 <!-- ====================================================================== -->
 ## Screen ## {#concept-screen}
@@ -849,4 +849,4 @@ Victor Costan
 
 Issue: Ensure we didn't forget anyone!
 
-Special thanks to Tab Atkins, Jr. for creating and maintaining [Bikeshed](https://github.com/tabatkins/bikeshed), the specification authoring tool used to create this document, and for his general authoring advice.
+Special thanks to Tab Atkins, Jr. for creating and maintaining [Bikeshed](https://github.com/speced/bikeshed), the specification authoring tool used to create this document, and for his general authoring advice.

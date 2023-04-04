@@ -7,7 +7,7 @@ The answers pertain to the [Initiating Multi-Screen Experiences](https://github.
 [Security Considerations](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations) and 
 [Privacy Considerations](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#privacy-considerations) sections.
 
-See [security_and_privacy.md](https://github.com/w3c/window-management/blob/main/security_and_privacy.md) for answers pertaining to the underlying [Multi-Screen Window Placement API](https://www.w3.org/TR/window-management/).
+See [security_and_privacy.md](https://github.com/w3c/window-management/blob/main/security_and_privacy.md) for answers pertaining to the underlying [Window Management API](https://www.w3.org/TR/window-management/).
 
 ## 2.1 What information might this feature expose to Web sites or other parties, and for what purposes is that exposure necessary?
 This feature enhancement does not expose any additional information; see the base API's [corresponding answer](https://github.com/w3c/window-management/blob/main/security_and_privacy.md#21-what-information-might-this-feature-expose-to-web-sites-or-other-parties-and-for-what-purposes-is-that-exposure-necessary).

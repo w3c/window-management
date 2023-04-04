@@ -1,10 +1,12 @@
 <img src="https://w3c.github.io/window-management/logo.svg" height=100 align=right>
 
-# Multi-Screen Window Placement on the Web
+# Window Management on the Web
 
-This repository considers web platform functionality for multi-screen devices.
-The goals here are to explore background, use cases, and proposals for extending
-window placement capabilities of web applications on multi-screen devices.
+This repository considers web platform functionality to allow scripts to query
+the device for information about its screens, and place content on specific
+screens. The goals here are to explore background, use cases, and proposals for
+extending window placement capabilities of web applications on multi-screen
+devices.
 
 See the [Editor’s Draft](https://w3c.github.io/window-management/) of the proposed specification.
 The [Explainer](https://github.com/w3c/window-management/blob/main/EXPLAINER.md),

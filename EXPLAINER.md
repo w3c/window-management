@@ -1,4 +1,4 @@
-# Multi-Screen Window Placement on the Web
+# Window Management on the Web
 
 ## Introduction
 
@@ -86,7 +86,7 @@ See explorations of alternative and supplemental proposals in
 
 ## Support requests to show elements fullscreen on a specific screen
 
-One of the primary use cases for Window Placement is showing fullscreen content
+One of the primary use cases for Window Management is showing fullscreen content
 on the optimal screen for the given use case. An example of this is presenting a
 slideshow or other media on an external display when the web application window
 controlling the presentation is on the 'internal' display built into a laptop.
@@ -554,7 +554,7 @@ navigator.permissions.query({name:'window-management'}).then(function(status) {
 });
 ```
 
-Window Placement is also a
+Window Management is also a
 [policy-controlled feature](https://w3c.github.io/webappsec-permissions-policy/)
 which is disabled by default for embedded cross-origin pages.
 If a cross-origin page wants an embedded page to have access to this API,

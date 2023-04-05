@@ -1,8 +1,8 @@
-# How to use the Multi-Screen Window Placement API
+# How to use the Window Management API
 
-The Multi-Screen Window Placement API is currently available in Chrome:
-- Chrome 100+ enables Multi-Screen Window Placement APIs by default.
-- Chrome 93+ supports Multi-Screen Window Placement APIs with either one of these flags enabled:
+The Window Management API is currently available in Chrome:
+- Chrome 100+ enables Window Management APIs by default.
+- Chrome 93+ supports Window Management APIs with either one of these flags enabled:
   - chrome://flags#enable-experimental-web-platform-features
   - `chrome --enable-blink-features=WindowPlacement`
 
@@ -16,7 +16,7 @@ Here is an example of how to use the API:
 async function main() {
   // Run feature detection.
   if (!('getScreenDetails' in window)) {
-    console.log('The Multi-Screen Window Placement API is not supported.');
+    console.log('The Window Manamgenet API is not supported.');
     return;
   }
   // Detect the presence of extended screen areas.

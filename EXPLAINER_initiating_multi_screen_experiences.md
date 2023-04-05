@@ -136,7 +136,7 @@ fullscreen request is made that targets a specific screen of a multi-screen
 device, checked and consumed in the rules for choosing a browsing context, when
 the document requests openining a new popup window.
 
-The Multi-Screen Window Placement Working Draft Spec incorporates these changes:
+The Window Management Working Draft Spec incorporates these changes:
 - [Usage Overview: 1.2.6. Initiate multi-screen experiences](https://www.w3.org/TR/window-management/#usage-overview-initiate-multi-screen-experiences)
 - [3.2.3. Window.open() method definition changes](https://www.w3.org/TR/window-management/#api-window-open-method-definition-changes)
 - [3.5.1. Element.requestFullscreen() method definition changes](https://www.w3.org/TR/window-management/#api-element-requestfullscreen-method-definition-changes)
@@ -163,7 +163,7 @@ signal, and the user agent’s configuration.
 
 ## Security Considerations
 
-This feature enables sites to perform two facets of the Multi-Screen Window Placement API with a single user activation; i.e. [`1.2.4. Place fullscreen content on a specific screen`](https://www.w3.org/TR/window-management/#usage-overview-place-fullscreen-content-on-a-specific-screen) and [`1.2.5. Place windows on a specific screen`](https://www.w3.org/TR/window-management/#usage-overview-place-windows-on-a-specific-screen) are combined to [`1.2.6. Initiate multi-screen experiences`](https://www.w3.org/TR/window-management/#usage-overview-initiate-multi-screen-experiences). This may exacerbate some documented Multi-Screen Window Placement [Security Considerations](https://www.w3.org/TR/window-management/#security).
+This feature enables sites to perform two facets of the Window Management API with a single user activation; i.e. [`1.2.4. Place fullscreen content on a specific screen`](https://www.w3.org/TR/window-management/#usage-overview-place-fullscreen-content-on-a-specific-screen) and [`1.2.5. Place windows on a specific screen`](https://www.w3.org/TR/window-management/#usage-overview-place-windows-on-a-specific-screen) are combined to [`1.2.6. Initiate multi-screen experiences`](https://www.w3.org/TR/window-management/#usage-overview-initiate-multi-screen-experiences). This may exacerbate some documented Window Management [Security Considerations](https://www.w3.org/TR/window-management/#security).
 
 A notable security consideration is the placement of the popup window in front of, or behind, the fullscreen window, which could be abused by malicious sites to place content in a deceptive or surreptitious fashion. This was a foremost consideration during development of the current [proposal](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#proposal), which documents the inherent and added mitigations against accidental misuse or abuse.
 
@@ -173,7 +173,7 @@ User agents already offer controls to permit any number of script-initiated popu
 
 ## Privacy Considerations
 
-This feature does not expose any information to sites, and there are no privacy considerations to note beyond those already documented in the Multi-Screen Window Placement [Privacy Considerations](https://www.w3.org/TR/window-management/#privacy) section.
+This feature does not expose any information to sites, and there are no privacy considerations to note beyond those already documented in the Window Management [Privacy Considerations](https://www.w3.org/TR/window-management/#privacy) section.
 
 ## Alternatives Considered
 

@@ -94,7 +94,7 @@ To support multi-screen experiences, the API allows web applications to:
 1. Place a window on a specific screen
 1. Initiate a multi-screen experience from a single transient user activation
 
-<aside class=example id=basic-example>
+<div class=example id=basic-example>
 
 A basic example of the API usage is as follows:
 
@@ -128,7 +128,7 @@ if (window.screen.isExtended) {
 }
 ```
 
-</aside>
+</div>
 
 <!-- ====================================================================== -->
 ### Detect the presence of multiple screens ### {#usage-overview-screen-extended}

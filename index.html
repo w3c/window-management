@@ -5,11 +5,10 @@
   <title>Window Management</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 5fcd28d6d, updated Tue May 30 13:12:11 2023 -0700" name="generator">
   <link href="https://www.w3.org/TR/window-management/" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="8ab5c4e4657559985f0d49eace431d9afcc3c5ac" name="document-revision">
+  <meta content="f6813bfa83dc5adf635a35169fba63d1a5b8a049" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -689,7 +688,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Window Management</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-06-06">6 June 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-06-13">13 June 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -711,7 +710,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2023/software-license" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -881,7 +880,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <c- c1>// Detect when a screen is added or removed.</c->
   screenDetails<c- p>.</c->addEventListener<c- p>(</c-><c- t>'screenschange'</c-><c- p>,</c-> onScreensChange<c- p>);</c->
 
-  <c- c1>// Detect when the current &lt;code data-opaque bs-autolink-syntax='`ScreenDetailed`'>ScreenDetailed&lt;/code> or an attribute thereof changes.</c->
+  <c- c1>// Detect when the current `ScreenDetailed` or an attribute thereof changes.</c->
   screenDetails<c- p>.</c->addEventListener<c- p>(</c-><c- t>'currentscreenchange'</c-><c- p>,</c-> onCurrentScreenChange<c- p>);</c->
 
   <c- c1>// Find the primary screen, show some content fullscreen there.</c->
@@ -895,7 +894,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
                              <c- sb>`width=</c-><c- si>${</c->otherScreen<c- p>.</c->availWidth<c- si>}</c-><c- sb>,`</c-> <c- o>+</c->
                              <c- sb>`height=</c-><c- si>${</c->otherScreen<c- p>.</c->availHeight<c- si>}</c-><c- sb>`</c-><c- p>);</c->
 <c- p>}</c-> <c- k>else</c-> <c- p>{</c->
-  <c- c1>// Detect when an attribute of the legacy &lt;code data-opaque bs-autolink-syntax='`Screen`'>Screen&lt;/code> interface changes.</c->
+  <c- c1>// Detect when an attribute of the legacy `Screen` interface changes.</c->
   window<c- p>.</c->screen<c- p>.</c->addEventListener<c- p>(</c-><c- t>'change'</c-><c- p>,</c-> onScreenChange<c- p>);</c->
 
   <c- c1>// Arrange content within the traditional single-screen environment...</c->
@@ -911,7 +910,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <h4 class="heading settled" data-level="1.2.2" id="usage-overview-screen-changes"><span class="secno">1.2.2. </span><span class="content">Detect <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen①">Screen</a></code> attribute changes</span><a class="self-link" href="#usage-overview-screen-changes"></a></h4>
    <p>Observing legacy <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen②">Screen</a></code> attribute changes is useful for adapting content, even on single-screen devices. Furthermore, observing <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended①">isExtended</a></code> is useful for detecting transitions between single-screen and multi-screen configurations. To avoid polling, <code class="idl"><a data-link-type="idl" href="#eventdef-screen-change" id="ref-for-eventdef-screen-change">change</a></code> events are fired at the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen③">Screen</a></code> object:</p>
 <pre class="language-js highlight">screen<c- p>.</c->addEventListener<c- p>(</c-><c- t>'change'</c-><c- p>,</c-> e <c- p>=></c-> <c- p>{</c->
-  <c- c1>// An attribute of the legacy &lt;code data-opaque bs-autolink-syntax='`Screen`'>Screen&lt;/code> interface has changed.</c->
+  <c- c1>// An attribute of the legacy `Screen` interface has changed.</c->
 <c- p>});</c->
 </pre>
    <h4 class="heading settled" data-level="1.2.3" id="usage-overview-screen-details"><span class="secno">1.2.3. </span><span class="content">Request detailed screen information</span><a class="self-link" href="#usage-overview-screen-details"></a></h4>
@@ -945,7 +944,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 </pre>
    <h4 class="heading settled" data-level="1.2.4" id="usage-overview-place-fullscreen-content-on-a-specific-screen"><span class="secno">1.2.4. </span><span class="content">Place fullscreen content on a specific screen</span><a class="self-link" href="#usage-overview-place-fullscreen-content-on-a-specific-screen"></a></h4>
    <p>A common multi-screen use case is to present some content fullscreen on a specific screen. The screen may be selected interactively, or automatically selected based on screen attributes or prior user selections. A screen, once selected, can be passed to the <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen" id="ref-for-dom-element-requestfullscreen">requestFullscreen()</a></code> method.</p>
-<pre class="language-js highlight"><c- c1>// Call an assumed helper that returns a selected &lt;code data-opaque bs-autolink-syntax='`ScreenDetailed`'>ScreenDetailed&lt;/code> instance.</c->
+<pre class="language-js highlight"><c- c1>// Call an assumed helper that returns a selected `ScreenDetailed` instance.</c->
 <c- a>const</c-> screenDetailed <c- o>=</c-> getScreenForSlideshow<c- p>();</c->
 
 <c- c1>// Request that a particular element be shown fullscreen on the selected screen.</c->

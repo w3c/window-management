@@ -107,7 +107,7 @@ if (window.screen.isExtended) {
   // Detect when a screen is added or removed.
   screenDetails.addEventListener('screenschange', onScreensChange);
 
-  // Detect when the current `ScreenDetailed` or an attribute thereof changes.
+  // Detect when the current \`ScreenDetailed\` or an attribute thereof changes.
   screenDetails.addEventListener('currentscreenchange', onCurrentScreenChange);
 
   // Find the primary screen, show some content fullscreen there.
@@ -121,7 +121,7 @@ if (window.screen.isExtended) {
                              \`width=${otherScreen.availWidth},\` +
                              \`height=${otherScreen.availHeight}\`);
 } else {
-  // Detect when an attribute of the legacy `Screen` interface changes.
+  // Detect when an attribute of the legacy \`Screen\` interface changes.
   window.screen.addEventListener('change', onScreenChange);
 
   // Arrange content within the traditional single-screen environment...
@@ -150,7 +150,7 @@ Observing legacy {{Screen}} attribute changes is useful for adapting content, ev
 
 ```js
 screen.addEventListener('change', e => {
-  // An attribute of the legacy `Screen` interface has changed.
+  // An attribute of the legacy \`Screen\` interface has changed.
 });
 ```
 
@@ -196,7 +196,7 @@ function processScreenDetails(screenDetails) {
 A common multi-screen use case is to present some content fullscreen on a specific screen. The screen may be selected interactively, or automatically selected based on screen attributes or prior user selections. A screen, once selected, can be passed to the {{Element/requestFullscreen()}} method.
 
 ```js
-// Call an assumed helper that returns a selected `ScreenDetailed` instance.
+// Call an assumed helper that returns a selected \`ScreenDetailed\` instance.
 const screenDetailed = getScreenForSlideshow();
 
 // Request that a particular element be shown fullscreen on the selected screen.

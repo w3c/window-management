@@ -8,7 +8,7 @@ The Window Management API is currently available in Chrome:
 
 Try these basic API demos, which request permission to use info about your screens to open and place windows:
 - https://michaelwasserman.github.io/window-placement-demo
-- https://web.dev/multi-screen-window-placement has a demo: https://window-placement.glitch.me
+- https://developer.chrome.com/articles/window-management/ has a demo: https://window-placement.glitch.me
 
 Here is an example of how to use the API:
 

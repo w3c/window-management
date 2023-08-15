@@ -8,7 +8,7 @@ browser_compatibility: api.ScreenDetailed
 
 ## Description
 
-The `ScreenDetailed` interface of the Window Placement API extends the
+The `ScreenDetailed` interface of the Window Management API extends the
 `Screen` interface and provides additional per-screen information.
 
 The `ScreenDetailed` interface is a child of `Screen` and inherits its members.

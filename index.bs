@@ -10,7 +10,7 @@ Editor: Joshua Bell, Google Inc. https://www.google.com/, jsbell@google.com, w3c
 Editor: Mike Wasserman, Google Inc. https://www.google.com/, msw@google.com, w3cid 116970
 Repository: w3c/window-management
 Group: secondscreenwg
-!Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/window-placement">https://github.com/web-platform-tests/wpt/tree/master/window-placement</a>
+!Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/window-management">https://github.com/web-platform-tests/wpt/tree/master/window-management</a>
 !Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/screen-details">https://github.com/web-platform-tests/wpt/tree/master/screen-details</a>
 Logo: logo.svg
 Favicon: logo.svg
@@ -94,7 +94,7 @@ To support multi-screen experiences, the API allows web applications to:
 1. Place a window on a specific screen
 1. Initiate a multi-screen experience from a single transient user activation
 
-<aside class=example id=basic-example>
+<div class=example id=basic-example>
 
 A basic example of the API usage is as follows:
 
@@ -107,7 +107,7 @@ if (window.screen.isExtended) {
   // Detect when a screen is added or removed.
   screenDetails.addEventListener('screenschange', onScreensChange);
 
-  // Detect when the current `ScreenDetailed` or an attribute thereof changes.
+  // Detect when the current \`ScreenDetailed\` or an attribute thereof changes.
   screenDetails.addEventListener('currentscreenchange', onCurrentScreenChange);
 
   // Find the primary screen, show some content fullscreen there.
@@ -121,14 +121,14 @@ if (window.screen.isExtended) {
                              \`width=${otherScreen.availWidth},\` +
                              \`height=${otherScreen.availHeight}\`);
 } else {
-  // Detect when an attribute of the legacy `Screen` interface changes.
+  // Detect when an attribute of the legacy \`Screen\` interface changes.
   window.screen.addEventListener('change', onScreenChange);
 
   // Arrange content within the traditional single-screen environment...
 }
 ```
 
-</aside>
+</div>
 
 <!-- ====================================================================== -->
 ### Detect the presence of multiple screens ### {#usage-overview-screen-extended}
@@ -150,7 +150,7 @@ Observing legacy {{Screen}} attribute changes is useful for adapting content, ev
 
 ```js
 screen.addEventListener('change', e => {
-  // An attribute of the legacy `Screen` interface has changed.
+  // An attribute of the legacy \`Screen\` interface has changed.
 });
 ```
 
@@ -196,7 +196,7 @@ function processScreenDetails(screenDetails) {
 A common multi-screen use case is to present some content fullscreen on a specific screen. The screen may be selected interactively, or automatically selected based on screen attributes or prior user selections. A screen, once selected, can be passed to the {{Element/requestFullscreen()}} method.
 
 ```js
-// Call an assumed helper that returns a selected `ScreenDetailed` instance.
+// Call an assumed helper that returns a selected \`ScreenDetailed\` instance.
 const screenDetailed = getScreenForSlideshow();
 
 // Request that a particular element be shown fullscreen on the selected screen.
@@ -245,7 +245,7 @@ initiateMultiScreenExperienceButton.addEventListener('click', async () => {
 # Concepts # {#concepts}
 <!-- ====================================================================== -->
 
-Concepts in this specification build upon those in the [CSSOM-View-1 Working Draft](https://www.w3.org/TR/cssom-view-1), and the [CSSOM-View-1 Editor's Draft](https://drafts.csswg.org/cssom-view/), [[HTML]], and [[Fullscreen]].
+Concepts in this specification build upon those in the [CSSOM-View-1 Working Draft](https://www.w3.org/TR/cssom-view-1/), and the [CSSOM-View-1 Editor's Draft](https://drafts.csswg.org/cssom-view/), [[HTML]], and [[Fullscreen]].
 
 <!-- ====================================================================== -->
 ## Screen ## {#concept-screen}
@@ -849,4 +849,4 @@ Victor Costan
 
 Issue: Ensure we didn't forget anyone!
 
-Special thanks to Tab Atkins, Jr. for creating and maintaining [Bikeshed](https://github.com/tabatkins/bikeshed), the specification authoring tool used to create this document, and for his general authoring advice.
+Special thanks to Tab Atkins, Jr. for creating and maintaining [Bikeshed](https://github.com/speced/bikeshed), the specification authoring tool used to create this document, and for his general authoring advice.

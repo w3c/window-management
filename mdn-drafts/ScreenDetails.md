@@ -8,7 +8,7 @@ browser_compatibility: api.ScreenDetails
 
 ## Description
 
-The `ScreenDetails` interface of the Window Placement API provides multi-screen information and change events.
+The `ScreenDetails` interface of the Window Management API provides multi-screen information and change events.
 
 ## Constructor
 

@@ -17,7 +17,7 @@ Multiple partners and early adopters of the [Window Management API](https://w3c.
 *   [Feature request: Fullscreen support on multiple screens](https://github.com/w3c/window-management/issues/92).
 
 ## Goals
-The goal of this document is to outline the necessary spec changes that would permit web applications to open a new fullscreen window on a specific display, with only a single user gesture. It also aims to explore abuse and other security / privacy considerations. In particular this document focuses on introducing algorithmic changes to existing APIs to allow such behavior without introducing API surface changes.
+The goal of this document is to outline the necessary spec changes that would permit web applications to open a new fullscreen window on a specific display, with only a single user gesture. It also aims to explore abuse and other security / privacy considerations. In particular this document focuses on introducing straightforward API surface and corresponding algorithmic changes to allow such behavior.
 
 The [Initiating Multi-Screen Experiences Explainer](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md) covers some related goals (i.e. launching N fullscreen windows on N displays) not covered in this proposal.
 

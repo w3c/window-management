@@ -7,7 +7,6 @@ Self-Review Questionnaire](https://www.w3.org/TR/security-privacy-questionnaire)
 
 This feature does not directly expose information to web sites that [`element.requestFullscreen`](https://fullscreen.spec.whatwg.org/#ref-for-dom-element-requestfullscreen%E2%91%A0) doesn't already expose. 
 
-
 ## 2.2. Do features in your specification expose the minimum amount of information necessary to enable their intended uses?
 
 No new information is exposed to web sites.
@@ -57,8 +56,7 @@ This feature requires the `fullscreen` [permission policy](https://w3c.github.io
 
 ## 2.14. How do the features in this specification work in the context of a browser’s Private Browsing or Incognito mode?
 
-The behavior should be the same as for regular mode, except that the user agent
-should not persist permission data and should request permission every session.
+The behavior should be the same as for regular mode, except that the user agent should not persist permission data and should request permission every session.
 
 ## 2.15. Does this specification have both "Security Considerations" and "Privacy Considerations" sections?
 

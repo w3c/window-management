@@ -28,7 +28,8 @@ Some basic illustrative examples which may be achieved with this proposal are li
 *   Medical report app opens imagery fullscreen on a specialized display.
 *   Point-of-sale app opens a fullscreen payment window on a customer display.
 
-This proposal is limited to launching at most one fullscreen popup onto one display. [Future enhancements](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md) could allow a web application could launch N fullscreen popup windows to allow for more use cases:
+This proposal is limited to launching at most one fullscreen popup onto one display, given a single transient user activation. [Future enhancements](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md) could allow a web application to launch multiple fullscreen popup windows from a single transient user activation, to allow for more use cases:
+
 *   Financial app opens a fullscreen dashboard on the primary monitor and a fullscreen stock tracker window on a secondary display.
 *   Virtual desktop app launches fullscreen windows on primary and secondary displays to mimic a remote monitor configuration.
 *   Security monitoring app launches 6 fullscreen video feeds on an array of 6 displays.

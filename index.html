@@ -5,10 +5,10 @@
   <title>Window Management</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 5fcd28d6d, updated Tue May 30 13:12:11 2023 -0700" name="generator">
+  <meta content="Bikeshed version 6edc88947, updated Thu Aug 17 11:18:09 2023 -0700" name="generator">
   <link href="https://www.w3.org/TR/window-management/" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="31fe98aada82da31515d09842bdfd4ecb33dac78" name="document-revision">
+  <meta content="b439243a561534e176edfc893a2d5cecc72db345" name="document-revision">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -533,33 +533,12 @@ a.self-link::before            { content: "¶"; }
 .heading > a.self-link::before { content: "§"; }
 dfn > a.self-link::before      { content: "#"; }
 </style>
-<style>/* Boilerplate: style-style-syntax-highlighting */
+<style>/* Boilerplate: style-syntax-highlighting */
 
             pre.idl.highlight {
                 background: var(--borderedblock-bg, var(--def-bg));
             }
             
-</style>
-<style>/* Boilerplate: style-style-var-click-highlighting */
-/*
-Colors were chosen in Lab using https://nixsensor.com/free-color-converter/
-D50 2deg illuminant, L in [0,100], a and b in [-128, 128]
-0 = lab(85,0,85)
-1 = lab(85,80,30)
-2 = lab(85,-40,40)
-3 = lab(85,-50,0)
-4 = lab(85,5,15)
-5 = lab(85,-10,-50)
-6 = lab(85,35,-15)
-*/
-var { cursor: pointer; }
-var.selected0 { background-color: #F4D200; box-shadow: 0 0 0 2px #F4D200; }
-var.selected1 { background-color: #FF87A2; box-shadow: 0 0 0 2px #FF87A2; }
-var.selected2 { background-color: #96E885; box-shadow: 0 0 0 2px #96E885; }
-var.selected3 { background-color: #3EEED2; box-shadow: 0 0 0 2px #3EEED2; }
-var.selected4 { background-color: #EACFB6; box-shadow: 0 0 0 2px #EACFB6; }
-var.selected5 { background-color: #82DDFF; box-shadow: 0 0 0 2px #82DDFF; }
-var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
 </style>
 <style>/* Boilerplate: style-syntax-highlighting */
 
@@ -684,11 +663,32 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     c-[il] { color: #657b83 } /* Literal.Number.Integer.Long */
 }
 </style>
+<style>/* Boilerplate: style-var-click-highlighting */
+/*
+Colors were chosen in Lab using https://nixsensor.com/free-color-converter/
+D50 2deg illuminant, L in [0,100], a and b in [-128, 128]
+0 = lab(85,0,85)
+1 = lab(85,80,30)
+2 = lab(85,-40,40)
+3 = lab(85,-50,0)
+4 = lab(85,5,15)
+5 = lab(85,-10,-50)
+6 = lab(85,35,-15)
+*/
+var { cursor: pointer; }
+var.selected0 { background-color: #F4D200; box-shadow: 0 0 0 2px #F4D200; }
+var.selected1 { background-color: #FF87A2; box-shadow: 0 0 0 2px #FF87A2; }
+var.selected2 { background-color: #96E885; box-shadow: 0 0 0 2px #96E885; }
+var.selected3 { background-color: #3EEED2; box-shadow: 0 0 0 2px #3EEED2; }
+var.selected4 { background-color: #EACFB6; box-shadow: 0 0 0 2px #EACFB6; }
+var.selected5 { background-color: #82DDFF; box-shadow: 0 0 0 2px #82DDFF; }
+var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
+</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Window Management</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-06-14">14 June 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-08-29">29 August 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -725,7 +725,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p> Publication as an Editor’s Draft does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress. </p>
    <p> This document was produced by a group operating under the <a class="css" data-link-type="property" href="https://www.w3.org/Consortium/Patent-Policy-20200915/" id="sotd_patent">W3C Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/74168/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#def-essential">Essential
     Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
-   <p> This document is governed by the <a href="https://www.w3.org/2021/Process-20211102/" id="w3c_process_revision">2 November 2021 W3C Process Document</a>. </p>
+   <p> This document is governed by the <a href="https://www.w3.org/2023/Process-20230612/" id="w3c_process_revision">12 June 2023 W3C Process Document</a>. </p>
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -880,7 +880,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <c- c1>// Detect when a screen is added or removed.</c->
   screenDetails<c- p>.</c->addEventListener<c- p>(</c-><c- t>'screenschange'</c-><c- p>,</c-> onScreensChange<c- p>);</c->
 
-  <c- c1>// Detect when the current `ScreenDetailed` or an attribute thereof changes.</c->
+  <c- c1>// Detect when the current \`ScreenDetailed\` or an attribute thereof changes.</c->
   screenDetails<c- p>.</c->addEventListener<c- p>(</c-><c- t>'currentscreenchange'</c-><c- p>,</c-> onCurrentScreenChange<c- p>);</c->
 
   <c- c1>// Find the primary screen, show some content fullscreen there.</c->
@@ -889,16 +889,16 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 
   <c- c1>// Find a different screen, fill its available area with a new window.</c->
   <c- a>const</c-> otherScreen <c- o>=</c-> screenDetails<c- p>.</c->screens<c- p>.</c->find<c- p>(</c->s <c- p>=></c-> s <c- o>!==</c-> primaryScreen<c- p>);</c->
-  window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> <c- sb>`left=</c-><c- si>${</c->otherScreen<c- p>.</c->availLeft<c- si>}</c-><c- sb>,`</c-> <c- o>+</c->
-                             <c- sb>`top=</c-><c- si>${</c->otherScreen<c- p>.</c->availTop<c- si>}</c-><c- sb>,`</c-> <c- o>+</c->
-                             <c- sb>`width=</c-><c- si>${</c->otherScreen<c- p>.</c->availWidth<c- si>}</c-><c- sb>,`</c-> <c- o>+</c->
-                             <c- sb>`height=</c-><c- si>${</c->otherScreen<c- p>.</c->availHeight<c- si>}</c-><c- sb>`</c-><c- p>);</c->
-<c- p>}</c-> <c- k>else</c-> <c- p>{</c->
-  <c- c1>// Detect when an attribute of the legacy `Screen` interface changes.</c->
-  window<c- p>.</c->screen<c- p>.</c->addEventListener<c- p>(</c-><c- t>'change'</c-><c- p>,</c-> onScreenChange<c- p>);</c->
+  window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> \<c- sb>`left=</c-><c- si>${</c->otherScreen<c- p>.</c->availLeft<c- si>}</c-><c- sb>,\` +</c->
+<c- sb>                             \`top=</c-><c- si>${</c->otherScreen<c- p>.</c->availTop<c- si>}</c-><c- sb>,\` +</c->
+<c- sb>                             \`width=</c-><c- si>${</c->otherScreen<c- p>.</c->availWidth<c- si>}</c-><c- sb>,\` +</c->
+<c- sb>                             \`height=</c-><c- si>${</c->otherScreen<c- p>.</c->availHeight<c- si>}</c-><c- sb>\`);</c->
+<c- sb>} else {</c->
+<c- sb>  // Detect when an attribute of the legacy \`Screen\` interface changes.</c->
+<c- sb>  window.screen.addEventListener('change', onScreenChange);</c->
 
-  <c- c1>// Arrange content within the traditional single-screen environment...</c->
-<c- p>}</c->
+<c- sb>  // Arrange content within the traditional single-screen environment...</c->
+<c- sb>}</c->
 </pre>
    </div>
    <h4 class="heading settled" data-level="1.2.1" id="usage-overview-screen-extended"><span class="secno">1.2.1. </span><span class="content">Detect the presence of multiple screens</span><a class="self-link" href="#usage-overview-screen-extended"></a></h4>
@@ -910,7 +910,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <h4 class="heading settled" data-level="1.2.2" id="usage-overview-screen-changes"><span class="secno">1.2.2. </span><span class="content">Detect <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen①">Screen</a></code> attribute changes</span><a class="self-link" href="#usage-overview-screen-changes"></a></h4>
    <p>Observing legacy <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen②">Screen</a></code> attribute changes is useful for adapting content, even on single-screen devices. Furthermore, observing <code class="idl"><a data-link-type="idl" href="#dom-screen-isextended" id="ref-for-dom-screen-isextended①">isExtended</a></code> is useful for detecting transitions between single-screen and multi-screen configurations. To avoid polling, <code class="idl"><a data-link-type="idl" href="#eventdef-screen-change" id="ref-for-eventdef-screen-change">change</a></code> events are fired at the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#screen" id="ref-for-screen③">Screen</a></code> object:</p>
 <pre class="language-js highlight">screen<c- p>.</c->addEventListener<c- p>(</c-><c- t>'change'</c-><c- p>,</c-> e <c- p>=></c-> <c- p>{</c->
-  <c- c1>// An attribute of the legacy `Screen` interface has changed.</c->
+  <c- c1>// An attribute of the legacy \`Screen\` interface has changed.</c->
 <c- p>});</c->
 </pre>
    <h4 class="heading settled" data-level="1.2.3" id="usage-overview-screen-details"><span class="secno">1.2.3. </span><span class="content">Request detailed screen information</span><a class="self-link" href="#usage-overview-screen-details"></a></h4>
@@ -944,7 +944,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 </pre>
    <h4 class="heading settled" data-level="1.2.4" id="usage-overview-place-fullscreen-content-on-a-specific-screen"><span class="secno">1.2.4. </span><span class="content">Place fullscreen content on a specific screen</span><a class="self-link" href="#usage-overview-place-fullscreen-content-on-a-specific-screen"></a></h4>
    <p>A common multi-screen use case is to present some content fullscreen on a specific screen. The screen may be selected interactively, or automatically selected based on screen attributes or prior user selections. A screen, once selected, can be passed to the <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen" id="ref-for-dom-element-requestfullscreen">requestFullscreen()</a></code> method.</p>
-<pre class="language-js highlight"><c- c1>// Call an assumed helper that returns a selected `ScreenDetailed` instance.</c->
+<pre class="language-js highlight"><c- c1>// Call an assumed helper that returns a selected \`ScreenDetailed\` instance.</c->
 <c- a>const</c-> screenDetailed <c- o>=</c-> getScreenForSlideshow<c- p>();</c->
 
 <c- c1>// Request that a particular element be shown fullscreen on the selected screen.</c->
@@ -958,8 +958,8 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
   <c- a>const</c-> t <c- o>=</c-> screenDetailed<c- p>.</c->top <c- o>+</c-> Math<c- p>.</c->round<c- p>(</c->screenDetailed<c- p>.</c->height <c- o>-</c-> h<c- p>)</c-> <c- o>/</c-> <c- mf>2</c-><c- p>;</c->
 
   <c- c1>// Open the window with the requested dimensions.</c->
-  <c- k>return</c-> window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> <c- sb>`left=</c-><c- si>${</c->l<c- si>}</c-><c- sb>,top=</c-><c- si>${</c->t<c- si>}</c-><c- sb>,width=</c-><c- si>${</c->w<c- si>}</c-><c- sb>,height=</c-><c- si>${</c->h<c- si>}</c-><c- sb>`</c-><c- p>);</c->
-<c- p>}</c->
+  <c- k>return</c-> window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> \<c- sb>`left=</c-><c- si>${</c->l<c- si>}</c-><c- sb>,top=</c-><c- si>${</c->t<c- si>}</c-><c- sb>,width=</c-><c- si>${</c->w<c- si>}</c-><c- sb>,height=</c-><c- si>${</c->h<c- si>}</c-><c- sb>\`);</c->
+<c- sb>}</c->
 </pre>
    <h4 class="heading settled" data-level="1.2.6" id="usage-overview-initiate-multi-screen-experiences"><span class="secno">1.2.6. </span><span class="content">Initiate multi-screen experiences</span><a class="self-link" href="#usage-overview-initiate-multi-screen-experiences"></a></h4>
    <p>A commonly requested multi-screen use case is to initiate a compelling multi-screen experience from a single user activation. One specific proposed form is permitting a site to <a href="#usage-overview-place-fullscreen-content-on-a-specific-screen">§ 1.2.4 Place fullscreen content on a specific screen</a> and <a href="#usage-overview-place-windows-on-a-specific-screen">§ 1.2.5 Place windows on a specific screen</a> from a single user gesture. This can be accomplished by first requesting fullscreen on a specific screen of a multi-screen device, and then opening a popup window on another screen of the device, in a single event listener.</p>
@@ -970,11 +970,11 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
 
   <c- c1>// Find a different screen, fill its available area with a new window.</c->
   <c- a>const</c-> otherScreen <c- o>=</c-> screenDetails<c- p>.</c->screens<c- p>.</c->find<c- p>(</c->s <c- p>=></c-> s <c- o>!==</c-> primaryScreen<c- p>);</c->
-  window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> <c- sb>`left=</c-><c- si>${</c->otherScreen<c- p>.</c->availLeft<c- si>}</c-><c- sb>,`</c-> <c- o>+</c->
-                             <c- sb>`top=</c-><c- si>${</c->otherScreen<c- p>.</c->availTop<c- si>}</c-><c- sb>,`</c-> <c- o>+</c->
-                             <c- sb>`width=</c-><c- si>${</c->otherScreen<c- p>.</c->availWidth<c- si>}</c-><c- sb>,`</c-> <c- o>+</c->
-                             <c- sb>`height=</c-><c- si>${</c->otherScreen<c- p>.</c->availHeight<c- si>}</c-><c- sb>`</c-><c- p>);</c->
-<c- p>});</c->
+  window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> \<c- sb>`left=</c-><c- si>${</c->otherScreen<c- p>.</c->availLeft<c- si>}</c-><c- sb>,\` +</c->
+<c- sb>                             \`top=</c-><c- si>${</c->otherScreen<c- p>.</c->availTop<c- si>}</c-><c- sb>,\` +</c->
+<c- sb>                             \`width=</c-><c- si>${</c->otherScreen<c- p>.</c->availWidth<c- si>}</c-><c- sb>,\` +</c->
+<c- sb>                             \`height=</c-><c- si>${</c->otherScreen<c- p>.</c->availHeight<c- si>}</c-><c- sb>\`);</c->
+<c- sb>});</c->
 </pre>
    <h2 class="heading settled" data-level="2" id="concepts"><span class="secno">2. </span><span class="content">Concepts</span><a class="self-link" href="#concepts"></a></h2>
    <p>Concepts in this specification build upon those in the <a href="https://www.w3.org/TR/cssom-view-1/">CSSOM-View-1 Working Draft</a>, and the <a href="https://drafts.csswg.org/cssom-view/">CSSOM-View-1 Editor’s Draft</a>, <a data-link-type="biblio" href="#biblio-html" title="HTML Standard">[HTML]</a>, and <a data-link-type="biblio" href="#biblio-fullscreen" title="Fullscreen API Standard">[Fullscreen]</a>.</p>

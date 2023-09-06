@@ -103,7 +103,7 @@ However, in practice, multiple user agents (Chrome, Firefox, Safari) <em>do</em>
 
 Published specifications may need some corrective action, but that is outside the scope of this proposal. The proposal in this document makes the assumption that user agents <strong>may or may not</strong> consume the transient activation in [`window.open()`](https://html.spec.whatwg.org/multipage/window-object.html#dom-open-dev).
 
-### Open questions
+### Considerations
 
 #### **Overlapping Fullscreen Windows**
 This proposal does not define behavior for certain scenarios which should be considered by user agents implementing the proposal:
@@ -136,6 +136,15 @@ The browser may omit a `fullscreenchange` event prior to any scripts being execu
 
 #### **Delays entering fullscreen**
 There may exist a delay (unintentional or malicious) between the time the popup is created during the original [user activation](https://html.spec.whatwg.org/multipage/interaction.html#tracking-user-activation) and the time that the [document element](https://dom.spec.whatwg.org/#document-element) becomes available. Slow network conditions or intentional throttling by a malicious server may introduce a significant delay between the popup window opening and the popup's document element becoming available to fullscreen. In such case, the user agent could postpone or abort the steps for making the popup's document element fullscreen. 
+
+#### **Cross-Origin Popups**
+The proposal allows fullscreen popup requests for cross-origin content. If Site A is granted `window-management` and requests a fullscreen popup for Site B, then the browser shall allow Site B to open fullscreen. Site B may opt-out of fullscreen by using the appropriate [permission policy headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy) and even set them dynamically based on the [Referer header](https://www.rfc-editor.org/rfc/rfc9110#field.referer) which contains the URL which opened the popup. There is also a risk for Site A to open a malicious Site B. However, there is an implicit chain of trust via the `window-management` permission suggesting that the user trusts Site A to not open malicious content (regardless of origin). This should be compared to traditional HTML fullscreen of cross-origin iframes, and opening non-fullscreen cross-origin popups. 
+
+#### **HTTP Redirects**
+HTTP redirects are supported. When Site A opens a fullscreen popup for Site B, but Site B provides an [HTTP Redirect](https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections) to a different origin it will be treated as a cross-origin popup. See [Cross-Origin Popups](#cross-origin-popups).
+
+#### **Fullscreen hidden content**
+Fullscreen popups allow sites to fullscreen content which was not previously visible to users. However, there are already ways to achieve this with [Element.requestFullscreen](https://fullscreen.spec.whatwg.org/#ref-for-dom-element-requestfullscreen%E2%91%A0) (e.g. unhide an element immediately before requesting fullscreen).
 
 ## Security Considerations
 A notable security consideration stems from the fact that the web application may launch a fullscreen window on a display that the user is not looking at, since the [user activation](https://html.spec.whatwg.org/multipage/interaction.html#tracking-user-activation) (i.e. button click) may have occurred on another display which the user is focused on. The user may not notice the fullscreen window transition, nor the fullscreen bubble (e.g. Firefox's "&lt;origin> is now full screen [Exit Full Screen (Esc)]" or Chrome's "Press [Esc] to exit full screen") which could allow for a malicious application to mimic other applications or the operating system without the user realizing that it is a browser window.

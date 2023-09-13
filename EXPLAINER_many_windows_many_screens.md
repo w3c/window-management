@@ -112,4 +112,4 @@ This feature does not expose any information to sites, and there are no privacy 
   - Enforces coherent initial placement, but popups can move without gesture
   - Introduces substantial complexity, particularly when delegating fullscreen
 - Add more feature-specific internal slots, like [earlier work](EXPLAINER_initiating_multi_screen_experiences.md)
-  - Less encapsulated and more complex than enahncing user activation tracking
+  - Less encapsulated and more complex than enhancing user activation tracking

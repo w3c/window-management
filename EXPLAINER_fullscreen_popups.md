@@ -1,3 +1,11 @@
+
+# 🟥 Obsolete 🟥
+
+This feature is no longer being pursued as of March 27, 2024. This feature is superseded by [HTML Fullscreen Without a Gesture](https://github.com/explainers-by-googlers/html-fullscreen-without-a-gesture) which provides similar capabilities. The document below is maintained for archival reasons.
+
+---
+
+
 # Window Management on the Web - Creating Fullscreen Popup Windows
 
 ## Introduction

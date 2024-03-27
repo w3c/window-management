@@ -1,3 +1,8 @@
+
+# 🟥 Obsolete 🟥
+
+This feature is no longer being pursued as of March 27, 2024. See [explainer](EXPLAINER_fullscreen_popups.md#obsolete).
+
 # Security & Privacy
 
 The following considerations are taken from the [W3C Security and Privacy

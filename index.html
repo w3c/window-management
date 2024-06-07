@@ -5,10 +5,12 @@
   <title>Window Management</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
+  <meta content="Bikeshed version 4afc1fdf9, updated Tue May 28 15:43:17 2024 -0700" name="generator">
   <link href="https://www.w3.org/TR/window-management/" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="bab7a4918f8d0213d99eec8af0524597632744e9" name="document-revision">
+  <meta content="2cafe16157d95ab94189a5ec57b2d5a25069d880" name="revision">
+  <meta content="dark light" name="color-scheme">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
 .domintro::before {
     content: 'For web developers (non-normative)';
@@ -98,7 +100,6 @@ pre .property::before, pre .property::after {
 }
 </style>
 <style>/* Boilerplate: style-colors */
-
 /* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
 :root {
     color-scheme: light dark;
@@ -352,11 +353,15 @@ figcaption:not(.no-marker)::before {
 :root {
     --dfnpanel-bg: #ddd;
     --dfnpanel-text: var(--text);
+    --dfnpanel-target-bg: #ffc;
+    --dfnpanel-target-outline: orange;
 }
 @media (prefers-color-scheme: dark) {
     :root {
         --dfnpanel-bg: #222;
         --dfnpanel-text: var(--text);
+        --dfnpanel-target-bg: #333;
+        --dfnpanel-target-outline: silver;
     }
 }
 .dfn-panel {
@@ -379,11 +384,13 @@ figcaption:not(.no-marker)::before {
 .dfn-panel > b { display: block; }
 .dfn-panel a { color: var(--dfnpanel-text); }
 .dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel a:focus {
+    outline: 5px auto Highlight;
+    outline: 5px auto -webkit-focus-ring-color;
+}
 .dfn-panel > b + b { margin-top: 0.25em; }
 .dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
 .dfn-panel li a {
-    white-space: pre;
-    display: inline-block;
     max-width: calc(300px - 1.5em - 1em);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -392,67 +399,84 @@ figcaption:not(.no-marker)::before {
 .dfn-panel.activated {
     display: inline-block;
     position: fixed;
-    left: .5em;
+    left: 8px;
     bottom: 2em;
     margin: 0 auto;
     max-width: calc(100vw - 1.5em - .4em - .5em);
     max-height: 30vh;
+    transition: left 1s ease-out, bottom 1s ease-out;
 }
 
-.dfn-paneled[role="button"] { cursor: pointer; }
+.dfn-panel .link-item:hover {
+    text-decoration: underline;
+}
+.dfn-panel .link-item .copy-icon {
+    opacity: 0;
+}
+.dfn-panel .link-item:hover .copy-icon,
+.dfn-panel .link-item .copy-icon:focus {
+    opacity: 1;
+}
+
+.dfn-panel .copy-icon {
+    display: inline-block;
+    margin-right: 0.5em;
+    width: 0.85em;
+    height: 1em;
+    border-radius: 3px;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.dfn-panel .copy-icon .icon {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.dfn-panel .copy-icon .icon::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    background-color: #ccc;
+    opacity: 0.25;
+    transform: translate(3px, -3px);
+}
+
+.dfn-panel .copy-icon:active .icon::before {
+    opacity: 1;
+}
+
+.dfn-paneled[role="button"] { cursor: help; }
+
+.highlighted {
+    animation: target-fade 3s;
+}
+
+@keyframes target-fade {
+    from {
+        background-color: var(--dfnpanel-target-bg);
+        outline: 5px solid var(--dfnpanel-target-outline);
+    }
+    to {
+        color: var(--a-normal-text);
+        background-color: transparent;
+        outline: transparent;
+    }
+}
 </style>
-<style>/* Boilerplate: style-dfn-panel */
-:root {
-    --dfnpanel-bg: #ddd;
-    --dfnpanel-text: var(--text);
+<style>/* Boilerplate: style-idl-highlighting */
+pre.idl.highlight {
+    background: var(--borderedblock-bg, var(--def-bg));
 }
-@media (prefers-color-scheme: dark) {
-    :root {
-        --dfnpanel-bg: #222;
-        --dfnpanel-text: var(--text);
-    }
-}
-.dfn-panel {
-    position: absolute;
-    z-index: 35;
-    width: 20em;
-    width: 300px;
-    height: auto;
-    max-height: 500px;
-    overflow: auto;
-    padding: 0.5em 0.75em;
-    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
-    background: var(--dfnpanel-bg);
-    color: var(--dfnpanel-text);
-    border: outset 0.2em;
-    white-space: normal; /* in case it's moved into a pre */
-}
-.dfn-panel:not(.on) { display: none; }
-.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
-.dfn-panel > b { display: block; }
-.dfn-panel a { color: var(--dfnpanel-text); }
-.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
-.dfn-panel > b + b { margin-top: 0.25em; }
-.dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
-.dfn-panel li a {
-    white-space: pre;
-    display: inline-block;
-    max-width: calc(300px - 1.5em - 1em);
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.dfn-panel.activated {
-    display: inline-block;
-    position: fixed;
-    left: .5em;
-    bottom: 2em;
-    margin: 0 auto;
-    max-width: calc(100vw - 1.5em - .4em - .5em);
-    max-height: 30vh;
-}
-
-.dfn-paneled[role="button"] { cursor: pointer; }
 </style>
 <style>/* Boilerplate: style-issues */
 a[href].issue-return {
@@ -473,8 +497,40 @@ a[href].issue-return {
     margin-bottom: 0;
 }
 </style>
-<style>/* Boilerplate: style-selflinks */
+<style>/* Boilerplate: style-ref-hints */
+:root {
+    --ref-hint-bg: #ddd;
+    --ref-hint-text: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ref-hint-bg: #222;
+        --ref-hint-text: var(--text);
+    }
+}
 
+.ref-hint {
+    display: inline-block;
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.5em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--ref-hint-bg);
+    color: var(--ref-hint-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+
+.ref-hint * { margin: 0; padding: 0; text-indent: 0; }
+
+.ref-hint ul { padding: 0 0 0 1em; list-style: none; }
+</style>
+<style>/* Boilerplate: style-selflinks */
 :root {
     --selflink-text: white;
     --selflink-bg: gray;
@@ -534,14 +590,6 @@ a.self-link::before            { content: "¶"; }
 dfn > a.self-link::before      { content: "#"; }
 </style>
 <style>/* Boilerplate: style-syntax-highlighting */
-
-            pre.idl.highlight {
-                background: var(--borderedblock-bg, var(--def-bg));
-            }
-            
-</style>
-<style>/* Boilerplate: style-syntax-highlighting */
-
 code.highlight { padding: .1em; border-radius: .3em; }
 pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
 
@@ -598,7 +646,6 @@ c-[vc] { color: #0077aa } /* Name.Variable.Class */
 c-[vg] { color: #0077aa } /* Name.Variable.Global */
 c-[vi] { color: #0077aa } /* Name.Variable.Instance */
 c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
-
 
 @media (prefers-color-scheme: dark) {
     .highlight:not(.idl) { background: rgba(255, 255, 255, .05); }
@@ -675,20 +722,20 @@ D50 2deg illuminant, L in [0,100], a and b in [-128, 128]
 5 = lab(85,-10,-50)
 6 = lab(85,35,-15)
 */
-var { cursor: pointer; }
-var.selected0 { background-color: #F4D200; box-shadow: 0 0 0 2px #F4D200; }
-var.selected1 { background-color: #FF87A2; box-shadow: 0 0 0 2px #FF87A2; }
-var.selected2 { background-color: #96E885; box-shadow: 0 0 0 2px #96E885; }
-var.selected3 { background-color: #3EEED2; box-shadow: 0 0 0 2px #3EEED2; }
-var.selected4 { background-color: #EACFB6; box-shadow: 0 0 0 2px #EACFB6; }
-var.selected5 { background-color: #82DDFF; box-shadow: 0 0 0 2px #82DDFF; }
-var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
+[data-algorithm] var { cursor: pointer; }
+var[data-var-color="0"] { background-color: #F4D200; box-shadow: 0 0 0 2px #F4D200; }
+var[data-var-color="1"] { background-color: #FF87A2; box-shadow: 0 0 0 2px #FF87A2; }
+var[data-var-color="2"] { background-color: #96E885; box-shadow: 0 0 0 2px #96E885; }
+var[data-var-color="3"] { background-color: #3EEED2; box-shadow: 0 0 0 2px #3EEED2; }
+var[data-var-color="4"] { background-color: #EACFB6; box-shadow: 0 0 0 2px #EACFB6; }
+var[data-var-color="5"] { background-color: #82DDFF; box-shadow: 0 0 0 2px #82DDFF; }
+var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
 </style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Window Management</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-04-01">1 April 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-06-07">7 June 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -934,7 +981,7 @@ var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
   clearScreenList<c- p>();</c->
   screenDetails<c- p>.</c->screens<c- p>.</c->forEach<c- p>(</c->screen <c- p>=></c-> <c- p>{</c->
     addToScreenList<c- p>({</c->name<c- o>:</c-> screen<c- p>.</c->label<c- p>,</c-> screen<c- o>:</c-> screen<c- p>});</c->
-    <c- c1>// Process updated screen details when a particular screen’s details change.</c->
+    <c- c1>// Process updated screen details when a particular screen's details change.</c->
     screen<c- p>.</c->onchange <c- o>=</c-> <c- p>()</c-> <c- p>=></c-> <c- p>{</c->
       processScreenDetails<c- p>(</c->screenDetails<c- p>);</c->
     <c- p>};</c->
@@ -1302,7 +1349,7 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
     </dl>
    </div>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions②"><c- g>FullscreenOptions</c-></a> {
-  <a data-link-type="idl-name" href="#screendetailed" id="ref-for-screendetailed①②"><c- n>ScreenDetailed</c-></a> <a class="idl-code" data-link-type="dict-member" data-type="ScreenDetailed " href="#dom-fullscreenoptions-screen" id="ref-for-dom-fullscreenoptions-screen①"><c- g>screen</c-></a>;
+  <a data-link-type="idl-name" href="#screendetailed" id="ref-for-screendetailed①②"><c- n>ScreenDetailed</c-></a> <a class="idl-code" data-link-type="dict-member" data-type="ScreenDetailed" href="#dom-fullscreenoptions-screen" id="ref-for-dom-fullscreenoptions-screen①"><c- g>screen</c-></a>;
 };
 </pre>
    <p>The optional <code class="idl"><a data-link-type="idl" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions" id="ref-for-dictdef-fullscreenoptions③">FullscreenOptions</a></code> <dfn class="dfn-paneled idl-code" data-dfn-for="FullscreenOptions" data-dfn-type="dict-member" data-export id="dom-fullscreenoptions-screen"><code>screen</code></dfn> member indicates an application preference to display the element fullscreen on a particular <a data-link-type="dfn" href="#screen" id="ref-for-screen⑥⑥">screen</a>. User agents are always free to honor user preference over that of the application. The default value <code>undefined</code> indicates no application preference.</p>
@@ -1455,7 +1502,7 @@ for helping craft this specification.</p>
     Implementers are encouraged to optimize. </p>
    </section>
   </div>
-<script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
+  <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
@@ -1719,7 +1766,7 @@ for helping craft this specification.</p>
 };
 
 <c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions"><c- g>FullscreenOptions</c-></a> {
-  <a data-link-type="idl-name" href="#screendetailed"><c- n>ScreenDetailed</c-></a> <a class="idl-code" data-link-type="dict-member" data-type="ScreenDetailed " href="#dom-fullscreenoptions-screen"><c- g>screen</c-></a>;
+  <a data-link-type="idl-name" href="#screendetailed"><c- n>ScreenDetailed</c-></a> <a class="idl-code" data-link-type="dict-member" data-type="ScreenDetailed" href="#dom-fullscreenoptions-screen"><c- g>screen</c-></a>;
 };
 
 </pre>
@@ -1732,431 +1779,8 @@ for helping craft this specification.</p>
    <div class="issue"> Move <code class="idl"><a data-link-type="idl" href="#dom-permissionpolicy-window-management">window-management</a></code> to <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Proposed</a> or <a href="https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md#proposed-features">Standardized</a> feature lists when appropriate. <a class="issue-return" href="#issue-10618e39" title="Jump to section">↵</a></div>
    <div class="issue"> Ensure we didn’t forget anyone! <a class="issue-return" href="#issue-e9601204" title="Jump to section">↵</a></div>
   </div>
-<script>/* Boilerplate: script-dfn-panel */
-"use strict";
-{
-    const dfnsJson = window.dfnsJson || {};
-
-    function genDfnPanel({dfnID, url, dfnText, refSections, external}) {
-        return mk.aside({
-            class: "dfn-panel",
-            id: `infopanel-for-${dfnID}`,
-            "data-for": dfnID,
-            "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
-            },
-            mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
-                `Info about the '${dfnText}' ${external?"external":""} reference.`),
-            mk.a({href:url}, url),
-            mk.b({}, "Referenced in:"),
-            mk.ul({},
-                ...refSections.map(section=>
-                    mk.li({},
-                        ...section.refs.map((ref, refI)=>
-                            [
-                                mk.a({
-                                    href: `#${ref.id}`
-                                    },
-                                    (refI == 0) ? section.title : `(${refI + 1})`
-                                ),
-                                " ",
-                            ]
-                        ),
-                    ),
-                ),
-            ),
-        );
-    }
-
-    function genAllDfnPanels() {
-        for(const panelData of Object.values(window.dfnpanelData)) {
-            const dfnID = panelData.dfnID;
-            const dfn = document.getElementById(dfnID);
-            if(!dfn) {
-                console.log(`Can't find dfn#${dfnID}.`, panelData);
-            } else {
-                const panel = genDfnPanel(panelData);
-                append(document.body, panel);
-                insertDfnPopupAction(dfn, panel)
-            }
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", ()=>{
-        genAllDfnPanels();
-
-        // Add popup behavior to all dfns to show the corresponding dfn-panel.
-        var dfns = queryAll('.dfn-paneled');
-        for(let dfn of dfns) { ; }
-
-        document.body.addEventListener("click", (e) => {
-            // If not handled already, just hide all dfn panels.
-            hideAllDfnPanels();
-        });
-    })
-
-
-    function hideAllDfnPanels() {
-        // Turn off any currently "on" or "activated" panels.
-        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>hideDfnPanel(el));
-    }
-
-    function showDfnPanel(dfnPanel, dfn) {
-        hideAllDfnPanels(); // Only display one at this time.
-        dfn.setAttribute("aria-expanded", "true");
-        dfnPanel.classList.add("on");
-        dfnPanel.style.left = "5px";
-        dfnPanel.style.top = "0px";
-        const panelRect = dfnPanel.getBoundingClientRect();
-        const panelWidth = panelRect.right - panelRect.left;
-        if (panelRect.right > document.body.scrollWidth) {
-            // Panel's overflowing the screen.
-            // Just drop it below the dfn and flip it rightward instead.
-            // This still wont' fix things if the screen is *really* wide,
-            // but fixing that's a lot harder without 'anchor()'.
-            dfnPanel.style.top = "1.5em";
-            dfnPanel.style.left = "auto";
-            dfnPanel.style.right = "0px";
-        }
-    }
-
-    function pinDfnPanel(dfnPanel) {
-        // Switch it to "activated" state, which pins it.
-        dfnPanel.classList.add("activated");
-        dfnPanel.style.left = null;
-        dfnPanel.style.top = null;
-    }
-
-    function hideDfnPanel(dfnPanel, dfn) {
-        if(!dfn) {
-            dfn = document.getElementById(dfnPanel.getAttribute("data-for"));
-        }
-        dfn.setAttribute("aria-expanded", "false")
-        dfnPanel.classList.remove("on");
-        dfnPanel.classList.remove("activated");
-    }
-
-    function toggleDfnPanel(dfnPanel, dfn) {
-        if(dfnPanel.classList.contains("on")) {
-            hideDfnPanel(dfnPanel, dfn);
-        } else {
-            showDfnPanel(dfnPanel, dfn);
-        }
-    }
-
-    function insertDfnPopupAction(dfn, dfnPanel) {
-        // Find dfn panel
-        const panelWrapper = document.createElement('span');
-        panelWrapper.appendChild(dfnPanel);
-        panelWrapper.style.position = "relative";
-        panelWrapper.style.height = "0px";
-        dfn.insertAdjacentElement("afterend", panelWrapper);
-        dfn.setAttribute('role', 'button');
-        dfn.setAttribute('aria-expanded', 'false')
-        dfn.tabIndex = 0;
-        dfn.classList.add('has-dfn-panel');
-        dfn.addEventListener('click', (event) => {
-            showDfnPanel(dfnPanel, dfn);
-            event.stopPropagation();
-        });
-        dfn.addEventListener('keypress', (event) => {
-            const kc = event.keyCode;
-            // 32->Space, 13->Enter
-            if(kc == 32 || kc == 13) {
-                toggleDfnPanel(dfnPanel, dfn);
-                event.stopPropagation();
-                event.preventDefault();
-            }
-        });
-
-        dfnPanel.addEventListener('click', (event) => {
-            if (event.target.nodeName == 'A') {
-                pinDfnPanel(dfnPanel);
-            }
-            event.stopPropagation();
-        });
-
-        dfnPanel.addEventListener('keydown', (event) => {
-            if(event.keyCode == 27) { // Escape key
-                hideDfnPanel(dfnPanel, dfn);
-                event.stopPropagation();
-                event.preventDefault();
-            }
-        })
-    }
-}
-</script>
-<script>/* Boilerplate: script-dfn-panel */
-"use strict";
-{
-    const dfnsJson = window.dfnsJson || {};
-
-    function genDfnPanel({dfnID, url, dfnText, refSections, external}) {
-        return mk.aside({
-            class: "dfn-panel",
-            id: `infopanel-for-${dfnID}`,
-            "data-for": dfnID,
-            "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
-            },
-            mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
-                `Info about the '${dfnText}' ${external?"external":""} reference.`),
-            mk.a({href:url}, url),
-            mk.b({}, "Referenced in:"),
-            mk.ul({},
-                ...refSections.map(section=>
-                    mk.li({},
-                        ...section.refs.map((ref, refI)=>
-                            [
-                                mk.a({
-                                    href: `#${ref.id}`
-                                    },
-                                    (refI == 0) ? section.title : `(${refI + 1})`
-                                ),
-                                " ",
-                            ]
-                        ),
-                    ),
-                ),
-            ),
-        );
-    }
-
-    function genAllDfnPanels() {
-        for(const panelData of Object.values(window.dfnpanelData)) {
-            const dfnID = panelData.dfnID;
-            const dfn = document.getElementById(dfnID);
-            if(!dfn) {
-                console.log(`Can't find dfn#${dfnID}.`, panelData);
-            } else {
-                const panel = genDfnPanel(panelData);
-                append(document.body, panel);
-                insertDfnPopupAction(dfn, panel)
-            }
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", ()=>{
-        genAllDfnPanels();
-
-        // Add popup behavior to all dfns to show the corresponding dfn-panel.
-        var dfns = queryAll('.dfn-paneled');
-        for(let dfn of dfns) { ; }
-
-        document.body.addEventListener("click", (e) => {
-            // If not handled already, just hide all dfn panels.
-            hideAllDfnPanels();
-        });
-    })
-
-
-    function hideAllDfnPanels() {
-        // Turn off any currently "on" or "activated" panels.
-        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>hideDfnPanel(el));
-    }
-
-    function showDfnPanel(dfnPanel, dfn) {
-        hideAllDfnPanels(); // Only display one at this time.
-        dfn.setAttribute("aria-expanded", "true");
-        dfnPanel.classList.add("on");
-        dfnPanel.style.left = "5px";
-        dfnPanel.style.top = "0px";
-        const panelRect = dfnPanel.getBoundingClientRect();
-        const panelWidth = panelRect.right - panelRect.left;
-        if (panelRect.right > document.body.scrollWidth) {
-            // Panel's overflowing the screen.
-            // Just drop it below the dfn and flip it rightward instead.
-            // This still wont' fix things if the screen is *really* wide,
-            // but fixing that's a lot harder without 'anchor()'.
-            dfnPanel.style.top = "1.5em";
-            dfnPanel.style.left = "auto";
-            dfnPanel.style.right = "0px";
-        }
-    }
-
-    function pinDfnPanel(dfnPanel) {
-        // Switch it to "activated" state, which pins it.
-        dfnPanel.classList.add("activated");
-        dfnPanel.style.left = null;
-        dfnPanel.style.top = null;
-    }
-
-    function hideDfnPanel(dfnPanel, dfn) {
-        if(!dfn) {
-            dfn = document.getElementById(dfnPanel.getAttribute("data-for"));
-        }
-        dfn.setAttribute("aria-expanded", "false")
-        dfnPanel.classList.remove("on");
-        dfnPanel.classList.remove("activated");
-    }
-
-    function toggleDfnPanel(dfnPanel, dfn) {
-        if(dfnPanel.classList.contains("on")) {
-            hideDfnPanel(dfnPanel, dfn);
-        } else {
-            showDfnPanel(dfnPanel, dfn);
-        }
-    }
-
-    function insertDfnPopupAction(dfn, dfnPanel) {
-        // Find dfn panel
-        const panelWrapper = document.createElement('span');
-        panelWrapper.appendChild(dfnPanel);
-        panelWrapper.style.position = "relative";
-        panelWrapper.style.height = "0px";
-        dfn.insertAdjacentElement("afterend", panelWrapper);
-        dfn.setAttribute('role', 'button');
-        dfn.setAttribute('aria-expanded', 'false')
-        dfn.tabIndex = 0;
-        dfn.classList.add('has-dfn-panel');
-        dfn.addEventListener('click', (event) => {
-            showDfnPanel(dfnPanel, dfn);
-            event.stopPropagation();
-        });
-        dfn.addEventListener('keypress', (event) => {
-            const kc = event.keyCode;
-            // 32->Space, 13->Enter
-            if(kc == 32 || kc == 13) {
-                toggleDfnPanel(dfnPanel, dfn);
-                event.stopPropagation();
-                event.preventDefault();
-            }
-        });
-
-        dfnPanel.addEventListener('click', (event) => {
-            if (event.target.nodeName == 'A') {
-                pinDfnPanel(dfnPanel);
-            }
-            event.stopPropagation();
-        });
-
-        dfnPanel.addEventListener('keydown', (event) => {
-            if(event.keyCode == 27) { // Escape key
-                hideDfnPanel(dfnPanel, dfn);
-                event.stopPropagation();
-                event.preventDefault();
-            }
-        })
-    }
-}
-</script>
-<script>/* Boilerplate: script-dfn-panel-json */
-window.dfnpanelData = {};
-window.dfnpanelData['6c691ee6'] = {"dfnID": "6c691ee6", "url": "https://drafts.csswg.org/css-values-4/#px", "dfnText": "css pixel", "refSections": [{"refs": [{"id": "ref-for-px"}], "title": "2.1. Screen"}, {"refs": [{"id": "ref-for-px\u2460"}, {"id": "ref-for-px\u2461"}], "title": "3.2.2. Window attribute and method definition changes"}], "external": true};
-window.dfnpanelData['25a2ba89'] = {"dfnID": "25a2ba89", "url": "https://drafts.csswg.org/cssom-view-1/#screen", "dfnText": "Screen", "refSections": [{"refs": [{"id": "ref-for-screen"}], "title": "1. Introduction"}, {"refs": [{"id": "ref-for-screen\u2460"}, {"id": "ref-for-screen\u2461"}, {"id": "ref-for-screen\u2462"}], "title": "1.2.2. Detect Screen attribute changes"}, {"refs": [{"id": "ref-for-screen\u2461\u2468"}], "title": "2.10. Current screen"}, {"refs": [{"id": "ref-for-screen\u2462\u2464"}, {"id": "ref-for-screen\u2462\u2465"}, {"id": "ref-for-screen\u2462\u2466"}, {"id": "ref-for-screen\u2462\u2467"}], "title": "3.1. Extensions to the Screen interface"}, {"refs": [{"id": "ref-for-screen\u2463\u24ea"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-screen\u2464\u2462"}], "title": "3.4. The ScreenDetailed interface"}, {"refs": [{"id": "ref-for-screen\u2465\u2462"}], "title": "3.4.1. onchange attribute"}], "external": true};
-window.dfnpanelData['c0159396'] = {"dfnID": "c0159396", "url": "https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio", "dfnText": "devicePixelRatio", "refSections": [{"refs": [{"id": "ref-for-dom-window-devicepixelratio"}], "title": "2.1. Screen"}], "external": true};
-window.dfnpanelData['157f6644'] = {"dfnID": "157f6644", "url": "https://drafts.csswg.org/cssom-view-1/#dom-window-moveby", "dfnText": "moveBy(x, y)", "refSections": [{"refs": [{"id": "ref-for-dom-window-moveby"}], "title": "4. Security Considerations"}], "external": true};
-window.dfnpanelData['27215c6e'] = {"dfnID": "27215c6e", "url": "https://drafts.csswg.org/cssom-view-1/#dom-window-moveto", "dfnText": "moveTo(x, y)", "refSections": [{"refs": [{"id": "ref-for-dom-window-moveto"}], "title": "1.2.5. Place windows on a specific screen"}, {"refs": [{"id": "ref-for-dom-window-moveto\u2460"}], "title": "3.2.2. Window attribute and method definition changes"}, {"refs": [{"id": "ref-for-dom-window-moveto\u2461"}, {"id": "ref-for-dom-window-moveto\u2462"}], "title": "4. Security Considerations"}], "external": true};
-window.dfnpanelData['fd03704d'] = {"dfnID": "fd03704d", "url": "https://drafts.csswg.org/cssom-view-1/#dom-window-resizeby", "dfnText": "resizeBy(x, y)", "refSections": [{"refs": [{"id": "ref-for-dom-window-resizeby"}], "title": "4. Security Considerations"}], "external": true};
-window.dfnpanelData['887ff352'] = {"dfnID": "887ff352", "url": "https://drafts.csswg.org/cssom-view-1/#dom-window-resizeto", "dfnText": "resizeTo(width, height)", "refSections": [{"refs": [{"id": "ref-for-dom-window-resizeto"}], "title": "4. Security Considerations"}], "external": true};
-window.dfnpanelData['575ae654'] = {"dfnID": "575ae654", "url": "https://drafts.csswg.org/cssom-view-1/#dom-window-screen", "dfnText": "screen", "refSections": [{"refs": [{"id": "ref-for-dom-window-screen"}], "title": "2.10. Current screen"}, {"refs": [{"id": "ref-for-dom-window-screen\u2460"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-dom-window-screen\u2461"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-dom-window-screen\u2462"}], "title": "3.3.2. currentScreen attribute"}], "external": true};
-window.dfnpanelData['fc3f1924'] = {"dfnID": "fc3f1924", "url": "https://drafts.csswg.org/cssom-view-1/#dom-window-screenleft", "dfnText": "screenLeft", "refSections": [{"refs": [{"id": "ref-for-dom-window-screenleft"}], "title": "3.2.2. Window attribute and method definition changes"}], "external": true};
-window.dfnpanelData['e11b135c'] = {"dfnID": "e11b135c", "url": "https://drafts.csswg.org/cssom-view-1/#dom-window-screentop", "dfnText": "screenTop", "refSections": [{"refs": [{"id": "ref-for-dom-window-screentop"}], "title": "3.2.2. Window attribute and method definition changes"}], "external": true};
-window.dfnpanelData['e4c7b789'] = {"dfnID": "e4c7b789", "url": "https://drafts.csswg.org/cssom-view-1/#dom-window-screenx", "dfnText": "screenX", "refSections": [{"refs": [{"id": "ref-for-dom-window-screenx"}], "title": "3.2.2. Window attribute and method definition changes"}], "external": true};
-window.dfnpanelData['6fd8dc47'] = {"dfnID": "6fd8dc47", "url": "https://drafts.csswg.org/cssom-view-1/#dom-window-screeny", "dfnText": "screenY", "refSections": [{"refs": [{"id": "ref-for-dom-window-screeny"}], "title": "3.2.2. Window attribute and method definition changes"}], "external": true};
-window.dfnpanelData['56acfb7f'] = {"dfnID": "56acfb7f", "url": "https://drafts.csswg.org/cssom-view-1/#web-exposed-available-screen-area", "dfnText": "web-exposed available screen area", "refSections": [{"refs": [{"id": "ref-for-web-exposed-available-screen-area"}], "title": "2.4. Available screen area"}], "external": true};
-window.dfnpanelData['ebe350b9'] = {"dfnID": "ebe350b9", "url": "https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-area", "dfnText": "web-exposed screen area", "refSections": [{"refs": [{"id": "ref-for-web-exposed-screen-area"}], "title": "2.3. Screen area"}], "external": true};
-window.dfnpanelData['2bc0cdf4'] = {"dfnID": "2bc0cdf4", "url": "https://dom.spec.whatwg.org/#eventtarget", "dfnText": "EventTarget", "refSections": [{"refs": [{"id": "ref-for-eventtarget"}], "title": "3.1. Extensions to the Screen interface"}, {"refs": [{"id": "ref-for-eventtarget\u2460"}], "title": "3.3. ScreenDetails interface"}], "external": true};
-window.dfnpanelData['a973e0fe'] = {"dfnID": "a973e0fe", "url": "https://dom.spec.whatwg.org/#concept-document", "dfnText": "document", "refSections": [{"refs": [{"id": "ref-for-concept-document"}], "title": "3.7. Permission Policy integration"}], "external": true};
-window.dfnpanelData['5fd23811'] = {"dfnID": "5fd23811", "url": "https://dom.spec.whatwg.org/#concept-event-fire", "dfnText": "fire an event", "refSections": [{"refs": [{"id": "ref-for-concept-event-fire"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-concept-event-fire\u2460"}], "title": "3.3.3. onscreenschange attribute"}, {"refs": [{"id": "ref-for-concept-event-fire\u2461"}], "title": "3.3.4. oncurrentscreenchange attribute"}, {"refs": [{"id": "ref-for-concept-event-fire\u2462"}], "title": "3.4.1. onchange attribute"}], "external": true};
-window.dfnpanelData['900ce14b'] = {"dfnID": "900ce14b", "url": "https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots", "dfnText": "internal slot", "refSections": [{"refs": [{"id": "ref-for-sec-object-internal-methods-and-internal-slots"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-sec-object-internal-methods-and-internal-slots\u2460"}], "title": "3.2.3. Window.open() method definition changes"}], "external": true};
-window.dfnpanelData['6777aaf6'] = {"dfnID": "6777aaf6", "url": "https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting", "dfnText": "active fingerprinting", "refSections": [{"refs": [{"id": "ref-for-dfn-active-fingerprinting"}], "title": "2.1. Screen"}, {"refs": [{"id": "ref-for-dfn-active-fingerprinting\u2460"}], "title": "5. Privacy Considerations"}], "external": true};
-window.dfnpanelData['543d760f'] = {"dfnID": "543d760f", "url": "https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions", "dfnText": "FullscreenOptions", "refSections": [{"refs": [{"id": "ref-for-dictdef-fullscreenoptions"}], "title": "1. Introduction"}, {"refs": [{"id": "ref-for-dictdef-fullscreenoptions\u2460"}, {"id": "ref-for-dictdef-fullscreenoptions\u2461"}, {"id": "ref-for-dictdef-fullscreenoptions\u2462"}], "title": "3.5. Extensions to FullscreenOptions"}], "external": true};
-window.dfnpanelData['bcdb6841'] = {"dfnID": "bcdb6841", "url": "https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen", "dfnText": "requestFullscreen()", "refSections": [{"refs": [{"id": "ref-for-dom-element-requestfullscreen"}], "title": "1.2.4. Place fullscreen content on a specific screen"}, {"refs": [{"id": "ref-for-dom-element-requestfullscreen\u2460"}, {"id": "ref-for-dom-element-requestfullscreen\u2461"}], "title": "3.5.1. Element.requestFullscreen() method definition changes"}, {"refs": [{"id": "ref-for-dom-element-requestfullscreen\u2462"}], "title": "4. Security Considerations"}], "external": true};
-window.dfnpanelData['0e9f636b'] = {"dfnID": "0e9f636b", "url": "https://w3c.github.io/hr-time/#dom-domhighrestimestamp", "dfnText": "DOMHighResTimeStamp", "refSections": [{"refs": [{"id": "ref-for-dom-domhighrestimestamp"}], "title": "3.2.3. Window.open() method definition changes"}], "external": true};
-window.dfnpanelData['7e7cc1d8'] = {"dfnID": "7e7cc1d8", "url": "https://w3c.github.io/hr-time/#dfn-current-high-resolution-time", "dfnText": "current high resolution time", "refSections": [{"refs": [{"id": "ref-for-dfn-current-high-resolution-time"}], "title": "3.2.3. Window.open() method definition changes"}, {"refs": [{"id": "ref-for-dfn-current-high-resolution-time\u2460"}], "title": "3.5.1. Element.requestFullscreen() method definition changes"}], "external": true};
-window.dfnpanelData['f0951476'] = {"dfnID": "f0951476", "url": "https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler", "dfnText": "EventHandler", "refSections": [{"refs": [{"id": "ref-for-eventhandler"}], "title": "3.1. Extensions to the Screen interface"}, {"refs": [{"id": "ref-for-eventhandler\u2460"}, {"id": "ref-for-eventhandler\u2461"}], "title": "3.3. ScreenDetails interface"}], "external": true};
-window.dfnpanelData['5d7209e9'] = {"dfnID": "5d7209e9", "url": "https://html.spec.whatwg.org/multipage/nav-history-apis.html#window", "dfnText": "Window", "refSections": [{"refs": [{"id": "ref-for-window"}], "title": "1. Introduction"}, {"refs": [{"id": "ref-for-window\u2460"}], "title": "2.1. Screen"}, {"refs": [{"id": "ref-for-window\u2461"}, {"id": "ref-for-window\u2462"}], "title": "2.10. Current screen"}, {"refs": [{"id": "ref-for-window\u2463"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-window\u2464"}, {"id": "ref-for-window\u2465"}, {"id": "ref-for-window\u2466"}], "title": "3.2. Extensions to the Window interface"}, {"refs": [{"id": "ref-for-window\u2467"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-window\u2468"}, {"id": "ref-for-window\u2460\u24ea"}], "title": "3.2.2. Window attribute and method definition changes"}, {"refs": [{"id": "ref-for-window\u2460\u2460"}, {"id": "ref-for-window\u2460\u2461"}, {"id": "ref-for-window\u2460\u2462"}], "title": "3.2.3. Window.open() method definition changes"}, {"refs": [{"id": "ref-for-window\u2460\u2463"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-window\u2460\u2464"}, {"id": "ref-for-window\u2460\u2465"}, {"id": "ref-for-window\u2460\u2466"}], "title": "3.3.2. currentScreen attribute"}, {"refs": [{"id": "ref-for-window\u2460\u2467"}, {"id": "ref-for-window\u2460\u2468"}], "title": "3.3.4. oncurrentscreenchange attribute"}], "external": true};
-window.dfnpanelData['35972864'] = {"dfnID": "35972864", "url": "https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document", "dfnText": "active document", "refSections": [{"refs": [{"id": "ref-for-nav-document"}], "title": "3.5.1. Element.requestFullscreen() method definition changes"}], "external": true};
-window.dfnpanelData['3610bd67'] = {"dfnID": "3610bd67", "url": "https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use", "dfnText": "allowed to use", "refSections": [{"refs": [{"id": "ref-for-allowed-to-use"}], "title": "3.1.1. isExtended attribute"}, {"refs": [{"id": "ref-for-allowed-to-use\u2460"}], "title": "3.2.1. getScreenDetails() method"}], "external": true};
-window.dfnpanelData['3349d69f'] = {"dfnID": "3349d69f", "url": "https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window", "dfnText": "associated document", "refSections": [{"refs": [{"id": "ref-for-concept-document-window"}], "title": "3.1.1. isExtended attribute"}, {"refs": [{"id": "ref-for-concept-document-window\u2460"}], "title": "3.2.1. getScreenDetails() method"}], "external": true};
-window.dfnpanelData['aca22383'] = {"dfnID": "aca22383", "url": "https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation", "dfnText": "consume user activation", "refSections": [{"refs": [{"id": "ref-for-consume-user-activation"}, {"id": "ref-for-consume-user-activation\u2460"}], "title": "3.2.3. Window.open() method definition changes"}], "external": true};
-window.dfnpanelData['9d386f55'] = {"dfnID": "9d386f55", "url": "https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type", "dfnText": "event handler event type", "refSections": [{"refs": [{"id": "ref-for-event-handler-event-type"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-event-handler-event-type\u2460"}], "title": "3.3.3. onscreenschange attribute"}, {"refs": [{"id": "ref-for-event-handler-event-type\u2461"}], "title": "3.3.4. oncurrentscreenchange attribute"}], "external": true};
-window.dfnpanelData['03675365'] = {"dfnID": "03675365", "url": "https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes", "dfnText": "event handler idl attribute", "refSections": [{"refs": [{"id": "ref-for-event-handler-idl-attributes"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-event-handler-idl-attributes\u2460"}], "title": "3.3.3. onscreenschange attribute"}, {"refs": [{"id": "ref-for-event-handler-idl-attributes\u2461"}], "title": "3.3.4. oncurrentscreenchange attribute"}], "external": true};
-window.dfnpanelData['a72449dd'] = {"dfnID": "a72449dd", "url": "https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel", "dfnText": "in parallel", "refSections": [{"refs": [{"id": "ref-for-in-parallel"}], "title": "3.2.1. getScreenDetails() method"}], "external": true};
-window.dfnpanelData['3976d3be'] = {"dfnID": "3976d3be", "url": "https://html.spec.whatwg.org/multipage/#last-activation-timestamp", "dfnText": "last activation timestamp", "refSections": [{"refs": [{"id": "ref-for-last-activation-timestamp"}], "title": "3.2.3. Window.open() method definition changes"}], "external": true};
-window.dfnpanelData['f449d4f8'] = {"dfnID": "f449d4f8", "url": "https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-open", "dfnText": "open(url, target, features)", "refSections": [{"refs": [{"id": "ref-for-dom-open"}], "title": "1.2.5. Place windows on a specific screen"}, {"refs": [{"id": "ref-for-dom-open\u2460"}], "title": "3.2.2. Window attribute and method definition changes"}, {"refs": [{"id": "ref-for-dom-open\u2461"}, {"id": "ref-for-dom-open\u2462"}], "title": "3.2.3. Window.open() method definition changes"}, {"refs": [{"id": "ref-for-dom-open\u2463"}, {"id": "ref-for-dom-open\u2464"}], "title": "4. Security Considerations"}], "external": true};
-window.dfnpanelData['48438eb3'] = {"dfnID": "48438eb3", "url": "https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task", "dfnText": "queue a global task", "refSections": [{"refs": [{"id": "ref-for-queue-a-global-task"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-queue-a-global-task\u2460"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-queue-a-global-task\u2461"}], "title": "3.3.3. onscreenschange attribute"}, {"refs": [{"id": "ref-for-queue-a-global-task\u2462"}], "title": "3.3.4. oncurrentscreenchange attribute"}, {"refs": [{"id": "ref-for-queue-a-global-task\u2463"}], "title": "3.4.1. onchange attribute"}], "external": true};
-window.dfnpanelData['e99bd18e'] = {"dfnID": "e99bd18e", "url": "https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global", "dfnText": "relevant global object", "refSections": [{"refs": [{"id": "ref-for-concept-relevant-global"}], "title": "3.1.1. isExtended attribute"}, {"refs": [{"id": "ref-for-concept-relevant-global\u2460"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-concept-relevant-global\u2461"}, {"id": "ref-for-concept-relevant-global\u2462"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-concept-relevant-global\u2463"}], "title": "3.2.3. Window.open() method definition changes"}, {"refs": [{"id": "ref-for-concept-relevant-global\u2464"}], "title": "3.3.3. onscreenschange attribute"}, {"refs": [{"id": "ref-for-concept-relevant-global\u2465"}], "title": "3.3.4. oncurrentscreenchange attribute"}, {"refs": [{"id": "ref-for-concept-relevant-global\u2466"}], "title": "3.4.1. onchange attribute"}], "external": true};
-window.dfnpanelData['ae2a6342'] = {"dfnID": "ae2a6342", "url": "https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context", "dfnText": "top-level browsing context", "refSections": [{"refs": [{"id": "ref-for-top-level-browsing-context"}], "title": "3.5.1. Element.requestFullscreen() method definition changes"}], "external": true};
-window.dfnpanelData['47fe679e'] = {"dfnID": "47fe679e", "url": "https://html.spec.whatwg.org/multipage/interaction.html#transient-activation", "dfnText": "transient activation", "refSections": [{"refs": [{"id": "ref-for-transient-activation"}], "title": "3.2.3. Window.open() method definition changes"}], "external": true};
-window.dfnpanelData['6906895e'] = {"dfnID": "6906895e", "url": "https://html.spec.whatwg.org/multipage/#transient-activation-duration", "dfnText": "transient activation duration", "refSections": [{"refs": [{"id": "ref-for-transient-activation-duration"}], "title": "3.2.3. Window.open() method definition changes"}], "external": true};
-window.dfnpanelData['53275e46'] = {"dfnID": "53275e46", "url": "https://infra.spec.whatwg.org/#list-append", "dfnText": "append", "refSections": [{"refs": [{"id": "ref-for-list-append"}], "title": "3.3.1. screens attribute"}], "external": true};
-window.dfnpanelData['649608b9'] = {"dfnID": "649608b9", "url": "https://infra.spec.whatwg.org/#list", "dfnText": "list", "refSections": [{"refs": [{"id": "ref-for-list"}], "title": "3.3.1. screens attribute"}], "external": true};
-window.dfnpanelData['95c866a0'] = {"dfnID": "95c866a0", "url": "https://infra.spec.whatwg.org/#list-sort-in-ascending-order", "dfnText": "sorting", "refSections": [{"refs": [{"id": "ref-for-list-sort-in-ascending-order"}], "title": "3.3.1. screens attribute"}], "external": true};
-window.dfnpanelData['ba1bd741'] = {"dfnID": "ba1bd741", "url": "https://w3c.github.io/permissions/#dfn-default-powerful-feature", "dfnText": "default powerful feature", "refSections": [{"refs": [{"id": "ref-for-dfn-default-powerful-feature"}], "title": "3.6. Permission API Integration"}, {"refs": [{"id": "ref-for-dfn-default-powerful-feature\u2460"}], "title": "6. Accessibility Considerations"}], "external": true};
-window.dfnpanelData['2cb28cb0'] = {"dfnID": "2cb28cb0", "url": "https://w3c.github.io/permissions/#dom-permissionstate-denied", "dfnText": "denied", "refSections": [{"refs": [{"id": "ref-for-dom-permissionstate-denied"}], "title": "3.2.1. getScreenDetails() method"}], "external": true};
-window.dfnpanelData['e740d7e5'] = {"dfnID": "e740d7e5", "url": "https://w3c.github.io/permissions/#dfn-name", "dfnText": "name", "refSections": [{"refs": [{"id": "ref-for-dfn-name"}], "title": "3.6. Permission API Integration"}], "external": true};
-window.dfnpanelData['bcc085e3'] = {"dfnID": "bcc085e3", "url": "https://w3c.github.io/permissions/#dfn-request-permission-to-use", "dfnText": "request permission to use", "refSections": [{"refs": [{"id": "ref-for-dfn-request-permission-to-use"}], "title": "3.2.1. getScreenDetails() method"}], "external": true};
-window.dfnpanelData['1570624a'] = {"dfnID": "1570624a", "url": "https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist", "dfnText": "default allowlist", "refSections": [{"refs": [{"id": "ref-for-policy-controlled-feature-default-allowlist"}], "title": "3.7. Permission Policy integration"}], "external": true};
-window.dfnpanelData['cc890cc1'] = {"dfnID": "cc890cc1", "url": "https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature", "dfnText": "policy-controlled feature", "refSections": [{"refs": [{"id": "ref-for-policy-controlled-feature"}], "title": "3.1.1. isExtended attribute"}, {"refs": [{"id": "ref-for-policy-controlled-feature\u2460"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-policy-controlled-feature\u2461"}], "title": "3.7. Permission Policy integration"}], "external": true};
-window.dfnpanelData['dca2de17'] = {"dfnID": "dca2de17", "url": "https://webidl.spec.whatwg.org/#idl-DOMException", "dfnText": "DOMException", "refSections": [{"refs": [{"id": "ref-for-idl-DOMException"}, {"id": "ref-for-idl-DOMException\u2460"}], "title": "3.2.1. getScreenDetails() method"}], "external": true};
-window.dfnpanelData['8855a9aa'] = {"dfnID": "8855a9aa", "url": "https://webidl.spec.whatwg.org/#idl-DOMString", "dfnText": "DOMString", "refSections": [{"refs": [{"id": "ref-for-idl-DOMString"}], "title": "3.4. The ScreenDetailed interface"}], "external": true};
-window.dfnpanelData['889e932f'] = {"dfnID": "889e932f", "url": "https://webidl.spec.whatwg.org/#Exposed", "dfnText": "Exposed", "refSections": [{"refs": [{"id": "ref-for-Exposed"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-Exposed\u2460"}], "title": "3.4. The ScreenDetailed interface"}], "external": true};
-window.dfnpanelData['dcf5fafa'] = {"dfnID": "dcf5fafa", "url": "https://webidl.spec.whatwg.org/#idl-frozen-array", "dfnText": "FrozenArray", "refSections": [{"refs": [{"id": "ref-for-idl-frozen-array"}], "title": "3.3. ScreenDetails interface"}], "external": true};
-window.dfnpanelData['ba556545'] = {"dfnID": "ba556545", "url": "https://webidl.spec.whatwg.org/#notallowederror", "dfnText": "NotAllowedError", "refSections": [{"refs": [{"id": "ref-for-notallowederror"}, {"id": "ref-for-notallowederror\u2460"}], "title": "3.2.1. getScreenDetails() method"}], "external": true};
-window.dfnpanelData['bdbd19d1'] = {"dfnID": "bdbd19d1", "url": "https://webidl.spec.whatwg.org/#idl-promise", "dfnText": "Promise", "refSections": [{"refs": [{"id": "ref-for-idl-promise"}], "title": "3.2. Extensions to the Window interface"}], "external": true};
-window.dfnpanelData['b75bb3bd'] = {"dfnID": "b75bb3bd", "url": "https://webidl.spec.whatwg.org/#SecureContext", "dfnText": "SecureContext", "refSections": [{"refs": [{"id": "ref-for-SecureContext"}, {"id": "ref-for-SecureContext\u2460"}], "title": "3.1. Extensions to the Screen interface"}, {"refs": [{"id": "ref-for-SecureContext\u2461"}], "title": "3.2. Extensions to the Window interface"}, {"refs": [{"id": "ref-for-SecureContext\u2462"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-SecureContext\u2463"}], "title": "3.4. The ScreenDetailed interface"}], "external": true};
-window.dfnpanelData['dacde8b5'] = {"dfnID": "dacde8b5", "url": "https://webidl.spec.whatwg.org/#a-new-promise", "dfnText": "a new promise", "refSections": [{"refs": [{"id": "ref-for-a-new-promise"}], "title": "3.2.1. getScreenDetails() method"}], "external": true};
-window.dfnpanelData['5372cca8'] = {"dfnID": "5372cca8", "url": "https://webidl.spec.whatwg.org/#idl-boolean", "dfnText": "boolean", "refSections": [{"refs": [{"id": "ref-for-idl-boolean"}], "title": "3.1. Extensions to the Screen interface"}, {"refs": [{"id": "ref-for-idl-boolean\u2460"}, {"id": "ref-for-idl-boolean\u2461"}], "title": "3.4. The ScreenDetailed interface"}], "external": true};
-window.dfnpanelData['eec1be2d'] = {"dfnID": "eec1be2d", "url": "https://webidl.spec.whatwg.org/#idl-float", "dfnText": "float", "refSections": [{"refs": [{"id": "ref-for-idl-float"}], "title": "3.4. The ScreenDetailed interface"}], "external": true};
-window.dfnpanelData['f8de33a3'] = {"dfnID": "f8de33a3", "url": "https://webidl.spec.whatwg.org/#idl-long", "dfnText": "long", "refSections": [{"refs": [{"id": "ref-for-idl-long"}, {"id": "ref-for-idl-long\u2460"}, {"id": "ref-for-idl-long\u2461"}, {"id": "ref-for-idl-long\u2462"}], "title": "3.4. The ScreenDetailed interface"}], "external": true};
-window.dfnpanelData['b262501e'] = {"dfnID": "b262501e", "url": "https://webidl.spec.whatwg.org/#reject", "dfnText": "reject", "refSections": [{"refs": [{"id": "ref-for-reject"}, {"id": "ref-for-reject\u2460"}], "title": "3.2.1. getScreenDetails() method"}], "external": true};
-window.dfnpanelData['3b90bdcd'] = {"dfnID": "3b90bdcd", "url": "https://webidl.spec.whatwg.org/#resolve", "dfnText": "resolve", "refSections": [{"refs": [{"id": "ref-for-resolve"}], "title": "3.2.1. getScreenDetails() method"}], "external": true};
-window.dfnpanelData['4013a022'] = {"dfnID": "4013a022", "url": "https://webidl.spec.whatwg.org/#this", "dfnText": "this", "refSections": [{"refs": [{"id": "ref-for-this"}], "title": "3.1.1. isExtended attribute"}, {"refs": [{"id": "ref-for-this\u2460"}, {"id": "ref-for-this\u2461"}, {"id": "ref-for-this\u2462"}, {"id": "ref-for-this\u2463"}, {"id": "ref-for-this\u2464"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-this\u2465"}, {"id": "ref-for-this\u2466"}, {"id": "ref-for-this\u2467"}], "title": "3.2.3. Window.open() method definition changes"}, {"refs": [{"id": "ref-for-this\u2468"}], "title": "3.3.2. currentScreen attribute"}, {"refs": [{"id": "ref-for-this\u2460\u24ea"}, {"id": "ref-for-this\u2460\u2460"}, {"id": "ref-for-this\u2460\u2461"}, {"id": "ref-for-this\u2460\u2462"}, {"id": "ref-for-this\u2460\u2463"}, {"id": "ref-for-this\u2460\u2464"}, {"id": "ref-for-this\u2460\u2465"}, {"id": "ref-for-this\u2460\u2466"}], "title": "3.4. The ScreenDetailed interface"}, {"refs": [{"id": "ref-for-this\u2460\u2467"}], "title": "3.5.1. Element.requestFullscreen() method definition changes"}], "external": true};
-window.dfnpanelData['screen'] = {"dfnID": "screen", "url": "#screen", "dfnText": "screen", "refSections": [{"refs": [{"id": "ref-for-screen\u2463"}, {"id": "ref-for-screen\u2464"}, {"id": "ref-for-screen\u2465"}, {"id": "ref-for-screen\u2466"}, {"id": "ref-for-screen\u2467"}, {"id": "ref-for-screen\u2468"}], "title": "2.1. Screen"}, {"refs": [{"id": "ref-for-screen\u2460\u24ea"}], "title": "2.2. Screen pixel"}, {"refs": [{"id": "ref-for-screen\u2460\u2460"}, {"id": "ref-for-screen\u2460\u2461"}], "title": "2.3. Screen area"}, {"refs": [{"id": "ref-for-screen\u2460\u2462"}, {"id": "ref-for-screen\u2460\u2463"}, {"id": "ref-for-screen\u2460\u2464"}, {"id": "ref-for-screen\u2460\u2465"}], "title": "2.4. Available screen area"}, {"refs": [{"id": "ref-for-screen\u2460\u2466"}, {"id": "ref-for-screen\u2460\u2467"}, {"id": "ref-for-screen\u2460\u2468"}, {"id": "ref-for-screen\u2461\u24ea"}], "title": "2.5. Virtual screen arrangement"}, {"refs": [{"id": "ref-for-screen\u2461\u2460"}], "title": "2.6. Screen position"}, {"refs": [{"id": "ref-for-screen\u2461\u2461"}], "title": "2.7. Available screen position"}, {"refs": [{"id": "ref-for-screen\u2461\u2462"}, {"id": "ref-for-screen\u2461\u2463"}, {"id": "ref-for-screen\u2461\u2464"}], "title": "2.8. Primary screen"}, {"refs": [{"id": "ref-for-screen\u2461\u2465"}, {"id": "ref-for-screen\u2461\u2466"}, {"id": "ref-for-screen\u2461\u2467"}], "title": "2.9. Internal screen"}, {"refs": [{"id": "ref-for-screen\u2462\u24ea"}], "title": "2.10. Current screen"}, {"refs": [{"id": "ref-for-screen\u2462\u2460"}, {"id": "ref-for-screen\u2462\u2461"}, {"id": "ref-for-screen\u2462\u2462"}, {"id": "ref-for-screen\u2462\u2463"}], "title": "2.11. Observable screen properties"}, {"refs": [{"id": "ref-for-screen\u2462\u2468"}], "title": "3.1.1. isExtended attribute"}, {"refs": [{"id": "ref-for-screen\u2463\u2460"}, {"id": "ref-for-screen\u2463\u2461"}, {"id": "ref-for-screen\u2463\u2462"}, {"id": "ref-for-screen\u2463\u2463"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-screen\u2463\u2464"}, {"id": "ref-for-screen\u2463\u2465"}, {"id": "ref-for-screen\u2463\u2466"}], "title": "3.3.1. screens attribute"}, {"refs": [{"id": "ref-for-screen\u2463\u2467"}, {"id": "ref-for-screen\u2463\u2468"}, {"id": "ref-for-screen\u2464\u24ea"}], "title": "3.3.2. currentScreen attribute"}, {"refs": [{"id": "ref-for-screen\u2464\u2460"}], "title": "3.3.4. oncurrentscreenchange attribute"}, {"refs": [{"id": "ref-for-screen\u2464\u2461"}, {"id": "ref-for-screen\u2464\u2463"}, {"id": "ref-for-screen\u2464\u2464"}, {"id": "ref-for-screen\u2464\u2465"}, {"id": "ref-for-screen\u2464\u2466"}, {"id": "ref-for-screen\u2464\u2467"}, {"id": "ref-for-screen\u2464\u2468"}, {"id": "ref-for-screen\u2465\u24ea"}, {"id": "ref-for-screen\u2465\u2460"}, {"id": "ref-for-screen\u2465\u2461"}], "title": "3.4. The ScreenDetailed interface"}, {"refs": [{"id": "ref-for-screen\u2465\u2463"}], "title": "3.4.1. onchange attribute"}, {"refs": [{"id": "ref-for-screen\u2465\u2464"}, {"id": "ref-for-screen\u2465\u2465"}], "title": "3.5. Extensions to FullscreenOptions"}, {"refs": [{"id": "ref-for-screen\u2465\u2466"}], "title": "3.5.1. Element.requestFullscreen() method definition changes"}], "external": false};
-window.dfnpanelData['screen-color-depth'] = {"dfnID": "screen-color-depth", "url": "#screen-color-depth", "dfnText": "color depth", "refSections": [{"refs": [{"id": "ref-for-screen-color-depth"}], "title": "2.11. Observable screen properties"}], "external": false};
-window.dfnpanelData['screen-device-pixel-ratio'] = {"dfnID": "screen-device-pixel-ratio", "url": "#screen-device-pixel-ratio", "dfnText": "device pixel ratio", "refSections": [{"refs": [{"id": "ref-for-screen-device-pixel-ratio"}], "title": "2.1. Screen"}, {"refs": [{"id": "ref-for-screen-device-pixel-ratio\u2460"}], "title": "2.11. Observable screen properties"}, {"refs": [{"id": "ref-for-screen-device-pixel-ratio\u2461"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['screen-orientation'] = {"dfnID": "screen-orientation", "url": "#screen-orientation", "dfnText": "orientation", "refSections": [{"refs": [{"id": "ref-for-screen-orientation"}], "title": "2.11. Observable screen properties"}], "external": false};
-window.dfnpanelData['screen-label'] = {"dfnID": "screen-label", "url": "#screen-label", "dfnText": "label", "refSections": [{"refs": [{"id": "ref-for-screen-label"}, {"id": "ref-for-screen-label\u2460"}], "title": "2.1. Screen"}, {"refs": [{"id": "ref-for-screen-label\u2461"}], "title": "2.11. Observable screen properties"}, {"refs": [{"id": "ref-for-screen-label\u2462"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['screen-pixels'] = {"dfnID": "screen-pixels", "url": "#screen-pixels", "dfnText": "pixels", "refSections": [{"refs": [{"id": "ref-for-screen-pixels"}], "title": "2.1. Screen"}, {"refs": [{"id": "ref-for-screen-pixels\u2460"}, {"id": "ref-for-screen-pixels\u2461"}, {"id": "ref-for-screen-pixels\u2462"}, {"id": "ref-for-screen-pixels\u2463"}], "title": "2.2. Screen pixel"}, {"refs": [{"id": "ref-for-screen-pixels\u2464"}, {"id": "ref-for-screen-pixels\u2465"}, {"id": "ref-for-screen-pixels\u2466"}], "title": "2.3. Screen area"}, {"refs": [{"id": "ref-for-screen-pixels\u2467"}, {"id": "ref-for-screen-pixels\u2468"}], "title": "2.4. Available screen area"}], "external": false};
-window.dfnpanelData['pixel-color-depth'] = {"dfnID": "pixel-color-depth", "url": "#pixel-color-depth", "dfnText": "color depth", "refSections": [{"refs": [{"id": "ref-for-pixel-color-depth"}], "title": "2.1. Screen"}, {"refs": [{"id": "ref-for-pixel-color-depth\u2460"}], "title": "2.2. Screen pixel"}], "external": false};
-window.dfnpanelData['screen-screen-area'] = {"dfnID": "screen-screen-area", "url": "#screen-screen-area", "dfnText": "screen area", "refSections": [{"refs": [{"id": "ref-for-screen-screen-area"}, {"id": "ref-for-screen-screen-area\u2460"}, {"id": "ref-for-screen-screen-area\u2461"}, {"id": "ref-for-screen-screen-area\u2462"}, {"id": "ref-for-screen-screen-area\u2463"}], "title": "2.3. Screen area"}, {"refs": [{"id": "ref-for-screen-screen-area\u2464"}, {"id": "ref-for-screen-screen-area\u2465"}, {"id": "ref-for-screen-screen-area\u2466"}], "title": "2.4. Available screen area"}, {"refs": [{"id": "ref-for-screen-screen-area\u2467"}], "title": "2.5. Virtual screen arrangement"}, {"refs": [{"id": "ref-for-screen-screen-area\u2468"}], "title": "2.6. Screen position"}, {"refs": [{"id": "ref-for-screen-screen-area\u2460\u24ea"}], "title": "2.11. Observable screen properties"}], "external": false};
-window.dfnpanelData['screen-width'] = {"dfnID": "screen-width", "url": "#screen-width", "dfnText": "width", "refSections": [{"refs": [{"id": "ref-for-screen-width"}, {"id": "ref-for-screen-width\u2460"}], "title": "2.3. Screen area"}, {"refs": [{"id": "ref-for-screen-width\u2461"}], "title": "2.11. Observable screen properties"}], "external": false};
-window.dfnpanelData['screen-height'] = {"dfnID": "screen-height", "url": "#screen-height", "dfnText": "height", "refSections": [{"refs": [{"id": "ref-for-screen-height"}, {"id": "ref-for-screen-height\u2460"}], "title": "2.3. Screen area"}, {"refs": [{"id": "ref-for-screen-height\u2461"}], "title": "2.11. Observable screen properties"}], "external": false};
-window.dfnpanelData['screen-available-screen-area'] = {"dfnID": "screen-available-screen-area", "url": "#screen-available-screen-area", "dfnText": "available screen area", "refSections": [{"refs": [{"id": "ref-for-screen-available-screen-area"}, {"id": "ref-for-screen-available-screen-area\u2460"}], "title": "2.4. Available screen area"}, {"refs": [{"id": "ref-for-screen-available-screen-area\u2461"}], "title": "2.7. Available screen position"}, {"refs": [{"id": "ref-for-screen-available-screen-area\u2462"}], "title": "2.11. Observable screen properties"}], "external": false};
-window.dfnpanelData['screen-available-width'] = {"dfnID": "screen-available-width", "url": "#screen-available-width", "dfnText": "available width", "refSections": [{"refs": [{"id": "ref-for-screen-available-width"}], "title": "2.11. Observable screen properties"}], "external": false};
-window.dfnpanelData['screen-available-height'] = {"dfnID": "screen-available-height", "url": "#screen-available-height", "dfnText": "available height", "refSections": [{"refs": [{"id": "ref-for-screen-available-height"}], "title": "2.11. Observable screen properties"}], "external": false};
-window.dfnpanelData['virtual-screen-arrangement'] = {"dfnID": "virtual-screen-arrangement", "url": "#virtual-screen-arrangement", "dfnText": "virtual screen arrangement", "refSections": [{"refs": [{"id": "ref-for-virtual-screen-arrangement"}, {"id": "ref-for-virtual-screen-arrangement\u2460"}, {"id": "ref-for-virtual-screen-arrangement\u2461"}, {"id": "ref-for-virtual-screen-arrangement\u2462"}], "title": "2.5. Virtual screen arrangement"}, {"refs": [{"id": "ref-for-virtual-screen-arrangement\u2463"}], "title": "2.6. Screen position"}, {"refs": [{"id": "ref-for-virtual-screen-arrangement\u2464"}], "title": "2.7. Available screen position"}], "external": false};
-window.dfnpanelData['multi-screen-origin'] = {"dfnID": "multi-screen-origin", "url": "#multi-screen-origin", "dfnText": "multi-screen origin", "refSections": [{"refs": [{"id": "ref-for-multi-screen-origin"}, {"id": "ref-for-multi-screen-origin\u2460"}, {"id": "ref-for-multi-screen-origin\u2461"}], "title": "2.5. Virtual screen arrangement"}, {"refs": [{"id": "ref-for-multi-screen-origin\u2462"}], "title": "2.6. Screen position"}, {"refs": [{"id": "ref-for-multi-screen-origin\u2463"}], "title": "2.7. Available screen position"}, {"refs": [{"id": "ref-for-multi-screen-origin\u2464"}, {"id": "ref-for-multi-screen-origin\u2465"}, {"id": "ref-for-multi-screen-origin\u2466"}, {"id": "ref-for-multi-screen-origin\u2467"}, {"id": "ref-for-multi-screen-origin\u2468"}], "title": "3.2.2. Window attribute and method definition changes"}, {"refs": [{"id": "ref-for-multi-screen-origin\u2460\u24ea"}, {"id": "ref-for-multi-screen-origin\u2460\u2460"}, {"id": "ref-for-multi-screen-origin\u2460\u2461"}, {"id": "ref-for-multi-screen-origin\u2460\u2462"}], "title": "3.4. The ScreenDetailed interface"}, {"refs": [{"id": "ref-for-multi-screen-origin\u2460\u2463"}], "title": "4. Security Considerations"}], "external": false};
-window.dfnpanelData['screen-screen-position'] = {"dfnID": "screen-screen-position", "url": "#screen-screen-position", "dfnText": "screen position", "refSections": [{"refs": [{"id": "ref-for-screen-screen-position"}], "title": "2.11. Observable screen properties"}, {"refs": [{"id": "ref-for-screen-screen-position\u2460"}, {"id": "ref-for-screen-screen-position\u2461"}, {"id": "ref-for-screen-screen-position\u2462"}, {"id": "ref-for-screen-screen-position\u2463"}, {"id": "ref-for-screen-screen-position\u2464"}, {"id": "ref-for-screen-screen-position\u2465"}], "title": "3.3.1. screens attribute"}, {"refs": [{"id": "ref-for-screen-screen-position\u2466"}, {"id": "ref-for-screen-screen-position\u2467"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['screen-available-screen-position'] = {"dfnID": "screen-available-screen-position", "url": "#screen-available-screen-position", "dfnText": "available screen position", "refSections": [{"refs": [{"id": "ref-for-screen-available-screen-position"}], "title": "2.11. Observable screen properties"}, {"refs": [{"id": "ref-for-screen-available-screen-position\u2460"}, {"id": "ref-for-screen-available-screen-position\u2461"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['primary'] = {"dfnID": "primary", "url": "#primary", "dfnText": "primary", "refSections": [{"refs": [{"id": "ref-for-primary"}], "title": "2.5. Virtual screen arrangement"}, {"refs": [{"id": "ref-for-primary\u2460"}], "title": "2.8. Primary screen"}, {"refs": [{"id": "ref-for-primary\u2461"}], "title": "2.11. Observable screen properties"}, {"refs": [{"id": "ref-for-primary\u2462"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['secondary'] = {"dfnID": "secondary", "url": "#secondary", "dfnText": "secondary", "refSections": [{"refs": [{"id": "ref-for-secondary"}], "title": "2.8. Primary screen"}, {"refs": [{"id": "ref-for-secondary\u2460"}], "title": "2.11. Observable screen properties"}], "external": false};
-window.dfnpanelData['internal'] = {"dfnID": "internal", "url": "#internal", "dfnText": "internal", "refSections": [{"refs": [{"id": "ref-for-internal"}, {"id": "ref-for-internal\u2460"}, {"id": "ref-for-internal\u2461"}, {"id": "ref-for-internal\u2462"}, {"id": "ref-for-internal\u2463"}], "title": "2.9. Internal screen"}, {"refs": [{"id": "ref-for-internal\u2464"}], "title": "2.11. Observable screen properties"}, {"refs": [{"id": "ref-for-internal\u2465"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['external'] = {"dfnID": "external", "url": "#external", "dfnText": "external", "refSections": [{"refs": [{"id": "ref-for-external"}, {"id": "ref-for-external\u2460"}, {"id": "ref-for-external\u2461"}, {"id": "ref-for-external\u2462"}], "title": "2.9. Internal screen"}, {"refs": [{"id": "ref-for-external\u2463"}], "title": "2.11. Observable screen properties"}], "external": false};
-window.dfnpanelData['current-screen'] = {"dfnID": "current-screen", "url": "#current-screen", "dfnText": "current screen", "refSections": [{"refs": [{"id": "ref-for-current-screen"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-current-screen\u2460"}, {"id": "ref-for-current-screen\u2461"}, {"id": "ref-for-current-screen\u2462"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-current-screen\u2463"}, {"id": "ref-for-current-screen\u2464"}, {"id": "ref-for-current-screen\u2465"}], "title": "3.3.2. currentScreen attribute"}, {"refs": [{"id": "ref-for-current-screen\u2466"}, {"id": "ref-for-current-screen\u2467"}], "title": "3.3.4. oncurrentscreenchange attribute"}, {"refs": [{"id": "ref-for-current-screen\u2468"}], "title": "3.7. Permission Policy integration"}, {"refs": [{"id": "ref-for-current-screen\u2460\u24ea"}, {"id": "ref-for-current-screen\u2460\u2460"}, {"id": "ref-for-current-screen\u2460\u2461"}, {"id": "ref-for-current-screen\u2460\u2462"}, {"id": "ref-for-current-screen\u2460\u2463"}], "title": "4. Security Considerations"}, {"refs": [{"id": "ref-for-current-screen\u2460\u2464"}], "title": "5. Privacy Considerations"}], "external": false};
-window.dfnpanelData['screen-basic-observable-properties'] = {"dfnID": "screen-basic-observable-properties", "url": "#screen-basic-observable-properties", "dfnText": "basic observable properties", "refSections": [{"refs": [{"id": "ref-for-screen-basic-observable-properties"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-screen-basic-observable-properties\u2460"}], "title": "3.3.4. oncurrentscreenchange attribute"}, {"refs": [{"id": "ref-for-screen-basic-observable-properties\u2461"}], "title": "3.4.1. onchange attribute"}], "external": false};
-window.dfnpanelData['screen-advanced-observable-properties'] = {"dfnID": "screen-advanced-observable-properties", "url": "#screen-advanced-observable-properties", "dfnText": "advanced observable properties", "refSections": [{"refs": [{"id": "ref-for-screen-advanced-observable-properties"}], "title": "3.3.4. oncurrentscreenchange attribute"}, {"refs": [{"id": "ref-for-screen-advanced-observable-properties\u2460"}], "title": "3.4.1. onchange attribute"}], "external": false};
-window.dfnpanelData['dom-screen-isextended'] = {"dfnID": "dom-screen-isextended", "url": "#dom-screen-isextended", "dfnText": "isExtended", "refSections": [{"refs": [{"id": "ref-for-dom-screen-isextended"}], "title": "1.2.1. Detect the presence of multiple screens"}, {"refs": [{"id": "ref-for-dom-screen-isextended\u2460"}], "title": "1.2.2. Detect Screen attribute changes"}, {"refs": [{"id": "ref-for-dom-screen-isextended\u2461"}, {"id": "ref-for-dom-screen-isextended\u2462"}], "title": "3.1. Extensions to the Screen interface"}, {"refs": [{"id": "ref-for-dom-screen-isextended\u2463"}], "title": "3.1.1. isExtended attribute"}, {"refs": [{"id": "ref-for-dom-screen-isextended\u2464"}], "title": "3.5.1. Element.requestFullscreen() method definition changes"}, {"refs": [{"id": "ref-for-dom-screen-isextended\u2465"}, {"id": "ref-for-dom-screen-isextended\u2466"}, {"id": "ref-for-dom-screen-isextended\u2467"}], "title": "3.7. Permission Policy integration"}], "external": false};
-window.dfnpanelData['dom-screen-onchange'] = {"dfnID": "dom-screen-onchange", "url": "#dom-screen-onchange", "dfnText": "onchange", "refSections": [{"refs": [{"id": "ref-for-dom-screen-onchange"}, {"id": "ref-for-dom-screen-onchange\u2460"}], "title": "3.1. Extensions to the Screen interface"}, {"refs": [{"id": "ref-for-dom-screen-onchange\u2461"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-dom-screen-onchange\u2462"}], "title": "3.4.1. onchange attribute"}], "external": false};
-window.dfnpanelData['eventdef-screen-change'] = {"dfnID": "eventdef-screen-change", "url": "#eventdef-screen-change", "dfnText": "change", "refSections": [{"refs": [{"id": "ref-for-eventdef-screen-change"}], "title": "1.2.2. Detect Screen attribute changes"}, {"refs": [{"id": "ref-for-eventdef-screen-change\u2460"}], "title": "3.1.2. onchange attribute"}], "external": false};
-window.dfnpanelData['window-placement-task-source'] = {"dfnID": "window-placement-task-source", "url": "#window-placement-task-source", "dfnText": "window placement task source", "refSections": [{"refs": [{"id": "ref-for-window-placement-task-source"}], "title": "3.1.2. onchange attribute"}, {"refs": [{"id": "ref-for-window-placement-task-source\u2460"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-window-placement-task-source\u2461"}], "title": "3.3.3. onscreenschange attribute"}, {"refs": [{"id": "ref-for-window-placement-task-source\u2462"}], "title": "3.3.4. oncurrentscreenchange attribute"}, {"refs": [{"id": "ref-for-window-placement-task-source\u2463"}], "title": "3.4.1. onchange attribute"}], "external": false};
-window.dfnpanelData['dom-window-screendetails-slot'] = {"dfnID": "dom-window-screendetails-slot", "url": "#dom-window-screendetails-slot", "dfnText": "[[screenDetails]]", "refSections": [{"refs": [{"id": "ref-for-dom-window-screendetails-slot"}, {"id": "ref-for-dom-window-screendetails-slot\u2460"}, {"id": "ref-for-dom-window-screendetails-slot\u2461"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-dom-window-screendetails-slot\u2462"}], "title": "3.3.4. oncurrentscreenchange attribute"}], "external": false};
-window.dfnpanelData['dom-window-getscreendetails'] = {"dfnID": "dom-window-getscreendetails", "url": "#dom-window-getscreendetails", "dfnText": "getScreenDetails()", "refSections": [{"refs": [{"id": "ref-for-dom-window-getscreendetails"}], "title": "1.2.3. Request detailed screen information"}, {"refs": [{"id": "ref-for-dom-window-getscreendetails\u2460"}, {"id": "ref-for-dom-window-getscreendetails\u2461"}], "title": "3.2. Extensions to the Window interface"}, {"refs": [{"id": "ref-for-dom-window-getscreendetails\u2462"}, {"id": "ref-for-dom-window-getscreendetails\u2463"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-dom-window-getscreendetails\u2464"}, {"id": "ref-for-dom-window-getscreendetails\u2465"}], "title": "3.7. Permission Policy integration"}], "external": false};
-window.dfnpanelData['dom-window-targetscreenfullscreen-slot'] = {"dfnID": "dom-window-targetscreenfullscreen-slot", "url": "#dom-window-targetscreenfullscreen-slot", "dfnText": "[[targetScreenFullscreen]]", "refSections": [{"refs": [{"id": "ref-for-dom-window-targetscreenfullscreen-slot"}, {"id": "ref-for-dom-window-targetscreenfullscreen-slot\u2460"}, {"id": "ref-for-dom-window-targetscreenfullscreen-slot\u2461"}], "title": "3.2.3. Window.open() method definition changes"}, {"refs": [{"id": "ref-for-dom-window-targetscreenfullscreen-slot\u2462"}], "title": "3.5.1. Element.requestFullscreen() method definition changes"}], "external": false};
-window.dfnpanelData['screendetails'] = {"dfnID": "screendetails", "url": "#screendetails", "dfnText": "ScreenDetails", "refSections": [{"refs": [{"id": "ref-for-screendetails"}], "title": "1. Introduction"}, {"refs": [{"id": "ref-for-screendetails\u2460"}], "title": "1.2.3. Request detailed screen information"}, {"refs": [{"id": "ref-for-screendetails\u2461"}, {"id": "ref-for-screendetails\u2462"}], "title": "3.2. Extensions to the Window interface"}, {"refs": [{"id": "ref-for-screendetails\u2463"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-screendetails\u2464"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-screendetails\u2465"}], "title": "3.3.3. onscreenschange attribute"}, {"refs": [{"id": "ref-for-screendetails\u2466"}], "title": "3.3.4. oncurrentscreenchange attribute"}, {"refs": [{"id": "ref-for-screendetails\u2467"}], "title": "3.7. Permission Policy integration"}], "external": false};
-window.dfnpanelData['dom-screendetails-screens'] = {"dfnID": "dom-screendetails-screens", "url": "#dom-screendetails-screens", "dfnText": "screens", "refSections": [{"refs": [{"id": "ref-for-dom-screendetails-screens"}, {"id": "ref-for-dom-screendetails-screens\u2460"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-dom-screendetails-screens\u2461"}], "title": "3.3.1. screens attribute"}, {"refs": [{"id": "ref-for-dom-screendetails-screens\u2462"}, {"id": "ref-for-dom-screendetails-screens\u2463"}, {"id": "ref-for-dom-screendetails-screens\u2464"}], "title": "3.3.2. currentScreen attribute"}, {"refs": [{"id": "ref-for-dom-screendetails-screens\u2465"}], "title": "3.3.3. onscreenschange attribute"}], "external": false};
-window.dfnpanelData['screen-ordering'] = {"dfnID": "screen-ordering", "url": "#screen-ordering", "dfnText": "screen ordering", "refSections": [{"refs": [{"id": "ref-for-screen-ordering"}], "title": "3.3.1. screens attribute"}], "external": false};
-window.dfnpanelData['dom-screendetails-currentscreen'] = {"dfnID": "dom-screendetails-currentscreen", "url": "#dom-screendetails-currentscreen", "dfnText": "currentScreen", "refSections": [{"refs": [{"id": "ref-for-dom-screendetails-currentscreen"}, {"id": "ref-for-dom-screendetails-currentscreen\u2460"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-dom-screendetails-currentscreen\u2461"}, {"id": "ref-for-dom-screendetails-currentscreen\u2462"}, {"id": "ref-for-dom-screendetails-currentscreen\u2463"}, {"id": "ref-for-dom-screendetails-currentscreen\u2464"}], "title": "3.3.2. currentScreen attribute"}], "external": false};
-window.dfnpanelData['dom-screendetails-onscreenschange'] = {"dfnID": "dom-screendetails-onscreenschange", "url": "#dom-screendetails-onscreenschange", "dfnText": "onscreenschange", "refSections": [{"refs": [{"id": "ref-for-dom-screendetails-onscreenschange"}, {"id": "ref-for-dom-screendetails-onscreenschange\u2460"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-dom-screendetails-onscreenschange\u2461"}], "title": "3.3.3. onscreenschange attribute"}], "external": false};
-window.dfnpanelData['eventdef-screendetails-screenschange'] = {"dfnID": "eventdef-screendetails-screenschange", "url": "#eventdef-screendetails-screenschange", "dfnText": "screenschange", "refSections": [{"refs": [{"id": "ref-for-eventdef-screendetails-screenschange"}], "title": "3.3.3. onscreenschange attribute"}], "external": false};
-window.dfnpanelData['dom-screendetails-oncurrentscreenchange'] = {"dfnID": "dom-screendetails-oncurrentscreenchange", "url": "#dom-screendetails-oncurrentscreenchange", "dfnText": "oncurrentscreenchange", "refSections": [{"refs": [{"id": "ref-for-dom-screendetails-oncurrentscreenchange"}, {"id": "ref-for-dom-screendetails-oncurrentscreenchange\u2460"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-dom-screendetails-oncurrentscreenchange\u2461"}], "title": "3.3.4. oncurrentscreenchange attribute"}], "external": false};
-window.dfnpanelData['eventdef-screendetails-currentscreenchange'] = {"dfnID": "eventdef-screendetails-currentscreenchange", "url": "#eventdef-screendetails-currentscreenchange", "dfnText": "currentscreenchange", "refSections": [{"refs": [{"id": "ref-for-eventdef-screendetails-currentscreenchange"}], "title": "3.3.2. currentScreen attribute"}, {"refs": [{"id": "ref-for-eventdef-screendetails-currentscreenchange\u2460"}], "title": "3.3.4. oncurrentscreenchange attribute"}], "external": false};
-window.dfnpanelData['screendetailed'] = {"dfnID": "screendetailed", "url": "#screendetailed", "dfnText": "ScreenDetailed", "refSections": [{"refs": [{"id": "ref-for-screendetailed"}], "title": "1. Introduction"}, {"refs": [{"id": "ref-for-screendetailed\u2460"}], "title": "1.2.5. Place windows on a specific screen"}, {"refs": [{"id": "ref-for-screendetailed\u2461"}, {"id": "ref-for-screendetailed\u2462"}, {"id": "ref-for-screendetailed\u2463"}, {"id": "ref-for-screendetailed\u2464"}], "title": "3.3. ScreenDetails interface"}, {"refs": [{"id": "ref-for-screendetailed\u2465"}], "title": "3.3.1. screens attribute"}, {"refs": [{"id": "ref-for-screendetailed\u2466"}, {"id": "ref-for-screendetailed\u2467"}], "title": "3.3.2. currentScreen attribute"}, {"refs": [{"id": "ref-for-screendetailed\u2468"}, {"id": "ref-for-screendetailed\u2460\u24ea"}], "title": "3.4. The ScreenDetailed interface"}, {"refs": [{"id": "ref-for-screendetailed\u2460\u2460"}], "title": "3.4.1. onchange attribute"}, {"refs": [{"id": "ref-for-screendetailed\u2460\u2461"}], "title": "3.5. Extensions to FullscreenOptions"}, {"refs": [{"id": "ref-for-screendetailed\u2460\u2462"}], "title": "3.5.1. Element.requestFullscreen() method definition changes"}], "external": false};
-window.dfnpanelData['dom-screendetailed-availleft'] = {"dfnID": "dom-screendetailed-availleft", "url": "#dom-screendetailed-availleft", "dfnText": "availLeft", "refSections": [{"refs": [{"id": "ref-for-dom-screendetailed-availleft"}, {"id": "ref-for-dom-screendetailed-availleft\u2460"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['dom-screendetailed-availtop'] = {"dfnID": "dom-screendetailed-availtop", "url": "#dom-screendetailed-availtop", "dfnText": "availTop", "refSections": [{"refs": [{"id": "ref-for-dom-screendetailed-availtop"}, {"id": "ref-for-dom-screendetailed-availtop\u2460"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['dom-screendetailed-left'] = {"dfnID": "dom-screendetailed-left", "url": "#dom-screendetailed-left", "dfnText": "left", "refSections": [{"refs": [{"id": "ref-for-dom-screendetailed-left"}, {"id": "ref-for-dom-screendetailed-left\u2460"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['dom-screendetailed-top'] = {"dfnID": "dom-screendetailed-top", "url": "#dom-screendetailed-top", "dfnText": "top", "refSections": [{"refs": [{"id": "ref-for-dom-screendetailed-top"}, {"id": "ref-for-dom-screendetailed-top\u2460"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['dom-screendetailed-isprimary'] = {"dfnID": "dom-screendetailed-isprimary", "url": "#dom-screendetailed-isprimary", "dfnText": "isPrimary", "refSections": [{"refs": [{"id": "ref-for-dom-screendetailed-isprimary"}, {"id": "ref-for-dom-screendetailed-isprimary\u2460"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['dom-screendetailed-isinternal'] = {"dfnID": "dom-screendetailed-isinternal", "url": "#dom-screendetailed-isinternal", "dfnText": "isInternal", "refSections": [{"refs": [{"id": "ref-for-dom-screendetailed-isinternal"}, {"id": "ref-for-dom-screendetailed-isinternal\u2460"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['dom-screendetailed-devicepixelratio'] = {"dfnID": "dom-screendetailed-devicepixelratio", "url": "#dom-screendetailed-devicepixelratio", "dfnText": "devicePixelRatio", "refSections": [{"refs": [{"id": "ref-for-dom-screendetailed-devicepixelratio"}, {"id": "ref-for-dom-screendetailed-devicepixelratio\u2460"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['dom-screendetailed-label'] = {"dfnID": "dom-screendetailed-label", "url": "#dom-screendetailed-label", "dfnText": "label", "refSections": [{"refs": [{"id": "ref-for-dom-screendetailed-label"}, {"id": "ref-for-dom-screendetailed-label\u2460"}], "title": "3.4. The ScreenDetailed interface"}], "external": false};
-window.dfnpanelData['dom-screendetailed-onchange'] = {"dfnID": "dom-screendetailed-onchange", "url": "#dom-screendetailed-onchange", "dfnText": "onchange", "refSections": [{"refs": [{"id": "ref-for-dom-screendetailed-onchange"}], "title": "3.4.1. onchange attribute"}], "external": false};
-window.dfnpanelData['eventdef-screendetailed-change'] = {"dfnID": "eventdef-screendetailed-change", "url": "#eventdef-screendetailed-change", "dfnText": "change", "refSections": [{"refs": [{"id": "ref-for-eventdef-screendetailed-change"}], "title": "3.3.2. currentScreen attribute"}], "external": false};
-window.dfnpanelData['dom-fullscreenoptions-screen'] = {"dfnID": "dom-fullscreenoptions-screen", "url": "#dom-fullscreenoptions-screen", "dfnText": "screen", "refSections": [{"refs": [{"id": "ref-for-dom-fullscreenoptions-screen"}, {"id": "ref-for-dom-fullscreenoptions-screen\u2460"}], "title": "3.5. Extensions to FullscreenOptions"}, {"refs": [{"id": "ref-for-dom-fullscreenoptions-screen\u2461"}, {"id": "ref-for-dom-fullscreenoptions-screen\u2462"}], "title": "3.5.1. Element.requestFullscreen() method definition changes"}], "external": false};
-window.dfnpanelData['permissiondef-window-management'] = {"dfnID": "permissiondef-window-management", "url": "#permissiondef-window-management", "dfnText": "window-management", "refSections": [{"refs": [{"id": "ref-for-permissiondef-window-management"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-permissiondef-window-management\u2460"}, {"id": "ref-for-permissiondef-window-management\u2461"}], "title": "3.6. Permission API Integration"}], "external": false};
-window.dfnpanelData['dom-permissionpolicy-window-management'] = {"dfnID": "dom-permissionpolicy-window-management", "url": "#dom-permissionpolicy-window-management", "dfnText": "\"window-management\"", "refSections": [{"refs": [{"id": "ref-for-dom-permissionpolicy-window-management"}], "title": "3.1.1. isExtended attribute"}, {"refs": [{"id": "ref-for-dom-permissionpolicy-window-management\u2460"}], "title": "3.2.1. getScreenDetails() method"}, {"refs": [{"id": "ref-for-dom-permissionpolicy-window-management\u2461"}], "title": "3.7. Permission Policy integration"}], "external": false};
-</script>
 <script>/* Boilerplate: script-dom-helper */
+"use strict";
 function query(sel) { return document.querySelector(sel); }
 
 function queryAll(sel) { return [...document.querySelectorAll(sel)]; }
@@ -2350,103 +1974,909 @@ function parseHTML(markup) {
 		el.innerHTML = markup;
 		return el.content;
 	}
+}</script>
+<script>/* Boilerplate: script-dfn-panel */
+"use strict";
+{
+let dfnPanelData = {
+"03675365": {"dfnID":"03675365","dfnText":"event handler idl attribute","external":true,"refSections":[{"refs":[{"id":"ref-for-event-handler-idl-attributes"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-event-handler-idl-attributes\u2460"}],"title":"3.3.3. onscreenschange attribute"},{"refs":[{"id":"ref-for-event-handler-idl-attributes\u2461"}],"title":"3.3.4. oncurrentscreenchange attribute"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes"},
+"0e9f636b": {"dfnID":"0e9f636b","dfnText":"DOMHighResTimeStamp","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-domhighrestimestamp"}],"title":"3.2.3. Window.open() method definition changes"}],"url":"https://w3c.github.io/hr-time/#dom-domhighrestimestamp"},
+"1570624a": {"dfnID":"1570624a","dfnText":"default allowlist","external":true,"refSections":[{"refs":[{"id":"ref-for-policy-controlled-feature-default-allowlist"}],"title":"3.7. Permission Policy integration"}],"url":"https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist"},
+"157f6644": {"dfnID":"157f6644","dfnText":"moveBy(x, y)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-moveby"}],"title":"4. Security Considerations"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-moveby"},
+"25a2ba89": {"dfnID":"25a2ba89","dfnText":"Screen","external":true,"refSections":[{"refs":[{"id":"ref-for-screen"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-screen\u2460"},{"id":"ref-for-screen\u2461"},{"id":"ref-for-screen\u2462"}],"title":"1.2.2. Detect Screen attribute changes"},{"refs":[{"id":"ref-for-screen\u2461\u2468"}],"title":"2.10. Current screen"},{"refs":[{"id":"ref-for-screen\u2462\u2464"},{"id":"ref-for-screen\u2462\u2465"},{"id":"ref-for-screen\u2462\u2466"},{"id":"ref-for-screen\u2462\u2467"}],"title":"3.1. Extensions to the Screen interface"},{"refs":[{"id":"ref-for-screen\u2463\u24ea"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-screen\u2464\u2462"}],"title":"3.4. The ScreenDetailed interface"},{"refs":[{"id":"ref-for-screen\u2465\u2462"}],"title":"3.4.1. onchange attribute"}],"url":"https://drafts.csswg.org/cssom-view-1/#screen"},
+"27215c6e": {"dfnID":"27215c6e","dfnText":"moveTo(x, y)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-moveto"}],"title":"1.2.5. Place windows on a specific screen"},{"refs":[{"id":"ref-for-dom-window-moveto\u2460"}],"title":"3.2.2. Window attribute and method definition changes"},{"refs":[{"id":"ref-for-dom-window-moveto\u2461"},{"id":"ref-for-dom-window-moveto\u2462"}],"title":"4. Security Considerations"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-moveto"},
+"2bc0cdf4": {"dfnID":"2bc0cdf4","dfnText":"EventTarget","external":true,"refSections":[{"refs":[{"id":"ref-for-eventtarget"}],"title":"3.1. Extensions to the Screen interface"},{"refs":[{"id":"ref-for-eventtarget\u2460"}],"title":"3.3. ScreenDetails interface"}],"url":"https://dom.spec.whatwg.org/#eventtarget"},
+"2cb28cb0": {"dfnID":"2cb28cb0","dfnText":"denied","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-permissionstate-denied"}],"title":"3.2.1. getScreenDetails() method"}],"url":"https://w3c.github.io/permissions/#dom-permissionstate-denied"},
+"3349d69f": {"dfnID":"3349d69f","dfnText":"associated document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document-window"}],"title":"3.1.1. isExtended attribute"},{"refs":[{"id":"ref-for-concept-document-window\u2460"}],"title":"3.2.1. getScreenDetails() method"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window"},
+"35972864": {"dfnID":"35972864","dfnText":"active document","external":true,"refSections":[{"refs":[{"id":"ref-for-nav-document"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document"},
+"3610bd67": {"dfnID":"3610bd67","dfnText":"allowed to use","external":true,"refSections":[{"refs":[{"id":"ref-for-allowed-to-use"}],"title":"3.1.1. isExtended attribute"},{"refs":[{"id":"ref-for-allowed-to-use\u2460"}],"title":"3.2.1. getScreenDetails() method"}],"url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use"},
+"3976d3be": {"dfnID":"3976d3be","dfnText":"last activation timestamp","external":true,"refSections":[{"refs":[{"id":"ref-for-last-activation-timestamp"}],"title":"3.2.3. Window.open() method definition changes"}],"url":"https://html.spec.whatwg.org/multipage/#last-activation-timestamp"},
+"3b90bdcd": {"dfnID":"3b90bdcd","dfnText":"resolve","external":true,"refSections":[{"refs":[{"id":"ref-for-resolve"}],"title":"3.2.1. getScreenDetails() method"}],"url":"https://webidl.spec.whatwg.org/#resolve"},
+"4013a022": {"dfnID":"4013a022","dfnText":"this","external":true,"refSections":[{"refs":[{"id":"ref-for-this"}],"title":"3.1.1. isExtended attribute"},{"refs":[{"id":"ref-for-this\u2460"},{"id":"ref-for-this\u2461"},{"id":"ref-for-this\u2462"},{"id":"ref-for-this\u2463"},{"id":"ref-for-this\u2464"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-this\u2465"},{"id":"ref-for-this\u2466"},{"id":"ref-for-this\u2467"}],"title":"3.2.3. Window.open() method definition changes"},{"refs":[{"id":"ref-for-this\u2468"}],"title":"3.3.2. currentScreen attribute"},{"refs":[{"id":"ref-for-this\u2460\u24ea"},{"id":"ref-for-this\u2460\u2460"},{"id":"ref-for-this\u2460\u2461"},{"id":"ref-for-this\u2460\u2462"},{"id":"ref-for-this\u2460\u2463"},{"id":"ref-for-this\u2460\u2464"},{"id":"ref-for-this\u2460\u2465"},{"id":"ref-for-this\u2460\u2466"}],"title":"3.4. The ScreenDetailed interface"},{"refs":[{"id":"ref-for-this\u2460\u2467"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"}],"url":"https://webidl.spec.whatwg.org/#this"},
+"47fe679e": {"dfnID":"47fe679e","dfnText":"transient activation","external":true,"refSections":[{"refs":[{"id":"ref-for-transient-activation"}],"title":"3.2.3. Window.open() method definition changes"}],"url":"https://html.spec.whatwg.org/multipage/interaction.html#transient-activation"},
+"48438eb3": {"dfnID":"48438eb3","dfnText":"queue a global task","external":true,"refSections":[{"refs":[{"id":"ref-for-queue-a-global-task"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-queue-a-global-task\u2460"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-queue-a-global-task\u2461"}],"title":"3.3.3. onscreenschange attribute"},{"refs":[{"id":"ref-for-queue-a-global-task\u2462"}],"title":"3.3.4. oncurrentscreenchange attribute"},{"refs":[{"id":"ref-for-queue-a-global-task\u2463"}],"title":"3.4.1. onchange attribute"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task"},
+"53275e46": {"dfnID":"53275e46","dfnText":"append","external":true,"refSections":[{"refs":[{"id":"ref-for-list-append"}],"title":"3.3.1. screens attribute"}],"url":"https://infra.spec.whatwg.org/#list-append"},
+"5372cca8": {"dfnID":"5372cca8","dfnText":"boolean","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-boolean"}],"title":"3.1. Extensions to the Screen interface"},{"refs":[{"id":"ref-for-idl-boolean\u2460"},{"id":"ref-for-idl-boolean\u2461"}],"title":"3.4. The ScreenDetailed interface"}],"url":"https://webidl.spec.whatwg.org/#idl-boolean"},
+"543d760f": {"dfnID":"543d760f","dfnText":"FullscreenOptions","external":true,"refSections":[{"refs":[{"id":"ref-for-dictdef-fullscreenoptions"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-dictdef-fullscreenoptions\u2460"},{"id":"ref-for-dictdef-fullscreenoptions\u2461"},{"id":"ref-for-dictdef-fullscreenoptions\u2462"}],"title":"3.5. Extensions to FullscreenOptions"}],"url":"https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions"},
+"56acfb7f": {"dfnID":"56acfb7f","dfnText":"web-exposed available screen area","external":true,"refSections":[{"refs":[{"id":"ref-for-web-exposed-available-screen-area"}],"title":"2.4. Available screen area"}],"url":"https://drafts.csswg.org/cssom-view-1/#web-exposed-available-screen-area"},
+"575ae654": {"dfnID":"575ae654","dfnText":"screen","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-screen"}],"title":"2.10. Current screen"},{"refs":[{"id":"ref-for-dom-window-screen\u2460"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-dom-window-screen\u2461"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-dom-window-screen\u2462"}],"title":"3.3.2. currentScreen attribute"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-screen"},
+"5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-window\u2460"}],"title":"2.1. Screen"},{"refs":[{"id":"ref-for-window\u2461"},{"id":"ref-for-window\u2462"}],"title":"2.10. Current screen"},{"refs":[{"id":"ref-for-window\u2463"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-window\u2464"},{"id":"ref-for-window\u2465"},{"id":"ref-for-window\u2466"}],"title":"3.2. Extensions to the Window interface"},{"refs":[{"id":"ref-for-window\u2467"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-window\u2468"},{"id":"ref-for-window\u2460\u24ea"}],"title":"3.2.2. Window attribute and method definition changes"},{"refs":[{"id":"ref-for-window\u2460\u2460"},{"id":"ref-for-window\u2460\u2461"},{"id":"ref-for-window\u2460\u2462"}],"title":"3.2.3. Window.open() method definition changes"},{"refs":[{"id":"ref-for-window\u2460\u2463"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-window\u2460\u2464"},{"id":"ref-for-window\u2460\u2465"},{"id":"ref-for-window\u2460\u2466"}],"title":"3.3.2. currentScreen attribute"},{"refs":[{"id":"ref-for-window\u2460\u2467"},{"id":"ref-for-window\u2460\u2468"}],"title":"3.3.4. oncurrentscreenchange attribute"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
+"5fd23811": {"dfnID":"5fd23811","dfnText":"fire an event","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-event-fire"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-concept-event-fire\u2460"}],"title":"3.3.3. onscreenschange attribute"},{"refs":[{"id":"ref-for-concept-event-fire\u2461"}],"title":"3.3.4. oncurrentscreenchange attribute"},{"refs":[{"id":"ref-for-concept-event-fire\u2462"}],"title":"3.4.1. onchange attribute"}],"url":"https://dom.spec.whatwg.org/#concept-event-fire"},
+"649608b9": {"dfnID":"649608b9","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-list"}],"title":"3.3.1. screens attribute"}],"url":"https://infra.spec.whatwg.org/#list"},
+"6777aaf6": {"dfnID":"6777aaf6","dfnText":"active fingerprinting","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-active-fingerprinting"}],"title":"2.1. Screen"},{"refs":[{"id":"ref-for-dfn-active-fingerprinting\u2460"}],"title":"5. Privacy Considerations"}],"url":"https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting"},
+"6906895e": {"dfnID":"6906895e","dfnText":"transient activation duration","external":true,"refSections":[{"refs":[{"id":"ref-for-transient-activation-duration"}],"title":"3.2.3. Window.open() method definition changes"}],"url":"https://html.spec.whatwg.org/multipage/#transient-activation-duration"},
+"6c691ee6": {"dfnID":"6c691ee6","dfnText":"css pixel","external":true,"refSections":[{"refs":[{"id":"ref-for-px"}],"title":"2.1. Screen"},{"refs":[{"id":"ref-for-px\u2460"},{"id":"ref-for-px\u2461"}],"title":"3.2.2. Window attribute and method definition changes"}],"url":"https://drafts.csswg.org/css-values-4/#px"},
+"6fd8dc47": {"dfnID":"6fd8dc47","dfnText":"screenY","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-screeny"}],"title":"3.2.2. Window attribute and method definition changes"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-screeny"},
+"7e7cc1d8": {"dfnID":"7e7cc1d8","dfnText":"current high resolution time","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-current-high-resolution-time"}],"title":"3.2.3. Window.open() method definition changes"},{"refs":[{"id":"ref-for-dfn-current-high-resolution-time\u2460"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"}],"url":"https://w3c.github.io/hr-time/#dfn-current-high-resolution-time"},
+"8855a9aa": {"dfnID":"8855a9aa","dfnText":"DOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-DOMString"}],"title":"3.4. The ScreenDetailed interface"}],"url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
+"887ff352": {"dfnID":"887ff352","dfnText":"resizeTo(width, height)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-resizeto"}],"title":"4. Security Considerations"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-resizeto"},
+"889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-Exposed\u2460"}],"title":"3.4. The ScreenDetailed interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
+"900ce14b": {"dfnID":"900ce14b","dfnText":"internal slot","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-object-internal-methods-and-internal-slots"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-sec-object-internal-methods-and-internal-slots\u2460"}],"title":"3.2.3. Window.open() method definition changes"}],"url":"https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots"},
+"95c866a0": {"dfnID":"95c866a0","dfnText":"sorting","external":true,"refSections":[{"refs":[{"id":"ref-for-list-sort-in-ascending-order"}],"title":"3.3.1. screens attribute"}],"url":"https://infra.spec.whatwg.org/#list-sort-in-ascending-order"},
+"9d386f55": {"dfnID":"9d386f55","dfnText":"event handler event type","external":true,"refSections":[{"refs":[{"id":"ref-for-event-handler-event-type"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-event-handler-event-type\u2460"}],"title":"3.3.3. onscreenschange attribute"},{"refs":[{"id":"ref-for-event-handler-event-type\u2461"}],"title":"3.3.4. oncurrentscreenchange attribute"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type"},
+"a72449dd": {"dfnID":"a72449dd","dfnText":"in parallel","external":true,"refSections":[{"refs":[{"id":"ref-for-in-parallel"}],"title":"3.2.1. getScreenDetails() method"}],"url":"https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel"},
+"a973e0fe": {"dfnID":"a973e0fe","dfnText":"document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document"}],"title":"3.7. Permission Policy integration"}],"url":"https://dom.spec.whatwg.org/#concept-document"},
+"aca22383": {"dfnID":"aca22383","dfnText":"consume user activation","external":true,"refSections":[{"refs":[{"id":"ref-for-consume-user-activation"},{"id":"ref-for-consume-user-activation\u2460"}],"title":"3.2.3. Window.open() method definition changes"}],"url":"https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation"},
+"ae2a6342": {"dfnID":"ae2a6342","dfnText":"top-level browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-top-level-browsing-context"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context"},
+"b262501e": {"dfnID":"b262501e","dfnText":"reject","external":true,"refSections":[{"refs":[{"id":"ref-for-reject"},{"id":"ref-for-reject\u2460"}],"title":"3.2.1. getScreenDetails() method"}],"url":"https://webidl.spec.whatwg.org/#reject"},
+"b75bb3bd": {"dfnID":"b75bb3bd","dfnText":"SecureContext","external":true,"refSections":[{"refs":[{"id":"ref-for-SecureContext"},{"id":"ref-for-SecureContext\u2460"}],"title":"3.1. Extensions to the Screen interface"},{"refs":[{"id":"ref-for-SecureContext\u2461"}],"title":"3.2. Extensions to the Window interface"},{"refs":[{"id":"ref-for-SecureContext\u2462"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-SecureContext\u2463"}],"title":"3.4. The ScreenDetailed interface"}],"url":"https://webidl.spec.whatwg.org/#SecureContext"},
+"ba1bd741": {"dfnID":"ba1bd741","dfnText":"default powerful feature","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-default-powerful-feature"}],"title":"3.6. Permission API Integration"},{"refs":[{"id":"ref-for-dfn-default-powerful-feature\u2460"}],"title":"6. Accessibility Considerations"}],"url":"https://w3c.github.io/permissions/#dfn-default-powerful-feature"},
+"ba556545": {"dfnID":"ba556545","dfnText":"NotAllowedError","external":true,"refSections":[{"refs":[{"id":"ref-for-notallowederror"},{"id":"ref-for-notallowederror\u2460"}],"title":"3.2.1. getScreenDetails() method"}],"url":"https://webidl.spec.whatwg.org/#notallowederror"},
+"bcc085e3": {"dfnID":"bcc085e3","dfnText":"request permission to use","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-request-permission-to-use"}],"title":"3.2.1. getScreenDetails() method"}],"url":"https://w3c.github.io/permissions/#dfn-request-permission-to-use"},
+"bcdb6841": {"dfnID":"bcdb6841","dfnText":"requestFullscreen()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-element-requestfullscreen"}],"title":"1.2.4. Place fullscreen content on a specific screen"},{"refs":[{"id":"ref-for-dom-element-requestfullscreen\u2460"},{"id":"ref-for-dom-element-requestfullscreen\u2461"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"},{"refs":[{"id":"ref-for-dom-element-requestfullscreen\u2462"}],"title":"4. Security Considerations"}],"url":"https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen"},
+"bdbd19d1": {"dfnID":"bdbd19d1","dfnText":"Promise","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-promise"}],"title":"3.2. Extensions to the Window interface"}],"url":"https://webidl.spec.whatwg.org/#idl-promise"},
+"c0159396": {"dfnID":"c0159396","dfnText":"devicePixelRatio","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-devicepixelratio"}],"title":"2.1. Screen"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio"},
+"cc890cc1": {"dfnID":"cc890cc1","dfnText":"policy-controlled feature","external":true,"refSections":[{"refs":[{"id":"ref-for-policy-controlled-feature"}],"title":"3.1.1. isExtended attribute"},{"refs":[{"id":"ref-for-policy-controlled-feature\u2460"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-policy-controlled-feature\u2461"}],"title":"3.7. Permission Policy integration"}],"url":"https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature"},
+"current-screen": {"dfnID":"current-screen","dfnText":"current screen","external":false,"refSections":[{"refs":[{"id":"ref-for-current-screen"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-current-screen\u2460"},{"id":"ref-for-current-screen\u2461"},{"id":"ref-for-current-screen\u2462"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-current-screen\u2463"},{"id":"ref-for-current-screen\u2464"},{"id":"ref-for-current-screen\u2465"}],"title":"3.3.2. currentScreen attribute"},{"refs":[{"id":"ref-for-current-screen\u2466"},{"id":"ref-for-current-screen\u2467"}],"title":"3.3.4. oncurrentscreenchange attribute"},{"refs":[{"id":"ref-for-current-screen\u2468"}],"title":"3.7. Permission Policy integration"},{"refs":[{"id":"ref-for-current-screen\u2460\u24ea"},{"id":"ref-for-current-screen\u2460\u2460"},{"id":"ref-for-current-screen\u2460\u2461"},{"id":"ref-for-current-screen\u2460\u2462"},{"id":"ref-for-current-screen\u2460\u2463"}],"title":"4. Security Considerations"},{"refs":[{"id":"ref-for-current-screen\u2460\u2464"}],"title":"5. Privacy Considerations"}],"url":"#current-screen"},
+"dacde8b5": {"dfnID":"dacde8b5","dfnText":"a new promise","external":true,"refSections":[{"refs":[{"id":"ref-for-a-new-promise"}],"title":"3.2.1. getScreenDetails() method"}],"url":"https://webidl.spec.whatwg.org/#a-new-promise"},
+"dca2de17": {"dfnID":"dca2de17","dfnText":"DOMException","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-DOMException"},{"id":"ref-for-idl-DOMException\u2460"}],"title":"3.2.1. getScreenDetails() method"}],"url":"https://webidl.spec.whatwg.org/#idl-DOMException"},
+"dcf5fafa": {"dfnID":"dcf5fafa","dfnText":"FrozenArray","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-frozen-array"}],"title":"3.3. ScreenDetails interface"}],"url":"https://webidl.spec.whatwg.org/#idl-frozen-array"},
+"dom-fullscreenoptions-screen": {"dfnID":"dom-fullscreenoptions-screen","dfnText":"screen","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-fullscreenoptions-screen"},{"id":"ref-for-dom-fullscreenoptions-screen\u2460"}],"title":"3.5. Extensions to FullscreenOptions"},{"refs":[{"id":"ref-for-dom-fullscreenoptions-screen\u2461"},{"id":"ref-for-dom-fullscreenoptions-screen\u2462"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"}],"url":"#dom-fullscreenoptions-screen"},
+"dom-permissionpolicy-window-management": {"dfnID":"dom-permissionpolicy-window-management","dfnText":"\"window-management\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionpolicy-window-management"}],"title":"3.1.1. isExtended attribute"},{"refs":[{"id":"ref-for-dom-permissionpolicy-window-management\u2460"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-dom-permissionpolicy-window-management\u2461"}],"title":"3.7. Permission Policy integration"}],"url":"#dom-permissionpolicy-window-management"},
+"dom-screen-isextended": {"dfnID":"dom-screen-isextended","dfnText":"isExtended","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screen-isextended"}],"title":"1.2.1. Detect the presence of multiple screens"},{"refs":[{"id":"ref-for-dom-screen-isextended\u2460"}],"title":"1.2.2. Detect Screen attribute changes"},{"refs":[{"id":"ref-for-dom-screen-isextended\u2461"},{"id":"ref-for-dom-screen-isextended\u2462"}],"title":"3.1. Extensions to the Screen interface"},{"refs":[{"id":"ref-for-dom-screen-isextended\u2463"}],"title":"3.1.1. isExtended attribute"},{"refs":[{"id":"ref-for-dom-screen-isextended\u2464"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"},{"refs":[{"id":"ref-for-dom-screen-isextended\u2465"},{"id":"ref-for-dom-screen-isextended\u2466"},{"id":"ref-for-dom-screen-isextended\u2467"}],"title":"3.7. Permission Policy integration"}],"url":"#dom-screen-isextended"},
+"dom-screen-onchange": {"dfnID":"dom-screen-onchange","dfnText":"onchange","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screen-onchange"},{"id":"ref-for-dom-screen-onchange\u2460"}],"title":"3.1. Extensions to the Screen interface"},{"refs":[{"id":"ref-for-dom-screen-onchange\u2461"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-dom-screen-onchange\u2462"}],"title":"3.4.1. onchange attribute"}],"url":"#dom-screen-onchange"},
+"dom-screendetailed-availleft": {"dfnID":"dom-screendetailed-availleft","dfnText":"availLeft","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetailed-availleft"},{"id":"ref-for-dom-screendetailed-availleft\u2460"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#dom-screendetailed-availleft"},
+"dom-screendetailed-availtop": {"dfnID":"dom-screendetailed-availtop","dfnText":"availTop","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetailed-availtop"},{"id":"ref-for-dom-screendetailed-availtop\u2460"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#dom-screendetailed-availtop"},
+"dom-screendetailed-devicepixelratio": {"dfnID":"dom-screendetailed-devicepixelratio","dfnText":"devicePixelRatio","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetailed-devicepixelratio"},{"id":"ref-for-dom-screendetailed-devicepixelratio\u2460"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#dom-screendetailed-devicepixelratio"},
+"dom-screendetailed-isinternal": {"dfnID":"dom-screendetailed-isinternal","dfnText":"isInternal","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetailed-isinternal"},{"id":"ref-for-dom-screendetailed-isinternal\u2460"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#dom-screendetailed-isinternal"},
+"dom-screendetailed-isprimary": {"dfnID":"dom-screendetailed-isprimary","dfnText":"isPrimary","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetailed-isprimary"},{"id":"ref-for-dom-screendetailed-isprimary\u2460"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#dom-screendetailed-isprimary"},
+"dom-screendetailed-label": {"dfnID":"dom-screendetailed-label","dfnText":"label","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetailed-label"},{"id":"ref-for-dom-screendetailed-label\u2460"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#dom-screendetailed-label"},
+"dom-screendetailed-left": {"dfnID":"dom-screendetailed-left","dfnText":"left","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetailed-left"},{"id":"ref-for-dom-screendetailed-left\u2460"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#dom-screendetailed-left"},
+"dom-screendetailed-onchange": {"dfnID":"dom-screendetailed-onchange","dfnText":"onchange","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetailed-onchange"}],"title":"3.4.1. onchange attribute"}],"url":"#dom-screendetailed-onchange"},
+"dom-screendetailed-top": {"dfnID":"dom-screendetailed-top","dfnText":"top","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetailed-top"},{"id":"ref-for-dom-screendetailed-top\u2460"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#dom-screendetailed-top"},
+"dom-screendetails-currentscreen": {"dfnID":"dom-screendetails-currentscreen","dfnText":"currentScreen","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetails-currentscreen"},{"id":"ref-for-dom-screendetails-currentscreen\u2460"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-dom-screendetails-currentscreen\u2461"},{"id":"ref-for-dom-screendetails-currentscreen\u2462"},{"id":"ref-for-dom-screendetails-currentscreen\u2463"},{"id":"ref-for-dom-screendetails-currentscreen\u2464"}],"title":"3.3.2. currentScreen attribute"}],"url":"#dom-screendetails-currentscreen"},
+"dom-screendetails-oncurrentscreenchange": {"dfnID":"dom-screendetails-oncurrentscreenchange","dfnText":"oncurrentscreenchange","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetails-oncurrentscreenchange"},{"id":"ref-for-dom-screendetails-oncurrentscreenchange\u2460"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-dom-screendetails-oncurrentscreenchange\u2461"}],"title":"3.3.4. oncurrentscreenchange attribute"}],"url":"#dom-screendetails-oncurrentscreenchange"},
+"dom-screendetails-onscreenschange": {"dfnID":"dom-screendetails-onscreenschange","dfnText":"onscreenschange","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetails-onscreenschange"},{"id":"ref-for-dom-screendetails-onscreenschange\u2460"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-dom-screendetails-onscreenschange\u2461"}],"title":"3.3.3. onscreenschange attribute"}],"url":"#dom-screendetails-onscreenschange"},
+"dom-screendetails-screens": {"dfnID":"dom-screendetails-screens","dfnText":"screens","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screendetails-screens"},{"id":"ref-for-dom-screendetails-screens\u2460"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-dom-screendetails-screens\u2461"}],"title":"3.3.1. screens attribute"},{"refs":[{"id":"ref-for-dom-screendetails-screens\u2462"},{"id":"ref-for-dom-screendetails-screens\u2463"},{"id":"ref-for-dom-screendetails-screens\u2464"}],"title":"3.3.2. currentScreen attribute"},{"refs":[{"id":"ref-for-dom-screendetails-screens\u2465"}],"title":"3.3.3. onscreenschange attribute"}],"url":"#dom-screendetails-screens"},
+"dom-window-getscreendetails": {"dfnID":"dom-window-getscreendetails","dfnText":"getScreenDetails()","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-window-getscreendetails"}],"title":"1.2.3. Request detailed screen information"},{"refs":[{"id":"ref-for-dom-window-getscreendetails\u2460"},{"id":"ref-for-dom-window-getscreendetails\u2461"}],"title":"3.2. Extensions to the Window interface"},{"refs":[{"id":"ref-for-dom-window-getscreendetails\u2462"},{"id":"ref-for-dom-window-getscreendetails\u2463"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-dom-window-getscreendetails\u2464"},{"id":"ref-for-dom-window-getscreendetails\u2465"}],"title":"3.7. Permission Policy integration"}],"url":"#dom-window-getscreendetails"},
+"dom-window-screendetails-slot": {"dfnID":"dom-window-screendetails-slot","dfnText":"[[screenDetails]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-window-screendetails-slot"},{"id":"ref-for-dom-window-screendetails-slot\u2460"},{"id":"ref-for-dom-window-screendetails-slot\u2461"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-dom-window-screendetails-slot\u2462"}],"title":"3.3.4. oncurrentscreenchange attribute"}],"url":"#dom-window-screendetails-slot"},
+"dom-window-targetscreenfullscreen-slot": {"dfnID":"dom-window-targetscreenfullscreen-slot","dfnText":"[[targetScreenFullscreen]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-window-targetscreenfullscreen-slot"},{"id":"ref-for-dom-window-targetscreenfullscreen-slot\u2460"},{"id":"ref-for-dom-window-targetscreenfullscreen-slot\u2461"}],"title":"3.2.3. Window.open() method definition changes"},{"refs":[{"id":"ref-for-dom-window-targetscreenfullscreen-slot\u2462"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"}],"url":"#dom-window-targetscreenfullscreen-slot"},
+"e11b135c": {"dfnID":"e11b135c","dfnText":"screenTop","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-screentop"}],"title":"3.2.2. Window attribute and method definition changes"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-screentop"},
+"e4c7b789": {"dfnID":"e4c7b789","dfnText":"screenX","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-screenx"}],"title":"3.2.2. Window attribute and method definition changes"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-screenx"},
+"e740d7e5": {"dfnID":"e740d7e5","dfnText":"name","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-name"}],"title":"3.6. Permission API Integration"}],"url":"https://w3c.github.io/permissions/#dfn-name"},
+"e99bd18e": {"dfnID":"e99bd18e","dfnText":"relevant global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-relevant-global"}],"title":"3.1.1. isExtended attribute"},{"refs":[{"id":"ref-for-concept-relevant-global\u2460"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-concept-relevant-global\u2461"},{"id":"ref-for-concept-relevant-global\u2462"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-concept-relevant-global\u2463"}],"title":"3.2.3. Window.open() method definition changes"},{"refs":[{"id":"ref-for-concept-relevant-global\u2464"}],"title":"3.3.3. onscreenschange attribute"},{"refs":[{"id":"ref-for-concept-relevant-global\u2465"}],"title":"3.3.4. oncurrentscreenchange attribute"},{"refs":[{"id":"ref-for-concept-relevant-global\u2466"}],"title":"3.4.1. onchange attribute"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global"},
+"ebe350b9": {"dfnID":"ebe350b9","dfnText":"web-exposed screen area","external":true,"refSections":[{"refs":[{"id":"ref-for-web-exposed-screen-area"}],"title":"2.3. Screen area"}],"url":"https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-area"},
+"eec1be2d": {"dfnID":"eec1be2d","dfnText":"float","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-float"}],"title":"3.4. The ScreenDetailed interface"}],"url":"https://webidl.spec.whatwg.org/#idl-float"},
+"eventdef-screen-change": {"dfnID":"eventdef-screen-change","dfnText":"change","external":false,"refSections":[{"refs":[{"id":"ref-for-eventdef-screen-change"}],"title":"1.2.2. Detect Screen attribute changes"},{"refs":[{"id":"ref-for-eventdef-screen-change\u2460"}],"title":"3.1.2. onchange attribute"}],"url":"#eventdef-screen-change"},
+"eventdef-screendetailed-change": {"dfnID":"eventdef-screendetailed-change","dfnText":"change","external":false,"refSections":[{"refs":[{"id":"ref-for-eventdef-screendetailed-change"}],"title":"3.3.2. currentScreen attribute"}],"url":"#eventdef-screendetailed-change"},
+"eventdef-screendetails-currentscreenchange": {"dfnID":"eventdef-screendetails-currentscreenchange","dfnText":"currentscreenchange","external":false,"refSections":[{"refs":[{"id":"ref-for-eventdef-screendetails-currentscreenchange"}],"title":"3.3.2. currentScreen attribute"},{"refs":[{"id":"ref-for-eventdef-screendetails-currentscreenchange\u2460"}],"title":"3.3.4. oncurrentscreenchange attribute"}],"url":"#eventdef-screendetails-currentscreenchange"},
+"eventdef-screendetails-screenschange": {"dfnID":"eventdef-screendetails-screenschange","dfnText":"screenschange","external":false,"refSections":[{"refs":[{"id":"ref-for-eventdef-screendetails-screenschange"}],"title":"3.3.3. onscreenschange attribute"}],"url":"#eventdef-screendetails-screenschange"},
+"external": {"dfnID":"external","dfnText":"external","external":false,"refSections":[{"refs":[{"id":"ref-for-external"},{"id":"ref-for-external\u2460"},{"id":"ref-for-external\u2461"},{"id":"ref-for-external\u2462"}],"title":"2.9. Internal screen"},{"refs":[{"id":"ref-for-external\u2463"}],"title":"2.11. Observable screen properties"}],"url":"#external"},
+"f0951476": {"dfnID":"f0951476","dfnText":"EventHandler","external":true,"refSections":[{"refs":[{"id":"ref-for-eventhandler"}],"title":"3.1. Extensions to the Screen interface"},{"refs":[{"id":"ref-for-eventhandler\u2460"},{"id":"ref-for-eventhandler\u2461"}],"title":"3.3. ScreenDetails interface"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"},
+"f449d4f8": {"dfnID":"f449d4f8","dfnText":"open(url, target, features)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-open"}],"title":"1.2.5. Place windows on a specific screen"},{"refs":[{"id":"ref-for-dom-open\u2460"}],"title":"3.2.2. Window attribute and method definition changes"},{"refs":[{"id":"ref-for-dom-open\u2461"},{"id":"ref-for-dom-open\u2462"}],"title":"3.2.3. Window.open() method definition changes"},{"refs":[{"id":"ref-for-dom-open\u2463"},{"id":"ref-for-dom-open\u2464"}],"title":"4. Security Considerations"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-open"},
+"f8de33a3": {"dfnID":"f8de33a3","dfnText":"long","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-long"},{"id":"ref-for-idl-long\u2460"},{"id":"ref-for-idl-long\u2461"},{"id":"ref-for-idl-long\u2462"}],"title":"3.4. The ScreenDetailed interface"}],"url":"https://webidl.spec.whatwg.org/#idl-long"},
+"fc3f1924": {"dfnID":"fc3f1924","dfnText":"screenLeft","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-screenleft"}],"title":"3.2.2. Window attribute and method definition changes"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-screenleft"},
+"fd03704d": {"dfnID":"fd03704d","dfnText":"resizeBy(x, y)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-resizeby"}],"title":"4. Security Considerations"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-resizeby"},
+"internal": {"dfnID":"internal","dfnText":"internal","external":false,"refSections":[{"refs":[{"id":"ref-for-internal"},{"id":"ref-for-internal\u2460"},{"id":"ref-for-internal\u2461"},{"id":"ref-for-internal\u2462"},{"id":"ref-for-internal\u2463"}],"title":"2.9. Internal screen"},{"refs":[{"id":"ref-for-internal\u2464"}],"title":"2.11. Observable screen properties"},{"refs":[{"id":"ref-for-internal\u2465"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#internal"},
+"multi-screen-origin": {"dfnID":"multi-screen-origin","dfnText":"multi-screen origin","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-screen-origin"},{"id":"ref-for-multi-screen-origin\u2460"},{"id":"ref-for-multi-screen-origin\u2461"}],"title":"2.5. Virtual screen arrangement"},{"refs":[{"id":"ref-for-multi-screen-origin\u2462"}],"title":"2.6. Screen position"},{"refs":[{"id":"ref-for-multi-screen-origin\u2463"}],"title":"2.7. Available screen position"},{"refs":[{"id":"ref-for-multi-screen-origin\u2464"},{"id":"ref-for-multi-screen-origin\u2465"},{"id":"ref-for-multi-screen-origin\u2466"},{"id":"ref-for-multi-screen-origin\u2467"},{"id":"ref-for-multi-screen-origin\u2468"}],"title":"3.2.2. Window attribute and method definition changes"},{"refs":[{"id":"ref-for-multi-screen-origin\u2460\u24ea"},{"id":"ref-for-multi-screen-origin\u2460\u2460"},{"id":"ref-for-multi-screen-origin\u2460\u2461"},{"id":"ref-for-multi-screen-origin\u2460\u2462"}],"title":"3.4. The ScreenDetailed interface"},{"refs":[{"id":"ref-for-multi-screen-origin\u2460\u2463"}],"title":"4. Security Considerations"}],"url":"#multi-screen-origin"},
+"permissiondef-window-management": {"dfnID":"permissiondef-window-management","dfnText":"window-management","external":false,"refSections":[{"refs":[{"id":"ref-for-permissiondef-window-management"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-permissiondef-window-management\u2460"},{"id":"ref-for-permissiondef-window-management\u2461"}],"title":"3.6. Permission API Integration"}],"url":"#permissiondef-window-management"},
+"pixel-color-depth": {"dfnID":"pixel-color-depth","dfnText":"color depth","external":false,"refSections":[{"refs":[{"id":"ref-for-pixel-color-depth"}],"title":"2.1. Screen"},{"refs":[{"id":"ref-for-pixel-color-depth\u2460"}],"title":"2.2. Screen pixel"}],"url":"#pixel-color-depth"},
+"primary": {"dfnID":"primary","dfnText":"primary","external":false,"refSections":[{"refs":[{"id":"ref-for-primary"}],"title":"2.5. Virtual screen arrangement"},{"refs":[{"id":"ref-for-primary\u2460"}],"title":"2.8. Primary screen"},{"refs":[{"id":"ref-for-primary\u2461"}],"title":"2.11. Observable screen properties"},{"refs":[{"id":"ref-for-primary\u2462"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#primary"},
+"screen": {"dfnID":"screen","dfnText":"screen","external":false,"refSections":[{"refs":[{"id":"ref-for-screen\u2463"},{"id":"ref-for-screen\u2464"},{"id":"ref-for-screen\u2465"},{"id":"ref-for-screen\u2466"},{"id":"ref-for-screen\u2467"},{"id":"ref-for-screen\u2468"}],"title":"2.1. Screen"},{"refs":[{"id":"ref-for-screen\u2460\u24ea"}],"title":"2.2. Screen pixel"},{"refs":[{"id":"ref-for-screen\u2460\u2460"},{"id":"ref-for-screen\u2460\u2461"}],"title":"2.3. Screen area"},{"refs":[{"id":"ref-for-screen\u2460\u2462"},{"id":"ref-for-screen\u2460\u2463"},{"id":"ref-for-screen\u2460\u2464"},{"id":"ref-for-screen\u2460\u2465"}],"title":"2.4. Available screen area"},{"refs":[{"id":"ref-for-screen\u2460\u2466"},{"id":"ref-for-screen\u2460\u2467"},{"id":"ref-for-screen\u2460\u2468"},{"id":"ref-for-screen\u2461\u24ea"}],"title":"2.5. Virtual screen arrangement"},{"refs":[{"id":"ref-for-screen\u2461\u2460"}],"title":"2.6. Screen position"},{"refs":[{"id":"ref-for-screen\u2461\u2461"}],"title":"2.7. Available screen position"},{"refs":[{"id":"ref-for-screen\u2461\u2462"},{"id":"ref-for-screen\u2461\u2463"},{"id":"ref-for-screen\u2461\u2464"}],"title":"2.8. Primary screen"},{"refs":[{"id":"ref-for-screen\u2461\u2465"},{"id":"ref-for-screen\u2461\u2466"},{"id":"ref-for-screen\u2461\u2467"}],"title":"2.9. Internal screen"},{"refs":[{"id":"ref-for-screen\u2462\u24ea"}],"title":"2.10. Current screen"},{"refs":[{"id":"ref-for-screen\u2462\u2460"},{"id":"ref-for-screen\u2462\u2461"},{"id":"ref-for-screen\u2462\u2462"},{"id":"ref-for-screen\u2462\u2463"}],"title":"2.11. Observable screen properties"},{"refs":[{"id":"ref-for-screen\u2462\u2468"}],"title":"3.1.1. isExtended attribute"},{"refs":[{"id":"ref-for-screen\u2463\u2460"},{"id":"ref-for-screen\u2463\u2461"},{"id":"ref-for-screen\u2463\u2462"},{"id":"ref-for-screen\u2463\u2463"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-screen\u2463\u2464"},{"id":"ref-for-screen\u2463\u2465"},{"id":"ref-for-screen\u2463\u2466"}],"title":"3.3.1. screens attribute"},{"refs":[{"id":"ref-for-screen\u2463\u2467"},{"id":"ref-for-screen\u2463\u2468"},{"id":"ref-for-screen\u2464\u24ea"}],"title":"3.3.2. currentScreen attribute"},{"refs":[{"id":"ref-for-screen\u2464\u2460"}],"title":"3.3.4. oncurrentscreenchange attribute"},{"refs":[{"id":"ref-for-screen\u2464\u2461"},{"id":"ref-for-screen\u2464\u2463"},{"id":"ref-for-screen\u2464\u2464"},{"id":"ref-for-screen\u2464\u2465"},{"id":"ref-for-screen\u2464\u2466"},{"id":"ref-for-screen\u2464\u2467"},{"id":"ref-for-screen\u2464\u2468"},{"id":"ref-for-screen\u2465\u24ea"},{"id":"ref-for-screen\u2465\u2460"},{"id":"ref-for-screen\u2465\u2461"}],"title":"3.4. The ScreenDetailed interface"},{"refs":[{"id":"ref-for-screen\u2465\u2463"}],"title":"3.4.1. onchange attribute"},{"refs":[{"id":"ref-for-screen\u2465\u2464"},{"id":"ref-for-screen\u2465\u2465"}],"title":"3.5. Extensions to FullscreenOptions"},{"refs":[{"id":"ref-for-screen\u2465\u2466"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"}],"url":"#screen"},
+"screen-advanced-observable-properties": {"dfnID":"screen-advanced-observable-properties","dfnText":"advanced observable properties","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-advanced-observable-properties"}],"title":"3.3.4. oncurrentscreenchange attribute"},{"refs":[{"id":"ref-for-screen-advanced-observable-properties\u2460"}],"title":"3.4.1. onchange attribute"}],"url":"#screen-advanced-observable-properties"},
+"screen-available-height": {"dfnID":"screen-available-height","dfnText":"available height","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-available-height"}],"title":"2.11. Observable screen properties"}],"url":"#screen-available-height"},
+"screen-available-screen-area": {"dfnID":"screen-available-screen-area","dfnText":"available screen area","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-available-screen-area"},{"id":"ref-for-screen-available-screen-area\u2460"}],"title":"2.4. Available screen area"},{"refs":[{"id":"ref-for-screen-available-screen-area\u2461"}],"title":"2.7. Available screen position"},{"refs":[{"id":"ref-for-screen-available-screen-area\u2462"}],"title":"2.11. Observable screen properties"}],"url":"#screen-available-screen-area"},
+"screen-available-screen-position": {"dfnID":"screen-available-screen-position","dfnText":"available screen position","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-available-screen-position"}],"title":"2.11. Observable screen properties"},{"refs":[{"id":"ref-for-screen-available-screen-position\u2460"},{"id":"ref-for-screen-available-screen-position\u2461"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#screen-available-screen-position"},
+"screen-available-width": {"dfnID":"screen-available-width","dfnText":"available width","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-available-width"}],"title":"2.11. Observable screen properties"}],"url":"#screen-available-width"},
+"screen-basic-observable-properties": {"dfnID":"screen-basic-observable-properties","dfnText":"basic observable properties","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-basic-observable-properties"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-screen-basic-observable-properties\u2460"}],"title":"3.3.4. oncurrentscreenchange attribute"},{"refs":[{"id":"ref-for-screen-basic-observable-properties\u2461"}],"title":"3.4.1. onchange attribute"}],"url":"#screen-basic-observable-properties"},
+"screen-color-depth": {"dfnID":"screen-color-depth","dfnText":"color depth","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-color-depth"}],"title":"2.11. Observable screen properties"}],"url":"#screen-color-depth"},
+"screen-device-pixel-ratio": {"dfnID":"screen-device-pixel-ratio","dfnText":"device pixel ratio","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-device-pixel-ratio"}],"title":"2.1. Screen"},{"refs":[{"id":"ref-for-screen-device-pixel-ratio\u2460"}],"title":"2.11. Observable screen properties"},{"refs":[{"id":"ref-for-screen-device-pixel-ratio\u2461"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#screen-device-pixel-ratio"},
+"screen-height": {"dfnID":"screen-height","dfnText":"height","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-height"},{"id":"ref-for-screen-height\u2460"}],"title":"2.3. Screen area"},{"refs":[{"id":"ref-for-screen-height\u2461"}],"title":"2.11. Observable screen properties"}],"url":"#screen-height"},
+"screen-label": {"dfnID":"screen-label","dfnText":"label","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-label"},{"id":"ref-for-screen-label\u2460"}],"title":"2.1. Screen"},{"refs":[{"id":"ref-for-screen-label\u2461"}],"title":"2.11. Observable screen properties"},{"refs":[{"id":"ref-for-screen-label\u2462"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#screen-label"},
+"screen-ordering": {"dfnID":"screen-ordering","dfnText":"screen ordering","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-ordering"}],"title":"3.3.1. screens attribute"}],"url":"#screen-ordering"},
+"screen-orientation": {"dfnID":"screen-orientation","dfnText":"orientation","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-orientation"}],"title":"2.11. Observable screen properties"}],"url":"#screen-orientation"},
+"screen-pixels": {"dfnID":"screen-pixels","dfnText":"pixels","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-pixels"}],"title":"2.1. Screen"},{"refs":[{"id":"ref-for-screen-pixels\u2460"},{"id":"ref-for-screen-pixels\u2461"},{"id":"ref-for-screen-pixels\u2462"},{"id":"ref-for-screen-pixels\u2463"}],"title":"2.2. Screen pixel"},{"refs":[{"id":"ref-for-screen-pixels\u2464"},{"id":"ref-for-screen-pixels\u2465"},{"id":"ref-for-screen-pixels\u2466"}],"title":"2.3. Screen area"},{"refs":[{"id":"ref-for-screen-pixels\u2467"},{"id":"ref-for-screen-pixels\u2468"}],"title":"2.4. Available screen area"}],"url":"#screen-pixels"},
+"screen-screen-area": {"dfnID":"screen-screen-area","dfnText":"screen area","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-screen-area"},{"id":"ref-for-screen-screen-area\u2460"},{"id":"ref-for-screen-screen-area\u2461"},{"id":"ref-for-screen-screen-area\u2462"},{"id":"ref-for-screen-screen-area\u2463"}],"title":"2.3. Screen area"},{"refs":[{"id":"ref-for-screen-screen-area\u2464"},{"id":"ref-for-screen-screen-area\u2465"},{"id":"ref-for-screen-screen-area\u2466"}],"title":"2.4. Available screen area"},{"refs":[{"id":"ref-for-screen-screen-area\u2467"}],"title":"2.5. Virtual screen arrangement"},{"refs":[{"id":"ref-for-screen-screen-area\u2468"}],"title":"2.6. Screen position"},{"refs":[{"id":"ref-for-screen-screen-area\u2460\u24ea"}],"title":"2.11. Observable screen properties"}],"url":"#screen-screen-area"},
+"screen-screen-position": {"dfnID":"screen-screen-position","dfnText":"screen position","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-screen-position"}],"title":"2.11. Observable screen properties"},{"refs":[{"id":"ref-for-screen-screen-position\u2460"},{"id":"ref-for-screen-screen-position\u2461"},{"id":"ref-for-screen-screen-position\u2462"},{"id":"ref-for-screen-screen-position\u2463"},{"id":"ref-for-screen-screen-position\u2464"},{"id":"ref-for-screen-screen-position\u2465"}],"title":"3.3.1. screens attribute"},{"refs":[{"id":"ref-for-screen-screen-position\u2466"},{"id":"ref-for-screen-screen-position\u2467"}],"title":"3.4. The ScreenDetailed interface"}],"url":"#screen-screen-position"},
+"screen-width": {"dfnID":"screen-width","dfnText":"width","external":false,"refSections":[{"refs":[{"id":"ref-for-screen-width"},{"id":"ref-for-screen-width\u2460"}],"title":"2.3. Screen area"},{"refs":[{"id":"ref-for-screen-width\u2461"}],"title":"2.11. Observable screen properties"}],"url":"#screen-width"},
+"screendetailed": {"dfnID":"screendetailed","dfnText":"ScreenDetailed","external":false,"refSections":[{"refs":[{"id":"ref-for-screendetailed"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-screendetailed\u2460"}],"title":"1.2.5. Place windows on a specific screen"},{"refs":[{"id":"ref-for-screendetailed\u2461"},{"id":"ref-for-screendetailed\u2462"},{"id":"ref-for-screendetailed\u2463"},{"id":"ref-for-screendetailed\u2464"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-screendetailed\u2465"}],"title":"3.3.1. screens attribute"},{"refs":[{"id":"ref-for-screendetailed\u2466"},{"id":"ref-for-screendetailed\u2467"}],"title":"3.3.2. currentScreen attribute"},{"refs":[{"id":"ref-for-screendetailed\u2468"},{"id":"ref-for-screendetailed\u2460\u24ea"}],"title":"3.4. The ScreenDetailed interface"},{"refs":[{"id":"ref-for-screendetailed\u2460\u2460"}],"title":"3.4.1. onchange attribute"},{"refs":[{"id":"ref-for-screendetailed\u2460\u2461"}],"title":"3.5. Extensions to FullscreenOptions"},{"refs":[{"id":"ref-for-screendetailed\u2460\u2462"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"}],"url":"#screendetailed"},
+"screendetails": {"dfnID":"screendetails","dfnText":"ScreenDetails","external":false,"refSections":[{"refs":[{"id":"ref-for-screendetails"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-screendetails\u2460"}],"title":"1.2.3. Request detailed screen information"},{"refs":[{"id":"ref-for-screendetails\u2461"},{"id":"ref-for-screendetails\u2462"}],"title":"3.2. Extensions to the Window interface"},{"refs":[{"id":"ref-for-screendetails\u2463"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-screendetails\u2464"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-screendetails\u2465"}],"title":"3.3.3. onscreenschange attribute"},{"refs":[{"id":"ref-for-screendetails\u2466"}],"title":"3.3.4. oncurrentscreenchange attribute"},{"refs":[{"id":"ref-for-screendetails\u2467"}],"title":"3.7. Permission Policy integration"}],"url":"#screendetails"},
+"secondary": {"dfnID":"secondary","dfnText":"secondary","external":false,"refSections":[{"refs":[{"id":"ref-for-secondary"}],"title":"2.8. Primary screen"},{"refs":[{"id":"ref-for-secondary\u2460"}],"title":"2.11. Observable screen properties"}],"url":"#secondary"},
+"virtual-screen-arrangement": {"dfnID":"virtual-screen-arrangement","dfnText":"virtual screen arrangement","external":false,"refSections":[{"refs":[{"id":"ref-for-virtual-screen-arrangement"},{"id":"ref-for-virtual-screen-arrangement\u2460"},{"id":"ref-for-virtual-screen-arrangement\u2461"},{"id":"ref-for-virtual-screen-arrangement\u2462"}],"title":"2.5. Virtual screen arrangement"},{"refs":[{"id":"ref-for-virtual-screen-arrangement\u2463"}],"title":"2.6. Screen position"},{"refs":[{"id":"ref-for-virtual-screen-arrangement\u2464"}],"title":"2.7. Available screen position"}],"url":"#virtual-screen-arrangement"},
+"window-placement-task-source": {"dfnID":"window-placement-task-source","dfnText":"window placement task source","external":false,"refSections":[{"refs":[{"id":"ref-for-window-placement-task-source"}],"title":"3.1.2. onchange attribute"},{"refs":[{"id":"ref-for-window-placement-task-source\u2460"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-window-placement-task-source\u2461"}],"title":"3.3.3. onscreenschange attribute"},{"refs":[{"id":"ref-for-window-placement-task-source\u2462"}],"title":"3.3.4. oncurrentscreenchange attribute"},{"refs":[{"id":"ref-for-window-placement-task-source\u2463"}],"title":"3.4.1. onchange attribute"}],"url":"#window-placement-task-source"},
+};
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    genAllDfnPanels();
+
+    document.body.addEventListener("click", (e) => {
+        // If not handled already, just hide all dfn panels.
+        hideAllDfnPanels();
+    });
+});
+
+window.addEventListener("resize", () => {
+    // Pin any visible dfn panel
+    queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>positionDfnPanel(el));
+});
+
+function genAllDfnPanels() {
+    for(const panelData of Object.values(dfnPanelData)) {
+        const dfnID = panelData.dfnID;
+        const dfn = document.getElementById(dfnID);
+        if(!dfn) {
+            console.log(`Can't find dfn#${dfnID}.`, panelData);
+            continue;
+        }
+        dfn.panelData = panelData;
+        insertDfnPopupAction(dfn);
+    }
+}
+
+function genDfnPanel(dfn, { dfnID, url, dfnText, refSections, external }) {
+    const dfnPanel = mk.aside({
+        class: "dfn-panel on",
+        id: `infopanel-for-${dfnID}`,
+        "data-for": dfnID,
+        "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
+        },
+        mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
+            `Info about the '${dfnText}' ${external?"external":""} reference.`),
+        mk.a({href:url, class:"dfn-link"}, url),
+        refSections.length == 0 ? [] :
+            mk.b({}, "Referenced in:"),
+            mk.ul({},
+                ...refSections.map(section=>
+                    mk.li({},
+                        ...section.refs.map((ref, refI)=>
+                            [
+                                mk.a({ href: `#${ref.id}` },
+                                    (refI == 0) ? section.title : `(${refI + 1})`
+                                ),
+                                " ",
+                            ]
+                        ),
+                    ),
+                ),
+            ),
+        genLinkingSyntaxes(dfn),
+    );
+
+    dfnPanel.addEventListener('click', (event) => {
+        if (event.target.nodeName == 'A') {
+            scrollToTargetAndHighlight(event);
+            pinDfnPanel(dfnPanel);
+        }
+        event.stopPropagation();
+        refocusOnTarget(event);
+    });
+    dfnPanel.addEventListener('keydown', (event) => {
+        if(event.keyCode == 27) { // Escape key
+            hideDfnPanel({dfnPanel});
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    });
+
+    dfnPanel.dfn = dfn;
+    dfn.dfnPanel = dfnPanel;
+    return dfnPanel;
+}
+
+
+
+function hideAllDfnPanels() {
+    // Delete the currently-active dfn panel.
+    queryAll(".dfn-panel").forEach(dfnPanel=>hideDfnPanel({dfnPanel}));
+}
+
+function showDfnPanel(dfn) {
+    hideAllDfnPanels(); // Only display one at a time.
+
+    dfn.setAttribute("aria-expanded", "true");
+
+    const dfnPanel = genDfnPanel(dfn, dfn.panelData);
+
+    // Give the dfn a unique tabindex, and then
+    // give all the tabbable panel bits successive indexes.
+    let tabIndex = 100;
+    dfn.tabIndex = tabIndex++;
+    const tabbable = dfnPanel.querySelectorAll(":is(a, button)");
+    for (const el of tabbable) {
+        el.tabIndex = tabIndex++;
+    }
+
+    append(document.body, dfnPanel);
+    positionDfnPanel(dfnPanel);
+}
+
+function positionDfnPanel(dfnPanel) {
+    const dfn = dfnPanel.dfn;
+    const dfnPos = getBounds(dfn);
+    dfnPanel.style.top = dfnPos.bottom + "px";
+    dfnPanel.style.left = dfnPos.left + "px";
+
+    const panelPos = dfnPanel.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, dfnPos.left - overflowAmount);
+        dfnPanel.style.left = newLeft + "px";
+    }
+}
+
+function pinDfnPanel(dfnPanel) {
+    // Switch it to "activated" state, which pins it.
+    dfnPanel.classList.add("activated");
+    dfnPanel.style.position = "fixed";
+    dfnPanel.style.left = null;
+    dfnPanel.style.top = null;
+}
+
+function hideDfnPanel({dfn, dfnPanel}) {
+    if(!dfnPanel) dfnPanel = dfn.dfnPanel;
+    if(!dfn) dfn = dfnPanel.dfn;
+    dfn.dfnPanel = undefined;
+    dfnPanel.dfn = undefined;
+    dfn.setAttribute("aria-expanded", "false");
+    dfn.tabIndex = undefined;
+    dfnPanel.remove()
+}
+
+function toggleDfnPanel(dfn) {
+    if(dfn.dfnPanel) {
+        hideDfnPanel(dfn);
+    } else {
+        showDfnPanel(dfn);
+    }
+}
+
+function insertDfnPopupAction(dfn) {
+    dfn.setAttribute('role', 'button');
+    dfn.setAttribute('aria-expanded', 'false')
+    dfn.tabIndex = 0;
+    dfn.classList.add('has-dfn-panel');
+    dfn.addEventListener('click', (event) => {
+        toggleDfnPanel(dfn);
+        event.stopPropagation();
+    });
+    dfn.addEventListener('keypress', (event) => {
+        const kc = event.keyCode;
+        // 32->Space, 13->Enter
+        if(kc == 32 || kc == 13) {
+            toggleDfnPanel(dfn);
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    });
+}
+
+function refocusOnTarget(event) {
+    const target = event.target;
+    setTimeout(() => {
+        // Refocus on the event.target element.
+        // This is needed after browser scrolls to the destination.
+        target.focus();
+    });
+}
+
+// TODO: shared util
+// Returns the root-level absolute position {left and top} of element.
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
+    return {
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function scrollToTargetAndHighlight(event) {
+    let hash = event.target.hash;
+    if (hash) {
+        hash = decodeURIComponent(hash.substring(1));
+        const dest = document.getElementById(hash);
+        if (dest) {
+            dest.classList.add('highlighted');
+            setTimeout(() => dest.classList.remove('highlighted'), 1000);
+        }
+    }
+}
+
+// Functions, divided by link type, that wrap an autolink's
+// contents with the appropriate outer syntax.
+// Alternately, a string naming another type they format
+// the same as.
+function needsFor(type) {
+    switch(type) {
+        case "descriptor":
+        case "value":
+        case "element-attr":
+        case "attr-value":
+        case "element-state":
+        case "method":
+        case "constructor":
+        case "argument":
+        case "attribute":
+        case "const":
+        case "dict-member":
+        case "event":
+        case "enum-value":
+        case "stringifier":
+        case "serializer":
+        case "iterator":
+        case "maplike":
+        case "setlike":
+        case "state":
+        case "mode":
+        case "context":
+        case "facet": return true;
+
+        default: return false;
+    }
+}
+function refusesFor(type) {
+    switch(type) {
+        case "property":
+        case "element":
+        case "interface":
+        case "namespace":
+        case "callback":
+        case "dictionary":
+        case "enum":
+        case "exception":
+        case "typedef":
+        case "http-header":
+        case "permission": return true;
+
+        default: return false;
+    }
+}
+function linkFormatterFromType(type) {
+    switch(type) {
+        case 'scheme':
+        case 'permission':
+        case 'dfn': return (text) => `[=${text}=]`;
+
+        case 'abstract-op': return (text) => `[\$${text}\$]`;
+
+        case 'function':
+        case 'at-rule':
+        case 'selector':
+        case 'value': return (text) => `''${text}''`;
+
+        case 'http-header': return (text) => `[:${text}:]`;
+
+        case 'interface':
+        case 'constructor':
+        case 'method':
+        case 'argument':
+        case 'attribute':
+        case 'callback':
+        case 'dictionary':
+        case 'dict-member':
+        case 'enum':
+        case 'enum-value':
+        case 'exception':
+        case 'const':
+        case 'typedef':
+        case 'stringifier':
+        case 'serializer':
+        case 'iterator':
+        case 'maplike':
+        case 'setlike':
+        case 'extended-attribute':
+        case 'event':
+        case 'idl': return (text) => `{{${text}}}`;
+
+        case 'element-state':
+        case 'element-attr':
+        case 'attr-value':
+        case 'element': return (element) => `<{${element}}>`;
+
+        case 'grammar': return (text) => `${text} (within a <pre class=prod>)`;
+
+        case 'type': return (text)=> `<<${text}>>`;
+
+        case 'descriptor':
+        case 'property': return (text) => `'${text}'`;
+
+        default: return;
+    };
+};
+
+function genLinkingSyntaxes(dfn) {
+    if(dfn.tagName != "DFN") return;
+
+    const type = dfn.getAttribute('data-dfn-type');
+    if(!type) {
+        console.log(`<dfn> doesn't have a data-dfn-type:`, dfn);
+        return [];
+    }
+
+    // Return a function that wraps link text based on the type
+    const linkFormatter = linkFormatterFromType(type);
+    if(!linkFormatter) {
+        console.log(`<dfn> has an unknown data-dfn-type:`, dfn);
+        return [];
+    }
+
+    let ltAlts;
+    if(dfn.hasAttribute('data-lt')) {
+        ltAlts = dfn.getAttribute('data-lt')
+            .split("|")
+            .map(x=>x.trim());
+    } else {
+        ltAlts = [dfn.textContent.trim()];
+    }
+    if(type == "type") {
+        // lt of "<foo>", but "foo" is the interior;
+        // <<foo/bar>> is how you write it with a for,
+        // not <foo/<bar>> or whatever.
+        for(var i = 0; i < ltAlts.length; i++) {
+            const lt = ltAlts[i];
+            const match = /<(.*)>/.exec(lt);
+            if(match) { ltAlts[i] = match[1]; }
+        }
+    }
+
+    let forAlts;
+    if(dfn.hasAttribute('data-dfn-for')) {
+        forAlts = dfn.getAttribute('data-dfn-for')
+            .split(",")
+            .map(x=>x.trim());
+    } else {
+        forAlts = [''];
+    }
+
+    let linkingSyntaxes = [];
+    if(!needsFor(type)) {
+        for(const lt of ltAlts) {
+            linkingSyntaxes.push(linkFormatter(lt));
+        }
+    }
+    if(!refusesFor(type)) {
+        for(const f of forAlts) {
+            linkingSyntaxes.push(linkFormatter(`${f}/${ltAlts[0]}`))
+        }
+    }
+    return [
+        mk.b({}, 'Possible linking syntaxes:'),
+        mk.ul({},
+            ...linkingSyntaxes.map(link => {
+                const copyLink = async () =>
+                    await navigator.clipboard.writeText(link);
+                return mk.li({},
+                    mk.div({ class: 'link-item' },
+                        mk.button({
+                            class: 'copy-icon', title: 'Copy',
+                            type: 'button',
+                            _onclick: copyLink,
+                            tabindex: 0,
+                        }, mk.span({ class: 'icon' }) ),
+                        mk.span({}, link)
+                    )
+                );
+            })
+        )
+    ];
+}
+}
+</script>
+<script>/* Boilerplate: script-ref-hints */
+"use strict";
+{
+let refsData = {
+"#current-screen": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"current screen","type":"dfn","url":"#current-screen"},
+"#dom-fullscreenoptions-screen": {"export":true,"for_":["FullscreenOptions"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"screen","type":"dict-member","url":"#dom-fullscreenoptions-screen"},
+"#dom-permissionpolicy-window-management": {"export":true,"for_":["PermissionPolicy"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"\"window-management\"","type":"enum-value","url":"#dom-permissionpolicy-window-management"},
+"#dom-screen-isextended": {"export":true,"for_":["Screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"isExtended","type":"attribute","url":"#dom-screen-isextended"},
+"#dom-screen-onchange": {"export":true,"for_":["Screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"onchange","type":"attribute","url":"#dom-screen-onchange"},
+"#dom-screendetailed-availleft": {"export":true,"for_":["ScreenDetailed"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"availLeft","type":"attribute","url":"#dom-screendetailed-availleft"},
+"#dom-screendetailed-availtop": {"export":true,"for_":["ScreenDetailed"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"availTop","type":"attribute","url":"#dom-screendetailed-availtop"},
+"#dom-screendetailed-devicepixelratio": {"export":true,"for_":["ScreenDetailed"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"devicePixelRatio","type":"attribute","url":"#dom-screendetailed-devicepixelratio"},
+"#dom-screendetailed-isinternal": {"export":true,"for_":["ScreenDetailed"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"isInternal","type":"attribute","url":"#dom-screendetailed-isinternal"},
+"#dom-screendetailed-isprimary": {"export":true,"for_":["ScreenDetailed"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"isPrimary","type":"attribute","url":"#dom-screendetailed-isprimary"},
+"#dom-screendetailed-label": {"export":true,"for_":["ScreenDetailed"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"label","type":"attribute","url":"#dom-screendetailed-label"},
+"#dom-screendetailed-left": {"export":true,"for_":["ScreenDetailed"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"left","type":"attribute","url":"#dom-screendetailed-left"},
+"#dom-screendetailed-onchange": {"export":true,"for_":["ScreenDetailed"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"onchange","type":"attribute","url":"#dom-screendetailed-onchange"},
+"#dom-screendetailed-top": {"export":true,"for_":["ScreenDetailed"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"top","type":"attribute","url":"#dom-screendetailed-top"},
+"#dom-screendetails-currentscreen": {"export":true,"for_":["ScreenDetails"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"currentScreen","type":"attribute","url":"#dom-screendetails-currentscreen"},
+"#dom-screendetails-oncurrentscreenchange": {"export":true,"for_":["ScreenDetails"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"oncurrentscreenchange","type":"attribute","url":"#dom-screendetails-oncurrentscreenchange"},
+"#dom-screendetails-onscreenschange": {"export":true,"for_":["ScreenDetails"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"onscreenschange","type":"attribute","url":"#dom-screendetails-onscreenschange"},
+"#dom-screendetails-screens": {"export":true,"for_":["ScreenDetails"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"screens","type":"attribute","url":"#dom-screendetails-screens"},
+"#dom-window-getscreendetails": {"export":true,"for_":["Window"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"getScreenDetails()","type":"method","url":"#dom-window-getscreendetails"},
+"#dom-window-screendetails-slot": {"export":true,"for_":["Window"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"[[screenDetails]]","type":"attribute","url":"#dom-window-screendetails-slot"},
+"#dom-window-targetscreenfullscreen-slot": {"export":true,"for_":["Window"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"[[targetScreenFullscreen]]","type":"attribute","url":"#dom-window-targetscreenfullscreen-slot"},
+"#eventdef-screen-change": {"export":true,"for_":["Screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"change","type":"event","url":"#eventdef-screen-change"},
+"#eventdef-screendetailed-change": {"export":true,"for_":["ScreenDetailed"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"change","type":"event","url":"#eventdef-screendetailed-change"},
+"#eventdef-screendetails-currentscreenchange": {"export":true,"for_":["ScreenDetails"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"currentscreenchange","type":"event","url":"#eventdef-screendetails-currentscreenchange"},
+"#eventdef-screendetails-screenschange": {"export":true,"for_":["ScreenDetails"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"screenschange","type":"event","url":"#eventdef-screendetails-screenschange"},
+"#external": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"external","type":"dfn","url":"#external"},
+"#internal": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"internal","type":"dfn","url":"#internal"},
+"#multi-screen-origin": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"multi-screen origin","type":"dfn","url":"#multi-screen-origin"},
+"#permissiondef-window-management": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"window-management","type":"permission","url":"#permissiondef-window-management"},
+"#pixel-color-depth": {"export":true,"for_":["pixel"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"color depth","type":"dfn","url":"#pixel-color-depth"},
+"#primary": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"primary","type":"dfn","url":"#primary"},
+"#screen": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"screen","type":"dfn","url":"#screen"},
+"#screen-advanced-observable-properties": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"advanced observable properties","type":"dfn","url":"#screen-advanced-observable-properties"},
+"#screen-available-height": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"available height","type":"dfn","url":"#screen-available-height"},
+"#screen-available-screen-area": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"available screen area","type":"dfn","url":"#screen-available-screen-area"},
+"#screen-available-screen-position": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"available screen position","type":"dfn","url":"#screen-available-screen-position"},
+"#screen-available-width": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"available width","type":"dfn","url":"#screen-available-width"},
+"#screen-basic-observable-properties": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"basic observable properties","type":"dfn","url":"#screen-basic-observable-properties"},
+"#screen-color-depth": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"color depth","type":"dfn","url":"#screen-color-depth"},
+"#screen-device-pixel-ratio": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"device pixel ratio","type":"dfn","url":"#screen-device-pixel-ratio"},
+"#screen-height": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"height","type":"dfn","url":"#screen-height"},
+"#screen-label": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"label","type":"dfn","url":"#screen-label"},
+"#screen-ordering": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"screen ordering","type":"dfn","url":"#screen-ordering"},
+"#screen-orientation": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"orientation","type":"dfn","url":"#screen-orientation"},
+"#screen-pixels": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"pixels","type":"dfn","url":"#screen-pixels"},
+"#screen-screen-area": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"screen area","type":"dfn","url":"#screen-screen-area"},
+"#screen-screen-position": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"screen position","type":"dfn","url":"#screen-screen-position"},
+"#screen-width": {"export":true,"for_":["screen"],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"width","type":"dfn","url":"#screen-width"},
+"#screendetailed": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"ScreenDetailed","type":"interface","url":"#screendetailed"},
+"#screendetails": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"ScreenDetails","type":"interface","url":"#screendetails"},
+"#secondary": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"secondary","type":"dfn","url":"#secondary"},
+"#virtual-screen-arrangement": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"virtual screen arrangement","type":"dfn","url":"#virtual-screen-arrangement"},
+"#window-placement-task-source": {"export":true,"for_":[],"level":"","normative":true,"shortname":"window-management","spec":"window-management","status":"local","text":"window placement task source","type":"dfn","url":"#window-placement-task-source"},
+"https://dom.spec.whatwg.org/#concept-document": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"document","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-document"},
+"https://dom.spec.whatwg.org/#concept-event-fire": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"fire an event","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-event-fire"},
+"https://dom.spec.whatwg.org/#eventtarget": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"EventTarget","type":"interface","url":"https://dom.spec.whatwg.org/#eventtarget"},
+"https://drafts.csswg.org/css-values-4/#px": {"export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"anchor-block","text":"css pixel","type":"dfn","url":"https://drafts.csswg.org/css-values-4/#px"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"devicePixelRatio","type":"attribute","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-moveby": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"moveBy(x, y)","type":"method","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-moveby"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-moveto": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"moveTo(x, y)","type":"method","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-moveto"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-resizeby": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"resizeBy(x, y)","type":"method","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-resizeby"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-resizeto": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"resizeTo(width, height)","type":"method","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-resizeto"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-screen": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"screen","type":"attribute","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-screen"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-screenleft": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"screenLeft","type":"attribute","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-screenleft"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-screentop": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"screenTop","type":"attribute","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-screentop"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-screenx": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"screenX","type":"attribute","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-screenx"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-screeny": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"screenY","type":"attribute","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-screeny"},
+"https://drafts.csswg.org/cssom-view-1/#screen": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"Screen","type":"interface","url":"https://drafts.csswg.org/cssom-view-1/#screen"},
+"https://drafts.csswg.org/cssom-view-1/#web-exposed-available-screen-area": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"web-exposed available screen area","type":"dfn","url":"https://drafts.csswg.org/cssom-view-1/#web-exposed-available-screen-area"},
+"https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-area": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"web-exposed screen area","type":"dfn","url":"https://drafts.csswg.org/cssom-view-1/#web-exposed-screen-area"},
+"https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"fullscreen","spec":"fullscreen","status":"current","text":"FullscreenOptions","type":"dictionary","url":"https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions"},
+"https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen": {"export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"fullscreen","spec":"fullscreen","status":"current","text":"requestFullscreen()","type":"method","url":"https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen"},
+"https://html.spec.whatwg.org/multipage/#last-activation-timestamp": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"last activation timestamp","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#last-activation-timestamp"},
+"https://html.spec.whatwg.org/multipage/#transient-activation-duration": {"export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"transient activation duration","type":"dfn","url":"https://html.spec.whatwg.org/multipage/#transient-activation-duration"},
+"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document": {"export":true,"for_":["navigable"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"active document","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document"},
+"https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"top-level browsing context","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context"},
+"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"allowed to use","type":"dfn","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use"},
+"https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"in parallel","type":"dfn","url":"https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel"},
+"https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"consume user activation","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation"},
+"https://html.spec.whatwg.org/multipage/interaction.html#transient-activation": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"transient activation","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#transient-activation"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"associated document","type":"dfn","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-open": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"open(url, target, features)","type":"method","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-open"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"Window","type":"interface","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant global object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"event handler event type","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"event handler idl attribute","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"EventHandler","type":"typedef","url":"https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"queue a global task","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task"},
+"https://infra.spec.whatwg.org/#list": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"list","type":"dfn","url":"https://infra.spec.whatwg.org/#list"},
+"https://infra.spec.whatwg.org/#list-append": {"export":true,"for_":["list"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"append","type":"dfn","url":"https://infra.spec.whatwg.org/#list-append"},
+"https://infra.spec.whatwg.org/#list-sort-in-ascending-order": {"export":true,"for_":["list","stack","queue","set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"sorting","type":"dfn","url":"https://infra.spec.whatwg.org/#list-sort-in-ascending-order"},
+"https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots": {"export":true,"for_":[],"level":"","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"anchor-block","text":"internal slot","type":"dfn","url":"https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots"},
+"https://w3c.github.io/hr-time/#dfn-current-high-resolution-time": {"export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"current high resolution time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-current-high-resolution-time"},
+"https://w3c.github.io/hr-time/#dom-domhighrestimestamp": {"export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"DOMHighResTimeStamp","type":"typedef","url":"https://w3c.github.io/hr-time/#dom-domhighrestimestamp"},
+"https://w3c.github.io/permissions/#dfn-default-powerful-feature": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"default powerful feature","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-default-powerful-feature"},
+"https://w3c.github.io/permissions/#dfn-name": {"export":true,"for_":["powerful feature"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"name","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-name"},
+"https://w3c.github.io/permissions/#dfn-request-permission-to-use": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"request permission to use","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-request-permission-to-use"},
+"https://w3c.github.io/permissions/#dom-permissionstate-denied": {"export":true,"for_":["PermissionState"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"denied","type":"enum-value","url":"https://w3c.github.io/permissions/#dom-permissionstate-denied"},
+"https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions-policy","spec":"permissions-policy-1","status":"current","text":"policy-controlled feature","type":"dfn","url":"https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature"},
+"https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist": {"export":true,"for_":["policy-controlled feature"],"level":"1","normative":true,"shortname":"permissions-policy","spec":"permissions-policy-1","status":"current","text":"default allowlist","type":"dfn","url":"https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist"},
+"https://webidl.spec.whatwg.org/#Exposed": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
+"https://webidl.spec.whatwg.org/#SecureContext": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"SecureContext","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#SecureContext"},
+"https://webidl.spec.whatwg.org/#a-new-promise": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"a new promise","type":"dfn","url":"https://webidl.spec.whatwg.org/#a-new-promise"},
+"https://webidl.spec.whatwg.org/#idl-DOMException": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMException","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMException"},
+"https://webidl.spec.whatwg.org/#idl-DOMString": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMString","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
+"https://webidl.spec.whatwg.org/#idl-boolean": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"boolean","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-boolean"},
+"https://webidl.spec.whatwg.org/#idl-float": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"float","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-float"},
+"https://webidl.spec.whatwg.org/#idl-frozen-array": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"FrozenArray","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-frozen-array"},
+"https://webidl.spec.whatwg.org/#idl-long": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"long","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-long"},
+"https://webidl.spec.whatwg.org/#idl-promise": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Promise","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-promise"},
+"https://webidl.spec.whatwg.org/#notallowederror": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"NotAllowedError","type":"exception","url":"https://webidl.spec.whatwg.org/#notallowederror"},
+"https://webidl.spec.whatwg.org/#reject": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"reject","type":"dfn","url":"https://webidl.spec.whatwg.org/#reject"},
+"https://webidl.spec.whatwg.org/#resolve": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"resolve","type":"dfn","url":"https://webidl.spec.whatwg.org/#resolve"},
+"https://webidl.spec.whatwg.org/#this": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"this","type":"dfn","url":"https://webidl.spec.whatwg.org/#this"},
+"https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting": {"export":true,"for_":[],"level":"","normative":true,"shortname":"fingerprinting-guidance","spec":"fingerprinting-guidance","status":"anchor-block","text":"active fingerprinting","type":"dfn","url":"https://www.w3.org/TR/fingerprinting-guidance/#dfn-active-fingerprinting"},
+};
+
+function mkRefHint(link, ref) {
+    const linkText = link.textContent;
+    let dfnTextElements = '';
+    if (ref.text != linkText) {
+        dfnTextElements =
+            mk.li({},
+                mk.b({}, "Term: "),
+                mk.span({}, ref.text)
+            );
+    }
+    const forList = ref.for_;
+    let forListElements;
+    if(forList.length == 0) {
+        forListElements = [];
+    } else if(forList.length == 1) {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.span({}, forList[0]),
+        );
+    } else {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.ul({},
+                ...forList.map(forItem =>
+                    mk.li({},
+                        mk.span({}, forItem)
+                    ),
+                ),
+            ),
+        );
+    }
+    const url = ref.url;
+    const safeUrl = encodeURIComponent(url);
+    const hintPanel = mk.aside({
+        class: "ref-hint",
+        id: `ref-hint-for-${safeUrl}`,
+        "data-for": url,
+        "aria-labelled-by": `ref-hint-for-${safeUrl}`,
+    },
+        mk.ul({},
+            dfnTextElements,
+            mk.li({},
+                mk.b({}, "URL: "),
+                mk.a({ href: url, class: "ref" }, url),
+            ),
+            mk.li({},
+                mk.b({}, "Type: "),
+                mk.span({}, `${ref.type}`),
+            ),
+            mk.li({},
+                mk.b({}, "Spec: "),
+                mk.span({}, `${ref.spec ? ref.spec : ''}`),
+            ),
+            forListElements
+        ),
+    );
+    hintPanel.forLink = link;
+    setupRefHintEventListeners(link, hintPanel);
+    return hintPanel;
+}
+
+function hideAllRefHints() {
+    queryAll(".ref-hint").forEach(el=>hideRefHint(el));
+}
+
+function hideRefHint(refHint) {
+    const link = refHint.forLink;
+    link.setAttribute("aria-expanded", "false");
+    if(refHint.teardownEventListeners) {
+        refHint.teardownEventListeners();
+    }
+    refHint.remove();
+}
+
+function showRefHint(link) {
+    if(link.classList.contains("dfn-link")) return;
+    const url = link.getAttribute("href");
+    const ref = refsData[url];
+    if(!ref) return;
+
+    hideAllRefHints(); // Only display one at this time.
+
+    const refHint = mkRefHint(link, ref);
+    append(document.body, refHint);
+    link.setAttribute("aria-expanded", "true");
+    positionRefHint(refHint);
+}
+
+function setupRefHintEventListeners(link, refHint) {
+    if (refHint.teardownEventListeners) return;
+    // Add event handlers to hide the refHint after the user moves away
+    // from both the link and refHint, if not hovering either within one second.
+    let timeout = null;
+    const startHidingRefHint = (event) => {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+            hideRefHint(refHint);
+        }, 1000);
+    }
+    const resetHidingRefHint = (event) => {
+        if (timeout) clearTimeout(timeout);
+        timeout = null;
+    };
+    link.addEventListener("mouseleave", startHidingRefHint);
+    link.addEventListener("mouseenter", resetHidingRefHint);
+    link.addEventListener("blur", startHidingRefHint);
+    link.addEventListener("focus", resetHidingRefHint);
+    refHint.addEventListener("mouseleave", startHidingRefHint);
+    refHint.addEventListener("mouseenter", resetHidingRefHint);
+    refHint.addEventListener("blur", startHidingRefHint);
+    refHint.addEventListener("focus", resetHidingRefHint);
+
+    refHint.teardownEventListeners = () => {
+        // remove event listeners
+        resetHidingRefHint();
+        link.removeEventListener("mouseleave", startHidingRefHint);
+        link.removeEventListener("mouseenter", resetHidingRefHint);
+        link.removeEventListener("blur", startHidingRefHint);
+        link.removeEventListener("focus", resetHidingRefHint);
+        refHint.removeEventListener("mouseleave", startHidingRefHint);
+        refHint.removeEventListener("mouseenter", resetHidingRefHint);
+        refHint.removeEventListener("blur", startHidingRefHint);
+        refHint.removeEventListener("focus", resetHidingRefHint);
+    };
+}
+
+function positionRefHint(refHint) {
+    const link = refHint.forLink;
+    const linkPos = getBounds(link);
+    refHint.style.top = linkPos.bottom + "px";
+    refHint.style.left = linkPos.left + "px";
+
+    const panelPos = refHint.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, linkPos.left - overflowAmount);
+        refHint.style.left = newLeft + "px";
+    }
+}
+
+// TODO: shared util
+// Returns the root-level absolute position {left and top} of element.
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
+    return {
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function showRefHintListener(e) {
+    // If the target isn't in a link (or is a link),
+    // just ignore it.
+    let link = e.target.closest("a");
+    if(!link) return;
+
+    // If the target is in a ref-hint panel
+    // (aka a link in the already-open one),
+    // also just ignore it.
+    if(link.closest(".ref-hint")) return;
+
+    // Otherwise, show the panel for the link.
+    showRefHint(link);
+}
+
+function hideAllHintsListener(e) {
+    // If the click is inside a ref-hint panel, ignore it.
+    if(e.target.closest(".ref-hint")) return;
+    // Otherwise, close all the current panels.
+    hideAllRefHints();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.body.addEventListener("mousedown", showRefHintListener);
+    document.body.addEventListener("focus", showRefHintListener);
+
+    document.body.addEventListener("click", hideAllHintsListener);
+});
+
+window.addEventListener("resize", () => {
+    // Hide any open ref hint.
+    hideAllRefHints();
+});
 }
 </script>
 <script>/* Boilerplate: script-var-click-highlighting */
+"use strict";
+{
 /*
 Color-choosing design:
 
-Colors are ordered by goodness.
-Each color has a usage count (initially zero).
-Each variable has a last-used color.
-
-* If the var has a last-used color, and that color's usage is 0,
-    return that color.
-* Otherwise, return the lowest-indexed color with the lowest usage.
-    Increment the color's usage and set it as the last-used color
-    for that var.
-* On unclicking, decrement usage of the color.
+* Colors are ordered by goodness.
+* On clicking a var, give it the earliest color
+    with the lowest usage in the algorithm.
+* On re-clicking, re-use the var's most recent color
+    if that's not currently being used elsewhere.
 */
-"use strict";
-{
-    document.addEventListener("click", e=>{
-        if(e.target.nodeName == "VAR") {
-            highlightSameAlgoVars(e.target);
-        }
-    });
-    const indexCounts = new Map();
-    const indexNames = new Map();
-    function highlightSameAlgoVars(v) {
-        // Find the algorithm container.
-        let algoContainer = null;
-        let searchEl = v;
-        while(algoContainer == null && searchEl != document.body) {
-            searchEl = searchEl.parentNode;
-            if(searchEl.hasAttribute("data-algorithm")) {
-                algoContainer = searchEl;
-            }
-        }
 
-        // Not highlighting document-global vars,
-        // too likely to be unrelated.
-        if(algoContainer == null) return;
+const COLOR_COUNT = 7;
 
-        const algoName = algoContainer.getAttribute("data-algorithm");
-        const varName = getVarName(v);
-        const addClass = !v.classList.contains("selected");
-        let highlightClass = null;
-        if(addClass) {
-            const index = chooseHighlightIndex(algoName, varName);
-            indexCounts.get(algoName)[index] += 1;
-            indexNames.set(algoName+"///"+varName, index);
-            highlightClass = nameFromIndex(index);
-        } else {
-            const index = previousHighlightIndex(algoName, varName);
-            indexCounts.get(algoName)[index] -= 1;
-            highlightClass = nameFromIndex(index);
-        }
+document.addEventListener("click", e=>{
+    if(e.target.nodeName == "VAR") {
+        highlightSameAlgoVars(e.target);
+    }
+});
 
-        // Find all same-name vars, and toggle their class appropriately.
+function highlightSameAlgoVars(v) {
+    // Find the algorithm container.
+    let algoContainer = findAlgoContainer(v);
+
+    // Not highlighting document-global vars,
+    // too likely to be unrelated.
+    if(algoContainer == null) return;
+
+    const varName = nameFromVar(v);
+    if(!v.hasAttribute("data-var-color")) {
+        const newColor = chooseHighlightColor(algoContainer, v);
         for(const el of algoContainer.querySelectorAll("var")) {
-            if(getVarName(el) == varName) {
-                el.classList.toggle("selected", addClass);
-                el.classList.toggle(highlightClass, addClass);
+            if(nameFromVar(el) == varName) {
+                el.setAttribute("data-var-color", newColor);
+                el.setAttribute("data-var-last-color", newColor);
+            }
+        }
+    } else {
+        for(const el of algoContainer.querySelectorAll("var")) {
+            if(nameFromVar(el) == varName) {
+                el.removeAttribute("data-var-color");
             }
         }
     }
-    function getVarName(el) {
-        return el.textContent.replace(/(\s|\xa0)+/, " ").trim();
+}
+function findAlgoContainer(el) {
+    while(el != document.body) {
+        if(el.hasAttribute("data-algorithm")) return el;
+        el = el.parentNode;
     }
-    function chooseHighlightIndex(algoName, varName) {
-        let indexes = null;
-        if(indexCounts.has(algoName)) {
-            indexes = indexCounts.get(algoName);
-        } else {
-            // 7 classes right now
-            indexes = [0,0,0,0,0,0,0];
-            indexCounts.set(algoName, indexes);
-        }
+    return null;
+}
+function nameFromVar(el) {
+    return el.textContent.replace(/(\s|\xa0)+/g, " ").trim();
+}
+function colorCountsFromContainer(container) {
+    const namesFromColor = Array.from({length:COLOR_COUNT}, x=>new Set());
+    for(let v of container.querySelectorAll("var[data-var-color]")) {
+        let color = +v.getAttribute("data-var-color");
+        namesFromColor[color].add(nameFromVar(v));
+    }
 
-        // If the element was recently unclicked,
-        // *and* that color is still unclaimed,
-        // give it back the same color.
-        const lastIndex = previousHighlightIndex(algoName, varName);
-        if(indexes[lastIndex] === 0) return lastIndex;
-
-        // Find the earliest index with the lowest count.
-        const minCount = Math.min.apply(null, indexes);
-        let index = null;
-        for(var i = 0; i < indexes.length; i++) {
-            if(indexes[i] == minCount) {
-                return i;
-            }
+    return namesFromColor.map(x=>x.size);
+}
+function leastUsedColor(colors) {
+    // Find the earliest color with the lowest count.
+    let minCount = Infinity;
+    let minColor = null;
+    for(var i = 0; i < colors.length; i++) {
+        if(colors[i] < minCount) {
+            minColor = i;
+            minCount = colors[i];
         }
     }
-    function previousHighlightIndex(algoName, varName) {
-        return indexNames.get(algoName+"///"+varName);
+    return minColor;
+}
+function chooseHighlightColor(container, v) {
+    const colorCounts = colorCountsFromContainer(container);
+    if(v.hasAttribute("data-var-last-color")) {
+        let color = +v.getAttribute("data-var-last-color");
+        if(colorCounts[color] == 0) return color;
     }
-    function nameFromIndex(index) {
-        return "selected" + index;
-    }
+    return leastUsedColor(colorCounts);
+}
 }
 </script>

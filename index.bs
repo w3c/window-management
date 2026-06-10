@@ -415,6 +415,20 @@ The <dfn for="screen">advanced observable properties</dfn> of a [=/screen=] are:
 * The [=/screen=]'s designation as [=/internal=] or [=/external=]
 
 <!-- ====================================================================== -->
+## Display state ## {#concept-display-state}
+<!-- ====================================================================== -->
+
+A [=top-level browsing context=] has an associated <dfn export>display state</dfn>, which can be one of:
+: <dfn for="display state" export>normal</dfn>
+:: The window is in a normal state (neither minimized, maximized, nor fullscreen).
+: <dfn for="display state" export>minimized</dfn>
+:: The window is minimized.
+: <dfn for="display state" export>maximized</dfn>
+:: The window is maximized.
+: <dfn for="display state" export>fullscreen</dfn>
+:: The window is in fullscreen mode.
+
+<!-- ====================================================================== -->
 # API # {#api}
 <!-- ====================================================================== -->
 
@@ -634,15 +648,15 @@ The <dfn method for=Window>restore()</dfn> method steps are:
 
         1. [=/Consume user activation=] of [=this=]'s [=relevant global object=].
 
-        1. Let |state| be the current display state of the window (i.e., the value that would be matched by the 'display-state' media feature).
+        1. Let |state| be the window's [=display state=].
 
-        1. If |state| is "normal", [=/resolve=] |promise| with undefined and abort these steps.
+        1. If |state| is [=display state/normal=], [=/resolve=] |promise| with undefined and abort these steps.
 
-        1. If |state| is "minimized", request the user agent to unminimize the window, restoring it to its display state prior to being minimized.
+        1. If |state| is [=display state/minimized=], request the user agent to unminimize the window, restoring it to its [=display state=] prior to being minimized.
 
-        1. Else if |state| is "fullscreen", request the user agent to exit fullscreen, restoring the window to its display state prior to entering fullscreen.
+        1. Else if |state| is [=display state/fullscreen=], request the user agent to exit fullscreen, restoring the window to its [=display state=] prior to entering fullscreen.
 
-        1. Else if |state| is "maximized", request the user agent to unmaximize the window, restoring it to the normal display state.
+        1. Else if |state| is [=display state/maximized=], request the user agent to unmaximize the window, restoring it to the [=display state/normal=] display state.
 
         1. If the operation succeeds, [=/resolve=] |promise| with undefined.
 
@@ -901,29 +915,52 @@ This specification defines new CSS media features to allow stylesheet adaptation
 
 ### The 'display-state' media feature ### {#media-descriptor-display-state}
 
-The <dfn media-feature export>'display-state'</dfn> media feature describes the display state of the window.
+<pre class="descdef mq">
+Name: display-state
+Value: normal | minimized | maximized | fullscreen
+For: @media
+Type: discrete
+</pre>
 
-It is an enumerated media feature. The following values are defined:
+The '@media/display-state' media feature describes the window state in which the current [=browsing context=] is
+currently being presented to the end user. In child browsing contexts, the [=display state=] must match that of
+the  [=top-level browsing context=].
 
-: <dfn export>normal</dfn>
-:: The window is in a normal state (neither minimized, maximized, nor fullscreen).
-: <dfn export>minimized</dfn>
-:: The window is minimized.
-: <dfn export>maximized</dfn>
-:: The window is maximized.
-: <dfn export>fullscreen</dfn>
-:: The window is in fullscreen mode.
+This feature is primarily used to determine which [=display state=] has been applied by the host Operating System
+to the user agent running the [=application context=].
+
+<dl dfn-type=value dfn-for="@media/display-state">
+    <dt><dfn>normal</dfn>
+    <dd>
+        The browsing context is displayed in the [=display state/normal=] display state.
+    <dt><dfn>minimized</dfn>
+        The browsing context is displayed in the [=display state/minimized=] display state.
+    <dt><dfn>maximized</dfn>
+        The browsing context is displayed in the [=display state/maximized=] display state.
+    <dt><dfn>fullscreen</dfn>
+        The browsing context is displayed in the [=display state/fullscreen=] display state.
+
+</dl>
 
 ### The 'resizable' media feature ### {#media-descriptor-resizable}
 
-The <dfn media-feature export>'resizable'</dfn> media feature describes whether the window is user-resizable.
+<pre class="descdef mq">
+Name: resizable
+Value: true | false
+For: @media
+Type: discrete
+</pre>
 
-It is an enumerated media feature. The following values are defined:
+The '@media/resizable' media feature describes whether the window is user-resizable.
 
-: <dfn export>true</dfn>
-:: The window is user-resizable.
-: <dfn export>false</dfn>
-:: The window is not user-resizable.
+<dl dfn-type=value dfn-for="@media/resizable">
+    <dt><dfn>true</dfn>
+    <dd>
+        The window can be resized by the user by dragging the edge of the window.
+    <dt><dfn>false</dfn>
+        The window cannot be resized by the user by dragging the edge of the window.
+
+</dl>
 
 <!-- ====================================================================== -->
 ## Permission API Integration ## {#api-permission-api-integration}

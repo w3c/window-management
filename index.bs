@@ -934,10 +934,13 @@ to the user agent running the [=application context=].
     <dd>
         The browsing context is displayed in the [=display state/normal=] display state.
     <dt><dfn>minimized</dfn>
+    <dd>
         The browsing context is displayed in the [=display state/minimized=] display state.
     <dt><dfn>maximized</dfn>
+    <dd>
         The browsing context is displayed in the [=display state/maximized=] display state.
     <dt><dfn>fullscreen</dfn>
+    <dd>
         The browsing context is displayed in the [=display state/fullscreen=] display state.
 
 </dl>
@@ -958,6 +961,7 @@ The '@media/resizable' media feature describes whether the window is user-resiza
     <dd>
         The window can be resized by the user by dragging the edge of the window.
     <dt><dfn>false</dfn>
+    <dd>
         The window cannot be resized by the user by dragging the edge of the window.
 
 </dl>

@@ -485,6 +485,18 @@ The [[HTML]] standard defines the {{Window}} interface, which this specification
 partial interface Window {
   [SecureContext]
   Promise<ScreenDetails> getScreenDetails();
+
+  [SecureContext]
+  Promise<undefined> minimize();
+
+  [SecureContext]
+  Promise<undefined> maximize();
+
+  [SecureContext]
+  Promise<undefined> restore();
+
+  [SecureContext]
+  Promise<undefined> setResizable(boolean resizable);
 };
 </xmp>
 
@@ -515,6 +527,158 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
         1. If [=/this=].{{Window/[[screenDetails]]}} is `undefined`, then set [=/this=].{{Window/[[screenDetails]]}} to a new {{ScreenDetails}} object.
 
         1. [=/Resolve=] |promise| with [=/this=].{{Window/[[screenDetails]]}}.
+
+1. Return |promise|.
+
+</div>
+
+<!-- ====================================================================== -->
+### {{Window/minimize()}} method ### {#api-window-minimize-method}
+<!-- ====================================================================== -->
+
+The {{Window/minimize()}} method completes asynchronously, queuing work on the [=window placement task source=].
+
+<div algorithm>
+
+The <dfn method for=Window>minimize()</dfn> method steps are:
+
+1. Let |promise| be [=/a new promise=].
+
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. If [=this=]'s [=relevant global object=] does not have [=transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. Run the following steps [=/in parallel=]:
+
+    1. Let |permissionState| be [=/request permission to use=] "{{window-management}}".
+
+    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
+
+        1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+        1. [=/Consume user activation=] of [=this=]'s [=relevant global object=].
+
+        1. If the window is already minimized, [=/resolve=] |promise| with undefined and abort these steps.
+
+        1. Request the user agent to minimize the window.
+
+        1. If the operation succeeds, [=/resolve=] |promise| with undefined.
+
+        1. If the operation fails, [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. Return |promise|.
+
+</div>
+
+<!-- ====================================================================== -->
+### {{Window/maximize()}} method ### {#api-window-maximize-method}
+<!-- ====================================================================== -->
+
+The {{Window/maximize()}} method completes asynchronously, queuing work on the [=window placement task source=].
+
+<div algorithm>
+
+The <dfn method for=Window>maximize()</dfn> method steps are:
+
+1. Let |promise| be [=/a new promise=].
+
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. If [=this=]'s [=relevant global object=] does not have [=transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. Run the following steps [=/in parallel=]:
+
+    1. Let |permissionState| be [=/request permission to use=] "{{window-management}}".
+
+    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
+
+        1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+        1. [=/Consume user activation=] of [=this=]'s [=relevant global object=].
+
+        1. If the window is already maximized, [=/resolve=] |promise| with undefined and abort these steps.
+
+        1. Request the user agent to maximize the window.
+
+        1. If the operation succeeds, [=/resolve=] |promise| with undefined.
+
+        1. If the operation fails, [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. Return |promise|.
+
+</div>
+
+<!-- ====================================================================== -->
+### {{Window/restore()}} method ### {#api-window-restore-method}
+<!-- ====================================================================== -->
+
+The {{Window/restore()}} method completes asynchronously, queuing work on the [=window placement task source=].
+
+<div algorithm>
+
+The <dfn method for=Window>restore()</dfn> method steps are:
+
+1. Let |promise| be [=/a new promise=].
+
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. If [=this=]'s [=relevant global object=] does not have [=transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. Run the following steps [=/in parallel=]:
+
+    1. Let |permissionState| be [=/request permission to use=] "{{window-management}}".
+
+    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
+
+        1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+        1. [=/Consume user activation=] of [=this=]'s [=relevant global object=].
+
+        1. Let |state| be the current display state of the window (i.e., the value that would be matched by the 'display-state' media feature).
+
+        1. If |state| is "normal", [=/resolve=] |promise| with undefined and abort these steps.
+
+        1. If |state| is "minimized", request the user agent to unminimize the window, restoring it to its display state prior to being minimized.
+
+        1. Else if |state| is "fullscreen", request the user agent to exit fullscreen, restoring the window to its display state prior to entering fullscreen.
+
+        1. Else if |state| is "maximized", request the user agent to unmaximize the window, restoring it to the normal display state.
+
+        1. If the operation succeeds, [=/resolve=] |promise| with undefined.
+
+        1. If the operation fails, [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. Return |promise|.
+
+</div>
+
+<!-- ====================================================================== -->
+### {{Window/setResizable()}} method ### {#api-window-setresizable-method}
+<!-- ====================================================================== -->
+
+The {{Window/setResizable()}} method completes asynchronously, queuing work on the [=window placement task source=].
+
+<div algorithm>
+
+The <dfn method for=Window>setResizable(|resizable|)</dfn> method steps are:
+
+1. Let |promise| be [=/a new promise=].
+
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. Run the following steps [=/in parallel=]:
+
+    1. Let |permissionState| be [=/request permission to use=] "{{window-management}}".
+
+    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
+
+        1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+        1. Request the user agent to set the resizable state of the window to |resizable|.
+
+        1. If the operation succeeds, [=/resolve=] |promise| with undefined.
+
+        1. If the operation fails, [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
 1. Return |promise|.
 
@@ -730,6 +894,38 @@ The {{Element/requestFullscreen|Element.requestFullscreen()}} method steps are u
 1. Set the [=/this=].{{Window/[[targetScreenFullscreen]]}} internal slot to the [=/current high resolution time=] if `options`["{{FullscreenOptions/screen}}"] specifies a recognized {{ScreenDetailed}} object with a value of true for {{Screen/isExtended}}.
 
 <!-- ====================================================================== -->
+## CSS Extensions ## {#css-extensions}
+<!-- ====================================================================== -->
+
+This specification defines new CSS media features to allow stylesheet adaptation based on window states.
+
+### The 'display-state' media feature ### {#media-descriptor-display-state}
+
+The <dfn media-feature export>'display-state'</dfn> media feature describes the display state of the window.
+
+It is an enumerated media feature. The following values are defined:
+
+: <dfn export>normal</dfn>
+:: The window is in a normal state (neither minimized, maximized, nor fullscreen).
+: <dfn export>minimized</dfn>
+:: The window is minimized.
+: <dfn export>maximized</dfn>
+:: The window is maximized.
+: <dfn export>fullscreen</dfn>
+:: The window is in fullscreen mode.
+
+### The 'resizable' media feature ### {#media-descriptor-resizable}
+
+The <dfn media-feature export>'resizable'</dfn> media feature describes whether the window is user-resizable.
+
+It is an enumerated media feature. The following values are defined:
+
+: <dfn export>true</dfn>
+:: The window is user-resizable.
+: <dfn export>false</dfn>
+:: The window is not user-resizable.
+
+<!-- ====================================================================== -->
 ## Permission API Integration ## {#api-permission-api-integration}
 <!-- ====================================================================== -->
 
@@ -778,6 +974,8 @@ See the following additional explorations of security considerations:
 - ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-management/blob/main/EXPLAINER.md#privacy--security)
 - [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
 - ["Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations)
+- [W3C Security and Privacy Self-Review Questionnaire for "Additional Windowing Controls"](https://github.com/w3c/window-management/blob/main/security_and_privacy_additional_windowing_controls.md)
+- ["Security & Privacy Considerations" in the Explainer for "Additional Windowing Controls"](https://github.com/w3c/window-management/blob/main/EXPLAINER_additional_windowing_controls.md#security--privacy-considerations)
 
 <!-- ====================================================================== -->
 # Privacy Considerations # {#privacy}
@@ -804,6 +1002,8 @@ See the following additional explorations of privacy considerations:
 - [W3C Security and Privacy Self-Review Questionnaire for the overall API](https://github.com/w3c/window-management/blob/main/security_and_privacy.md)
 - ["Privacy & Security" in the Explainer for the overall API](https://github.com/w3c/window-management/blob/main/EXPLAINER.md#privacy--security)
 - [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
+- [W3C Security and Privacy Self-Review Questionnaire for "Additional Windowing Controls"](https://github.com/w3c/window-management/blob/main/security_and_privacy_additional_windowing_controls.md)
+- ["Security & Privacy Considerations" in the Explainer for "Additional Windowing Controls"](https://github.com/w3c/window-management/blob/main/EXPLAINER_additional_windowing_controls.md#security--privacy-considerations)
 
 <!-- ====================================================================== -->
 # Accessibility Considerations # {#a11y}

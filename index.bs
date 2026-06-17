@@ -560,6 +560,8 @@ The <dfn method for=Window>minimize()</dfn> method steps are:
 
 1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not an [=installed web application=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
 1. If [=this=]'s [=relevant global object=] does not have [=transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
 1. Run the following steps [=/in parallel=]:
@@ -598,6 +600,8 @@ The <dfn method for=Window>maximize()</dfn> method steps are:
 
 1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not an [=installed web application=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
 1. If [=this=]'s [=relevant global object=] does not have [=transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
 1. Run the following steps [=/in parallel=]:
@@ -635,6 +639,8 @@ The <dfn method for=Window>restore()</dfn> method steps are:
 1. Let |promise| be [=/a new promise=].
 
 1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not an [=installed web application=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
 1. If [=this=]'s [=relevant global object=] does not have [=transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
@@ -679,6 +685,8 @@ The <dfn method for=Window>setResizable(|resizable|)</dfn> method steps are:
 1. Let |promise| be [=/a new promise=].
 
 1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+
+1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not an [=installed web application=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
 1. Run the following steps [=/in parallel=]:
 

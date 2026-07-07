@@ -547,7 +547,7 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 </div>
 
 <!-- ====================================================================== -->
-### Request a window display state change ### {#algorithm-request-display-state-change}
+### Algorithm: Request a window display state change ### {#algorithm-request-display-state-change}
 <!-- ====================================================================== -->
 
 <div algorithm>

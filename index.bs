@@ -415,7 +415,7 @@ The <dfn for="screen">advanced observable properties</dfn> of a [=/screen=] are:
 * The [=/screen=]'s designation as [=/internal=] or [=/external=]
 
 <!-- ====================================================================== -->
-## Display state ## {#concept-display-state}
+## Window display state ## {#concept-window-display-state}
 <!-- ====================================================================== -->
 
 A [=top-level browsing context=] has an associated <dfn export>display state</dfn>, which can be one of:
@@ -547,94 +547,12 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 </div>
 
 <!-- ====================================================================== -->
-### {{Window/minimize()}} method ### {#api-window-minimize-method}
+### Request a window display state change ### {#algorithm-request-display-state-change}
 <!-- ====================================================================== -->
-
-The {{Window/minimize()}} method completes asynchronously, queuing work on the [=window placement task source=].
 
 <div algorithm>
 
-The <dfn method for=Window>minimize()</dfn> method steps are:
-
-1. Let |promise| be [=/a new promise=].
-
-1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
-
-1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not an [=installed web application=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
-
-1. If [=this=]'s [=relevant global object=] does not have [=transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
-
-1. Run the following steps [=/in parallel=]:
-
-    1. Let |permissionState| be [=/request permission to use=] "{{window-management}}".
-
-    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
-
-        1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
-
-        1. [=/Consume user activation=] of [=this=]'s [=relevant global object=].
-
-        1. If the window is already minimized, [=/resolve=] |promise| with undefined and abort these steps.
-
-        1. Request the user agent to minimize the window.
-
-        1. If the operation succeeds, [=/resolve=] |promise| with undefined.
-
-        1. If the operation fails, [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
-
-1. Return |promise|.
-
-</div>
-
-<!-- ====================================================================== -->
-### {{Window/maximize()}} method ### {#api-window-maximize-method}
-<!-- ====================================================================== -->
-
-The {{Window/maximize()}} method completes asynchronously, queuing work on the [=window placement task source=].
-
-<div algorithm>
-
-The <dfn method for=Window>maximize()</dfn> method steps are:
-
-1. Let |promise| be [=/a new promise=].
-
-1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
-
-1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not an [=installed web application=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
-
-1. If [=this=]'s [=relevant global object=] does not have [=transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
-
-1. Run the following steps [=/in parallel=]:
-
-    1. Let |permissionState| be [=/request permission to use=] "{{window-management}}".
-
-    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
-
-        1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
-
-        1. [=/Consume user activation=] of [=this=]'s [=relevant global object=].
-
-        1. If the window is already maximized, [=/resolve=] |promise| with undefined and abort these steps.
-
-        1. Request the user agent to maximize the window.
-
-        1. If the operation succeeds, [=/resolve=] |promise| with undefined.
-
-        1. If the operation fails, [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
-
-1. Return |promise|.
-
-</div>
-
-<!-- ====================================================================== -->
-### {{Window/restore()}} method ### {#api-window-restore-method}
-<!-- ====================================================================== -->
-
-The {{Window/restore()}} method completes asynchronously, queuing work on the [=window placement task source=].
-
-<div algorithm>
-
-The <dfn method for=Window>restore()</dfn> method steps are:
+To <dfn>request a window display state change</dfn> to a target display state |targetState|:
 
 1. Let |promise| be [=/a new promise=].
 
@@ -656,19 +574,66 @@ The <dfn method for=Window>restore()</dfn> method steps are:
 
         1. Let |state| be the window's [=display state=].
 
-        1. If |state| is [=display state/normal=], [=/resolve=] |promise| with undefined and abort these steps.
+        1. If any of the following are true, then [=/resolve=] |promise| with undefined and abort these steps:
+            - |targetState| is "minimized" and |state| is [=display state/minimized=].
+            - |targetState| is "maximized" and |state| is [=display state/maximized=].
+            - |targetState| is "restored" and |state| is [=display state/normal=].
 
-        1. If |state| is [=display state/minimized=], request the user agent to unminimize the window, restoring it to its [=display state=] prior to being minimized.
+        1. If |targetState| is "minimized" or "maximized":
+            1. Request the user agent to change the window's display state to |targetState|.
 
-        1. Else if |state| is [=display state/fullscreen=], request the user agent to exit fullscreen, restoring the window to its [=display state=] prior to entering fullscreen.
-
-        1. Else if |state| is [=display state/maximized=], request the user agent to unmaximize the window, restoring it to the [=display state/normal=] display state.
+        1. Else if |targetState| is "restored":
+            1. If |state| is [=display state/minimized=], request the user agent to unminimize the window, restoring it to its [=display state=] prior to being minimized.
+            1. Else if |state| is [=display state/fullscreen=], request the user agent to exit fullscreen, restoring the window to its [=display state=] prior to entering fullscreen.
+            1. Else if |state| is [=display state/maximized=], request the user agent to unmaximize the window, restoring it to the [=display state/normal=] display state.
 
         1. If the operation succeeds, [=/resolve=] |promise| with undefined.
 
         1. If the operation fails, [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
 1. Return |promise|.
+
+</div>
+
+<!-- ====================================================================== -->
+### {{Window/minimize()}} method ### {#api-window-minimize-method}
+<!-- ====================================================================== -->
+
+The {{Window/minimize()}} method completes asynchronously, queuing work on the [=window placement task source=].
+
+<div algorithm>
+
+The <dfn method for=Window>minimize()</dfn> method steps are:
+
+1. Return the result of running the [=request a window display state change=] algorithm with "minimized".
+
+</div>
+
+<!-- ====================================================================== -->
+### {{Window/maximize()}} method ### {#api-window-maximize-method}
+<!-- ====================================================================== -->
+
+The {{Window/maximize()}} method completes asynchronously, queuing work on the [=window placement task source=].
+
+<div algorithm>
+
+The <dfn method for=Window>maximize()</dfn> method steps are:
+
+1. Return the result of running the [=request a window display state change=] algorithm with "maximized".
+
+</div>
+
+<!-- ====================================================================== -->
+### {{Window/restore()}} method ### {#api-window-restore-method}
+<!-- ====================================================================== -->
+
+The {{Window/restore()}} method completes asynchronously, queuing work on the [=window placement task source=].
+
+<div algorithm>
+
+The <dfn method for=Window>restore()</dfn> method steps are:
+
+1. Return the result of running the [=request a window display state change=] algorithm with "restored".
 
 </div>
 

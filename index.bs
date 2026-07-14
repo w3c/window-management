@@ -6,8 +6,8 @@ Status: ED
 TR: https://www.w3.org/TR/window-management/
 URL: https://w3c.github.io/window-management/
 Level: None
-Editor: Joshua Bell, Google Inc. https://www.google.com/, jsbell@google.com, w3cid 61302
 Editor: Mike Wasserman, Google Inc. https://www.google.com/, msw@google.com, w3cid 116970
+Former editor: Joshua Bell, Google Inc. https://www.google.com/, jsbell@google.com, w3cid 61302
 Repository: w3c/window-management
 Group: secondscreenwg
 !Test Suite: <a href="https://github.com/web-platform-tests/wpt/tree/master/window-management">https://github.com/web-platform-tests/wpt/tree/master/window-management</a>

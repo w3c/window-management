@@ -1,8 +1,8 @@
-# Explainer: `alwaysOnTop` option for `window.open()`
+# Explainer: Creating Always-On-Top Windows
 
 ## 1. Introduction & Abstract
 
-Currently, web applications cannot create standalone, independent windows that stay above other desktop applications. While the `Document Picture-in-Picture API` does allow for always-on-top windows, they are strictly tied to the lifecycle of the initiating tab and close automatically if that tab navigates or closes. This explainer proposes a new boolean option for `window.open()`, called `alwaysOnTop`. When set to `true`, the browser requests that the operating system keep the newly created window pinned above other non-always-on-top windows, enabling fully standalone, always-on-top utility windows that can outlive the tab that opened them.
+Currently, web applications cannot create standalone, independent windows that stay above other desktop applications. While the `Document Picture-in-Picture API` does allow for always-on-top windows, they are strictly tied to the lifecycle of the initiating tab and close automatically if that tab navigates or closes. This explainer explores user benefits and web application requirements for always-on-top windows, proposing a simple enhancement to enable fully standalone, always-on-top utility windows.
 
 ---
 
@@ -62,7 +62,7 @@ console.log(utilityWindow.alwaysOnTop); // true (if successfully opened as alway
 Exposing the read-only `alwaysOnTop` property on the `Window` interface addresses two critical detection challenges for developers:
 
 1. **Feature Detection:** Developers can synchronously check for browser API support by verifying the existence of `'alwaysOnTop' in Window.prototype`.
-2. **State Verification:** A script running inside the new popup (or the opening application holding a reference to it) can confidently determine if the window was legitimately successfully opened with the always-on-top capability by checking the `window.alwaysOnTop` boolean.
+2. **State Verification:** A script running inside the new popup (or the opening application holding a reference to it) can confidently determine if the window was successfully opened with the always-on-top capability by checking the `window.alwaysOnTop` boolean.
 
 ```javascript
 async function openUtilityWindow() {
@@ -127,7 +127,6 @@ Because an "always on top" window can be abused for disruptive purposes (e.g., s
   * Note: Certain UA permissions (e.g. `chrome://settings/content/popups`) can grant websites the ability to bypass the user gesture requirement for `window.open()`, which also means that they can bypass the user gesture requirement for always-on-top windows. We don't consider this to be a problem given the additional `window-management` permission requirement.
   * Requiring both the requestable `window-management` permission and explicit user activation constitutes a very high bar that prevents untrusted or malicious sites from spamming pinned windows.
 * **Move & Resize Restrictions:** To prevent abuse scenarios like a window programmatically tracking the cursor or expanding to obscure critical OS interface elements, synchronous APIs that manipulate window bounds (`moveTo`, `moveBy`, `resizeTo`, `resizeBy`) are subject to strict UA rate limits and transient user activation checks, analogous to the mitigations applied to Document Picture-in-Picture windows.
-* **Focus Stealing Protections:** Always-on-top windows must not be permitted to aggressively force focus back to themselves when the user interacts with other applications.
 * **Explicit User Affordance & Easy Dismissal:** The browser and operating system window frames must provide clear, un-spoofable user controls to dismiss the window at any time.
 
 ---
@@ -139,7 +138,7 @@ Because an "always on top" window can be abused for disruptive purposes (e.g., s
 The [Document Picture-in-Picture API](https://wicg.github.io/document-picture-in-picture/) enables web developers to open an always-on-top window populated with arbitrary HTML content. While valuable for background media presentation, it is not well-suited for standalone always-on-top utilities for several reasons:
 
 1. **Strict Lifecycle Coupling ("Close-on-Destroy"):**
-   Document PiP windows are inherently tied to the lifecycle of the opener page. If the user closes the opener tab, navigates to another page, or closes the primary browser window, the PiP window is destroyed immediately. This makes it impossible to implement workflows where a user launches a utility window and then closes the initiating browser tab to save resources or declutter.
+   Document PiP windows are inherently tied to the lifecycle of the opener page. If the user closes the opener tab, navigates to another page (particularly tough for multi-page applications), or closes the primary browser window, the PiP window is destroyed immediately. This makes it impossible to implement workflows where a user launches a utility window and then closes the initiating browser tab to save resources or declutter.
 2. **Mental Model & Opener UX Failure:**
    Document PiP requires the user to mentally manage two separate entities: the opener tab ("controller") and the PiP window ("view"). For applications that function as standalone tools or meeting note-taking companions, users expect the window to behave as an independent entity rather than a tethered child view.
 3. **Semantic & Architectural Alignment:**

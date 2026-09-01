@@ -68,7 +68,7 @@ No.
 
 > 17.  How does your feature handle non-"fully active" documents?
 
-Events aren't fired at them; they are saved for later and fired in a single coalesced event.
+Events aren't fired at them; they are saved for later and fired in a single coalesced event. This is a standard behavior for media query events and helps to mitigate potential ephemeral fingerprinting.
 
 > 18.  What should this questionnaire have asked?
 

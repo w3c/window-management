@@ -319,6 +319,8 @@ Here are the most prevalent concerns raised by this API. Malicious sites may wis
 *   get window display state and resizable information (for fingerprinting)
 *   observe concurrent window display state changes across site boundaries (for cross-site identity joining)
 
+The risk of fingerprinting with `display-state` and `resizable` properties is mitigated by the CSS properties not being updated when the page is in the background. Because of this, the events related to the window state changes are triggered once the page switches to foreground. This makes it impossible to do fingerprinting based on the time of the window events across multiple tabs open in the same browser window.
+
 It is valuable to also consider concerns raised by preexisting window control APIs, such as `window.open()`, `window.moveTo|resizeTo()`, `window.close()`, `window.screenX|screenY|outerWidth|outerHeight`, `element.requestFullscreen()`, and others, as those likely apply to this API surface too. In general, the threats associated with this API functionality (especially restore) are the same as that of [window management](https://w3c.github.io/window-management/). That is, if an app can open new windows or move and resize its existing windows anywhere on the device’s screens, then the ability to maximize, minimize, and restore its windows presents relatively little additional concern. It is worth noting that web apps today can [enter fullscreen (with a user gesture)](https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullScreen) where they are given total control over the display.
 
 

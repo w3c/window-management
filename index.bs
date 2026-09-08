@@ -936,6 +936,7 @@ The '@media/resizable' media feature describes whether the window is user-resiza
     <dt><dfn>false</dfn>
     <dd>
         The window cannot be resized by the user by dragging the edge of the window.
+        This keyword value evaluates as false in the [=boolean context=].
 
 </dl>
 

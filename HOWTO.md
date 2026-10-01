@@ -52,6 +52,4 @@ async function main() {
   - Chrome 103+ supports this enhancement with this flag enabled:
     - `chrome --enable-blink-features=CapabilityDelegationFullscreenRequest`
 
-[Accurate Screen Labels](https://chromestatus.com/feature/6317530778959872) refines the `ScreenDetailed.label` implementation by replacing the current placeholder values (e.g. 'External Display 1') with data sourced from display device EDIDs (e.g. 'HP Z27n') and higher-level OS APIs (e.g. language localized 'Built-in Retina Display'). These more accurate labels match those shown by OSes in display settings UI surfaces. Test this by observing the screen label strings displayed in the [window-placement-demo](https://michaelwasserman.github.io/window-placement-demo).
-  - Chrome 104+ supports this enhancement on some OSes with this flag enabled:
-    - `chrome --enable-blink-features=WindowPlacementEnhancedScreenLabels`
+[Screen Labels](https://w3c.github.io/window-management/#api-screendetailed-interface) are intended to be short, user-facing names that help distinguish displays without exposing stable hardware identifiers. Implementations should prefer generic labels such as 'Built-in Display' or 'Display 2', and avoid exposing monitor model names, serial numbers, vendor branding, or other per-device identifiers. The label may be empty when the user agent cannot provide a non-identifying name for the screen.

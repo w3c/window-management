@@ -61,6 +61,13 @@ permission, limited to secure contexts, top-level frames, gated by user gesture,
 active window contexts, and other protections to help mitigate concerns around
 [fingerprinting](https://w3c.github.io/fingerprinting-guidance).
 
+In particular, `ScreenDetailed.label` should be treated as a short, user-facing
+name for display selection rather than as a source of stable hardware
+information. User agents should prefer generic labels such as "Built-in
+Display" or "Display 2" and avoid exposing monitor model names, serial
+numbers, or other per-device identifiers that would increase the fingerprinting
+surface.
+
 The amount of information exposed to a given site would be at the discretion of
 users and their agents. Exposing the full set of proposed information (with user
 permission) enables web applications to offer compelling functionality, but

@@ -896,8 +896,8 @@ Type: discrete
 </pre>
 
 The '@media/display-state' media feature describes the window state in which the current [=browsing context=] is
-currently being presented to the end user. In child browsing contexts, the [=display state=] must match that of
-the  [=top-level browsing context=].
+currently being presented to the end user. In child browsing contexts, the [=display state=] must evaluate to
+[=display state/normal=].
 
 This feature is primarily used to determine which [=display state=] has been applied by the host Operating System
 to the user agent running the [=application context=].
@@ -927,7 +927,8 @@ For: @media
 Type: discrete
 </pre>
 
-The '@media/resizable' media feature describes whether the window is user-resizable.
+The '@media/resizable' media feature describes whether the window is user-resizable. In child browsing contexts,
+the '@media/resizable' media feature must evaluate to true.
 
 <dl dfn-type=value dfn-for="@media/resizable">
     <dt><dfn>true</dfn>

@@ -2,7 +2,7 @@
 
 ## 1. Introduction & Abstract
 
-Currently, web applications cannot create standalone, independent windows that stay above other desktop applications. While the `Document Picture-in-Picture API` does allow for always-on-top windows, they are strictly tied to the lifecycle of the initiating tab and close automatically if that tab navigates or closes. This explainer explores user benefits and web application requirements for always-on-top windows, proposing a simple enhancement to enable fully standalone, always-on-top utility windows.
+Currently, web applications cannot create standalone, independent windows that stay above other desktop applications, often forcing developers to bundle dedicated desktop runtimes like Electron solely for this capability. While the `Document Picture-in-Picture API` does allow for always-on-top windows, they are strictly tied to the lifecycle of the initiating tab and close automatically if that tab navigates or closes. This explainer explores user benefits and web application requirements for always-on-top windows, proposing a simple enhancement to enable fully standalone, always-on-top utility windows.
 
 ---
 
@@ -10,9 +10,9 @@ Currently, web applications cannot create standalone, independent windows that s
 
 There are several key productivity and utility use cases where users benefit from persistent, always-on-top windows:
 
-* **Meeting Note-Taking & Reference Companions:** A persistent companion window opened by a dedicated note-taking web app to take notes alongside a separate meeting application (e.g., Google Meet, Zoom, Microsoft Teams) or presentation, ensuring the notepad stays visible above full-screen windows without getting lost when switching focus.
-* **Developer Tools & Live Telemetry:** Live-reloading logs, debug dashboards, or performance monitors that developers want visible on-screen while coding inside an IDE or interacting with full-screen terminal sessions.
-* **Persistent Utilities & Scratchpads:** Standalone calculators, timers, quick-translators, or reference widgets that users need pinned above various full-screen or tiled desktop apps.
+* **Meeting Note-Taking & Reference Companions:** A persistent companion window opened by a dedicated note-taking web app to take notes alongside a separate meeting application (e.g., Google Meet, Zoom, Microsoft Teams) or presentation, ensuring the notepad stays visible above other active windows without getting lost when switching focus.
+* **Developer Tools & Live Telemetry:** Live-reloading logs, debug dashboards, or performance monitors that developers want visible on-screen while coding inside an IDE or interacting with terminal sessions.
+* **Persistent Utilities & Scratchpads:** Standalone calculators, timers, quick-translators, or reference widgets that users need pinned above other desktop apps.
 
 ### The User-Facing Problem with Opener-Coupled Windows
 
@@ -50,6 +50,7 @@ console.log(utilityWindow.alwaysOnTop); // true (if successfully opened as alway
 * **Permission Requirement:** This capability is gated behind the `window-management` permission. If this permission has not been granted by the user, the `alwaysOnTop` request is silently ignored, and a standard popup window is created instead.
 * If `true` and the required permission is granted, the OS-level window manager is instructed to keep this window pinned above other non-always-on-top windows.
 * **Z-Ordering of Multiple Windows:** The relative z-ordering between multiple concurrent always-on-top windows is left to the User Agent or the underlying operating system. For example, UAs may order them based on which window was most recently focused.
+* **Interaction with Fullscreen Windows & Virtual Desktops:** Whether an always-on-top window is ordered above OS-level fullscreen windows or moves across virtual desktops/spaces when content enters fullscreen (such as macOS Fullscreen Spaces) is left to the User Agent and underlying operating system window manager.
 * **UA-Defined Limits:** To preserve usability, browsers (User Agents) may enforce implementation-specific limits. For example, UAs may restrict origins to a single active `alwaysOnTop` window at a time, or make it mutually exclusive with other types of Picture-in-Picture (PiP) windows. The UA may also restrict the size of the always-on-top window.
 * **Popup Window Context Requirement:** The `alwaysOnTop` hint only applies when `window.open()` creates a new, standalone popup window context. If the call results in a new tab within an existing multi-tab browser window, or targets and navigates an existing window (e.g., via a named `target`), the `alwaysOnTop` request is silently ignored.
 * If the user manually minimizes the window, it should obey.
@@ -124,10 +125,11 @@ Because an "always on top" window can be abused for disruptive purposes (e.g., s
 * **Dual Gating (Permission + Popup Blocker / User Activation):**
   * **Permission Gating:** The `alwaysOnTop` capability is gated behind the `window-management` permission. If this permission is not granted, `window.open(..., 'alwaysOnTop=true')` degrades gracefully to a regular popup window without always-on-top elevation.
   * **Transient User Activation & Popup Policy:** Opening an always-on-top window requires transient user activation (e.g., a direct user gesture) and adheres to standard browser "Popups and Redirects" enforcement (`chrome://settings/content/popups`).
-  * Note: Certain UA permissions (e.g. `chrome://settings/content/popups`) can grant websites the ability to bypass the user gesture requirement for `window.open()`, which also means that they can bypass the user gesture requirement for always-on-top windows. We don't consider this to be a problem given the additional `window-management` permission requirement.
+  * Note: User Agents may respect user or enterprise settings (e.g., `chrome://settings/content/popups`) that waive transient user activation requirements for `window.open()`, whether or not the window will be always-on-top, as the `window-management` permission requirement still gates always-on-top elevation.
   * Requiring both the requestable `window-management` permission and explicit user activation constitutes a very high bar that prevents untrusted or malicious sites from spamming pinned windows.
-* **Move & Resize Restrictions:** To prevent abuse scenarios like a window programmatically tracking the cursor or expanding to obscure critical OS interface elements, synchronous APIs that manipulate window bounds (`moveTo`, `moveBy`, `resizeTo`, `resizeBy`) are subject to strict UA rate limits and transient user activation checks, analogous to the mitigations applied to Document Picture-in-Picture windows.
-* **Explicit User Affordance & Easy Dismissal:** The browser and operating system window frames must provide clear, un-spoofable user controls to dismiss the window at any time.
+* **Concurrency & Size Limits:** To prevent screen exhaustion, obscuration of critical OS interface elements, or coordinated multi-window spoofing, User Agents may enforce strict limits on the number and dimensions of active always-on-top windows. For example, a UA may restrict each origin to a single active `alwaysOnTop` window at a time, make always-on-top popups mutually exclusive with Document or Video Picture-in-Picture windows, and clamp minimum and maximum window dimensions to a safe fraction of the available display work area.
+* **Move & Resize Restrictions:** To prevent abuse scenarios like a window programmatically tracking the cursor or expanding to obscure critical OS interface elements, synchronous APIs that manipulate window bounds (`moveTo`, `moveBy`, `resizeTo`, `resizeBy`) are subject to strict UA restrictions and transient user activation checks, analogous to the [mitigations applied to Document Picture-in-Picture windows](https://wicg.github.io/document-picture-in-picture/#spoofing).
+* **Explicit User Affordance & Easy Dismissal:** The browser and operating system window frames must provide clear, un-spoofable user controls (such as an origin indicator and close button) to dismiss the window at any time. In standard web contexts, always-on-top windows cannot be unframed; capabilities for unframed windows (such as in Isolated Web Apps) apply only to higher-trust isolated contexts with distinct security models.
 
 ---
 

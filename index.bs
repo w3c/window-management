@@ -48,6 +48,12 @@ spec: fingerprinting-guidance; urlPrefix: https://www.w3.org/TR/fingerprinting-g
 spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
     type: dfn; text: transient activation duration; url: transient-activation-duration
     type: dfn; text: last activation timestamp; url: last-activation-timestamp
+    type: dfn; for: browsing context; text: is popup; url: document-sequences.html#is-popup
+    type: dfn; for: browsing context; text: opener browsing context; url: document-sequences.html#opener-browsing-context
+    type: dfn; text: window open steps; url: nav-history-apis.html#window-open-steps
+    type: dfn; text: check if a popup window is requested; url: nav-history-apis.html#popup-window-is-requested
+    type: dfn; text: check if a window feature is set; url: nav-history-apis.html#window-feature-is-set
+    type: dfn; text: entry global object; url: webappapis.html#entry-global-object
 spec: ecmascript; urlPrefix: https://tc39.es/ecma262/
     type: dfn; text: internal slot; url: sec-object-internal-methods-and-internal-slots
 </pre>
@@ -429,6 +435,16 @@ A [=top-level browsing context=] has an associated <dfn export>display state</df
 :: The window is in fullscreen mode.
 
 <!-- ====================================================================== -->
+## Always-on-top popup window ## {#concept-always-on-top-popup-window}
+<!-- ====================================================================== -->
+
+A [=top-level browsing context=] has an associated <dfn for="browsing context" export>is always-on-top popup</dfn> boolean, initially false.
+
+When a [=top-level browsing context=]'s [=browsing context/is always-on-top popup=] is true, the user agent requests that the operating system window manager keep the window pinned above other non-always-on-top windows, independently of its [=browsing context/opener browsing context=]'s lifecycle. If the user agent or operating system window manager does not honor or revokes this always-on-top state, the [=top-level browsing context=]'s [=browsing context/is always-on-top popup=] is set to false.
+
+Note: The relative z-ordering between multiple concurrent always-on-top windows, as well as their interaction with fullscreen windows and virtual desktops, is left to the user agent and the underlying operating system window manager.
+
+<!-- ====================================================================== -->
 # API # {#api}
 <!-- ====================================================================== -->
 
@@ -493,6 +509,9 @@ The [[HTML]] standard defines the {{Window}} interface, which this specification
     : |window| . {{Window/getScreenDetails()}}
     :: Returns a promise that fulfills with a {{ScreenDetails}} object with information about the device's screens. The promise will be rejected if permission is denied.
 
+    : |window| . {{Window/alwaysOnTopPopup}}
+    :: Returns `true` if the window is an always-on-top popup window pinned above other non-always-on-top windows, or `false` otherwise.
+
 </div>
 
 <xmp class=idl>
@@ -511,6 +530,8 @@ partial interface Window {
 
   [SecureContext]
   Promise<undefined> setResizable(boolean resizable);
+
+  readonly attribute boolean alwaysOnTopPopup;
 };
 </xmp>
 
@@ -672,6 +693,22 @@ The <dfn method for=Window>setResizable(|resizable|)</dfn> method steps are:
 </div>
 
 <!-- ====================================================================== -->
+### {{Window/alwaysOnTopPopup}} attribute ### {#api-window-alwaysontoppopup-attribute}
+<!-- ====================================================================== -->
+
+<div algorithm>
+
+The <dfn attribute for=Window>alwaysOnTopPopup</dfn> getter steps are:
+
+1. Let |browsingContext| be [=this=]'s [=Window/browsing context=].
+
+1. If |browsingContext| is null or |browsingContext| is not a [=top-level browsing context=], then return false.
+
+1. Return |browsingContext|'s [=browsing context/is always-on-top popup=].
+
+</div>
+
+<!-- ====================================================================== -->
 ### {{Window}} attribute and method definition changes ### {#api-window-attribute-and-method-definition-changes}
 <!-- ====================================================================== -->
 
@@ -692,6 +729,38 @@ Instances of {{Window}} are created with an [=/internal slot=] named <dfn attrib
 The {{Window/open()|Window.open()}} method steps, and the steps of methods invoked therein, are updated to optionally:
 1. Waive the [=/transient activation=] state requirement when the [=/current high resolution time=] of the [=/relevant global object=] is greater than or equal to [=/this=].{{Window/[[targetScreenFullscreen]]}}, and less than [=/this=].{{Window/[[targetScreenFullscreen]]}} plus the [=/transient activation duration=].
 1. Set [=/this=].{{Window/[[targetScreenFullscreen]]}} to negative infinity immediately after following the steps to [=/consume user activation=].
+
+In [[HTML]]'s [=window open steps=], when `windowType` is either `"new and unrestricted"` or `"new with no opener"`, after setting `targetNavigable`'s [=navigable/active browsing context=]'s [=browsing context/is popup=], run the following steps:
+1. Let |alwaysOnTopPopup| be the result of [=check if an always-on-top popup window is requested|checking if an always-on-top popup window is requested=], given `tokenizedFeatures`.
+1. If |alwaysOnTopPopup| is true:
+    1. Request that the operating system window manager keep `targetNavigable`'s window pinned above other non-always-on-top windows.
+    1. If the user agent and operating system window manager honor this request, set `targetNavigable`'s [=navigable/active browsing context=]'s [=browsing context/is always-on-top popup=] to true.
+
+<div algorithm>
+
+To <dfn>check if an always-on-top popup window is requested</dfn>, given |tokenizedFeatures|:
+
+1. If |tokenizedFeatures| [=map/is empty=], then return false.
+
+1. Let |popup| be the result of [=check if a popup window is requested|checking if a popup window is requested=], given |tokenizedFeatures|.
+
+1. If |popup| is false, then return false.
+
+1. Let |alwaysOnTop| be the result of [=check if a window feature is set|checking if a window feature is set=], given |tokenizedFeatures|, `"alwaysontop"`, and false.
+
+1. If |alwaysOnTop| is false, then return false.
+
+1. If the [=entry global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then return false.
+
+1. Let |permissionState| be the result of [=getting the current permission state=] of "{{window-management}}".
+
+1. If |permissionState| is not "{{PermissionState/granted}}", then return false.
+
+1. Optionally, return false based on implementation-defined limits (for example, per-origin concurrency limits on active always-on-top windows, mutual exclusivity with Picture-in-Picture windows, or platform and window manager limitations).
+
+1. Return true.
+
+</div>
 
 <!-- ====================================================================== -->
 ## {{ScreenDetails}} interface ## {#api-screendetails-interface}
@@ -991,6 +1060,8 @@ See the following additional explorations of security considerations:
 - ["Security Considerations" in the Explainer for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/EXPLAINER_initiating_multi_screen_experiences.md#security-considerations)
 - [W3C Security and Privacy Self-Review Questionnaire for "Additional Windowing Controls"](https://github.com/w3c/window-management/blob/main/security_and_privacy_additional_windowing_controls.md)
 - ["Security & Privacy Considerations" in the Explainer for "Additional Windowing Controls"](https://github.com/w3c/window-management/blob/main/EXPLAINER_additional_windowing_controls.md#security--privacy-considerations)
+- [W3C Security and Privacy Self-Review Questionnaire for "Creating Always-On-Top Windows"](https://github.com/w3c/window-management/blob/main/security_and_privacy_always_on_top.md)
+- ["Security & Privacy Considerations" in the Explainer for "Creating Always-On-Top Windows"](https://github.com/w3c/window-management/blob/main/EXPLAINER_always_on_top.md#5-security--privacy-considerations)
 
 <!-- ====================================================================== -->
 # Privacy Considerations # {#privacy}
@@ -1019,6 +1090,8 @@ See the following additional explorations of privacy considerations:
 - [W3C Security and Privacy Self-Review Questionnaire for "Initiating Multi-Screen Experiences"](https://github.com/w3c/window-management/blob/main/security_and_privacy_initiating_multi_screen_experiences.md)
 - [W3C Security and Privacy Self-Review Questionnaire for "Additional Windowing Controls"](https://github.com/w3c/window-management/blob/main/security_and_privacy_additional_windowing_controls.md)
 - ["Security & Privacy Considerations" in the Explainer for "Additional Windowing Controls"](https://github.com/w3c/window-management/blob/main/EXPLAINER_additional_windowing_controls.md#security--privacy-considerations)
+- [W3C Security and Privacy Self-Review Questionnaire for "Creating Always-On-Top Windows"](https://github.com/w3c/window-management/blob/main/security_and_privacy_always_on_top.md)
+- ["Security & Privacy Considerations" in the Explainer for "Creating Always-On-Top Windows"](https://github.com/w3c/window-management/blob/main/EXPLAINER_always_on_top.md#5-security--privacy-considerations)
 
 <!-- ====================================================================== -->
 # Accessibility Considerations # {#a11y}

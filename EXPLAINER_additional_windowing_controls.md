@@ -185,14 +185,14 @@ New `window.minimize()/maximize()/restore()` async APIs ask the user agent to pe
 *   `minimize()/maximize()/restore()` operations follow platform convention.
 *   [Snapped states](https://support.microsoft.com/en-us/windows/snap-your-windows-885a9b1e-a983-a3b1-16cd-c531795e6241) aren’t typically exposed to nor initiated by client applications on desktop platforms, and each platform does them a little differently. They are out of scope here.
 
-A new `display-state` CSS media feature indicates the current display state of the window. Possible values are `normal/minimized/maximized/fullscreen`. The property will always contain the value `normal` if there was an error.
+A new `display-state` CSS media feature indicates the current display state of the window. Possible values are `normal/minimized/maximized/fullscreen`. The property will always contain the value `normal` if there was an error. In child frames, this media feature does not reflect the parent window state and instead evaluates to `normal`.
 
 A new `window.setResizable(bool)` async API asks the user agent to set whether users can resize the provided window object. It returns a Promise which is successfully resolved, or is rejected if there was an error (lack of permission, request rejected by the operating system). This allows VDI client applications to request that local windows match the behavior of the remote window.
 
 This API requests that the user agent prevent resize drag handles on top-level windows, and it has no effect on iframe windows. Maximize is prevented, but minimize and restore still work as expected. Not all resizes can be prevented (e.g. window being moved to another display with a size smaller than the window) and it’s ultimately the client app's responsibility to handle such cases.
 While user-initiated attempts to enter fullscreen are prevented, applications can still utilize the [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API) (i.e. `Element.requestFullscreen()`)  to request fullscreen programmatically. To prevent script-initiated fullscreen requests, developers can override `Element.prototype.requestFullscreen`, set an [HTTP `fullscreen` permission-policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy/fullscreen) or use the [FullscreenAllowed](https://chromeenterprise.google/policies/#FullscreenAllowed) enterprise policy for managed sessions.
 
-A new `resizable` CSS media feature indicates whether the provided window object is user resizable.
+A new `resizable` CSS media feature indicates whether the provided window object is user resizable. In child frames, this media feature does not reflect the parent window state and instead evaluates to `true`.
 
 
 ## Alternatives considered
@@ -319,7 +319,9 @@ Here are the most prevalent concerns raised by this API. Malicious sites may wis
 *   get window display state and resizable information (for fingerprinting)
 *   observe concurrent window display state changes across site boundaries (for cross-site identity joining)
 
-The risk of fingerprinting with `display-state` and `resizable` properties is mitigated by the CSS properties not being updated when the page is in the background. Because of this, the events related to the window state changes are triggered once the page switches to foreground. This makes it impossible to do fingerprinting based on the time of the window events across multiple tabs open in the same browser window.
+The risk of fingerprinting and cross-site identity joining with `display-state` and `resizable` properties is mitigated in two ways:
+* No propagation to child frames: the `display-state` and `resizable` CSS media features are not propagated to child frames (evaluating to `normal` and `true` respectively). This prevents embedded contexts from monitoring window state transitions.
+* Background throttling: the CSS properties are not updated when the page is in the background. Because of this, the events related to the window state changes are triggered once the page switches to foreground. This makes it impossible to do fingerprinting based on the time of the window events across multiple tabs open in the same browser window.
 
 It is valuable to also consider concerns raised by preexisting window control APIs, such as `window.open()`, `window.moveTo|resizeTo()`, `window.close()`, `window.screenX|screenY|outerWidth|outerHeight`, `element.requestFullscreen()`, and others, as those likely apply to this API surface too. In general, the threats associated with this API functionality (especially restore) are the same as that of [window management](https://w3c.github.io/window-management/). That is, if an app can open new windows or move and resize its existing windows anywhere on the device’s screens, then the ability to maximize, minimize, and restore its windows presents relatively little additional concern. It is worth noting that web apps today can [enter fullscreen (with a user gesture)](https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullScreen) where they are given total control over the display.
 

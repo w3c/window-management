@@ -5,10 +5,10 @@
   <title>Window Management</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version ac92c2f0d, updated Fri Aug 21 16:01:29 2026 -0700" name="generator">
+  <meta content="Bikeshed version 49e9fdd4f, updated Tue Oct 13 14:27:53 2026 -0700" name="generator">
   <link href="https://www.w3.org/TR/window-management/" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="97b917372af3b9cf6dbae7aa1a41856e4507b467" name="revision">
+  <meta content="2163d952e2076377b811e38c5d5907c2c7b1355e" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -792,7 +792,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
 </p>
    <h1 class="no-ref p-name" id="title">Window Management</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2026-09-08">8 September 2026</time></p>
+    <time class="dt-updated" datetime="2026-10-30">30 October 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1621,15 +1621,15 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
       <td>discrete
    </table>
    <p>The '@media/display-state' media feature describes the window state in which the current <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#browsing-context" id="ref-for-browsing-context">browsing context</a> is
-currently being presented to the end user. In child browsing contexts, the <a data-link-type="dfn" href="#display-state" id="ref-for-display-state③">display state</a> must match that of
-the  <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context" id="ref-for-top-level-browsing-context②">top-level browsing context</a>.</p>
+currently being presented to the end user. In child browsing contexts, the <a data-link-type="dfn" href="#display-state" id="ref-for-display-state③">display state</a> must evaluate to
+<a data-link-type="dfn" href="#display-state-normal" id="ref-for-display-state-normal②">normal</a>.</p>
    <p>This feature is primarily used to determine which <a data-link-type="dfn" href="#display-state" id="ref-for-display-state④">display state</a> has been applied by the host Operating System
 to the user agent running the <a data-link-type="dfn" href="https://w3c.github.io/manifest/#dfn-application-context" id="ref-for-dfn-application-context">application context</a>.</p>
    <dl>
     <dt><dfn class="css dfn-paneled" data-dfn-for="@media/display-state" data-dfn-type="value" data-export id="valdef-media-display-state-normal">normal</dfn>
     
     <dd>
-        The browsing context is displayed in the <a data-link-type="dfn" href="#display-state-normal" id="ref-for-display-state-normal②">normal</a> display state.
+        The browsing context is displayed in the <a data-link-type="dfn" href="#display-state-normal" id="ref-for-display-state-normal③">normal</a> display state.
     
     <dt><dfn class="css dfn-paneled" data-dfn-for="@media/display-state" data-dfn-type="value" data-export id="valdef-media-display-state-minimized">minimized</dfn>
     
@@ -1664,7 +1664,8 @@ to the user agent running the <a data-link-type="dfn" href="https://w3c.github.i
       <th>Type:
       <td>discrete
    </table>
-   <p>The '@media/resizable' media feature describes whether the window is user-resizable.</p>
+   <p>The '@media/resizable' media feature describes whether the window is user-resizable. In child browsing contexts,
+the '@media/resizable' media feature must evaluate to true.</p>
    <dl>
     <dt><dfn class="css dfn-paneled" data-dfn-for="@media/resizable" data-dfn-type="value" data-export id="valdef-media-resizable-true">true</dfn>
     
@@ -2096,7 +2097,7 @@ for helping craft this specification.</p>
    <dt id="biblio-cssom-view-1">[CSSOM-VIEW-1]
    <dd>Simon Fraser; Emilio Cobos Álvarez. <a href="https://drafts.csswg.org/cssom-view/"><cite>CSSOM View Module</cite></a>. URL: <a href="https://drafts.csswg.org/cssom-view/">https://drafts.csswg.org/cssom-view/</a>
    <dt id="biblio-design-principles">[DESIGN-PRINCIPLES]
-   <dd>Martin Thomson; Jeffrey Yasskin. <a href="https://w3ctag.github.io/design-principles/"><cite>Web Platform Design Principles</cite></a>. URL: <a href="https://w3ctag.github.io/design-principles/">https://w3ctag.github.io/design-principles/</a>
+   <dd>Jeffrey Yasskin. <a href="https://w3ctag.github.io/design-principles/"><cite>Web Platform Design Principles</cite></a>. URL: <a href="https://w3ctag.github.io/design-principles/">https://w3ctag.github.io/design-principles/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
@@ -2116,7 +2117,7 @@ for helping craft this specification.</p>
    <dt id="biblio-permissions">[PERMISSIONS]
    <dd>Marcos Caceres; Mike Taylor. <a href="https://w3c.github.io/permissions/"><cite>Permissions</cite></a>. URL: <a href="https://w3c.github.io/permissions/">https://w3c.github.io/permissions/</a>
    <dt id="biblio-permissions-policy">[PERMISSIONS-POLICY]
-   <dd>Ian Clelland. <a href="https://w3c.github.io/webappsec-permissions-policy/"><cite>Permissions Policy</cite></a>. URL: <a href="https://w3c.github.io/webappsec-permissions-policy/">https://w3c.github.io/webappsec-permissions-policy/</a>
+   <dd>Ian Clelland; Ari Chivukula. <a href="https://w3c.github.io/webappsec-permissions-policy/"><cite>Permissions Policy</cite></a>. URL: <a href="https://w3c.github.io/webappsec-permissions-policy/">https://w3c.github.io/webappsec-permissions-policy/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-webidl">[WEBIDL]
@@ -2456,7 +2457,7 @@ let dfnPanelData = {
 "a79bdef0": {"dfnID":"a79bdef0","dfnText":"application context","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-application-context"}],"title":"3.6.1. The 'display-state' media feature"}],"url":"https://w3c.github.io/manifest/#dfn-application-context"},
 "a973e0fe": {"dfnID":"a973e0fe","dfnText":"document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document"}],"title":"3.8. Permission Policy integration"}],"url":"https://dom.spec.whatwg.org/#concept-document"},
 "aca22383": {"dfnID":"aca22383","dfnText":"consume user activation","external":true,"refSections":[{"refs":[{"id":"ref-for-consume-user-activation"}],"title":"3.2.2. Algorithm: Request a window display state change"},{"refs":[{"id":"ref-for-consume-user-activation\u2460"},{"id":"ref-for-consume-user-activation\u2461"}],"title":"3.2.8. Window.open() method definition changes"}],"url":"https://html.spec.whatwg.org/multipage/interaction.html#consume-user-activation"},
-"ae2a6342": {"dfnID":"ae2a6342","dfnText":"top-level browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-top-level-browsing-context"}],"title":"2.12. Window display state"},{"refs":[{"id":"ref-for-top-level-browsing-context\u2460"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"},{"refs":[{"id":"ref-for-top-level-browsing-context\u2461"}],"title":"3.6.1. The 'display-state' media feature"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context"},
+"ae2a6342": {"dfnID":"ae2a6342","dfnText":"top-level browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-top-level-browsing-context"}],"title":"2.12. Window display state"},{"refs":[{"id":"ref-for-top-level-browsing-context\u2460"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#top-level-browsing-context"},
 "b262501e": {"dfnID":"b262501e","dfnText":"reject","external":true,"refSections":[{"refs":[{"id":"ref-for-reject"},{"id":"ref-for-reject\u2460"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-reject\u2461"},{"id":"ref-for-reject\u2462"},{"id":"ref-for-reject\u2463"},{"id":"ref-for-reject\u2464"},{"id":"ref-for-reject\u2465"}],"title":"3.2.2. Algorithm: Request a window display state change"},{"refs":[{"id":"ref-for-reject\u2466"},{"id":"ref-for-reject\u2467"},{"id":"ref-for-reject\u2468"},{"id":"ref-for-reject\u2460\u24ea"}],"title":"3.2.6. setResizable() method"}],"url":"https://webidl.spec.whatwg.org/#reject"},
 "b75bb3bd": {"dfnID":"b75bb3bd","dfnText":"SecureContext","external":true,"refSections":[{"refs":[{"id":"ref-for-SecureContext"},{"id":"ref-for-SecureContext\u2460"}],"title":"3.1. Extensions to the Screen interface"},{"refs":[{"id":"ref-for-SecureContext\u2461"},{"id":"ref-for-SecureContext\u2462"},{"id":"ref-for-SecureContext\u2463"},{"id":"ref-for-SecureContext\u2464"},{"id":"ref-for-SecureContext\u2465"}],"title":"3.2. Extensions to the Window interface"},{"refs":[{"id":"ref-for-SecureContext\u2466"}],"title":"3.3. ScreenDetails interface"},{"refs":[{"id":"ref-for-SecureContext\u2467"}],"title":"3.4. The ScreenDetailed interface"}],"url":"https://webidl.spec.whatwg.org/#SecureContext"},
 "ba1bd741": {"dfnID":"ba1bd741","dfnText":"default powerful feature","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-default-powerful-feature"}],"title":"3.7. Permission API Integration"},{"refs":[{"id":"ref-for-dfn-default-powerful-feature\u2460"}],"title":"6. Accessibility Considerations"}],"url":"https://w3c.github.io/permissions/#dfn-default-powerful-feature"},
@@ -2476,7 +2477,7 @@ let dfnPanelData = {
 "display-state-fullscreen": {"dfnID":"display-state-fullscreen","dfnText":"fullscreen","external":false,"refSections":[{"refs":[{"id":"ref-for-display-state-fullscreen"}],"title":"3.2.2. Algorithm: Request a window display state change"},{"refs":[{"id":"ref-for-display-state-fullscreen\u2460"}],"title":"3.6.1. The 'display-state' media feature"}],"url":"#display-state-fullscreen"},
 "display-state-maximized": {"dfnID":"display-state-maximized","dfnText":"maximized","external":false,"refSections":[{"refs":[{"id":"ref-for-display-state-maximized"},{"id":"ref-for-display-state-maximized\u2460"}],"title":"3.2.2. Algorithm: Request a window display state change"},{"refs":[{"id":"ref-for-display-state-maximized\u2461"}],"title":"3.6.1. The 'display-state' media feature"}],"url":"#display-state-maximized"},
 "display-state-minimized": {"dfnID":"display-state-minimized","dfnText":"minimized","external":false,"refSections":[{"refs":[{"id":"ref-for-display-state-minimized"},{"id":"ref-for-display-state-minimized\u2460"}],"title":"3.2.2. Algorithm: Request a window display state change"},{"refs":[{"id":"ref-for-display-state-minimized\u2461"}],"title":"3.6.1. The 'display-state' media feature"}],"url":"#display-state-minimized"},
-"display-state-normal": {"dfnID":"display-state-normal","dfnText":"normal","external":false,"refSections":[{"refs":[{"id":"ref-for-display-state-normal"},{"id":"ref-for-display-state-normal\u2460"}],"title":"3.2.2. Algorithm: Request a window display state change"},{"refs":[{"id":"ref-for-display-state-normal\u2461"}],"title":"3.6.1. The 'display-state' media feature"}],"url":"#display-state-normal"},
+"display-state-normal": {"dfnID":"display-state-normal","dfnText":"normal","external":false,"refSections":[{"refs":[{"id":"ref-for-display-state-normal"},{"id":"ref-for-display-state-normal\u2460"}],"title":"3.2.2. Algorithm: Request a window display state change"},{"refs":[{"id":"ref-for-display-state-normal\u2461"},{"id":"ref-for-display-state-normal\u2462"}],"title":"3.6.1. The 'display-state' media feature"}],"url":"#display-state-normal"},
 "dom-fullscreenoptions-screen": {"dfnID":"dom-fullscreenoptions-screen","dfnText":"screen","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-fullscreenoptions-screen"},{"id":"ref-for-dom-fullscreenoptions-screen\u2460"}],"title":"3.5. Extensions to FullscreenOptions"},{"refs":[{"id":"ref-for-dom-fullscreenoptions-screen\u2461"},{"id":"ref-for-dom-fullscreenoptions-screen\u2462"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"}],"url":"#dom-fullscreenoptions-screen"},
 "dom-permissionpolicy-window-management": {"dfnID":"dom-permissionpolicy-window-management","dfnText":"\"window-management\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionpolicy-window-management"}],"title":"3.1.1. isExtended attribute"},{"refs":[{"id":"ref-for-dom-permissionpolicy-window-management\u2460"}],"title":"3.2.1. getScreenDetails() method"},{"refs":[{"id":"ref-for-dom-permissionpolicy-window-management\u2461"}],"title":"3.2.2. Algorithm: Request a window display state change"},{"refs":[{"id":"ref-for-dom-permissionpolicy-window-management\u2462"}],"title":"3.2.6. setResizable() method"},{"refs":[{"id":"ref-for-dom-permissionpolicy-window-management\u2463"}],"title":"3.8. Permission Policy integration"}],"url":"#dom-permissionpolicy-window-management"},
 "dom-screen-isextended": {"dfnID":"dom-screen-isextended","dfnText":"isExtended","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-screen-isextended"}],"title":"1.2.1. Detect the presence of multiple screens"},{"refs":[{"id":"ref-for-dom-screen-isextended\u2460"}],"title":"1.2.2. Detect Screen attribute changes"},{"refs":[{"id":"ref-for-dom-screen-isextended\u2461"},{"id":"ref-for-dom-screen-isextended\u2462"}],"title":"3.1. Extensions to the Screen interface"},{"refs":[{"id":"ref-for-dom-screen-isextended\u2463"}],"title":"3.1.1. isExtended attribute"},{"refs":[{"id":"ref-for-dom-screen-isextended\u2464"}],"title":"3.5.1. Element.requestFullscreen() method definition changes"},{"refs":[{"id":"ref-for-dom-screen-isextended\u2465"},{"id":"ref-for-dom-screen-isextended\u2466"},{"id":"ref-for-dom-screen-isextended\u2467"}],"title":"3.8. Permission Policy integration"}],"url":"#dom-screen-isextended"},

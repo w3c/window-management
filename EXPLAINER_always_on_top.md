@@ -31,7 +31,7 @@ Existing web platform capabilities (such as Document Picture-in-Picture) require
 
 ## 3. Proposed API
 
-We propose adding `alwaysOnTop` to the `windowFeatures` parameter of `window.open()`, as well as introducing a corresponding read-only boolean `alwaysOnTop` property directly onto the `Window` interface.
+We propose adding `alwaysOnTop` to the `windowFeatures` parameter of `window.open()`, as well as introducing a corresponding read-only boolean `alwaysOnTopPopup` property directly onto the `Window` interface.
 
 ```javascript
 // Proposed syntax using the traditional comma-separated string
@@ -42,7 +42,7 @@ const utilityWindow = window.open(
 );
 
 // Read-only boolean property reflection
-console.log(utilityWindow.alwaysOnTop); // true (if successfully opened as always-on-top)
+console.log(utilityWindow.alwaysOnTopPopup); // true (if successfully opened as always-on-top)
 ```
 
 ### Expected Behavior
@@ -54,23 +54,23 @@ console.log(utilityWindow.alwaysOnTop); // true (if successfully opened as alway
 * **UA-Defined Limits:** To preserve usability, browsers (User Agents) may enforce implementation-specific limits. For example, UAs may restrict origins to a single active `alwaysOnTop` window at a time, or make it mutually exclusive with other types of Picture-in-Picture (PiP) windows. The UA may also restrict the size of the always-on-top window.
 * **Popup Window Context Requirement:** The `alwaysOnTop` hint only applies when `window.open()` creates a new, standalone popup window context. If the call results in a new tab within an existing multi-tab browser window, or targets and navigates an existing window (e.g., via a named `target`), the `alwaysOnTop` request is silently ignored.
 * If the user manually minimizes the window, it should obey.
-* The `window.alwaysOnTop` property is read-only after creation and reflects whether the window is currently pinned above other windows (returning `true`) or running in standard/fallback mode (returning `false`).
+* The `window.alwaysOnTopPopup` property is read-only after creation and reflects whether the popup window is currently pinned above other windows (returning `true`) or running in standard/fallback mode (returning `false`). Note that this property is named `alwaysOnTopPopup` to distinguish always-on-top popups from other always-on-top windows such as Document Picture-in-Picture.
 
 ---
 
 ## 4. Feature & Permission Detection
 
-Exposing the read-only `alwaysOnTop` property on the `Window` interface addresses two critical detection challenges for developers:
+Exposing the read-only `alwaysOnTopPopup` property on the `Window` interface addresses two critical detection challenges for developers:
 
-1. **Feature Detection:** Developers can synchronously check for browser API support by verifying the existence of `'alwaysOnTop' in Window.prototype`.
-2. **State Verification:** A script running inside the new popup (or the opening application holding a reference to it) can confidently determine if the window was successfully opened with the always-on-top capability by checking the `window.alwaysOnTop` boolean.
+1. **Feature Detection:** Developers can synchronously check for browser API support by verifying the existence of `'alwaysOnTopPopup' in Window.prototype`.
+2. **State Verification:** A script running inside the new popup (or the opening application holding a reference to it) can confidently determine if the window was successfully opened with the always-on-top capability by checking the `window.alwaysOnTopPopup` boolean.
 
 ```javascript
 async function openUtilityWindow() {
   let canUseAlwaysOnTop = false;
 
   // 1. Feature Detection
-  if ('alwaysOnTop' in Window.prototype) {
+  if ('alwaysOnTopPopup' in Window.prototype) {
     // 2. Permission Detection & Request
     try {
       let permissionStatus = await navigator.permissions.query({ name: 'window-management' });
@@ -90,7 +90,7 @@ async function openUtilityWindow() {
   if (canUseAlwaysOnTop) {
     // Open as an always-on-top window
     const win = window.open('/tool', 'Tool', 'width=300,height=200,alwaysOnTop=true');
-    console.log("Is always-on-top:", win.alwaysOnTop); // true
+    console.log("Is always-on-top:", win.alwaysOnTopPopup); // true
     return;
   }
 
@@ -112,7 +112,7 @@ async function openUtilityWindow() {
 
   // Fallback 2: Standard Window
   const win = window.open('/tool', 'Tool', 'width=300,height=200');
-  console.log("Is always-on-top:", win.alwaysOnTop); // false
+  console.log("Is always-on-top:", Boolean(win?.alwaysOnTopPopup)); // false
 }
 ```
 

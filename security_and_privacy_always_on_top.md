@@ -4,11 +4,11 @@
 
 This feature enables web applications (with the `window-management` permission) to open standalone always-on-top popup windows via `window.open(..., 'alwaysOnTop=true')` that stay pinned above other non-always-on-top windows independently of the opener tab's lifecycle.
 
-In terms of exposed information, it adds a read-only `window.alwaysOnTop` boolean attribute indicating whether the window is currently pinned above other non-always-on-top windows. This is necessary so web applications can detect support for the feature (`'alwaysOnTop' in Window.prototype`) and verify whether a window opened with `alwaysOnTop=true` was granted always-on-top elevation by the user agent and operating system.
+In terms of exposed information, it adds a read-only `window.alwaysOnTopPopup` boolean attribute indicating whether the popup window is currently pinned above other non-always-on-top windows. This is necessary so web applications can detect support for the feature (`'alwaysOnTopPopup' in Window.prototype`) and verify whether a window opened with `alwaysOnTop=true` was granted always-on-top elevation by the user agent and operating system.
 
 > 02. Do features in your specification expose the minimum amount of information necessary to implement the intended functionality?
 
-Yes. Only a single boolean (`window.alwaysOnTop`) is exposed on the `Window` interface.
+Yes. Only a single boolean (`window.alwaysOnTopPopup`) is exposed on the `Window` interface.
 
 > 03. Do the features in your specification expose personal information, personally-identifiable information (PII), or information derived from either?
 
@@ -28,7 +28,7 @@ No new persistent state is introduced beyond the existing `window-management` pe
 
 > 07. Do the features in your specification expose information about the underlying platform to origins?
 
-Only indirectly: if the underlying platform or window manager does not support always-on-top windows (such as certain mobile or Wayland environments), `window.alwaysOnTop` will remain `false` even when the `window-management` permission is granted. Usage of the `alwaysOnTop` option is already gated on the `window-management` permission. See [Window Management Security & Privacy](https://github.com/w3c/window-management/blob/main/security_and_privacy.md).
+Only indirectly: if the underlying platform or window manager does not support always-on-top windows (such as certain mobile or Wayland environments), `window.alwaysOnTopPopup` will remain `false` even when the `window-management` permission is granted. Usage of the `alwaysOnTop` option is already gated on the `window-management` permission. See [Window Management Security & Privacy](https://github.com/w3c/window-management/blob/main/security_and_privacy.md).
 
 > 08. Does this specification allow an origin to send data to the underlying platform?
 
@@ -83,7 +83,7 @@ Because `window.open(..., 'alwaysOnTop=true')` requires an active browsing conte
 
 > 20. Does your spec define when and how new kinds of errors should be raised?
 
-No new error types are raised. Consistent with existing `window.open()` `windowFeatures` processing, if the `window-management` permission is not granted, if the window is not opened as a popup, or if user agent limits are exceeded, the `alwaysOnTop` feature request is silently ignored and the window opens as a standard popup (or tab) with `window.alwaysOnTop` set to `false`.
+No new error types are raised. Consistent with existing `window.open()` `windowFeatures` processing, if the `window-management` permission is not granted, if the window is not opened as a popup, or if user agent limits are exceeded, the `alwaysOnTop` feature request is silently ignored and the window opens as a standard popup (or tab) with `window.alwaysOnTopPopup` set to `false`.
 
 > 21. Does your feature allow sites to learn about the user's use of assistive technology?
 

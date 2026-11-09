@@ -131,6 +131,45 @@ if (window.screen.isExtended) {
 </div>
 
 <!-- ====================================================================== -->
+### Adapt windowing logic to the screen's capabilities ### {#usage-overview-windowing-mode}
+<!-- ====================================================================== -->
+
+Different screens support different windowing behaviors. A primary desktop monitor may allow freeform, overlapping windows, while a tablet in split-screen mode provides a "managed" (tiled) environment, and a phone screen may only support a single context (forcing popups into tabs). Developers can use the {{ScreenDetailed/windowingMode}} attribute to provide the correct UI for the target screen, avoiding a broken experience.
+
+```js
+async function openCompanionWindow(targetScreen) {
+  // Check the windowing mode of the target screen
+
+  switch (targetScreen.windowingMode) {
+
+    case "freeform":
+
+      // This screen behaves like a traditional desktop.
+      // We can safely open a coordinate-based palette window.
+      window.open("palette.html", "_blank", "width=300,height=400,left=...top=...");
+      break;
+    case "managed":
+
+      // This screen is managed (e.g., a tablet). It supports new windows,
+      // but will ignore coordinates and force a split/tiled layout.
+      // We open the window and let the OS handle placement.
+      window.open("companion_page.html", "_blank");
+      break;
+    case "single-context":
+
+    default:
+      // This screen only supports one window (e.g., a phone).
+      // Calling window.open() may open a tab navigate away
+      // or fail. We must fall back to an in-page UI, like a <dialog>.
+      showInPageDialogFallback();
+      break;
+  }
+}
+```
+
+
+
+<!-- ====================================================================== -->
 ### Detect the presence of multiple screens ### {#usage-overview-screen-extended}
 <!-- ====================================================================== -->
 
@@ -427,6 +466,23 @@ A [=top-level browsing context=] has an associated <dfn export>display state</df
 :: The window is maximized.
 : <dfn for="display state" export>fullscreen</dfn>
 :: The window is in fullscreen mode.
+
+<!-- ====================================================================== -->
+## Screen Windowing Mode ## {#concept-windowing-mode}
+<!-- ====================================================================== -->
+
+Each [=/screen=] operates in a specific <dfn for="screen">windowing mode</dfn>, which dictates how top-level window contexts are created and placed. This is especially relevant to the behavior of {{Window/open()}} when popup features are requested.
+
+The mode is one of the following:
+
+: <dfn enum-value for="windowing-mode">freeform</dfn>
+:: The screen supports a traditional freeform windowing environment. Top-level windows can overlap, and placement requests (such as coordinate features in {{Window/open()}}) are generally honored by the User Agent and Operating System. This is common on desktop environments.
+
+: <dfn enum-value for="windowing-mode">managed</dfn>
+:: The screen supports displaying multiple window contexts simultaneously, but placement is constrained and controlled by the User Agent or Operating System. Programmatic placement requests (e.g., `left`, `top` coordinates) are ignored in favor of OS-defined layouts, such as split-screen tiling (common on tablets) or slide-over views. A call to {{Window/open()}} for a popup will successfully create a new window context, but the application must be prepared for its placement and layout to be managed by the system.
+
+: <dfn enum-value for="windowing-mode">single-context</dfn>
+:: The screen can only display a single top-level window context at a time. Requests to create a new popup window via {{Window/open()}} will not result in a separate window; the User Agent will typically force the new context into a tab within the existing window or block it entirely. This is common on mobile phones.
 
 <!-- ====================================================================== -->
 # API # {#api}
@@ -787,6 +843,14 @@ When the [=/current screen=] of a {{Window}} |window| changes from one [=/screen
 
 A {{ScreenDetailed}} object represents a [=/screen=].
 
+<xmp class=idl>
+enum WindowingMode {
+  "freeform",
+  "managed",
+  "single-context"
+};
+</xmp>
+
 <div class="domintro note">
 
   : |screenDetailed| . {{ScreenDetailed/availLeft}}
@@ -813,6 +877,9 @@ A {{ScreenDetailed}} object represents a [=/screen=].
   : |screenDetailed| . {{ScreenDetailed/label}}
   :: A user-friendly label for the screen, determined by the user agent and OS.
 
+  : |screenDetailed| . {{ScreenDetailed/windowingMode}}
+  :: Returns the [=screen/windowing mode=] supported by this screen, indicating whether coordinate-based popup placement is honored.
+
 </div>
 
 <xmp class=idl>
@@ -826,12 +893,15 @@ interface ScreenDetailed : Screen {
   readonly attribute boolean isInternal;
   readonly attribute float devicePixelRatio;
   readonly attribute DOMString label;
+  readonly attribute WindowingMode windowingMode;
 };
 </xmp>
 
 The <dfn attribute for=ScreenDetailed>availLeft</dfn> getter steps are to return the x-coordinate of the [=screen/available screen position=] of [=/this=] [=/screen=].
 
 The <dfn attribute for=ScreenDetailed>availTop</dfn> getter steps are to return the y-coordinate of the [=screen/available screen position=] of [=/this=] [=/screen=].
+
+The <dfn attribute for=ScreenDetailed>windowingMode</dfn> getter steps are to return this [=/screen=]'s [=screen/windowing mode=] as one of the {{WindowingMode}} enum values.
 
 The <dfn attribute for=ScreenDetailed>left</dfn> getter steps are to return the x-coordinate of the [=screen/screen position=] of [=/this=] [=/screen=].
 

@@ -116,10 +116,10 @@ if (window.screen.isExtended) {
 
   // Find a different screen, fill its available area with a new window.
   const otherScreen = screenDetails.screens.find(s => s !== primaryScreen);
-  window.open(url, '_blank', \`left=${otherScreen.availLeft},\` +
-                             \`top=${otherScreen.availTop},\` +
-                             \`width=${otherScreen.availWidth},\` +
-                             \`height=${otherScreen.availHeight}\`);
+  window.open(url, '_blank', 'left=' + otherScreen.availLeft +
+                             ',top=' + otherScreen.availTop +
+                             ',width=' + otherScreen.availWidth +
+                             ',height=' + otherScreen.availHeight);
 } else {
   // Detect when an attribute of the legacy \`Screen\` interface changes.
   window.screen.addEventListener('change', onScreenChange);
@@ -216,7 +216,7 @@ function openCenteredWindow(url, screenDetailed, w, h) {
   const t = screenDetailed.top + Math.round(screenDetailed.height - h) / 2;
 
   // Open the window with the requested dimensions.
-  return window.open(url, '_blank', \`left=${l},top=${t},width=${w},height=${h}\`);
+  return window.open(url, '_blank', 'left=' + l + ',top=' + t + ',width=' + w + ',height=' + h);
 }
 ```
 
@@ -234,10 +234,10 @@ initiateMultiScreenExperienceButton.addEventListener('click', async () => {
 
   // Find a different screen, fill its available area with a new window.
   const otherScreen = screenDetails.screens.find(s => s !== primaryScreen);
-  window.open(url, '_blank', \`left=${otherScreen.availLeft},\` +
-                             \`top=${otherScreen.availTop},\` +
-                             \`width=${otherScreen.availWidth},\` +
-                             \`height=${otherScreen.availHeight}\`);
+  window.open(url, '_blank', 'left=' + otherScreen.availLeft +
+                             ',top=' + otherScreen.availTop +
+                             ',width=' + otherScreen.availWidth +
+                             ',height=' + otherScreen.availHeight);
 });
 ```
 

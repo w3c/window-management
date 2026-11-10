@@ -8,7 +8,7 @@
   <meta content="Bikeshed version e0b165ae4, updated Mon Nov 2 15:16:49 2026 -0800" name="generator">
   <link href="https://www.w3.org/TR/window-management/" rel="canonical">
   <link href="logo.svg" rel="icon">
-  <meta content="2c2d0f95fb4bc50264dce32423904b5d0f48d505" name="revision">
+  <meta content="b91b468173df65c186998bb47ca1efa388779dfe" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -799,7 +799,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
 </p>
    <h1 class="no-ref p-name" id="title">Window Management</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2026-11-06">6 November 2026</time></p>
+    <time class="dt-updated" datetime="2026-11-10">10 November 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1034,16 +1034,16 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
 
   <c- c1>// Find a different screen, fill its available area with a new window.</c->
   <c- a>const</c-> otherScreen <c- o>=</c-> screenDetails<c- p>.</c->screens<c- p>.</c->find<c- p>(</c->s <c- p>=></c-> s <c- o>!==</c-> primaryScreen<c- p>);</c->
-  window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> \<c- sb>`left=</c-><c- si>${</c->otherScreen<c- p>.</c->availLeft<c- si>}</c-><c- sb>,\` +</c->
-<c- sb>                             \`top=</c-><c- si>${</c->otherScreen<c- p>.</c->availTop<c- si>}</c-><c- sb>,\` +</c->
-<c- sb>                             \`width=</c-><c- si>${</c->otherScreen<c- p>.</c->availWidth<c- si>}</c-><c- sb>,\` +</c->
-<c- sb>                             \`height=</c-><c- si>${</c->otherScreen<c- p>.</c->availHeight<c- si>}</c-><c- sb>\`);</c->
-<c- sb>} else {</c->
-<c- sb>  // Detect when an attribute of the legacy \`Screen\` interface changes.</c->
-<c- sb>  window.screen.addEventListener('change', onScreenChange);</c->
+  window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> <c- t>'left='</c-> <c- o>+</c-> otherScreen<c- p>.</c->availLeft <c- o>+</c->
+                             <c- t>',top='</c-> <c- o>+</c-> otherScreen<c- p>.</c->availTop <c- o>+</c->
+                             <c- t>',width='</c-> <c- o>+</c-> otherScreen<c- p>.</c->availWidth <c- o>+</c->
+                             <c- t>',height='</c-> <c- o>+</c-> otherScreen<c- p>.</c->availHeight<c- p>);</c->
+<c- p>}</c-> <c- k>else</c-> <c- p>{</c->
+  <c- c1>// Detect when an attribute of the legacy \`Screen\` interface changes.</c->
+  window<c- p>.</c->screen<c- p>.</c->addEventListener<c- p>(</c-><c- t>'change'</c-><c- p>,</c-> onScreenChange<c- p>);</c->
 
-<c- sb>  // Arrange content within the traditional single-screen environment...</c->
-<c- sb>}</c->
+  <c- c1>// Arrange content within the traditional single-screen environment...</c->
+<c- p>}</c->
 </pre>
    </div>
    <h4 class="heading settled" data-level="1.2.1" id="usage-overview-screen-extended"><span class="secno">1.2.1. </span><span class="content">Detect the presence of multiple screens</span><a class="self-link" href="#usage-overview-screen-extended"></a></h4>
@@ -1103,8 +1103,8 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
   <c- a>const</c-> t <c- o>=</c-> screenDetailed<c- p>.</c->top <c- o>+</c-> Math<c- p>.</c->round<c- p>(</c->screenDetailed<c- p>.</c->height <c- o>-</c-> h<c- p>)</c-> <c- o>/</c-> <c- mf>2</c-><c- p>;</c->
 
   <c- c1>// Open the window with the requested dimensions.</c->
-  <c- k>return</c-> window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> \<c- sb>`left=</c-><c- si>${</c->l<c- si>}</c-><c- sb>,top=</c-><c- si>${</c->t<c- si>}</c-><c- sb>,width=</c-><c- si>${</c->w<c- si>}</c-><c- sb>,height=</c-><c- si>${</c->h<c- si>}</c-><c- sb>\`);</c->
-<c- sb>}</c->
+  <c- k>return</c-> window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> <c- t>'left='</c-> <c- o>+</c-> l <c- o>+</c-> <c- t>',top='</c-> <c- o>+</c-> t <c- o>+</c-> <c- t>',width='</c-> <c- o>+</c-> w <c- o>+</c-> <c- t>',height='</c-> <c- o>+</c-> h<c- p>);</c->
+<c- p>}</c->
 </pre>
    <h4 class="heading settled" data-level="1.2.6" id="usage-overview-initiate-multi-screen-experiences"><span class="secno">1.2.6. </span><span class="content">Initiate multi-screen experiences</span><a class="self-link" href="#usage-overview-initiate-multi-screen-experiences"></a></h4>
    <p>A commonly requested multi-screen use case is to initiate a compelling multi-screen experience from a single user activation. One specific proposed form is permitting a site to <a href="#usage-overview-place-fullscreen-content-on-a-specific-screen">§ 1.2.4 Place fullscreen content on a specific screen</a> and <a href="#usage-overview-place-windows-on-a-specific-screen">§ 1.2.5 Place windows on a specific screen</a> from a single user gesture. This can be accomplished by first requesting fullscreen on a specific screen of a multi-screen device, and then opening a popup window on another screen of the device, in a single event listener.</p>
@@ -1115,11 +1115,11 @@ slideshowElement<c- p>.</c->requestFullscreen<c- p>({</c-> screen<c- o>:</c-> sc
 
   <c- c1>// Find a different screen, fill its available area with a new window.</c->
   <c- a>const</c-> otherScreen <c- o>=</c-> screenDetails<c- p>.</c->screens<c- p>.</c->find<c- p>(</c->s <c- p>=></c-> s <c- o>!==</c-> primaryScreen<c- p>);</c->
-  window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> \<c- sb>`left=</c-><c- si>${</c->otherScreen<c- p>.</c->availLeft<c- si>}</c-><c- sb>,\` +</c->
-<c- sb>                             \`top=</c-><c- si>${</c->otherScreen<c- p>.</c->availTop<c- si>}</c-><c- sb>,\` +</c->
-<c- sb>                             \`width=</c-><c- si>${</c->otherScreen<c- p>.</c->availWidth<c- si>}</c-><c- sb>,\` +</c->
-<c- sb>                             \`height=</c-><c- si>${</c->otherScreen<c- p>.</c->availHeight<c- si>}</c-><c- sb>\`);</c->
-<c- sb>});</c->
+  window<c- p>.</c->open<c- p>(</c->url<c- p>,</c-> <c- t>'_blank'</c-><c- p>,</c-> <c- t>'left='</c-> <c- o>+</c-> otherScreen<c- p>.</c->availLeft <c- o>+</c->
+                             <c- t>',top='</c-> <c- o>+</c-> otherScreen<c- p>.</c->availTop <c- o>+</c->
+                             <c- t>',width='</c-> <c- o>+</c-> otherScreen<c- p>.</c->availWidth <c- o>+</c->
+                             <c- t>',height='</c-> <c- o>+</c-> otherScreen<c- p>.</c->availHeight<c- p>);</c->
+<c- p>});</c->
 </pre>
    <h2 class="heading settled" data-level="2" id="concepts"><span class="secno">2. </span><span class="content">Concepts</span><a class="self-link" href="#concepts"></a></h2>
    <p>Concepts in this specification build upon those in the <a href="https://www.w3.org/TR/cssom-view-1/">CSSOM-View-1 Working Draft</a>, and the <a href="https://drafts.csswg.org/cssom-view/">CSSOM-View-1 Editor’s Draft</a>, <a data-link-type="biblio" href="#biblio-html" title="HTML Standard">[HTML]</a>, and <a data-link-type="biblio" href="#biblio-fullscreen" title="Fullscreen API Standard">[Fullscreen]</a>.</p>

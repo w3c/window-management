@@ -552,27 +552,27 @@ The <dfn method for=Window>getScreenDetails()</dfn> method steps are:
 
 <div algorithm>
 
-To <dfn>request a window display state change</dfn> to a target display state |targetState|:
+To <dfn>request a window display state change</dfn> given a {{Window}} |window:Window| and a target display state |targetState|:
 
 1. Let |promise| be [=/a new promise=].
 
-1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+1. If |window|'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and return |promise|.
 
-1. If [=this=]'s [=relevant global object=]'s [=associated Document=] is not an [=installed web application=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+1. If |window|'s [=associated Document=] is not an [=installed web application=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and return |promise|.
 
-1. If [=this=]'s [=relevant global object=] does not have [=transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
+1. If |window| does not have [=transient activation=], then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and return |promise|.
 
 1. Run the following steps [=/in parallel=]:
 
     1. Let |permissionState| be [=/request permission to use=] "{{window-management}}".
 
-    1. [=/Queue a global task=] on the [=/relevant global object=] of [=/this=] using the [=/window placement task source=] to run the following steps:
+    1. [=/Queue a global task=] on the [=/window placement task source=] given |window| to run the following steps:
 
         1. If |permissionState| is "{{PermissionState/denied}}", then [=/reject=] |promise| with a {{"NotAllowedError"}} {{DOMException}} and abort these steps.
 
-        1. [=/Consume user activation=] of [=this=]'s [=relevant global object=].
+        1. [=/Consume user activation=] of |window|.
 
-        1. Let |state| be the window's [=display state=].
+        1. Let |state| be |window|'s [=display state=].
 
         1. If any of the following are true, then [=/resolve=] |promise| with undefined and abort these steps:
             - |targetState| is "minimized" and |state| is [=display state/minimized=].
@@ -580,12 +580,12 @@ To <dfn>request a window display state change</dfn> to a target display state |t
             - |targetState| is "restored" and |state| is [=display state/normal=].
 
         1. If |targetState| is "minimized" or "maximized":
-            1. Request the user agent to change the window's display state to |targetState|.
+            1. Request the user agent to change |window|'s display state to |targetState|.
 
         1. Else if |targetState| is "restored":
-            1. If |state| is [=display state/minimized=], request the user agent to unminimize the window, restoring it to its [=display state=] prior to being minimized.
-            1. Else if |state| is [=display state/fullscreen=], request the user agent to exit fullscreen, restoring the window to its [=display state=] prior to entering fullscreen.
-            1. Else if |state| is [=display state/maximized=], request the user agent to unmaximize the window, restoring it to the [=display state/normal=] display state.
+            1. If |state| is [=display state/minimized=], request the user agent to unminimize |window|, restoring it to its [=display state=] prior to being minimized.
+            1. Else if |state| is [=display state/fullscreen=], request the user agent to exit fullscreen for |window|, restoring it to its [=display state=] prior to entering fullscreen.
+            1. Else if |state| is [=display state/maximized=], request the user agent to unmaximize |window|, restoring it to the [=display state/normal=] display state.
 
         1. If the operation succeeds, [=/resolve=] |promise| with undefined.
 
@@ -605,7 +605,7 @@ The {{Window/minimize()}} method completes asynchronously, queuing work on the [
 
 The <dfn method for=Window>minimize()</dfn> method steps are:
 
-1. Return the result of running the [=request a window display state change=] algorithm with "minimized".
+1. Return the result of running the [=request a window display state change=] algorithm with [=this=] and "minimized".
 
 </div>
 
@@ -619,7 +619,7 @@ The {{Window/maximize()}} method completes asynchronously, queuing work on the [
 
 The <dfn method for=Window>maximize()</dfn> method steps are:
 
-1. Return the result of running the [=request a window display state change=] algorithm with "maximized".
+1. Return the result of running the [=request a window display state change=] algorithm with [=this=] and "maximized".
 
 </div>
 
@@ -633,7 +633,7 @@ The {{Window/restore()}} method completes asynchronously, queuing work on the [=
 
 The <dfn method for=Window>restore()</dfn> method steps are:
 
-1. Return the result of running the [=request a window display state change=] algorithm with "restored".
+1. Return the result of running the [=request a window display state change=] algorithm with [=this=] and "restored".
 
 </div>
 

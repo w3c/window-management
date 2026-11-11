@@ -779,7 +779,11 @@ When the set of {{ScreenDetails/screens}} of a {{ScreenDetails}} object |screenD
 
 The <dfn attribute for=ScreenDetails>oncurrentscreenchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is {{ScreenDetails/currentscreenchange!!event}}.
 
-When the [=/current screen=] of a {{Window}} |window| changes from one [=/screen=] to another (e.g. the {{Window}} has been moved to a different display), or when any [=screen/basic observable property=] or [=screen/advanced observable property=] of the [=/current screen=] of |window| changes, [=/queue a global task=] on the [=/relevant global object=] of |window| using the [=/window placement task source=] to [=/fire an event=] named <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at the {{ScreenDetails}} object stored in |window|'s internal slot {{Window/[[screenDetails]]}}.
+When the [=/current screen=] of a {{Window}} |window| changes from one [=/screen=] to another (e.g. the {{Window}} has been moved to a different display), or when any [=screen/basic observable property=] or [=screen/advanced observable property=] of the [=/current screen=] of |window| changes, run these steps:
+
+1. Let |screenDetails| be |window|'s {{Window/[[screenDetails]]}}.
+1. If |screenDetails| is `undefined`, then return.
+1. [=/queue a global task=] on the [=/relevant global object=] of |window| using the [=/window placement task source=] to [=/fire an event=] named <dfn event for=ScreenDetails>`currentscreenchange`</dfn> at |screenDetails|.
 
 <!-- ====================================================================== -->
 ## The {{ScreenDetailed}} interface ## {#api-screendetailed-interface}

@@ -39,6 +39,13 @@ Assume Explicit For: yes
 </style>
 
 <pre class=anchors>
+spec: css-color-hdr; urlPrefix: https://drafts.csswg.org/css-color-hdr/
+    type: dfn; text: HDR headroom; url: hdr-headroom
+    type: dfn; text: HDR reference white; url: hdr-reference-white
+    type: dfn; text: standard dynamic range; url: standard-dynamic-range
+    type: dfn; text: high dynamic range; url: high-dynamic-range
+spec: css-color-4; urlPrefix: https://drafts.csswg.org/css-color-4/
+    type: dfn; text: white; url: valdef-color-white
 spec: css-values-4; urlPrefix: https://drafts.csswg.org/css-values-4/
     type: dfn; text: CSS pixel; url: px
 spec: fingerprinting-guidance; urlPrefix: https://www.w3.org/TR/fingerprinting-guidance/
@@ -280,6 +287,10 @@ Note: The [=screen/label=] can be an arbitrary string selected by the user agent
 
 Advisement: While many screen attributes could be used for [=/active fingerprinting=], the strings used as [=screen/labels=] in particular should be considered carefully to minimize the uniqueness. For example, it would be a poor choice to include the serial number of the device.
 
+A [=/screen=] has an <dfn>HDR headroom</dfn>, which is the current [=/HDR headroom=] of the screen.
+
+Note: The [=screen/HDR headroom=], being the base 2 logarithm of the peak luminance of the screen to the [=/HDR reference white=] luminance of the screen (which is the luminance of '[=/white=]') has to be zero for [=/standard dynamic range=] displays. For [=/high dynamic range=] capable displays it can be zero or greater than zero and can vary over time in response to changes in the presence or absence of HDR content on the screen, screen brightness, ambient brightness, power management feature, and other factors.
+
 Issue: Should [=screen/device pixel ratio=] include the [page-zoom](https://drafts.csswg.org/cssom-view-1/#page-zoom)?
 
 </div>
@@ -413,6 +424,8 @@ The <dfn for="screen">advanced observable properties</dfn> of a [=/screen=] are:
 * [=screen/label=]
 * The [=/screen=]'s designation as [=/primary=] or [=/secondary=]
 * The [=/screen=]'s designation as [=/internal=] or [=/external=]
+
+Note: The [=/screen=]'s [=screen/HDR headroom=] is included in neither the [=screen/basic observable properties=] nor the [=screen/advanced observable properties=] because it changes independently of these properties and at high frequency.
 
 <!-- ====================================================================== -->
 ## Window display state ## {#concept-window-display-state}
@@ -813,6 +826,12 @@ A {{ScreenDetailed}} object represents a [=/screen=].
   : |screenDetailed| . {{ScreenDetailed/label}}
   :: A user-friendly label for the screen, determined by the user agent and OS.
 
+  : |screenDetailed| . {{ScreenDetailed/hdrHeadroom}}
+  :: Returns the [=screen/HDR headroom=] of the screen.
+
+  : |screenDetailed| . {{ScreenDetailed/onhdrheadroomchange}}
+  :: Fired when this screen's [=screen/HDR headroom=] attribute changes.
+
 </div>
 
 <xmp class=idl>
@@ -826,6 +845,8 @@ interface ScreenDetailed : Screen {
   readonly attribute boolean isInternal;
   readonly attribute float devicePixelRatio;
   readonly attribute DOMString label;
+  readonly attribute float hdrHeadroom;
+  attribute EventHandler onhdrheadroomchange;
 };
 </xmp>
 
@@ -845,6 +866,8 @@ The <dfn attribute for=ScreenDetailed>devicePixelRatio</dfn> getter steps are to
 
 The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return the [=screen/label=] of [=/this=] [=/screen=].
 
+The <dfn attribute for=ScreenDetailed>hdrHeadroom</dfn> getter steps are to return the [=screen/HDR headroom=] of [=/this=] [=/screen=].
+
 <!-- ====================================================================== -->
 ### {{ScreenDetailed/onchange}} attribute ### {#api-screendetailed-onchange-attribute}
 <!-- ====================================================================== -->
@@ -852,6 +875,16 @@ The <dfn attribute for=ScreenDetailed>label</dfn> getter steps are to return the
 The <dfn attribute for=ScreenDetailed>onchange</dfn> attribute is the {{Screen/onchange}} attribute inherited from {{Screen}}.
 
 When any [=screen/basic observable property=] or [=screen/advanced observable property=] of a [=/screen=] represented by a {{ScreenDetailed}} object |screenDetailed| changes, [=/queue a global task=] on the [=/relevant global object=] of |screenDetailed| using the [=/window placement task source=] to [=/fire an event=] named <dfn event for=ScreenDetailed>`change`</dfn> at |screenDetailed|.
+
+<!-- ====================================================================== -->
+### {{ScreenDetailed/onhdrheadroomchange}} attribute ### {#api-screendetailed-onhdrheadroomchange-attribute}
+<!-- ====================================================================== -->
+
+The <dfn attribute for=ScreenDetailed>onhdrheadroomchange</dfn> attribute is an [=/event handler IDL attribute=] whose [=/event handler event type=] is {{ScreenDetailed/hdrheadroomchange!!event}}.
+
+When the [=screen/HDR headroom=] of a [=/screen=] represented by a {{ScreenDetailed}} object |screenDetailed| changes, [=/queue a global task=] on the [=/relevant global object=] of |screenDetailed| using the [=/window placement task source=] to [=/fire an event=] named <dfn event for=ScreenDetailed>`hdrheadroomchange`</dfn> at |screenDetailed|.
+
+Note: When the [=screen/HDR headroom=] of a [=/screen=] changes, no event of type {{ScreenDetailed/change!!event}} will be fired. This is because the [=screen/HDR headroom=] of a screen changes independently of the properties that would fire such an event. Additionally, changes in the [=screen/HDR headroom=] often happen at high frequency (e.g, when a [=/screen=] is transitioning into high dynamic range mode, or when a [=/screen=] is adjusting its brightness).
 
 <!-- ====================================================================== -->
 ## Extensions to {{FullscreenOptions}} ## {#api-extensions-to-fullscreen-options}

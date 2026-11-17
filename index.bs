@@ -51,9 +51,7 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
     type: dfn; for: browsing context; text: is popup; url: document-sequences.html#is-popup
     type: dfn; for: browsing context; text: opener browsing context; url: document-sequences.html#opener-browsing-context
     type: dfn; text: window open steps; url: nav-history-apis.html#window-open-steps
-    type: dfn; text: check if a popup window is requested; url: nav-history-apis.html#popup-window-is-requested
     type: dfn; text: check if a window feature is set; url: nav-history-apis.html#window-feature-is-set
-    type: dfn; text: entry global object; url: webappapis.html#entry-global-object
 spec: ecmascript; urlPrefix: https://tc39.es/ecma262/
     type: dfn; text: internal slot; url: sec-object-internal-methods-and-internal-slots
 </pre>
@@ -438,11 +436,11 @@ A [=top-level browsing context=] has an associated <dfn export>display state</df
 ## Always-on-top popup window ## {#concept-always-on-top-popup-window}
 <!-- ====================================================================== -->
 
-A [=top-level browsing context=] has an associated <dfn for="browsing context" export>is always-on-top popup</dfn> boolean, initially false.
+A [=top-level browsing context=] has an associated <dfn for="browsing context" export>is-always-on-top-popup</dfn> boolean, initially false.
 
-When a [=top-level browsing context=]'s [=browsing context/is always-on-top popup=] is true, the user agent requests that the operating system window manager keep the window pinned above other non-always-on-top windows, independently of its [=browsing context/opener browsing context=]'s lifecycle. If the user agent or operating system window manager does not honor or revokes this always-on-top state, the [=top-level browsing context=]'s [=browsing context/is always-on-top popup=] is set to false.
+While a [=top-level browsing context=]'s [=browsing context/is-always-on-top-popup=] is true, the user agent requests that the operating system window manager keep the window pinned above other non-always-on-top windows, independently of its [=browsing context/opener browsing context=]'s lifecycle.
 
-Note: The relative z-ordering between multiple concurrent always-on-top windows, as well as their interaction with fullscreen windows and virtual desktops, is left to the user agent and the underlying operating system window manager.
+Note: Whether the operating system window manager honors the request (for example, on platforms or window managers that do not support always-on-top windows), the relative z-ordering between multiple concurrent always-on-top windows, and their interaction with fullscreen windows and virtual desktops are left to the user agent and the underlying operating system window manager. Where a user agent can determine synchronously that always-on-top windows are unsupported, it can return false in [=check if an always-on-top popup window is requested=].
 
 <!-- ====================================================================== -->
 # API # {#api}
@@ -704,7 +702,7 @@ The <dfn attribute for=Window>alwaysOnTopPopup</dfn> getter steps are:
 
 1. If |browsingContext| is null or |browsingContext| is not a [=top-level browsing context=], then return false.
 
-1. Return |browsingContext|'s [=browsing context/is always-on-top popup=].
+1. Return |browsingContext|'s [=browsing context/is-always-on-top-popup=].
 
 </div>
 
@@ -730,29 +728,22 @@ The {{Window/open()|Window.open()}} method steps, and the steps of methods invok
 1. Waive the [=/transient activation=] state requirement when the [=/current high resolution time=] of the [=/relevant global object=] is greater than or equal to [=/this=].{{Window/[[targetScreenFullscreen]]}}, and less than [=/this=].{{Window/[[targetScreenFullscreen]]}} plus the [=/transient activation duration=].
 1. Set [=/this=].{{Window/[[targetScreenFullscreen]]}} to negative infinity immediately after following the steps to [=/consume user activation=].
 
-In [[HTML]]'s [=window open steps=], when `windowType` is either `"new and unrestricted"` or `"new with no opener"`, after setting `targetNavigable`'s [=navigable/active browsing context=]'s [=browsing context/is popup=], run the following steps:
-1. Let |alwaysOnTopPopup| be the result of [=check if an always-on-top popup window is requested|checking if an always-on-top popup window is requested=], given `tokenizedFeatures`.
-1. If |alwaysOnTopPopup| is true:
-    1. Request that the operating system window manager keep `targetNavigable`'s window pinned above other non-always-on-top windows.
-    1. If the user agent and operating system window manager honor this request, set `targetNavigable`'s [=navigable/active browsing context=]'s [=browsing context/is always-on-top popup=] to true.
+In [[HTML]]'s [=window open steps=], when `windowType` is either `"new and unrestricted"` or `"new with no opener"`, after setting `targetNavigable`'s [=navigable/active browsing context=]'s [=browsing context/is popup=], run the following step:
+1. Set `targetNavigable`'s [=navigable/active browsing context=]'s [=browsing context/is-always-on-top-popup=] to the result of [=check if an always-on-top popup window is requested|checking if an always-on-top popup window is requested=], given `targetNavigable`'s [=navigable/active browsing context=], `sourceDocument`, and `tokenizedFeatures`.
 
 <div algorithm>
 
-To <dfn>check if an always-on-top popup window is requested</dfn>, given |tokenizedFeatures|:
+To <dfn>check if an always-on-top popup window is requested</dfn>, given |targetBrowsingContext|, |sourceDocument|, and |tokenizedFeatures|:
 
-1. If |tokenizedFeatures| [=map/is empty=], then return false.
-
-1. Let |popup| be the result of [=check if a popup window is requested|checking if a popup window is requested=], given |tokenizedFeatures|.
-
-1. If |popup| is false, then return false.
+1. If |targetBrowsingContext|'s [=browsing context/is popup=] is false, then return false.
 
 1. Let |alwaysOnTop| be the result of [=check if a window feature is set|checking if a window feature is set=], given |tokenizedFeatures|, `"alwaysontop"`, and false.
 
 1. If |alwaysOnTop| is false, then return false.
 
-1. If the [=entry global object=]'s [=associated Document=] is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then return false.
+1. If |sourceDocument| is not [=allowed to use=] the [=policy-controlled feature=] named "{{PermissionPolicy/window-management}}", then return false.
 
-1. Let |permissionState| be the result of [=getting the current permission state=] of "{{window-management}}".
+1. Let |permissionState| be the result of [=getting the current permission state=] of "{{window-management}}" with |sourceDocument|'s [=relevant settings object=].
 
 1. If |permissionState| is not "{{PermissionState/granted}}", then return false.
 

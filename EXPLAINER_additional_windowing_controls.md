@@ -306,9 +306,7 @@ JS APIs usage would be gated by:
 *   Secure origins with the [Window Management permission](https://w3c.github.io/window-management/)
 *   Consuming a user gesture for `window.minimize()/maximize()/restore()` APIs:
     *   To make `restore()` work with minimized windows (which can’t get a user gesture) we will extend the capability delegation API (i.e. `postMessage()` consumes activation in one window and transfers it to another window permitting it to `restore()`, even cross-origin)
-*   `window.minimize()/maximize()/restore()` are limited to:
-    *   Windows with ‘standalone’ or ‘minimal-ui’ [display-mode](https://www.w3.org/TR/mediaqueries-5/#display-mode), i.e. installed application windows, and origins running in their own window, whether installed or not, e.g. Chrome’s “Create shortcut…” with  “Open as window” checked
-    *   Popup windows created by script, i.e. `window.open()` 
+*   `window.minimize()/maximize()/restore()` are limited to installed application windows (e.g. Chrome’s “Install app” or “Create shortcut…” with “Open as window” checked).
 
 Here are the most prevalent concerns raised by this API. Malicious sites may wish to:
 

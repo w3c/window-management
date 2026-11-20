@@ -52,8 +52,9 @@ Display state of the window (minimized/maximized/fullscreen/normal).
 
 > 13.  How does this specification distinguish between behavior in first-party and third-party contexts?
 
-The JavaScript window management APIs (`minimize()`, `maximize()`, `restore()`, `setResizable()`) are only available to installed web applications in top-level browsing contexts.
-For the CSS media features (`display-state` and `resizable`), values are not propagated to child frames: in child frames, `display-state` evaluates to `normal` and `resizable` evaluates to `true`.
+The JavaScript window management APIs (`minimize()`, `maximize()`, `restore()`, `setResizable()`) are only available to installed web applications in top-level windows.
+For the CSS media features (`display-state` and `resizable`), values are not propagated to child windows: in child windows, `display-state` evaluates to `normal` and `resizable` evaluates to `true`.
+Both the window management API methods and CSS media features can be accessed from same-origin child browser contexts using `window.top`.
 
 > 14.  How do the features in this specification work in the context of a browser’s Private Browsing or Incognito mode?
 
